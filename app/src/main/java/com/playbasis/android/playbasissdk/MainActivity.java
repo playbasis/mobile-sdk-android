@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.playbasis.android.playbasissdk.core.Playbasis;
+
 
 public class MainActivity extends Activity {
 
@@ -12,6 +14,13 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        Playbasis playbasis = new Playbasis.Builder(this)
+                .setApiKey("3026965093")
+                .setApiSecret("ce9c9335d542674a2a3e286307dba8c0")
+                .build();
+
+        
     }
 
 
