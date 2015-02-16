@@ -7,6 +7,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.playbasis.android.playbasissdk.api.AuthApi;
+import com.playbasis.android.playbasissdk.api.AuthAuthenticator;
 import com.playbasis.android.playbasissdk.api.OnResult;
 import com.playbasis.android.playbasissdk.api.Token;
 import com.playbasis.android.playbasissdk.core.Playbasis;
@@ -26,20 +27,19 @@ public class MainActivity extends Activity {
                 .setServerUrl("https://api.pbapp.net")
                 .build();
 
-        AuthApi.auth(playbasis, new OnResult<Token>() {
+        playbasis.getAuthenticator().getAuthToken(new OnResult<Token>() {
             @Override
             public void onSuccess(Token result) {
-                Log.d("Main", result.getToken() );
-                Log.d("Main", result.getToken() );
+                Log.d("main", "");
+                Log.d("main", "");
             }
 
             @Override
             public void onError(HttpError error) {
-                Log.d("Main", error.toString() );
-                Log.d("Main", error.toString() );
+                Log.d("main", "");
+                Log.d("main", "");
             }
         });
-        
     }
 
 

@@ -17,7 +17,7 @@ import java.util.Date;
  * Created by gregoire barret on 2/16/15.
  * For PlayBasisSdk project.
  */
-public class AuthAuntenticator {
+public class AuthAuthenticator {
     public static final String TAG = "AuthAuntenticator";
 
 
@@ -37,12 +37,23 @@ public class AuthAuntenticator {
     public Token token;
 
     /**
+     * Playbasis reference. 
+     */
+    private Playbasis playbasis;
+
+    /**
      * init context and secure shared pref. 
      * @param context
      */
-    public AuthAuntenticator(Context context) {
+    public AuthAuthenticator(Context context) {
         this.mContext = context;
         this.mPrefs = new PrivatePreferences(mContext);
+    }
+    
+    public AuthAuthenticator(Context context, Playbasis playbasis){
+        this(context);
+        this.playbasis = playbasis;
+        
     }
 
     /**
@@ -64,6 +75,11 @@ public class AuthAuntenticator {
         return token;
     }
 
+    /**
+     * Get auth token form local, and make the request if not available.
+     * @param playbasis
+     * @param listener
+     */
     public void getAuthToken(Playbasis playbasis, final OnResult<Token> listener){
         if(getToken()!=null){
             if(listener!=null)listener.onSuccess(token);
@@ -79,6 +95,19 @@ public class AuthAuntenticator {
                     if(listener!=null) listener.onError(error);
                 }
             });
+        }
+    }
+
+    /**
+     * Get auth token form local, and make the request if not available.
+     * @param listener
+     */
+    public void getAuthToken(final OnResult<Token> listener){
+        if(playbasis==null){
+            if(listener!=null) listener.onError(new HttpError(new NullPointerException("No reference to Playbasis " +
+                    "object")));
+        }else{
+            getAuthToken(playbasis, listener);
         }
     }
 

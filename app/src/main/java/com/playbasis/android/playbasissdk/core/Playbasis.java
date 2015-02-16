@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import com.playbasis.android.playbasissdk.api.AuthAuthenticator;
 import com.playbasis.android.playbasissdk.http.HttpManager;
 import com.playbasis.android.playbasissdk.http.toolbox.KeyStore;
 
@@ -23,6 +24,8 @@ public class Playbasis {
     private HttpManager mHttpManager;
     
     private String mServerUrl;
+    
+    private AuthAuthenticator authenticator;
 
     /**
      * This method return the Playbasis singleton. If call before the builder return null.
@@ -38,6 +41,7 @@ public class Playbasis {
         this.mKeyStore = playBasisContent.mKeyStore;
         this.mHttpManager = HttpManager.getInstance(mContext);
         this.mServerUrl = serverUrl;
+        this.authenticator = new AuthAuthenticator(mContext, this);
     }
 
     
@@ -60,6 +64,10 @@ public class Playbasis {
         return mServerUrl;
     }
 
+    public AuthAuthenticator getAuthenticator(){
+        return authenticator;
+    }
+    
     /**
      * Builder for Playbasis singleton
      */
