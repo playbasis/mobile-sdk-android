@@ -15,7 +15,7 @@ public class DateHelper {
     public static final String TAG = "DateHelper";
     
     @Nullable public static Date stringToDate(String date){
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.getDefault());
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ", Locale.getDefault());
         try {
             return format.parse(date);
         } catch (ParseException e) {
@@ -30,7 +30,7 @@ public class DateHelper {
     
     @Nullable public static String dateToString(Date date){
 
-        SimpleDateFormat  dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.getDefault());
+        SimpleDateFormat  dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ", Locale.getDefault());
         try {
             return dateFormat.format(date);
         } catch (NullPointerException ne){
