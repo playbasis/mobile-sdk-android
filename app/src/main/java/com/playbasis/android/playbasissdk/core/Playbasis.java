@@ -19,6 +19,7 @@ public class Playbasis {
 
     private Context mContext;
 
+    //TODO: merge KeyStore and Authenticator?
     private KeyStore mKeyStore;
 
     private HttpManager mHttpManager;

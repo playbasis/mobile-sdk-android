@@ -9,9 +9,11 @@ import android.view.MenuItem;
 import com.playbasis.android.playbasissdk.api.AuthApi;
 import com.playbasis.android.playbasissdk.api.AuthAuthenticator;
 import com.playbasis.android.playbasissdk.api.OnResult;
+import com.playbasis.android.playbasissdk.api.PlayerApi;
 import com.playbasis.android.playbasissdk.api.Token;
 import com.playbasis.android.playbasissdk.core.Playbasis;
 import com.playbasis.android.playbasissdk.http.HttpError;
+import com.playbasis.android.playbasissdk.model.Player;
 
 
 public class MainActivity extends Activity {
@@ -40,6 +42,20 @@ public class MainActivity extends Activity {
                 Log.d("main", "");
             }
         });
+
+        PlayerApi.getPlayerInfo(playbasis, "jontestuser", new OnResult<Player>() {
+            @Override
+            public void onSuccess(Player result) {
+                Log.d("main", "");
+                Log.d("main", "");
+            }
+
+            @Override
+            public void onError(HttpError error) {
+                Log.d("main", "");
+                Log.d("main", "");
+            }
+        } );
     }
 
 
