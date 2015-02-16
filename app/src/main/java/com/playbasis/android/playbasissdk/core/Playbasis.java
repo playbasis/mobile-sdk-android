@@ -85,7 +85,13 @@ public class Playbasis {
          * @return Playbasis singleton (can be access by Playbasis.getInstance())
          */
         public Playbasis build(){
-            instance = new Playbasis(mPlayBasisContent);
+            if(instance==null){
+                instance = new Playbasis(mPlayBasisContent);
+            }
+            else {
+                instance.mContext = mPlayBasisContent.mContext;
+                instance.mKeyStore = mPlayBasisContent.mKeyStore;
+            }
             return instance;
         }
 
