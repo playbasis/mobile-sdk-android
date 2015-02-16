@@ -21,6 +21,8 @@ public class Playbasis {
     private KeyStore mKeyStore;
 
     private HttpManager mHttpManager;
+    
+    private String mServerUrl;
 
     /**
      * This method return the Playbasis singleton. If call before the builder return null.
@@ -31,16 +33,31 @@ public class Playbasis {
         return instance;
     }
 
-    private Playbasis(PlayBasisContent playBasisContent) {
+    private Playbasis(PlayBasisContent playBasisContent, String serverUrl) {
         this.mContext = playBasisContent.mContext;
         this.mKeyStore = playBasisContent.mKeyStore;
         this.mHttpManager = HttpManager.getInstance(mContext);
+        this.mServerUrl = serverUrl;
     }
 
     
-    private static class PlayBasisContent{
-        private Context mContext;
-        private KeyStore mKeyStore = new KeyStore();
+
+
+
+    public Context getContext() {
+        return mContext;
+    }
+
+    public KeyStore getKeyStore() {
+        return mKeyStore;
+    }
+
+    public HttpManager getHttpManager() {
+        return mHttpManager;
+    }
+
+    public String getServerUrl() {
+        return mServerUrl;
     }
 
     /**
@@ -79,6 +96,11 @@ public class Playbasis {
             this.mPlayBasisContent.mKeyStore.setApiSecret(apiSecret);
             return this;
         }
+        
+        public Builder setServerUrl(@NonNull String serverUrl){
+            this.mPlayBasisContent.mServerUrl = serverUrl;
+            return this;
+        }
 
         /**
          * Create the Playbasis singleton
@@ -86,16 +108,20 @@ public class Playbasis {
          */
         public Playbasis build(){
             if(instance==null){
-                instance = new Playbasis(mPlayBasisContent);
+                instance = new Playbasis(mPlayBasisContent, mPlayBasisContent.mServerUrl);
             }
             else {
                 instance.mContext = mPlayBasisContent.mContext;
                 instance.mKeyStore = mPlayBasisContent.mKeyStore;
+                instance.mServerUrl = mPlayBasisContent.mServerUrl;
             }
             return instance;
         }
-
-        
+    }
+    private static class PlayBasisContent{
+        private Context mContext;
+        private KeyStore mKeyStore = new KeyStore();
+        private String mServerUrl;
     }
     
     

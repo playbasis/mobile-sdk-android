@@ -10,7 +10,8 @@ public class KeyStore {
     
     private String apiKey;
     private String apiSecret;
-
+    private String token;
+    
     public String getApiKey() {
         return apiKey;
     }
@@ -25,5 +26,13 @@ public class KeyStore {
 
     public void setApiSecret(String apiSecret) {
         this.apiSecret = apiSecret;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 }
