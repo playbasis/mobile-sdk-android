@@ -33,7 +33,8 @@ public class PlaybasisResponse {
         this.timestamp = jsonObject.getLong("timestamp");
         this.time = jsonObject.getString("time");
         this.version = jsonObject.getString("version");
-        this.response = jsonObject.getJSONObject("response");
+        if(jsonObject.get("response") instanceof JSONObject)
+            this.response = jsonObject.getJSONObject("response");
         
     }
 

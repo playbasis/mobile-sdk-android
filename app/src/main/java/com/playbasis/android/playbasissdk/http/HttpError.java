@@ -22,29 +22,46 @@ package com.playbasis.android.playbasissdk.http;
 @SuppressWarnings("serial")
 public class HttpError extends Exception {
     public final NetworkResponse networkResponse;
+    public final RequestError requestError;
     private long networkTimeMs;
 
     public HttpError() {
         networkResponse = null;
+        requestError = null;
     }
 
     public HttpError(NetworkResponse response) {
         networkResponse = response;
+        requestError = null;
     }
 
     public HttpError(String exceptionMessage) {
        super(exceptionMessage);
        networkResponse = null;
+        requestError = null;
     }
 
     public HttpError(String exceptionMessage, Throwable reason) {
         super(exceptionMessage, reason);
         networkResponse = null;
+        requestError = null;
     }
 
     public HttpError(Throwable cause) {
         super(cause);
         networkResponse = null;
+        requestError = null;
+    }
+    
+    public HttpError(RequestError response){
+        networkResponse = null;
+        requestError = response;
+    }
+    
+    public HttpError(PlaybasisResponse playbasisResponse){
+        networkResponse = null;
+        requestError = new RequestError(playbasisResponse);
+        
     }
 
     /* package */ void setNetworkTimeMs(long networkTimeMs) {

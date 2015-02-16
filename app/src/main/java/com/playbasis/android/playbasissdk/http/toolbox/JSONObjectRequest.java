@@ -1,6 +1,7 @@
 package com.playbasis.android.playbasissdk.http.toolbox;
 
 import com.playbasis.android.playbasissdk.http.AuthFailureError;
+import com.playbasis.android.playbasissdk.http.HttpError;
 import com.playbasis.android.playbasissdk.http.NetworkResponse;
 import com.playbasis.android.playbasissdk.http.ParseError;
 import com.playbasis.android.playbasissdk.http.PlaybasisResponse;
@@ -49,11 +50,11 @@ public class JSONObjectRequest  extends Request<JSONObject> {
             String jsonString =
                     new String(response.data, HttpHeaderParser.parseCharset(response.headers));
             PlaybasisResponse playbasisResponse = new PlaybasisResponse(new JSONObject(jsonString));
-/*            return Response.success(new JSONObject(jsonString),
-                    HttpHeaderParser.parseCacheHeaders(response));*/
-            if(playbasisResponse.success) return Response.success(playbasisResponse.response,
-                    HttpHeaderParser.parseCacheHeaders(response));
-            else return Response.error(new ParseError(new ServerError()));
+            if(playbasisResponse.success){
+                return Response.success(playbasisResponse.response, HttpHeaderParser.parseCacheHeaders(response));
+            } else {
+                return Response.error(new HttpError(playbasisResponse));
+            }
         } catch (UnsupportedEncodingException e) {
             return Response.error(new ParseError(e));
         } catch (JSONException je) {

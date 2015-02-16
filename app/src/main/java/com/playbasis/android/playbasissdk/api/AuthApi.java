@@ -26,9 +26,29 @@ import java.util.Map;
 public class AuthApi extends Api {
     public static final String TAG = "AthApi";
 
+    /**
+     * Request the token to the backend. 
+     * @param playbasis Playbasis object.
+     * @param listener OnResult listener.
+     */
     public static void auth(final Playbasis playbasis, final OnResult<Token> listener) {
-        HttpsTrustManager.allowAllSSL();
         String uri = playbasis.getServerUrl()+ "/Auth";
+        request(playbasis, uri, listener);
+    }
+
+
+    /**
+     * Request a new token to the backend.
+     * @param playbasis Playbasis object.
+     * @param listener OnResult listener.
+     */
+    public static void authRenew(final Playbasis playbasis, final OnResult<Token> listener){
+        String uri = playbasis.getServerUrl()+ "/Auth/renew";
+        request(playbasis, uri, listener);
+    }
+    
+    private static void request(final Playbasis playbasis, final String uri, final OnResult<Token> listener){
+        HttpsTrustManager.allowAllSSL();
         JSONObjectRequest jsonObjReq = new JSONObjectRequest(Request.Method.POST,
                 uri, null,
                 new Response.Listener<JSONObject>() {
@@ -63,10 +83,8 @@ public class AuthApi extends Api {
                 return params;
             }
         };
-
         // Adding request to request queue
         playbasis.getHttpManager().addToRequestQueue(jsonObjReq);
-
     }
 
 }
