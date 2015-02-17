@@ -2,6 +2,9 @@ package com.playbasis.android.playbasissdk.model;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.playbasis.android.playbasissdk.helper.DateHelper;
+
+import java.util.Date;
 
 
 /**
@@ -31,7 +34,6 @@ public class Player {
     @SerializedName("birth_date")
     @Expose
     private String birthDate;
-    //TODO: Generate getters and setters with Date objects.
     @Expose
     private String registered;
     @SerializedName("last_login")
@@ -254,6 +256,29 @@ public class Player {
     /**
      *
      * @return
+     * The registered
+     */
+    public Date getDateRegistered() {
+        return DateHelper.stringToDate(registered);
+    }
+
+    /**
+     *
+     * @param registered
+     * The registered
+     */
+    public void setRegistered(Date registered) {
+        this.registered = DateHelper.dateToString(registered);
+    }
+
+    public Player withRegistered(Date registered) {
+        this.registered = DateHelper.dateToString(registered);
+        return this;
+    }
+
+    /**
+     *
+     * @return
      * The lastLogin
      */
     public String getLastLogin() {
@@ -271,6 +296,52 @@ public class Player {
 
     public Player withLastLogin(String lastLogin) {
         this.lastLogin = lastLogin;
+        return this;
+    }
+
+    /**
+     *
+     * @return
+     * The lastLogin
+     */
+    public Date getDateLastLogin() {
+        return DateHelper.stringToDate(lastLogin);
+    }
+
+    /**
+     *
+     * @param lastLogin
+     * The last_login
+     */
+    public void setLastLogin(Date lastLogin) {
+        this.lastLogin = DateHelper.dateToString(lastLogin);
+    }
+
+    public Player withLastLogin(Date lastLogin) {
+        this.lastLogin = DateHelper.dateToString(lastLogin);
+        return this;
+    }
+
+    /**
+     *
+     * @return
+     * The lastLogout
+     */
+    public Date getDateLastLogout() {
+        return DateHelper.stringToDate(lastLogout);
+    }
+
+    /**
+     *
+     * @param lastLogout
+     * The last_logout
+     */
+    public void setLastLogout(Date lastLogout) {
+        this.lastLogout = DateHelper.dateToString(lastLogout);
+    }
+
+    public Player withLastLogout(Date lastLogout) {
+        this.lastLogout = DateHelper.dateToString(lastLogout);
         return this;
     }
 
