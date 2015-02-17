@@ -56,6 +56,21 @@ public class MainActivity extends Activity {
                 Log.d("main", "");
             }
         } );
+
+        PlayerApi.getPlayerPrivateInfo(playbasis, "jontestuser", new OnResult<Player>() {
+            @Override
+            public void onSuccess(Player result) {
+                Log.d("main", "");
+                Log.d("main", "");
+            }
+
+            @Override
+            public void onError(HttpError error) {
+                Log.d("main", "");
+                Log.d("main", "");
+            }
+        } );
+        
     }
 
 

@@ -17,6 +17,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -33,11 +34,10 @@ public abstract class Api {
                                  final OnResult<JSONObject>
             listener) {
         HttpsTrustManager.allowAllSSL();
-        
+
         //Add params to the request
         if(params==null) params = new ArrayList<>();
         params.add(new BasicNameValuePair("api_key", playbasis.getKeyStore().getApiKey()));
-        
 
         JSONObjectRequest jsonObjReq = new JSONObjectRequest(Request.Method.GET,
                 ParamsHelper.addParams(uri, params), null,
@@ -57,6 +57,46 @@ public abstract class Api {
                 if (listener != null) listener.onError(error);
             }
         });
+        // Adding request to request queue
+        playbasis.getHttpManager().addToRequestQueue(jsonObjReq);
+    }
+
+    protected static void JsonObjectPOST(final Playbasis playbasis, String uri, final List<NameValuePair> httpParams,
+                                        final OnResult<JSONObject>
+                                                listener) {
+        HttpsTrustManager.allowAllSSL();
+        final JSONObjectRequest jsonObjReq = new JSONObjectRequest(Request.Method.POST,
+                uri, null,
+                new Response.Listener<JSONObject>() {
+
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        PlayBasisLog.v(TAG, response.toString());
+                        if (listener != null) listener.onSuccess(response);
+                    }
+                }, new Response.ErrorListener() {
+
+
+            @Override
+            public void onErrorResponse(HttpError error) {
+                PlayBasisLog.e(TAG, "Error: " + error.getMessage());
+                if (listener != null) listener.onError(error);
+            }
+        }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+
+                Map<String, String> params = new Hashtable<>();
+                params.put("api_key", playbasis.getKeyStore().getApiKey());
+                params.put("token", playbasis.getAuthenticator().getAuthToken());
+                if(httpParams!=null){
+                    for (NameValuePair pair : httpParams){
+                        params.put(pair.getName(), pair.getValue());
+                    }
+                }
+                return params;
+            }
+        };
         // Adding request to request queue
         playbasis.getHttpManager().addToRequestQueue(jsonObjReq);
     }

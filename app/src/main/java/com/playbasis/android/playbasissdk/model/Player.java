@@ -18,11 +18,16 @@ public class Player {
     @Expose
     private String image;
     @Expose
+    private String email;
+    @Expose
     private String username;
     @Expose
     private Integer exp;
     @Expose
     private Integer level;
+    @Expose
+    @SerializedName("phone_number")
+    private String phoneNumber;
     @SerializedName("first_name")
     @Expose
     private String firstName;
@@ -66,6 +71,29 @@ public class Player {
 
     public Player withImage(String image) {
         this.image = image;
+        return this;
+    }
+
+    /**
+     *
+     * @return
+     * The email
+     */
+    public String getEmail() {
+        return email;
+    }
+
+    /**
+     *
+     * @param email
+     * The email
+     */
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public Player withEmail(String email) {
+        this.email = email;
         return this;
     }
 
@@ -135,6 +163,29 @@ public class Player {
 
     public Player withLevel(Integer level) {
         this.level = level;
+        return this;
+    }
+
+    /**
+     *
+     * @return
+     * The phoneNumber
+     */
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    /**
+     *
+     * @param phoneNumber
+     * The phoneNumber
+     */
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public Player withPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
         return this;
     }
 

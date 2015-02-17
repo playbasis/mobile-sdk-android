@@ -39,5 +39,27 @@ public class PlayerApi extends Api{
         });
         
     }
+
+    public static void getPlayerPrivateInfo(@NonNull Playbasis playbasis, @NonNull String playerId,
+                                      final OnResult<Player> listener){
+        String uri = playbasis.getServerUrl() + "/Player/" + playerId;
+        JsonObjectPOST(playbasis, uri, null, new OnResult<JSONObject>() {
+            @Override
+            public void onSuccess(JSONObject result) {
+                try {
+                    Player player = JsonHelper.FromJsonObject(result.getJSONObject("player"), Player.class);
+                    if(listener!=null)listener.onSuccess(player);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    if(listener!=null)listener.onError(new HttpError(e));
+                }
+            }
+            @Override
+            public void onError(HttpError error) {
+                if(listener!=null)listener.onError(error);
+            }
+        });
+
+    }
     
 }

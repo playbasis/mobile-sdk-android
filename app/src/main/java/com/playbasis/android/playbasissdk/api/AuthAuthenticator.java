@@ -58,7 +58,7 @@ public class AuthAuthenticator {
 
     /**
      *  Synchronously get the saved token. If no token already init, return null.
-     * @return token
+     * @return AuthToken
      */
     @Nullable public String getAuthToken() {
         //Try get token saved on shared preferences.
