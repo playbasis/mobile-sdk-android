@@ -19,30 +19,20 @@ import java.util.Map;
  * Created by gregoire barret on 2/16/15.
  * For PlayBasisSdk project.
  */
-public class JSONObjectRequest  extends Request<JSONObject> {
+public class JSONObjectRequest  extends JSONRequest<JSONObject> {
     public static final String TAG = "JSONObjectRequest";
 
-    private Response.Listener<JSONObject> listener;
-    private Map<String, String> params;
 
     public JSONObjectRequest(String url, Map<String, String> params,
                          Response.Listener<JSONObject> reponseListener, Response.ErrorListener errorListener) {
-        super(Request.Method.GET, url, errorListener);
-        this.listener = reponseListener;
-        this.params = params;
+        super(Method.POST, url, params, reponseListener ,errorListener);
     }
 
     public JSONObjectRequest(int method, String url, Map<String, String> params,
                          Response.Listener<JSONObject> reponseListener, Response.ErrorListener errorListener) {
-        super(method, url, errorListener);
-        this.listener = reponseListener;
-        this.params = params;
+        super(method, url, params, reponseListener ,errorListener);
     }
 
-    protected Map<String, String> getParams()
-            throws AuthFailureError {
-        return params;
-    };
 
     @Override
     protected Response<JSONObject> parseNetworkResponse(NetworkResponse response) {
@@ -63,8 +53,5 @@ public class JSONObjectRequest  extends Request<JSONObject> {
 
     }
 
-    @Override
-    protected void deliverResponse(JSONObject response) {
-        listener.onResponse(response);
-    }
+
 }

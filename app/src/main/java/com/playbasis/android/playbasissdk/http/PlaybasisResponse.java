@@ -1,5 +1,8 @@
 package com.playbasis.android.playbasissdk.http;
 
+import com.google.gson.JsonArray;
+
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -13,6 +16,17 @@ public class PlaybasisResponse {
     public PlaybasisResponse(JSONObject response, Boolean success, int errorCode, String message, long timestamp, 
                              String time, String version) {
         this.response = response;
+        this.success = success;
+        this.errorCode = errorCode;
+        this.message = message;
+        this.timestamp = timestamp;
+        this.time = time;
+        this.version = version;
+    }
+
+    public PlaybasisResponse(JSONArray response, Boolean success, int errorCode, String message, long timestamp,
+                             String time, String version) {
+        this.responseArray = response;
         this.success = success;
         this.errorCode = errorCode;
         this.message = message;
@@ -35,10 +49,13 @@ public class PlaybasisResponse {
         this.version = jsonObject.getString("version");
         if(jsonObject.get("response") instanceof JSONObject)
             this.response = jsonObject.getJSONObject("response");
-        
+        else if(jsonObject.get("response") instanceof JSONArray)
+            this.responseArray = jsonObject.getJSONArray("response");
     }
 
     public JSONObject response;
+
+    public JSONArray responseArray;
     
     public Boolean success;
     
