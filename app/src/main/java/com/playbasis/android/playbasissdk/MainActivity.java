@@ -33,84 +33,72 @@ public class MainActivity extends Activity {
         playbasis.getAuthenticator().getAuthToken(new OnResult<AuthToken>() {
             @Override
             public void onSuccess(AuthToken result) {
-                Log.d("main", "");
-                Log.d("main", "");
+                Log.d("main", result.getToken());
             }
 
             @Override
             public void onError(HttpError error) {
-                Log.d("main", "");
-                Log.d("main", "");
+                Log.d("main", error.toString());
             }
         });
 
         PlayerApi.getPlayerInfo(playbasis, "jontestuser", new OnResult<Player>() {
             @Override
             public void onSuccess(Player result) {
-                Log.d("main", "");
-                Log.d("main", "");
+                Log.d("main", result.toString());
             }
 
             @Override
             public void onError(HttpError error) {
-                Log.d("main", "");
-                Log.d("main", "");
+                Log.d("main", error.toString());
             }
         } );
 
         PlayerApi.getPlayerPrivateInfo(playbasis, "jontestuser", new OnResult<Player>() {
             @Override
             public void onSuccess(Player result) {
-                Log.d("main", "");
-                Log.d("main", "");
+                Log.d("main", result.toString());
             }
 
             @Override
             public void onError(HttpError error) {
-                Log.d("main", "");
-                Log.d("main", "");
+                Log.d("main", error.toString());
             }
         });
 
         PlayerApi.getListPlayerInfo(playbasis, Arrays.asList("jontestuser"), new OnResult<List<Player>>() {
             @Override
             public void onSuccess(List<Player> result) {
-                Log.d("main", "");
-                Log.d("main", "");
+                Log.d("main", result.toString());
             }
 
             @Override
             public void onError(HttpError error) {
-                Log.d("main", "");
-                Log.d("main", "");
+                Log.d("main", error.toString());
             }
         });
 
         PlayerApi.getDetailedPlayerListInfo(playbasis, "jontestuser", new OnResult<Player>() {
             @Override
             public void onSuccess(Player result) {
-                Log.d("main", "");
-                Log.d("main", "");
+                Log.d("main", result.toString());
             }
 
             @Override
             public void onError(HttpError error) {
-                Log.d("main", "");
-                Log.d("main", "");
+                Log.d("main", error.toString());
             }
         });
 
         PlayerApi.getDetailedPlayerPrivateInfo(playbasis, "jontestuser", new OnResult<Player>() {
             @Override
             public void onSuccess(Player result) {
-                Log.d("main", "");
-                Log.d("main", "");
+                Log.d("main", result.toString());
             }
 
             @Override
             public void onError(HttpError error) {
-                Log.d("main", "");
-                Log.d("main", "");
+                Log.d("main", error.toString());
             }
         });
         

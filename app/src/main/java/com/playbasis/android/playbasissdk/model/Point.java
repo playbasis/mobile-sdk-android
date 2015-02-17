@@ -69,4 +69,13 @@ public class Point {
         this.value = value;
     }
 
+
+    @Override
+    public String toString() {
+        return "Point{" +
+                "rewardId='" + rewardId + '\'' +
+                ", rewardName='" + rewardName + '\'' +
+                ", value=" + value +
+                '}';
+    }
 }

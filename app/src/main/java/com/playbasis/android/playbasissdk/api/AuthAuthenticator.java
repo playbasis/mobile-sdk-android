@@ -57,7 +57,7 @@ public class AuthAuthenticator {
     @Nullable public String getToken() {
         //Try get token saved on shared preferences.
         if(authToken ==null) { authToken = mPrefs.getToken(); }
-        return authToken == null ? null : authToken.getToken();
+        return authToken == null ? "" : authToken.getToken();
     }
 
     /**

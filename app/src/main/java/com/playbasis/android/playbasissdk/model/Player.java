@@ -548,5 +548,28 @@ public class Player {
         return this;
     }
 
-
+    @Override
+    public String toString() {
+        return "Player{" +
+                "image='" + image + '\'' +
+                ", email='" + email + '\'' +
+                ", username='" + username + '\'' +
+                ", exp=" + exp +
+                ", level=" + level +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", gender=" + gender +
+                ", birthDate='" + birthDate + '\'' +
+                ", registered='" + registered + '\'' +
+                ", percentOfLevel=" + percentOfLevel +
+                ", levelTitle='" + levelTitle + '\'' +
+                ", levelImage='" + levelImage + '\'' +
+                ", badges=" + badges +
+                ", points=" + points +
+                ", lastLogin='" + lastLogin + '\'' +
+                ", lastLogout='" + lastLogout + '\'' +
+                ", clPlayerId='" + clPlayerId + '\'' +
+                '}';
+    }
 }

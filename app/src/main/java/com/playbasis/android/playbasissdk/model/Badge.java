@@ -168,4 +168,18 @@ public class Badge {
         this.hint = hint;
     }
 
+
+    @Override
+    public String toString() {
+        return "Badge{" +
+                "badgeId='" + badgeId + '\'' +
+                ", redeemed=" + redeemed +
+                ", claimed=" + claimed +
+                ", image='" + image + '\'' +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", amount=" + amount +
+                ", hint='" + hint + '\'' +
+                '}';
+    }
 }
