@@ -1,7 +1,5 @@
 package com.playbasis.android.playbasissdk.api;
 
-import android.util.Log;
-
 import com.playbasis.android.playbasissdk.core.Playbasis;
 import com.playbasis.android.playbasissdk.http.AuthFailureError;
 import com.playbasis.android.playbasissdk.http.HttpError;
@@ -10,8 +8,6 @@ import com.playbasis.android.playbasissdk.http.PlayBasisLog;
 import com.playbasis.android.playbasissdk.http.Request;
 import com.playbasis.android.playbasissdk.http.Response;
 import com.playbasis.android.playbasissdk.http.toolbox.JSONObjectRequest;
-import com.playbasis.android.playbasissdk.http.toolbox.JsonObjectRequest;
-import com.playbasis.android.playbasissdk.http.toolbox.StringRequest;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -31,7 +27,7 @@ public class AuthApi extends Api {
      * @param playbasis Playbasis object.
      * @param listener OnResult listener.
      */
-    public static void auth(final Playbasis playbasis, final OnResult<Token> listener) {
+    public static void auth(final Playbasis playbasis, final OnResult<AuthToken> listener) {
         String uri = playbasis.getServerUrl()+ "/Auth";
         request(playbasis, uri, listener);
     }
@@ -42,12 +38,12 @@ public class AuthApi extends Api {
      * @param playbasis Playbasis object.
      * @param listener OnResult listener.
      */
-    public static void authRenew(final Playbasis playbasis, final OnResult<Token> listener){
+    public static void authRenew(final Playbasis playbasis, final OnResult<AuthToken> listener){
         String uri = playbasis.getServerUrl()+ "/Auth/renew";
         request(playbasis, uri, listener);
     }
     
-    private static void request(final Playbasis playbasis, final String uri, final OnResult<Token> listener){
+    private static void request(final Playbasis playbasis, final String uri, final OnResult<AuthToken> listener){
         HttpsTrustManager.allowAllSSL();
         JSONObjectRequest jsonObjReq = new JSONObjectRequest(Request.Method.POST,
                 uri, null,
@@ -57,8 +53,8 @@ public class AuthApi extends Api {
                     public void onResponse(JSONObject response) {
                         PlayBasisLog.v(TAG, response.toString());
                         try {
-                            Token token = new Token(response);
-                            if (listener != null) listener.onSuccess(token);
+                            AuthToken authToken = new AuthToken(response);
+                            if (listener != null) listener.onSuccess(authToken);
                         } catch (JSONException e) {
                             e.printStackTrace();
                             if (listener != null) listener.onError(new HttpError(e));

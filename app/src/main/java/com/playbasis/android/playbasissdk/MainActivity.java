@@ -6,14 +6,11 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.playbasis.android.playbasissdk.api.AuthApi;
-import com.playbasis.android.playbasissdk.api.AuthAuthenticator;
+import com.playbasis.android.playbasissdk.api.AuthToken;
 import com.playbasis.android.playbasissdk.api.OnResult;
 import com.playbasis.android.playbasissdk.api.PlayerApi;
-import com.playbasis.android.playbasissdk.api.Token;
 import com.playbasis.android.playbasissdk.core.Playbasis;
 import com.playbasis.android.playbasissdk.http.HttpError;
-import com.playbasis.android.playbasissdk.http.Response;
 import com.playbasis.android.playbasissdk.model.Player;
 
 import java.util.Arrays;
@@ -33,9 +30,9 @@ public class MainActivity extends Activity {
                 .setServerUrl("https://api.pbapp.net")
                 .build();
 
-        playbasis.getAuthenticator().getAuthToken(new OnResult<Token>() {
+        playbasis.getAuthenticator().getAuthToken(new OnResult<AuthToken>() {
             @Override
-            public void onSuccess(Token result) {
+            public void onSuccess(AuthToken result) {
                 Log.d("main", "");
                 Log.d("main", "");
             }
@@ -101,7 +98,7 @@ public class MainActivity extends Activity {
                 Log.d("main", "");
                 Log.d("main", "");
             }
-        } );
+        });
 
         PlayerApi.getDetailedPlayerPrivateInfo(playbasis, "jontestuser", new OnResult<Player>() {
             @Override

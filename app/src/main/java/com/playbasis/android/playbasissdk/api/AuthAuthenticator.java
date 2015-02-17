@@ -1,17 +1,11 @@
 package com.playbasis.android.playbasissdk.api;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.support.annotation.Nullable;
 
 import com.playbasis.android.playbasissdk.core.Playbasis;
-import com.playbasis.android.playbasissdk.http.AuthFailureError;
 import com.playbasis.android.playbasissdk.http.HttpError;
-import com.playbasis.android.playbasissdk.http.toolbox.Authenticator;
 import com.playbasis.android.playbasissdk.secure.PrivatePreferences;
-import com.playbasis.android.playbasissdk.secure.SecurePreferences;
-
-import java.util.Date;
 
 /**
  * Created by gregoire barret on 2/16/15.
@@ -34,7 +28,7 @@ public class AuthAuthenticator {
     /**
      * Token of the current session.
      * */
-    public Token token;
+    public AuthToken authToken;
 
     /**
      * Playbasis reference. 
@@ -60,19 +54,19 @@ public class AuthAuthenticator {
      *  Synchronously get the saved token. If no token already init, return null.
      * @return AuthToken
      */
-    @Nullable public String getAuthToken() {
+    @Nullable public String getToken() {
         //Try get token saved on shared preferences.
-        if(token==null) { token = mPrefs.getToken(); }
-        return token == null ? null : token.getToken();
+        if(authToken ==null) { authToken = mPrefs.getToken(); }
+        return authToken == null ? null : authToken.getToken();
     }
 
     /**
      * Get the token from shared pref and memory.
      * @return token
      */
-    public Token getToken(){
-        if(token==null) { token = mPrefs.getToken(); }
-        return token;
+    public AuthToken getAuthToken(){
+        if(authToken ==null) { authToken = mPrefs.getToken(); }
+        return authToken;
     }
 
     /**
@@ -80,14 +74,14 @@ public class AuthAuthenticator {
      * @param playbasis
      * @param listener
      */
-    public void getAuthToken(Playbasis playbasis, final OnResult<Token> listener){
-        if(getToken()!=null){
-            if(listener!=null)listener.onSuccess(token);
+    public void getAuthToken(Playbasis playbasis, final OnResult<AuthToken> listener){
+        if(getAuthToken()!=null){
+            if(listener!=null)listener.onSuccess(authToken);
         }else{
-            requestToken(playbasis, new OnResult<Token>() {
+            requestAuthToken(playbasis, new OnResult<AuthToken>() {
                 @Override
-                public void onSuccess(Token result) {
-                    if(listener!=null)listener.onSuccess(token);
+                public void onSuccess(AuthToken result) {
+                    if(listener!=null)listener.onSuccess(authToken);
                 }
 
                 @Override
@@ -102,7 +96,7 @@ public class AuthAuthenticator {
      * Get auth token form local, and make the request if not available.
      * @param listener
      */
-    public void getAuthToken(final OnResult<Token> listener){
+    public void getAuthToken(final OnResult<AuthToken> listener){
         if(playbasis==null){
             if(listener!=null) listener.onError(new HttpError(new NullPointerException("No reference to Playbasis " +
                     "object")));
@@ -113,18 +107,18 @@ public class AuthAuthenticator {
 
     /**
      * Save the token
-     * @param token
+     * @param authToken
      */
-    public void setAuthToken(Token token){
-        this.token = token;
-        mPrefs.saveToken(token);
+    public void setAuthToken(AuthToken authToken){
+        this.authToken = authToken;
+        mPrefs.saveToken(authToken);
     }
 
     /**
      * Clear the token. 
      */
     public void invalidateAuthToken() {
-        token = null;
+        authToken = null;
         mPrefs.clearToken();
     }
 
@@ -133,7 +127,7 @@ public class AuthAuthenticator {
      * @param playbasis
      * @param listener
      */
-    public static void RequestToken(final Playbasis playbasis, final OnResult<Token> listener){
+    public static void RequestAuthToken(final Playbasis playbasis, final OnResult<AuthToken> listener){
         AuthApi.auth(playbasis, listener);
     }
 
@@ -142,7 +136,7 @@ public class AuthAuthenticator {
      * @param playbasis
      * @param listener
      */
-    public static void RequestRenewToken(final Playbasis playbasis, final OnResult<Token> listener){
+    public static void RequestRenewAuthToken(final Playbasis playbasis, final OnResult<AuthToken> listener){
         AuthApi.authRenew(playbasis, listener);
     }
 
@@ -151,10 +145,10 @@ public class AuthAuthenticator {
      * @param playbasis
      * @param listener
      */
-    public void requestToken(final Playbasis playbasis, final OnResult<Token> listener){
-        AuthApi.auth(playbasis, new OnResult<Token>() {
+    public void requestAuthToken(final Playbasis playbasis, final OnResult<AuthToken> listener){
+        AuthApi.auth(playbasis, new OnResult<AuthToken>() {
             @Override
-            public void onSuccess(Token result) {
+            public void onSuccess(AuthToken result) {
                 setAuthToken(result);
                 if(listener!=null) listener.onSuccess(result);
             }
@@ -171,10 +165,10 @@ public class AuthAuthenticator {
      * @param playbasis
      * @param listener
      */
-    public void requestRenewToken(final Playbasis playbasis, final OnResult<Token> listener){
-        AuthApi.authRenew(playbasis, new OnResult<Token>() {
+    public void requestRenewAuthToken(final Playbasis playbasis, final OnResult<AuthToken> listener){
+        AuthApi.authRenew(playbasis, new OnResult<AuthToken>() {
             @Override
-            public void onSuccess(Token result) {
+            public void onSuccess(AuthToken result) {
                 setAuthToken(result);
                 if(listener!=null) listener.onSuccess(result);
             }

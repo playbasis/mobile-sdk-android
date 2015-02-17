@@ -88,7 +88,7 @@ public abstract class Api {
 
                 Map<String, String> params = new Hashtable<>();
                 params.put("api_key", playbasis.getKeyStore().getApiKey());
-                params.put("token", playbasis.getAuthenticator().getAuthToken());
+                params.put("token", playbasis.getAuthenticator().getToken());
                 if(httpParams!=null){
                     for (NameValuePair pair : httpParams){
                         params.put(pair.getName(), pair.getValue());

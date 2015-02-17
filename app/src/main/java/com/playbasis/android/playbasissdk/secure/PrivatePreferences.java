@@ -2,7 +2,7 @@ package com.playbasis.android.playbasissdk.secure;
 
 import android.content.Context;
 
-import com.playbasis.android.playbasissdk.api.Token;
+import com.playbasis.android.playbasissdk.api.AuthToken;
 
 import java.util.Date;
 
@@ -31,27 +31,27 @@ public class PrivatePreferences {
         mSecurePrefs = new SecurePreferences(context);
     }
     
-    public Token getToken(){
+    public AuthToken getToken(){
         String sharedToken = mSecurePrefs.getString(PREF_TOKEN, null);
         Date sharedDate = new Date(mSecurePrefs.getLong(PREF_EXP_DATE, 0l));
         // if no date saved before
         if(sharedToken==null || sharedDate.equals(new Date(0l))){
             return null;
         }else{
-            return new Token(sharedToken, sharedDate);
+            return new AuthToken(sharedToken, sharedDate);
         }
     }
     
-    public void saveToken(Token token){
-        if(token==null)return;
+    public void saveToken(AuthToken authToken){
+        if(authToken ==null)return;
         
         mSecurePrefs.edit()
-                .putString(PREF_TOKEN, token.getToken())
+                .putString(PREF_TOKEN, authToken.getToken())
                 .commit();
         
-        if(token.getDateExpire()!=null)
+        if(authToken.getDateExpire()!=null)
             mSecurePrefs.edit()
-                    .putLong(PREF_EXP_DATE, token.getDateExpire().getTime())
+                    .putLong(PREF_EXP_DATE, authToken.getDateExpire().getTime())
                     .commit();
     }
     
