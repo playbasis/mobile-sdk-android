@@ -1,5 +1,8 @@
 package com.playbasis.android.playbasissdk.helper;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 /**
  * Created by gregoire barret on 2/13/15.
  * For PlayBasisSdk project.
@@ -14,6 +17,23 @@ public class Validator {
      */
     public static Boolean isValid(String s){
         return s != null && !s.trim().equals("") && !s.trim().equals("null");
-        
     }
+    public static Boolean isValid(Object o){
+        return o != null;
+    }
+
+    public static Boolean isValidAlphaNum(String s){
+       return isValid(s) && s.matches("[A-Za-z0-9_-]+");
+    }
+    
+    public static Boolean isValidEmail(String email){
+        if(!isValid(email))return false;
+        Pattern pattern;
+        Matcher matcher;
+        final String EMAIL_PATTERN = "[_A-Za-z0-9-.]+@[A-Za-z0-9_-]+[.][A-Za-z0-9.]+";
+        pattern = Pattern.compile(EMAIL_PATTERN);
+        matcher = pattern.matcher(email);
+        return matcher.matches();
+    }
+
 }

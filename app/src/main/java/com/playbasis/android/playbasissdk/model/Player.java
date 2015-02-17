@@ -2,7 +2,13 @@ package com.playbasis.android.playbasissdk.model;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.playbasis.android.playbasissdk.core.SDKUtil;
 import com.playbasis.android.playbasissdk.helper.DateHelper;
+import com.playbasis.android.playbasissdk.helper.Validator;
+import com.playbasis.android.playbasissdk.http.toolbox.HttpModel;
+
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -13,7 +19,7 @@ import java.util.List;
  * Created by gregoire barret on 2/16/15.
  * For PlayBasisSdk project.
  */
-public class Player {
+public class Player implements HttpModel{
     public static final String TAG = "Player";
 
 
@@ -37,7 +43,7 @@ public class Player {
     @Expose
     private String lastName;
     @Expose
-    private Integer gender;
+    private Gender gender;
     @SerializedName("birth_date")
     @Expose
     private String birthDate;
@@ -65,6 +71,30 @@ public class Player {
     @SerializedName("cl_player_id")
     @Expose
     private String clPlayerId;
+    @SerializedName("facebook_id")
+    @Expose
+    protected String facebookId;
+    @SerializedName("twitter_id")
+    @Expose
+    protected String twitterId;
+    @Expose
+    protected String password;
+
+
+    public Player() {
+    }
+
+    /**
+     * Constructor with requires attributes.
+     * @param email Require.
+     * @param username Require.
+     * @param clPlayerId Require.
+     */
+    public Player(String email, String username, String clPlayerId) {
+        this.email = email;
+        this.username = username;
+        this.clPlayerId = clPlayerId;
+    }
 
     /**
      *
@@ -72,6 +102,7 @@ public class Player {
      * The image
      */
     public String getImage() {
+        if(!Validator.isValid(image))return SDKUtil.DEFAULT_IMAGE_URL;
         return image;
     }
 
@@ -255,7 +286,7 @@ public class Player {
      * @return
      * The gender
      */
-    public Integer getGender() {
+    public Gender getGender() {
         return gender;
     }
 
@@ -264,11 +295,11 @@ public class Player {
      * @param gender
      * The gender
      */
-    public void setGender(Integer gender) {
+    public void setGender(Gender gender) {
         this.gender = gender;
     }
 
-    public Player withGender(Integer gender) {
+    public Player withGender(Gender gender) {
         this.gender = gender;
         return this;
     }
@@ -548,6 +579,78 @@ public class Player {
         return this;
     }
 
+
+    /**
+     *
+     * @return
+     * The facebook id
+     */
+    public String getFacebookId() {
+        return facebookId;
+    }
+
+    /**
+     *
+     * @param facebookId
+     * The facebook id
+     */
+    public void setFacebookId(String facebookId) {
+        this.facebookId = facebookId;
+    }
+
+    public Player withFacebookId(String facebookId) {
+        this.facebookId = facebookId;
+        return this;
+    }
+
+
+    /**
+     *
+     * @return
+     * The twitterId
+     */
+    public String getTwitterId() {
+        return twitterId;
+    }
+
+    /**
+     *
+     * @param twitterId
+     * The twitterId
+     */
+    public void setTwitterId(String twitterId) {
+        this.twitterId = twitterId;
+    }
+
+    public Player withTwitterId(String twitterId) {
+        this.twitterId = twitterId;
+        return this;
+    }
+
+
+    /**
+     *
+     * @return
+     * The password
+     */
+    public String getPassword() {
+        return password;
+    }
+
+    /**
+     *
+     * @param password
+     * The password
+     */
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public Player withPassword(String password) {
+        this.password = password;
+        return this;
+    }
+
     @Override
     public String toString() {
         return "Player{" +
@@ -572,4 +675,30 @@ public class Player {
                 ", clPlayerId='" + clPlayerId + '\'' +
                 '}';
     }
+
+    @Override
+    public Boolean isValid(){
+        return Validator.isValidAlphaNum(clPlayerId) && Validator.isValid(username) &&  Validator.isValidEmail(email);
+    }
+
+    @Override
+    public List<NameValuePair> toParams() {
+        List<NameValuePair> params = new ArrayList<>();
+        params.add(new BasicNameValuePair("id", clPlayerId));
+        params.add(new BasicNameValuePair("username", username));
+        params.add(new BasicNameValuePair("email", email));
+        params.add(new BasicNameValuePair("image", getImage()));
+        if(Validator.isValid(phoneNumber))  params.add(new BasicNameValuePair("phone_number", phoneNumber));
+        if(Validator.isValid(facebookId))   params.add(new BasicNameValuePair("facebook_id", facebookId));
+        if(Validator.isValid(twitterId))    params.add(new BasicNameValuePair("twitter_id", twitterId));
+        if(Validator.isValid(password))     params.add(new BasicNameValuePair("password", password));
+        if(Validator.isValid(firstName))    params.add(new BasicNameValuePair("first_name", firstName));
+        if(Validator.isValid(lastName))     params.add(new BasicNameValuePair("last_name", lastName));
+        if(Validator.isValid(gender))       params.add(new BasicNameValuePair("gender", String.valueOf(gender.getGender())));
+        if(Validator.isValid(birthDate))    params.add(new BasicNameValuePair("birth_date", birthDate));
+        
+        return params;
+    }
+
+
 }

@@ -6,6 +6,8 @@ import com.playbasis.android.playbasissdk.core.Playbasis;
 import com.playbasis.android.playbasissdk.helper.JsonHelper;
 import com.playbasis.android.playbasissdk.helper.StringHelper;
 import com.playbasis.android.playbasissdk.http.HttpError;
+import com.playbasis.android.playbasissdk.http.PlaybasisResponse;
+import com.playbasis.android.playbasissdk.http.RequestError;
 import com.playbasis.android.playbasissdk.model.Player;
 
 import org.apache.http.NameValuePair;
@@ -153,6 +155,29 @@ public class PlayerApi extends Api{
                 if(listener!=null)listener.onError(error);
             }
         });
+    }
+    
+    public static void register(@NonNull Playbasis playbasis, @NonNull Player player,
+                                final OnResult<String> listener){
+        if(!player.isValid()){
+            if(listener!=null)listener.onError(new HttpError(
+                    new RequestError("player not valid", RequestError.ERROR_CODE.DEFAULT)));
+            return;
+        }
+        
+        String uri = playbasis.getServerUrl() + "/Player/" + player.getClPlayerId() + "/register";
+
+        JsonObjectPOST(playbasis, uri, player.toParams(), new OnResult<JSONObject>() {
+            @Override
+            public void onSuccess(JSONObject result) {
+                    if(listener!=null)listener.onSuccess("");
+            }
+            @Override
+            public void onError(HttpError error) {
+                if(listener!=null)listener.onError(error);
+            }
+        });
+
     }
     
 

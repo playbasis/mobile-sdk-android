@@ -10,7 +10,9 @@ import com.playbasis.android.playbasissdk.api.AuthToken;
 import com.playbasis.android.playbasissdk.api.OnResult;
 import com.playbasis.android.playbasissdk.api.PlayerApi;
 import com.playbasis.android.playbasissdk.core.Playbasis;
+import com.playbasis.android.playbasissdk.helper.Validator;
 import com.playbasis.android.playbasissdk.http.HttpError;
+import com.playbasis.android.playbasissdk.model.Gender;
 import com.playbasis.android.playbasissdk.model.Player;
 
 import java.util.Arrays;
@@ -101,6 +103,22 @@ public class MainActivity extends Activity {
                 Log.d("main", error.toString());
             }
         });
+        
+        Player player = new Player("greg@smartsoftasia.com", "greg", "greg").withGender(Gender.MALE).withPassword
+                ("password");
+        PlayerApi.register(playbasis, player, new OnResult<String>() {
+            @Override
+            public void onSuccess(String result) {
+                Log.d("main", result);
+            }
+
+            @Override
+            public void onError(HttpError error) {
+                Log.d("main", error.toString());
+            }
+        });
+
+
         
     }
 
