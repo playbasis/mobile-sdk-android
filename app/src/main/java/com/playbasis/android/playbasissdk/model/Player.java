@@ -4,7 +4,9 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.playbasis.android.playbasissdk.helper.DateHelper;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 
 /**
@@ -41,6 +43,19 @@ public class Player {
     private String birthDate;
     @Expose
     private String registered;
+    @SerializedName("percent_of_level")
+    @Expose
+    private Float percentOfLevel;
+    @SerializedName("level_title")
+    @Expose
+    private String levelTitle;
+    @SerializedName("level_image")
+    @Expose
+    private String levelImage;
+    @Expose
+    private List<Badge> badges = new ArrayList<>();
+    @Expose
+    private List<Point> points = new ArrayList<>();
     @SerializedName("last_login")
     @Expose
     private String lastLogin;
@@ -325,6 +340,97 @@ public class Player {
     public Player withRegistered(Date registered) {
         this.registered = DateHelper.dateToString(registered);
         return this;
+    }
+
+
+    /**
+     *
+     * @return
+     *     The percentOfLevel
+     */
+    public Float getPercentOfLevel() {
+        return percentOfLevel;
+    }
+
+    /**
+     *
+     * @param percentOfLevel
+     *     The percent_of_level
+     */
+    public void setPercentOfLevel(Float percentOfLevel) {
+        this.percentOfLevel = percentOfLevel;
+    }
+
+    /**
+     *
+     * @return
+     *     The levelTitle
+     */
+    public String getLevelTitle() {
+        return levelTitle;
+    }
+
+    /**
+     *
+     * @param levelTitle
+     *     The level_title
+     */
+    public void setLevelTitle(String levelTitle) {
+        this.levelTitle = levelTitle;
+    }
+
+    /**
+     *
+     * @return
+     *     The levelImage
+     */
+    public String getLevelImage() {
+        return levelImage;
+    }
+
+    /**
+     *
+     * @param levelImage
+     *     The level_image
+     */
+    public void setLevelImage(String levelImage) {
+        this.levelImage = levelImage;
+    }
+
+    /**
+     *
+     * @return
+     *     The badges
+     */
+    public List<Badge> getBadges() {
+        return badges;
+    }
+
+    /**
+     *
+     * @param badges
+     *     The badges
+     */
+    public void setBadges(List<Badge> badges) {
+        this.badges = badges;
+    }
+
+    /**
+     *
+     * @return
+     *     The points
+     */
+    public List<Point> getPoints() {
+        return points;
+    }
+
+    /**
+     *
+     * @param points
+     *     The points
+     */
+    public void setPoints(List<Point> points) {
+        this.points = points;
     }
 
     /**

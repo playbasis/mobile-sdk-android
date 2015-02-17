@@ -23,17 +23,6 @@ public class PlaybasisResponse {
         this.time = time;
         this.version = version;
     }
-
-    public PlaybasisResponse(JSONArray response, Boolean success, int errorCode, String message, long timestamp,
-                             String time, String version) {
-        this.responseArray = response;
-        this.success = success;
-        this.errorCode = errorCode;
-        this.message = message;
-        this.timestamp = timestamp;
-        this.time = time;
-        this.version = version;
-    }
     
     public PlaybasisResponse (JSONObject jsonObject) throws JSONException {
         toObject(jsonObject);
@@ -49,14 +38,11 @@ public class PlaybasisResponse {
         this.version = jsonObject.getString("version");
         if(jsonObject.get("response") instanceof JSONObject)
             this.response = jsonObject.getJSONObject("response");
-        else if(jsonObject.get("response") instanceof JSONArray)
-            this.responseArray = jsonObject.getJSONArray("response");
     }
 
     public JSONObject response;
 
-    public JSONArray responseArray;
-    
+
     public Boolean success;
     
     public int errorCode;

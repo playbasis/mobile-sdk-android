@@ -13,7 +13,11 @@ import com.playbasis.android.playbasissdk.api.PlayerApi;
 import com.playbasis.android.playbasissdk.api.Token;
 import com.playbasis.android.playbasissdk.core.Playbasis;
 import com.playbasis.android.playbasissdk.http.HttpError;
+import com.playbasis.android.playbasissdk.http.Response;
 import com.playbasis.android.playbasissdk.model.Player;
+
+import java.util.Arrays;
+import java.util.List;
 
 
 public class MainActivity extends Activity {
@@ -69,7 +73,49 @@ public class MainActivity extends Activity {
                 Log.d("main", "");
                 Log.d("main", "");
             }
+        });
+
+        PlayerApi.getListPlayerInfo(playbasis, Arrays.asList("jontestuser"), new OnResult<List<Player>>() {
+            @Override
+            public void onSuccess(List<Player> result) {
+                Log.d("main", "");
+                Log.d("main", "");
+            }
+
+            @Override
+            public void onError(HttpError error) {
+                Log.d("main", "");
+                Log.d("main", "");
+            }
+        });
+
+        PlayerApi.getDetailedPlayerListInfo(playbasis, "jontestuser", new OnResult<Player>() {
+            @Override
+            public void onSuccess(Player result) {
+                Log.d("main", "");
+                Log.d("main", "");
+            }
+
+            @Override
+            public void onError(HttpError error) {
+                Log.d("main", "");
+                Log.d("main", "");
+            }
         } );
+
+        PlayerApi.getDetailedPlayerPrivateInfo(playbasis, "jontestuser", new OnResult<Player>() {
+            @Override
+            public void onSuccess(Player result) {
+                Log.d("main", "");
+                Log.d("main", "");
+            }
+
+            @Override
+            public void onError(HttpError error) {
+                Log.d("main", "");
+                Log.d("main", "");
+            }
+        });
         
     }
 
