@@ -14,6 +14,7 @@ import com.playbasis.android.playbasissdk.model.Badge;
 import com.playbasis.android.playbasissdk.model.Level;
 import com.playbasis.android.playbasissdk.model.Player;
 import com.playbasis.android.playbasissdk.model.Point;
+import com.playbasis.android.playbasissdk.model.Quest;
 import com.playbasis.android.playbasissdk.model.Rank;
 
 import org.apache.http.NameValuePair;
@@ -449,7 +450,7 @@ public class PlayerApi extends Api{
     }
     
     //TODO: Rank
-     public static void ranks(@NonNull Playbasis playbasis){
+     public static void rank(@NonNull Playbasis playbasis){
          
          
      }
@@ -482,14 +483,58 @@ public class PlayerApi extends Api{
     }
     
     //TODO: quest of player
-    public static void quest(@NonNull Playbasis playbasis){
+    public static void quest(@NonNull Playbasis playbasis, @NonNull String playerId, @NonNull String questId,
+                             final OnResult<Quest> listener){
+        String uri = playbasis.getServerUrl() + SDKUtil._PLAYER_URL + "quest/" + questId;
+        
+        List<NameValuePair> params = new ArrayList<>();
+        params.add(new BasicNameValuePair("player_id", playerId));
 
+        JsonObjectGET(playbasis, uri, params, new OnResult<JSONObject>() {
+            @Override
+            public void onSuccess(JSONObject result) {
+                try {
+                    Quest quest = JsonHelper.FromJsonObject(result.getJSONObject("quest"), Quest.class);
+                    if (listener != null) listener.onSuccess(quest);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    if (listener != null) listener.onError(new HttpError(e));
+                }
+            }
+
+            @Override
+            public void onError(HttpError error) {
+                if (listener != null) listener.onError(error);
+            }
+        });
 
     }
     
     //TODO: List of quests of player
-    public static void quests(@NonNull Playbasis playbasis){
+    public static void quests(@NonNull Playbasis playbasis, @NonNull String playerId,
+                              final OnResult<List<Quest>> listener){
+        String uri = playbasis.getServerUrl() + SDKUtil._PLAYER_URL + "quest";
 
+        List<NameValuePair> params = new ArrayList<>();
+        params.add(new BasicNameValuePair("player_id", playerId));
+
+        JsonObjectGET(playbasis, uri, params, new OnResult<JSONObject>() {
+            @Override
+            public void onSuccess(JSONObject result) {
+                try {
+                    List<Quest> quests = JsonHelper.FromJsonArray(result.getJSONArray("quests"), Quest.class);
+                    if (listener != null) listener.onSuccess(quests);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    if (listener != null) listener.onError(new HttpError(e));
+                }
+            }
+
+            @Override
+            public void onError(HttpError error) {
+                if (listener != null) listener.onError(error);
+            }
+        });
 
     }
     

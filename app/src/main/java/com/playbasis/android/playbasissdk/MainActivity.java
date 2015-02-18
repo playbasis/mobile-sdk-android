@@ -15,6 +15,7 @@ import com.playbasis.android.playbasissdk.http.HttpError;
 import com.playbasis.android.playbasissdk.model.Badge;
 import com.playbasis.android.playbasissdk.model.Gender;
 import com.playbasis.android.playbasissdk.model.Player;
+import com.playbasis.android.playbasissdk.model.Quest;
 import com.playbasis.android.playbasissdk.model.Rank;
 
 import java.util.Arrays;
@@ -106,7 +107,7 @@ public class MainActivity extends Activity {
             }
         });
         
-        Player player = new Player("greg@smartsoftasia.com", "greg", "greg").withGender(Gender.MALE).withPassword
+/*        Player player = new Player("greg@smartsoftasia.com", "greg", "greg").withGender(Gender.MALE).withPassword
                 ("password");
         PlayerApi.register(playbasis, player, new OnResult<String>() {
             @Override
@@ -118,7 +119,7 @@ public class MainActivity extends Activity {
             public void onError(HttpError error) {
                 Log.d("main", error.toString());
             }
-        });
+        });*/
 
         PlayerApi.badges(playbasis, "jontestuser", new OnResult<List<Badge>>() {
             @Override
@@ -144,7 +145,30 @@ public class MainActivity extends Activity {
             }
         });
 
+        PlayerApi.quest(playbasis, "jontestuser", "54c0ad73be120b42388b47f7", new OnResult<Quest>() {
+            @Override
+            public void onSuccess(Quest result) {
+                Log.d("main", result.toString());
+            }
 
+            @Override
+            public void onError(HttpError error) {
+                Log.d("main", error.toString());
+            }
+        } );
+
+        PlayerApi.quests(playbasis, "jontestuser", new OnResult<List<Quest>>() {
+            @Override
+            public void onSuccess(List<Quest> result) {
+                Log.d("main", result.toString());
+            }
+
+            @Override
+            public void onError(HttpError error) {
+                Log.d("main", error.toString());
+            }
+        } );
+        
     }
 
 
