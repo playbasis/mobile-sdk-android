@@ -12,6 +12,7 @@ import com.playbasis.android.playbasissdk.api.PlayerApi;
 import com.playbasis.android.playbasissdk.core.Playbasis;
 import com.playbasis.android.playbasissdk.helper.Validator;
 import com.playbasis.android.playbasissdk.http.HttpError;
+import com.playbasis.android.playbasissdk.model.Badge;
 import com.playbasis.android.playbasissdk.model.Gender;
 import com.playbasis.android.playbasissdk.model.Player;
 
@@ -118,8 +119,19 @@ public class MainActivity extends Activity {
             }
         });
 
+        PlayerApi.badges(playbasis, "jontestuser", new OnResult<List<Badge>>() {
+            @Override
+            public void onSuccess(List<Badge> result) {
+                Log.d("main", result.toString());
+            }
 
-        
+            @Override
+            public void onError(HttpError error) {
+                Log.d("main", error.toString());
+            }
+        });
+
+
     }
 
 

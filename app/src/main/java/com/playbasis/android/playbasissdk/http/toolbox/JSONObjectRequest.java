@@ -41,7 +41,7 @@ public class JSONObjectRequest  extends JSONRequest<JSONObject> {
                     new String(response.data, HttpHeaderParser.parseCharset(response.headers));
             PlaybasisResponse playbasisResponse = new PlaybasisResponse(new JSONObject(jsonString));
             if(playbasisResponse.success){
-                return Response.success(playbasisResponse.response, HttpHeaderParser.parseCacheHeaders(response));
+                return Response.success((JSONObject)playbasisResponse.response, HttpHeaderParser.parseCacheHeaders(response));
             } else {
                 return Response.error(new HttpError(playbasisResponse));
             }

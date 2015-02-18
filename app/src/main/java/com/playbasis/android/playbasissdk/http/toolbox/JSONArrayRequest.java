@@ -38,8 +38,12 @@ public class JSONArrayRequest extends JSONRequest<JSONArray> {
         try {
             String jsonString =
                     new String(response.data, HttpHeaderParser.parseCharset(response.headers));
-            return Response.success(new JSONArray(jsonString),
-                    HttpHeaderParser.parseCacheHeaders(response));
+            PlaybasisResponse playbasisResponse = new PlaybasisResponse(new JSONObject(jsonString));
+            if(playbasisResponse.success){
+                return Response.success((JSONArray)playbasisResponse.response, HttpHeaderParser.parseCacheHeaders(response));
+            } else {
+                return Response.error(new HttpError(playbasisResponse));
+            }
         } catch (UnsupportedEncodingException e) {
             return Response.error(new ParseError(e));
         } catch (JSONException je) {

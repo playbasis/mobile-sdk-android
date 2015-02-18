@@ -7,11 +7,13 @@ import com.playbasis.android.playbasissdk.http.HttpsTrustManager;
 import com.playbasis.android.playbasissdk.http.PlayBasisLog;
 import com.playbasis.android.playbasissdk.http.Request;
 import com.playbasis.android.playbasissdk.http.Response;
+import com.playbasis.android.playbasissdk.http.toolbox.JSONArrayRequest;
 import com.playbasis.android.playbasissdk.http.toolbox.JSONObjectRequest;
 import com.playbasis.android.playbasissdk.http.toolbox.ParamsHelper;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -97,6 +99,37 @@ public abstract class Api {
                 return params;
             }
         };
+        // Adding request to request queue
+        playbasis.getHttpManager().addToRequestQueue(jsonObjReq);
+    }
+
+    protected static void JsonArrayGET(final Playbasis playbasis, String uri, List<NameValuePair> params,
+                                         final OnResult<JSONArray>
+                                                 listener) {
+        HttpsTrustManager.allowAllSSL();
+
+        //Add params to the request
+        if(params==null) params = new ArrayList<>();
+        params.add(new BasicNameValuePair("api_key", playbasis.getKeyStore().getApiKey()));
+
+        final JSONArrayRequest jsonObjReq = new JSONArrayRequest(Request.Method.GET,
+                ParamsHelper.addParams(uri, params), null,
+                new Response.Listener<JSONArray>() {
+
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        PlayBasisLog.v(TAG, response.toString());
+                        if (listener != null) listener.onSuccess(response);
+                    }
+                }, new Response.ErrorListener() {
+
+
+            @Override
+            public void onErrorResponse(HttpError error) {
+                PlayBasisLog.e(TAG, "Error: " + error.getMessage());
+                if (listener != null) listener.onError(error);
+            }
+        });
         // Adding request to request queue
         playbasis.getHttpManager().addToRequestQueue(jsonObjReq);
     }

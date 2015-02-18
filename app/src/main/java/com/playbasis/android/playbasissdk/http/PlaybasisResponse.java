@@ -13,7 +13,7 @@ import org.json.JSONObject;
 public class PlaybasisResponse {
     public static final String TAG = "PlaybasisResponse";
 
-    public PlaybasisResponse(JSONObject response, Boolean success, int errorCode, String message, long timestamp, 
+    public PlaybasisResponse(Object response, Boolean success, int errorCode, String message, long timestamp,
                              String time, String version) {
         this.response = response;
         this.success = success;
@@ -38,9 +38,11 @@ public class PlaybasisResponse {
         this.version = jsonObject.getString("version");
         if(jsonObject.get("response") instanceof JSONObject)
             this.response = jsonObject.getJSONObject("response");
+        if(jsonObject.get("response") instanceof JSONArray)
+            this.response = jsonObject.getJSONArray("response");
     }
 
-    public JSONObject response;
+    public Object response;
 
 
     public Boolean success;
