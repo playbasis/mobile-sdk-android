@@ -195,7 +195,7 @@ public class MainActivity extends Activity {
             }
         } );
 
-        GoodsApi.listInfo(playbasis, true, new OnResult<List<Goods>>() {
+        GoodsApi.listInfo(playbasis,  new OnResult<List<Goods>>() {
             @Override
             public void onSuccess(List<Goods> result) {
                 Log.d("main", result.toString());
@@ -207,7 +207,7 @@ public class MainActivity extends Activity {
             }
         });
         
-        GoodsApi.info(playbasis, true, "54c0b24cbe120b9b388b45c5", new OnResult<Goods>() {
+        GoodsApi.info(playbasis,  "54c0b24cbe120b9b388b45c5", new OnResult<Goods>() {
             @Override
             public void onSuccess(Goods result) {
                 Log.d("main", result.toString());

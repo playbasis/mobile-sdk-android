@@ -152,7 +152,7 @@ public class PlayerApi extends Api{
      * @param playersId List of players id.
      * @param listener Callback interface.
      */
-    public static void getListPlayerInfo(@NonNull Playbasis playbasis, Boolean isAsync, Collection<String> playersId,
+    public static void getListPlayerInfo(@NonNull Playbasis playbasis, Collection<String> playersId,
                                             final OnResult<List<Player>> listener){
         String uri = SDKUtil.getServerUrl(false) + SDKUtil._PLAYER_URL +"list";
         
