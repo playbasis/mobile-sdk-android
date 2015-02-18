@@ -1,6 +1,7 @@
 package com.playbasis.android.playbasissdk.api;
 
 import com.playbasis.android.playbasissdk.core.Playbasis;
+import com.playbasis.android.playbasissdk.core.SDKUtil;
 import com.playbasis.android.playbasissdk.http.AuthFailureError;
 import com.playbasis.android.playbasissdk.http.HttpError;
 import com.playbasis.android.playbasissdk.http.HttpsTrustManager;
@@ -28,7 +29,7 @@ public class AuthApi extends Api {
      * @param listener OnResult listener.
      */
     public static void auth(final Playbasis playbasis, final OnResult<AuthToken> listener) {
-        String uri = playbasis.getServerUrl()+ "/Auth";
+        String uri = SDKUtil.getServerUrl(false)+ "/Auth";
         request(playbasis, uri, listener);
     }
 
@@ -39,7 +40,7 @@ public class AuthApi extends Api {
      * @param listener OnResult listener.
      */
     public static void authRenew(final Playbasis playbasis, final OnResult<AuthToken> listener){
-        String uri = playbasis.getServerUrl()+ "/Auth/renew";
+        String uri = SDKUtil.getServerUrl(false)+ "/Auth/renew";
         request(playbasis, uri, listener);
     }
     

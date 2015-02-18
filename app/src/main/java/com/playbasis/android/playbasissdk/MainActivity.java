@@ -35,7 +35,6 @@ public class MainActivity extends Activity {
         Playbasis playbasis = new Playbasis.Builder(this)
                 .setApiKey("3026965093")
                 .setApiSecret("ce9c9335d542674a2a3e286307dba8c0")
-                .setServerUrl("https://api.pbapp.net")
                 .build();
 
         playbasis.getAuthenticator().getAuthToken(new OnResult<AuthToken>() {
@@ -196,7 +195,7 @@ public class MainActivity extends Activity {
             }
         } );
 
-        GoodsApi.listInfo(playbasis, new OnResult<List<Goods>>() {
+        GoodsApi.listInfo(playbasis, true, new OnResult<List<Goods>>() {
             @Override
             public void onSuccess(List<Goods> result) {
                 Log.d("main", result.toString());
@@ -208,7 +207,7 @@ public class MainActivity extends Activity {
             }
         });
         
-        GoodsApi.info(playbasis, "54c0b24cbe120b9b388b45c5", new OnResult<Goods>() {
+        GoodsApi.info(playbasis, true, "54c0b24cbe120b9b388b45c5", new OnResult<Goods>() {
             @Override
             public void onSuccess(Goods result) {
                 Log.d("main", result.toString());
@@ -220,7 +219,8 @@ public class MainActivity extends Activity {
             }
         });
         
-        GoodsApi.groupAvailable(playbasis, "jontestuser", "54c0b24cbe120b9b388b45c5", null, new OnResult<Integer>() {
+        GoodsApi.groupAvailable(playbasis, "jontestuser", "54c0b24cbe120b9b388b45c5", null,
+                new OnResult<Integer>() {
             @Override
             public void onSuccess(Integer result) {
                 Log.d("main", result.toString());

@@ -23,9 +23,7 @@ public class Playbasis {
     private KeyStore mKeyStore;
 
     private HttpManager mHttpManager;
-    
-    private String mServerUrl;
-    
+
     private AuthAuthenticator authenticator;
 
     /**
@@ -37,11 +35,10 @@ public class Playbasis {
         return instance;
     }
 
-    private Playbasis(PlayBasisContent playBasisContent, String serverUrl) {
+    private Playbasis(PlayBasisContent playBasisContent) {
         this.mContext = playBasisContent.mContext;
         this.mKeyStore = playBasisContent.mKeyStore;
         this.mHttpManager = HttpManager.getInstance(mContext);
-        this.mServerUrl = serverUrl;
         this.authenticator = new AuthAuthenticator(mContext, this);
     }
 
@@ -59,10 +56,6 @@ public class Playbasis {
 
     public HttpManager getHttpManager() {
         return mHttpManager;
-    }
-
-    public String getServerUrl() {
-        return mServerUrl;
     }
 
     public AuthAuthenticator getAuthenticator(){
@@ -105,11 +98,6 @@ public class Playbasis {
             this.mPlayBasisContent.mKeyStore.setApiSecret(apiSecret);
             return this;
         }
-        
-        public Builder setServerUrl(@NonNull String serverUrl){
-            this.mPlayBasisContent.mServerUrl = serverUrl;
-            return this;
-        }
 
         /**
          * Create the Playbasis singleton
@@ -117,12 +105,11 @@ public class Playbasis {
          */
         public Playbasis build(){
             if(instance==null){
-                instance = new Playbasis(mPlayBasisContent, mPlayBasisContent.mServerUrl);
+                instance = new Playbasis(mPlayBasisContent);
             }
             else {
                 instance.mContext = mPlayBasisContent.mContext;
                 instance.mKeyStore = mPlayBasisContent.mKeyStore;
-                instance.mServerUrl = mPlayBasisContent.mServerUrl;
             }
             return instance;
         }
@@ -130,7 +117,6 @@ public class Playbasis {
     private static class PlayBasisContent{
         private Context mContext;
         private KeyStore mKeyStore = new KeyStore();
-        private String mServerUrl;
     }
     
     

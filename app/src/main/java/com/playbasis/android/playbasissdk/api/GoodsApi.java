@@ -25,8 +25,13 @@ import java.util.List;
 public class GoodsApi extends Api {
     public static final String TAG = "GoodApi";
 
+    /**
+     * Returns information about all available goods for the current site.
+     * @param playbasis Playbasis object.
+     * @param listener Callback interface.
+     */
     public static void listInfo(@NonNull Playbasis playbasis, final OnResult<List<Goods>> listener){
-        String uri = playbasis.getServerUrl() + SDKUtil.GOODS_URL;
+        String uri = SDKUtil.getServerUrl(false) + SDKUtil.GOODS_URL;
 
         JsonObjectGET(playbasis, uri, null, new OnResult<JSONObject>() {
             @Override
@@ -46,9 +51,15 @@ public class GoodsApi extends Api {
         });
     }
 
+    /**
+     * Returns information about the goods with the specified id.
+     * @param playbasis Playbasis object.
+     * @param goodsId Goods id.
+     * @param listener Callback interface.
+     */
     public static void info(@NonNull Playbasis playbasis, @NonNull String goodsId,
                              final OnResult<Goods> listener) {
-        String uri = playbasis.getServerUrl() + SDKUtil._GOODS_URL + goodsId;
+        String uri = SDKUtil.getServerUrl(false) + SDKUtil._GOODS_URL + goodsId;
 
         JsonObjectGET(playbasis, uri, null, new OnResult<JSONObject>() {
             @Override
@@ -68,9 +79,17 @@ public class GoodsApi extends Api {
         });
     }
 
+    /**
+     * Find number of available Goods given group.
+     * @param playbasis Playbasis object.
+     * @param playerId Player Id.
+     * @param group Group Id.
+     * @param amount Amount.
+     * @param listener Callback interface.
+     */
     public static void groupAvailable(@NonNull Playbasis playbasis, @NonNull String playerId, @NonNull String group,
                             Integer amount, final OnResult<Integer> listener) {
-        String uri = playbasis.getServerUrl() + SDKUtil.GOOD_GROUP_URL;
+        String uri = SDKUtil.getServerUrl(false) + SDKUtil.GOOD_GROUP_URL;
         
         List<NameValuePair> params = new ArrayList<>();
         params.add(new BasicNameValuePair("player_id", playerId));

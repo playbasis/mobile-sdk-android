@@ -7,6 +7,9 @@ package com.playbasis.android.playbasissdk.core;
 public class SDKUtil {
     public static final String TAG = "Utils";
     
+    public static final String SERVER_URL = "https://api.pbapp.net";
+    public static final String SERVER_URL_ASYNC = SERVER_URL + "/async";
+
     public static final String PLAYER_URL = "/Player";
     public static final String _PLAYER_URL = PLAYER_URL + "/";
     
@@ -22,4 +25,8 @@ public class SDKUtil {
     public static final String GOOD_GROUP_URL = "/Redeem/goodsGroup";
 
     public static final String DEFAULT_IMAGE_URL = "https://www.pbapp.net/images/default_profile.jpg";
+    
+    public static String getServerUrl(Boolean async){
+        return async ? SERVER_URL_ASYNC : SERVER_URL;
+    }
 }
