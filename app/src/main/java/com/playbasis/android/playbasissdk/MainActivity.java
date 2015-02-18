@@ -7,6 +7,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.playbasis.android.playbasissdk.api.AuthToken;
+import com.playbasis.android.playbasissdk.api.BadgeApi;
 import com.playbasis.android.playbasissdk.api.OnResult;
 import com.playbasis.android.playbasissdk.api.PlayerApi;
 import com.playbasis.android.playbasissdk.core.Playbasis;
@@ -160,6 +161,30 @@ public class MainActivity extends Activity {
         PlayerApi.quests(playbasis, "jontestuser", new OnResult<List<Quest>>() {
             @Override
             public void onSuccess(List<Quest> result) {
+                Log.d("main", result.toString());
+            }
+
+            @Override
+            public void onError(HttpError error) {
+                Log.d("main", error.toString());
+            }
+        } );
+
+        BadgeApi.badges(playbasis, new OnResult<List<Badge>>() {
+            @Override
+            public void onSuccess(List<Badge> result) {
+                Log.d("main", result.toString());
+            }
+
+            @Override
+            public void onError(HttpError error) {
+                Log.d("main", error.toString());
+            }
+        });
+        
+        BadgeApi.badge(playbasis, "54c0adc9be120b42388b482d", new OnResult<Badge>() {
+            @Override
+            public void onSuccess(Badge result) {
                 Log.d("main", result.toString());
             }
 

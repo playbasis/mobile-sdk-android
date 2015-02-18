@@ -23,7 +23,16 @@ public class Badge {
     private Integer amount;
     @Expose
     private String hint;
-
+    @Expose
+    private Boolean redeem;
+    @Expose
+    private Boolean claim;
+    @Expose
+    private Boolean sponsor;
+    @Expose
+    @SerializedName("sort_order")
+    private Integer shortOrder;
+    
     /**
      * 
      * @return
@@ -168,7 +177,73 @@ public class Badge {
         this.hint = hint;
     }
 
+    /**
+     *  
+     * @return
+     *      The Redeem
+     */
+    public Boolean getRedeem() {
+        return redeem;
+    }
 
+    /**
+     * 
+     * @param redeem 
+     *      The Redeem
+     */
+    public void setRedeem(Boolean redeem) {
+        this.redeem = redeem;
+    }
+
+    /**
+     * 
+     * @return The Claim
+     */
+    public Boolean getClaim() {
+        return claim;
+    }
+
+    /**
+     *  
+     * @param claim The Claim
+     */
+    public void setClaim(Boolean claim) {
+        this.claim = claim;
+    }
+
+    /**
+     *  
+     * @return The Sponsor
+     */
+    public Boolean getSponsor() {
+        return sponsor;
+    }
+
+    /**
+     *  
+     * @param sponsor The Sponsor
+     */
+    public void setSponsor(Boolean sponsor) {
+        this.sponsor = sponsor;
+    }
+
+    /**
+     *  
+     * @return The ShortOrder
+     */
+    public Integer getShortOrder() {
+        return shortOrder;
+    }
+
+    /**
+     *  
+     * @param shortOrder The ShortOrder
+     */
+    public void setShortOrder(Integer shortOrder) {
+        this.shortOrder = shortOrder;
+    }
+
+    
     @Override
     public String toString() {
         return "Badge{" +
@@ -180,6 +255,10 @@ public class Badge {
                 ", description='" + description + '\'' +
                 ", amount=" + amount +
                 ", hint='" + hint + '\'' +
+                ", redeem=" + redeem +
+                ", claim=" + claim +
+                ", sponsor=" + sponsor +
+                ", shortOrder=" + shortOrder +
                 '}';
     }
 }
