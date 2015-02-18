@@ -186,7 +186,13 @@ public class PlayerApi extends Api{
             }
         });
     }
-    
+
+    /**
+     * Register a user from client's website as a Playbasis player.
+     * @param playbasis Playbasis object.
+     * @param player The player.
+     * @param listener Callback interface.
+     */
     public static void register(@NonNull Playbasis playbasis, @NonNull Player player,
                                 final OnResult<String> listener){
         if(!player.isValid()){
@@ -210,6 +216,12 @@ public class PlayerApi extends Api{
 
     }
 
+    /**
+     * Update player information.
+     * @param playbasis Playbasis object.
+     * @param player The player.
+     * @param listener Callback interface.
+     */
     public static void update(@NonNull Playbasis playbasis, @NonNull Player player,
                                 final OnResult<String> listener){
         if(!player.isValid()){
@@ -232,7 +244,13 @@ public class PlayerApi extends Api{
         });
 
     }
-    
+
+    /**
+     * Permenently delete a player from Playbasis database.
+     * @param playbasis Playbasis object.
+     * @param playerId Id of the player.
+     * @param listener Callback interface.
+     */
     public static void delete(@NonNull Playbasis playbasis, @NonNull String playerId,
                               final OnResult<String> listener){
         String uri = playbasis.getServerUrl() + SDKUtil._PLAYER_URL + playerId + "/delete";
@@ -250,6 +268,12 @@ public class PlayerApi extends Api{
 
     }
 
+    /**
+     *  Tell Playbasis system that a player has logged in.
+     * @param playbasis Playbasis object.
+     * @param playerId Id of the player.
+     * @param listener Callback interface.
+     */
     public static void login(@NonNull Playbasis playbasis, @NonNull String playerId,
                               final OnResult<String> listener){
         String uri = playbasis.getServerUrl() + SDKUtil._PLAYER_URL + playerId + "/login";
@@ -268,6 +292,12 @@ public class PlayerApi extends Api{
     }
 
 
+    /**
+     *  Tell Playbasis system that a player has logged out.
+     * @param playbasis Playbasis object.
+     * @param playerId Id of the player.
+     * @param listener Callback interface.
+     */
     public static void logout(@NonNull Playbasis playbasis, @NonNull String playerId,
                               final OnResult<String> listener){
         String uri = playbasis.getServerUrl() + SDKUtil._PLAYER_URL + playerId + "/logout";
@@ -285,6 +315,12 @@ public class PlayerApi extends Api{
 
     }
 
+    /**
+     *  Returns information about all point-based rewards that a player currently have.
+     * @param playbasis Playbasis object.
+     * @param playerId Id of the player.
+     * @param listener Callback interface.
+     */
     public static void points(@NonNull Playbasis playbasis, @NonNull String playerId,
                               final OnResult<List<Point>> listener){
         String uri = playbasis.getServerUrl() + SDKUtil._PLAYER_URL + playerId + "/points";
@@ -309,6 +345,13 @@ public class PlayerApi extends Api{
 
     }
 
+    /**
+     *  Returns how much of specified the point-based reward a player currently have.
+     * @param playbasis Playbasis object.
+     * @param playerId Id of the player.
+     * @param pointName
+     * @param listener Callback interface.
+     */
     public static void point(@NonNull Playbasis playbasis, @NonNull String playerId, @NonNull String pointName,
                               final OnResult<Point> listener){
         String uri = playbasis.getServerUrl() + SDKUtil._PLAYER_URL + playerId + "/point/" + pointName;
@@ -333,6 +376,15 @@ public class PlayerApi extends Api{
 
     }
 
+    /**
+     *  Returns history points of player
+     * @param playbasis Playbasis object.
+     * @param playerId Id of the player.
+     * @param pointName
+     * @param offset
+     * @param limit
+     * @param listener Callback interface.
+     */
     public static void pointHistory(@NonNull Playbasis playbasis, @NonNull String playerId, 
                                     String pointName, Integer offset, Integer limit,
                              final OnResult<List<Point>> listener){
@@ -362,7 +414,14 @@ public class PlayerApi extends Api{
             }
         });
     }
-    
+
+    /**
+     *  Returns the last time that player performed the specified action.
+     * @param playbasis Playbasis object.
+     * @param playerId Id of the player.
+     * @param actionName
+     * @param listener Callback interface.
+     */
     public static void actionTime(@NonNull Playbasis playbasis,@NonNull String playerId, @NonNull String actionName, 
                                   final OnResult<Action> listener){
         String uri = playbasis.getServerUrl() + SDKUtil._PLAYER_URL + playerId + "/action/"+
@@ -370,18 +429,36 @@ public class PlayerApi extends Api{
         getAction(playbasis, uri, listener);
     }
 
+    /**
+     *  Returns the time and action that a player last performed.
+     * @param playbasis Playbasis object.
+     * @param playerId Id of the player.
+     * @param listener Callback interface.
+     */
     public static void actionLast(@NonNull Playbasis playbasis,@NonNull String playerId,
                                   final OnResult<Action> listener){
         String uri = playbasis.getServerUrl() + SDKUtil._PLAYER_URL + playerId + "/action/time";
         getAction(playbasis, uri, listener);
     }
 
+    /**
+     *  Returns the number of times that a player has performed the specified action.
+     * @param playbasis Playbasis object.
+     * @param playerId Id of the player.
+     * @param listener Callback interface.
+     */
     public static void actionCount(@NonNull Playbasis playbasis,@NonNull String playerId,
                                   final OnResult<Action> listener){
         String uri = playbasis.getServerUrl() + SDKUtil._PLAYER_URL + playerId + "/action/time";
         getAction(playbasis,uri,listener);
     }
 
+    /**
+     *  Returns information about all the badges that a player has earned.
+     * @param playbasis Playbasis object.
+     * @param playerId Id of the player.
+     * @param listener Callback interface.
+     */
     public static void badges(@NonNull Playbasis playbasis,@NonNull String playerId,
                               final OnResult<List<Badge>> listener){
         String uri = playbasis.getServerUrl() + SDKUtil._PLAYER_URL + playerId + "/badge";
@@ -401,6 +478,12 @@ public class PlayerApi extends Api{
         });
     }
 
+    /**
+     *  Returns detail of level.
+     * @param playbasis Playbasis object.
+     * @param levelNo Level number.
+     * @param listener Callback interface.
+     */
     public static void level(@NonNull Playbasis playbasis,@NonNull String levelNo,
                               final OnResult<Level> listener){
         String uri = playbasis.getServerUrl() + SDKUtil._PLAYER_URL + "level/" + levelNo;
@@ -420,6 +503,11 @@ public class PlayerApi extends Api{
         });
     }
 
+    /**
+     *  Returns all detail of level.
+     * @param playbasis Playbasis object.
+     * @param listener Callback interface.
+     */
     public static void levels(@NonNull Playbasis playbasis, final OnResult<List<Level>> listener){
         String uri = playbasis.getServerUrl() + SDKUtil._PLAYER_URL + "level";
 
@@ -454,8 +542,13 @@ public class PlayerApi extends Api{
          
          
      }
-    
-    //TODO: Ranks
+
+    /**
+     *  Returns list of players sorted by each point type.
+     * @param playbasis Playbasis object.
+     * @param limit Limit.
+     * @param listener Callback interface.
+     */
     public static void ranks(@NonNull Playbasis playbasis, Integer limit,  final OnResult<Rank> listener){
         if(limit == null) limit = 20;
         String uri = playbasis.getServerUrl() + SDKUtil._PLAYER_URL + "ranks/" + limit;
@@ -481,8 +574,14 @@ public class PlayerApi extends Api{
 
 
     }
-    
-    //TODO: quest of player
+
+    /**
+     *  Quest that the player has joined.
+     * @param playbasis Playbasis object.
+     * @param playerId Id of the player.
+     * @param questId Id of the question.
+     * @param listener Callback interface.
+     */
     public static void quest(@NonNull Playbasis playbasis, @NonNull String playerId, @NonNull String questId,
                              final OnResult<Quest> listener){
         String uri = playbasis.getServerUrl() + SDKUtil._PLAYER_URL + "quest/" + questId;
@@ -509,8 +608,13 @@ public class PlayerApi extends Api{
         });
 
     }
-    
-    //TODO: List of quests of player
+
+    /**
+     * List of quests that the player has joined.
+     * @param playbasis Playbasis object.
+     * @param playerId Id of the player.
+     * @param listener Callback interface.
+     */
     public static void quests(@NonNull Playbasis playbasis, @NonNull String playerId,
                               final OnResult<List<Quest>> listener){
         String uri = playbasis.getServerUrl() + SDKUtil._PLAYER_URL + "quest";
