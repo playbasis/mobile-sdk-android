@@ -11,8 +11,10 @@ import com.playbasis.android.playbasissdk.http.PlaybasisResponse;
 import com.playbasis.android.playbasissdk.http.RequestError;
 import com.playbasis.android.playbasissdk.model.Action;
 import com.playbasis.android.playbasissdk.model.Badge;
+import com.playbasis.android.playbasissdk.model.Level;
 import com.playbasis.android.playbasissdk.model.Player;
 import com.playbasis.android.playbasissdk.model.Point;
+import com.playbasis.android.playbasissdk.model.Rank;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
@@ -398,6 +400,108 @@ public class PlayerApi extends Api{
         });
     }
 
+    public static void level(@NonNull Playbasis playbasis,@NonNull String levelNo,
+                              final OnResult<Level> listener){
+        String uri = playbasis.getServerUrl() + SDKUtil._PLAYER_URL + "level/" + levelNo;
 
 
+        JsonObjectGET(playbasis, uri, null, new OnResult<JSONObject>() {
+            @Override
+            public void onSuccess(JSONObject result) {
+                Level level = JsonHelper.FromJsonObject(result, Level.class);
+                if (listener != null) listener.onSuccess(level);
+            }
+
+            @Override
+            public void onError(HttpError error) {
+                if (listener != null) listener.onError(error);
+            }
+        });
+    }
+
+    public static void levels(@NonNull Playbasis playbasis, final OnResult<List<Level>> listener){
+        String uri = playbasis.getServerUrl() + SDKUtil._PLAYER_URL + "level";
+
+
+        JsonArrayGET(playbasis, uri, null, new OnResult<JSONArray>() {
+            @Override
+            public void onSuccess(JSONArray result) {
+                List<Level> levels = JsonHelper.FromJsonArray(result, Level.class);
+                if (listener != null) listener.onSuccess(levels);
+            }
+
+            @Override
+            public void onError(HttpError error) {
+                if (listener != null) listener.onError(error);
+            }
+        });
+    }
+    
+    //TODO: Claim badge
+    public static void claimBage(@NonNull Playbasis playbasis){
+        
+        
+    }
+    //TODO: Redeem badge
+    public static void redeemBadge(@NonNull Playbasis playbasis){
+
+
+    }
+    
+    //TODO: Rank
+     public static void ranks(@NonNull Playbasis playbasis){
+         
+         
+     }
+    
+    //TODO: Ranks
+    public static void ranks(@NonNull Playbasis playbasis, Integer limit,  final OnResult<Rank> listener){
+        if(limit == null) limit = 20;
+        String uri = playbasis.getServerUrl() + SDKUtil._PLAYER_URL + "ranks/" + limit;
+
+
+        JsonObjectGET(playbasis, uri, null, new OnResult<JSONObject>() {
+            @Override
+            public void onSuccess(JSONObject result) {
+                Rank rank = JsonHelper.FromJsonObject(result, Rank.class);
+                if (listener != null) listener.onSuccess(rank);
+            }
+
+            @Override
+            public void onError(HttpError error) {
+                if (listener != null) listener.onError(error);
+            }
+        });
+
+    }
+    
+    //TODO: Goods
+    public static void goods(@NonNull Playbasis playbasis){
+
+
+    }
+    
+    //TODO: quest of player
+    public static void quest(@NonNull Playbasis playbasis){
+
+
+    }
+    
+    //TODO: List of quests of player
+    public static void quests(@NonNull Playbasis playbasis){
+
+
+    }
+    
+    //TODO: quest rewards
+    public static void questReward(@NonNull Playbasis playbasis){
+
+
+    }
+    
+    //TODO: Deduct rewards
+    public static void deductReward(@NonNull Playbasis playbasis){
+
+
+    }
 }

@@ -15,6 +15,7 @@ import com.playbasis.android.playbasissdk.http.HttpError;
 import com.playbasis.android.playbasissdk.model.Badge;
 import com.playbasis.android.playbasissdk.model.Gender;
 import com.playbasis.android.playbasissdk.model.Player;
+import com.playbasis.android.playbasissdk.model.Rank;
 
 import java.util.Arrays;
 import java.util.List;
@@ -122,6 +123,18 @@ public class MainActivity extends Activity {
         PlayerApi.badges(playbasis, "jontestuser", new OnResult<List<Badge>>() {
             @Override
             public void onSuccess(List<Badge> result) {
+                Log.d("main", result.toString());
+            }
+
+            @Override
+            public void onError(HttpError error) {
+                Log.d("main", error.toString());
+            }
+        });
+        
+        PlayerApi.ranks(playbasis, null, new OnResult<Rank>() {
+            @Override
+            public void onSuccess(Rank result) {
                 Log.d("main", result.toString());
             }
 
