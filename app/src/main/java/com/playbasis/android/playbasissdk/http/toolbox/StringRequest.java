@@ -16,11 +16,17 @@
 
 package com.playbasis.android.playbasissdk.http.toolbox;
 
+import com.playbasis.android.playbasissdk.http.HttpError;
 import com.playbasis.android.playbasissdk.http.NetworkResponse;
+import com.playbasis.android.playbasissdk.http.ParseError;
+import com.playbasis.android.playbasissdk.http.PlaybasisResponse;
 import com.playbasis.android.playbasissdk.http.Request;
 import com.playbasis.android.playbasissdk.http.Response;
 import com.playbasis.android.playbasissdk.http.Response.ErrorListener;
 import com.playbasis.android.playbasissdk.http.Response.Listener;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
 
@@ -61,13 +67,19 @@ public class StringRequest extends Request<String> {
     }
 
     @Override
-    protected Response<String> parseNetworkResponse(NetworkResponse response) {
-        String parsed;
+    protected Response<String> parseNetworkResponse(NetworkResponse response) {  
         try {
-            parsed = new String(response.data, HttpHeaderParser.parseCharset(response.headers));
-        } catch (UnsupportedEncodingException e) {
-            parsed = new String(response.data);
+        String jsonString =
+                new String(response.data, HttpHeaderParser.parseCharset(response.headers));
+        PlaybasisResponse playbasisResponse = new PlaybasisResponse(new JSONObject(jsonString));
+        if(playbasisResponse.success){
+            return Response.success((String)playbasisResponse.response, HttpHeaderParser.parseCacheHeaders(response));
+        } else {
+            return Response.error(new HttpError(playbasisResponse));
         }
-        return Response.success(parsed, HttpHeaderParser.parseCacheHeaders(response));
-    }
+    } catch (UnsupportedEncodingException e) {
+        return Response.error(new ParseError(e));
+    } catch (JSONException je) {
+        return Response.error(new ParseError(je));
+    }    }
 }

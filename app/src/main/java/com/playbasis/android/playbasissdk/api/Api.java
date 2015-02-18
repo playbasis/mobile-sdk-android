@@ -10,6 +10,7 @@ import com.playbasis.android.playbasissdk.http.Response;
 import com.playbasis.android.playbasissdk.http.toolbox.JSONArrayRequest;
 import com.playbasis.android.playbasissdk.http.toolbox.JSONObjectRequest;
 import com.playbasis.android.playbasissdk.http.toolbox.ParamsHelper;
+import com.playbasis.android.playbasissdk.http.toolbox.StringRequest;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
@@ -47,7 +48,7 @@ public abstract class Api {
 
                     @Override
                     public void onResponse(JSONObject response) {
-                        PlayBasisLog.v(TAG, response.toString());
+                        PlayBasisLog.v(TAG, response!=null? response.toString() : "Response is null");
                         if (listener != null) listener.onSuccess(response);
                     }
                 }, new Response.ErrorListener() {
@@ -73,7 +74,7 @@ public abstract class Api {
 
                     @Override
                     public void onResponse(JSONObject response) {
-                        PlayBasisLog.v(TAG, response.toString());
+                        PlayBasisLog.v(TAG, response!=null? response.toString() : "Response is null");
                         if (listener != null) listener.onSuccess(response);
                     }
                 }, new Response.ErrorListener() {
@@ -134,5 +135,34 @@ public abstract class Api {
         playbasis.getHttpManager().addToRequestQueue(jsonObjReq);
     }
 
+    protected static void StringGET(final Playbasis playbasis, String uri, List<NameValuePair> params,
+                                        final OnResult<String>
+                                                listener) {
+        HttpsTrustManager.allowAllSSL();
+
+        //Add params to the request
+        if(params==null) params = new ArrayList<>();
+        params.add(new BasicNameValuePair("api_key", playbasis.getKeyStore().getApiKey()));
+
+        StringRequest stringRequest = new StringRequest(Request.Method.GET,
+                ParamsHelper.addParams(uri, params), new Response.Listener<String>() {
+
+                    @Override
+                    public void onResponse(String response) {
+                        PlayBasisLog.v(TAG, response!=null? response : "Response is null");
+                        if (listener != null) listener.onSuccess(response);
+                    }
+                }, new Response.ErrorListener() {
+
+
+            @Override
+            public void onErrorResponse(HttpError error) {
+                PlayBasisLog.e(TAG, "Error: " + error.getMessage());
+                if (listener != null) listener.onError(error);
+            }
+        });
+        // Adding request to request queue
+        playbasis.getHttpManager().addToRequestQueue(stringRequest);
+    }
 
 }

@@ -38,8 +38,12 @@ public class PlaybasisResponse {
         this.version = jsonObject.getString("version");
         if(jsonObject.get("response") instanceof JSONObject)
             this.response = jsonObject.getJSONObject("response");
-        if(jsonObject.get("response") instanceof JSONArray)
+        else if(jsonObject.get("response") instanceof JSONArray)
             this.response = jsonObject.getJSONArray("response");
+        else if(jsonObject.get("response") instanceof Integer)
+            this.response = String.valueOf(jsonObject.getInt("response"));
+        else if(jsonObject.get("response") instanceof String)
+            this.response = jsonObject.getString("response");
     }
 
     public Object response;

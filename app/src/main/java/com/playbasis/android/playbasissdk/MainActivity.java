@@ -8,6 +8,7 @@ import android.view.MenuItem;
 
 import com.playbasis.android.playbasissdk.api.AuthToken;
 import com.playbasis.android.playbasissdk.api.BadgeApi;
+import com.playbasis.android.playbasissdk.api.GoodsApi;
 import com.playbasis.android.playbasissdk.api.OnResult;
 import com.playbasis.android.playbasissdk.api.PlayerApi;
 import com.playbasis.android.playbasissdk.core.Playbasis;
@@ -15,6 +16,7 @@ import com.playbasis.android.playbasissdk.helper.Validator;
 import com.playbasis.android.playbasissdk.http.HttpError;
 import com.playbasis.android.playbasissdk.model.Badge;
 import com.playbasis.android.playbasissdk.model.Gender;
+import com.playbasis.android.playbasissdk.model.Goods;
 import com.playbasis.android.playbasissdk.model.Player;
 import com.playbasis.android.playbasissdk.model.Quest;
 import com.playbasis.android.playbasissdk.model.Rank;
@@ -193,6 +195,42 @@ public class MainActivity extends Activity {
                 Log.d("main", error.toString());
             }
         } );
+
+        GoodsApi.listInfo(playbasis, new OnResult<List<Goods>>() {
+            @Override
+            public void onSuccess(List<Goods> result) {
+                Log.d("main", result.toString());
+            }
+
+            @Override
+            public void onError(HttpError error) {
+                Log.d("main", error.toString());
+            }
+        });
+        
+        GoodsApi.info(playbasis, "54c0b24cbe120b9b388b45c5", new OnResult<Goods>() {
+            @Override
+            public void onSuccess(Goods result) {
+                Log.d("main", result.toString());
+            }
+
+            @Override
+            public void onError(HttpError error) {
+                Log.d("main", error.toString());
+            }
+        });
+        
+        GoodsApi.groupAvailable(playbasis, "jontestuser", "54c0b24cbe120b9b388b45c5", null, new OnResult<Integer>() {
+            @Override
+            public void onSuccess(Integer result) {
+                Log.d("main", result.toString());
+            }
+
+            @Override
+            public void onError(HttpError error) {
+                Log.d("main", error.toString());
+            }
+        });
         
     }
 

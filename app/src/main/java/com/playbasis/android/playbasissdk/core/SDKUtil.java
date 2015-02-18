@@ -16,5 +16,10 @@ public class SDKUtil {
     public static final String BADGE_URL = "/Badge";
     public static final String _BADGE_URL = BADGE_URL + "/";
     
+    public static final String GOODS_URL = "/Goods";
+    public static final String _GOODS_URL = GOODS_URL + "/";
+    
+    public static final String GOOD_GROUP_URL = "/Redeem/goodsGroup";
+
     public static final String DEFAULT_IMAGE_URL = "https://www.pbapp.net/images/default_profile.jpg";
 }
