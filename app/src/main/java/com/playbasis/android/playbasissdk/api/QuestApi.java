@@ -151,24 +151,55 @@ public class QuestApi extends Api {
     public static void joinAll(@NonNull Playbasis playbasis, Boolean isAsync,
                             @NonNull String playerId, final OnResult<Map<String, Object>>listener ){
 
-        String uri = SDKUtil.getServerUrl(isAsync) + SDKUtil._QUEST_URL + "joinAll";
+        String endpoint = SDKUtil._QUEST_URL + "joinAll";
+        
+        if(isAsync){
 
-        List<NameValuePair> params = new ArrayList<>();
-        params.add(new BasicNameValuePair("player_id", playerId));
+            JSONObject jsonObject = null;
+            try {
+                 jsonObject = JsonHelper.newJsonWithToken(playbasis.getAuthenticator());
+                jsonObject.put("player_id", playerId);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            
+            Async.postData(playbasis, endpoint ,jsonObject , new OnResult<String>() {
+                @Override
+                public void onSuccess(String result) {
+                    if (listener != null) listener.onSuccess(null);
+                }
 
-        JsonObjectPOST(playbasis, uri, params, new OnResult<JSONObject>() {
-            @Override
-            @SuppressWarnings("unchecked")
-            public void onSuccess(JSONObject result) {
+                @Override
+                public void onError(HttpError error) {
+                    if (listener != null) listener.onError(error);
+                }
+            });
+
+
+        }else{
+
+            String uri = SDKUtil.SERVER_URL + endpoint;
+
+            List<NameValuePair> params = new ArrayList<>();
+            params.add(new BasicNameValuePair("player_id", playerId));
+
+            JsonObjectPOST(playbasis, uri, params, new OnResult<JSONObject>() {
+                @Override
+                @SuppressWarnings("unchecked")
+                public void onSuccess(JSONObject result) {
                     HashMap<String,Object> events = JsonHelper.FromJsonObject(result, HashMap.class);
                     if (listener != null) listener.onSuccess(events);
-            }
+                }
 
-            @Override
-            public void onError(HttpError error) {
-                if (listener != null) listener.onError(error);
-            }
-        });
+                @Override
+                public void onError(HttpError error) {
+                    if (listener != null) listener.onError(error);
+                }
+            });
+            
+        }
+        
+
     }
 
     public static void cancel(@NonNull Playbasis playbasis, Boolean isAsync, @NonNull String questId,

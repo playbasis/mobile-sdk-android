@@ -2,6 +2,8 @@ package com.playbasis.android.playbasissdk.helper;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.playbasis.android.playbasissdk.api.AuthAuthenticator;
+import com.playbasis.android.playbasissdk.core.Playbasis;
 import com.playbasis.android.playbasissdk.http.toolbox.ParameterizedList;
 import com.playbasis.android.playbasissdk.model.Rank;
 import com.playbasis.android.playbasissdk.model.Reward;
@@ -11,6 +13,7 @@ import com.playbasis.android.playbasissdk.parser.RewardTypeArrayAdapter;
 import com.playbasis.android.playbasissdk.parser.TokenValueArrayAdapter;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.List;
@@ -40,6 +43,14 @@ public class JsonHelper {
         Gson gson = gsonBuilder.create();
         T item = gson.fromJson(jsonObject.toString(), type);
         return item;
+    }
+    
+    
+    public static JSONObject newJsonWithToken(AuthAuthenticator authenticator) throws JSONException {
+        JSONObject object = new JSONObject();
+        object.put("token", authenticator.getToken());
+        return object;
+        
     }
 
 }

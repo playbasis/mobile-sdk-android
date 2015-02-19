@@ -191,6 +191,8 @@ public class MainActivity extends Activity {
                 Log.d("main", error.toString());
             }
         } );
+        
+        
 
         BadgeApi.badges(playbasis, new OnResult<List<Badge>>() {
             @Override
@@ -295,6 +297,20 @@ public class MainActivity extends Activity {
             }
         } );
 
+        QuestApi.joinAll(playbasis, true,  "jontestuser", new OnResult<Map<String, Object>>() {
+            @Override
+            public void onSuccess(Map<String, Object> result) {
+                Log.d("","");
+                Log.d("","");
+            }
+
+            @Override
+            public void onError(HttpError error) {
+                Log.d("","");
+                Log.d("","");
+            }
+        });
+        
         QuizApi.detail(playbasis, "54c09131be120bee348b52c9", "jontestuser", new OnResult<QuizDetail>() {
             @Override
             public void onSuccess(QuizDetail result) {

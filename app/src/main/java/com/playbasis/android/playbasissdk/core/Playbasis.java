@@ -25,6 +25,8 @@ public class Playbasis {
     private HttpManager mHttpManager;
 
     private AuthAuthenticator authenticator;
+    
+    private String mChannel;
 
     /**
      * This method return the Playbasis singleton. If call before the builder return null.
@@ -61,7 +63,11 @@ public class Playbasis {
     public AuthAuthenticator getAuthenticator(){
         return authenticator;
     }
-    
+
+    public String getChannel() {
+        return mChannel;
+    }
+
     /**
      * Builder for Playbasis singleton
      */
@@ -98,6 +104,11 @@ public class Playbasis {
             this.mPlayBasisContent.mKeyStore.setApiSecret(apiSecret);
             return this;
         }
+        
+        public Builder setChannel(String channel){
+            this.mPlayBasisContent.mChannel = channel;
+            return this;
+        }
 
         /**
          * Create the Playbasis singleton
@@ -117,6 +128,7 @@ public class Playbasis {
     private static class PlayBasisContent{
         private Context mContext;
         private KeyStore mKeyStore = new KeyStore();
+        private String mChannel;
     }
     
     
