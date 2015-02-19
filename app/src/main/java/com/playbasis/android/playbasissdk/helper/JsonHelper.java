@@ -3,8 +3,10 @@ package com.playbasis.android.playbasissdk.helper;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.playbasis.android.playbasissdk.http.toolbox.ParameterizedList;
+import com.playbasis.android.playbasissdk.model.Rank;
 import com.playbasis.android.playbasissdk.model.Reward;
 import com.playbasis.android.playbasissdk.model.TokenValue;
+import com.playbasis.android.playbasissdk.parser.RankTypeArrayAdapter;
 import com.playbasis.android.playbasissdk.parser.RewardTypeArrayAdapter;
 import com.playbasis.android.playbasissdk.parser.TokenValueArrayAdapter;
 
@@ -24,6 +26,7 @@ public class JsonHelper {
         final GsonBuilder gsonBuilder = new GsonBuilder();
         gsonBuilder.registerTypeAdapter(Reward.class, new RewardTypeArrayAdapter());
         gsonBuilder.registerTypeAdapter(TokenValue.class, new TokenValueArrayAdapter());
+        gsonBuilder.registerTypeAdapter(Rank.class, new RankTypeArrayAdapter());
         Gson gson = gsonBuilder.create();
         return gson.fromJson(jsonArray.toString(), new ParameterizedList<T>(klass));
 
@@ -33,6 +36,7 @@ public class JsonHelper {
         final GsonBuilder gsonBuilder = new GsonBuilder();
         gsonBuilder.registerTypeAdapter(Reward.class, new RewardTypeArrayAdapter());
         gsonBuilder.registerTypeAdapter(TokenValue.class, new TokenValueArrayAdapter());
+        gsonBuilder.registerTypeAdapter(Rank.class, new RankTypeArrayAdapter());
         Gson gson = gsonBuilder.create();
         T item = gson.fromJson(jsonObject.toString(), type);
         return item;

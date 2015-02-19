@@ -26,6 +26,7 @@ import com.playbasis.android.playbasissdk.model.Quest;
 import com.playbasis.android.playbasissdk.model.Quiz;
 import com.playbasis.android.playbasissdk.model.QuizDetail;
 import com.playbasis.android.playbasissdk.model.Rank;
+import com.playbasis.android.playbasissdk.model.Ranks;
 import com.playbasis.android.playbasissdk.model.RedeemEvent;
 
 import java.util.Arrays;
@@ -143,9 +144,21 @@ public class MainActivity extends Activity {
             }
         });
         
-        PlayerApi.ranks(playbasis, null, new OnResult<Rank>() {
+        PlayerApi.ranks(playbasis, null, new OnResult<Ranks>() {
             @Override
-            public void onSuccess(Rank result) {
+            public void onSuccess(Ranks result) {
+                Log.d("main", result.toString());
+            }
+
+            @Override
+            public void onError(HttpError error) {
+                Log.d("main", error.toString());
+            }
+        });
+        
+        PlayerApi.rank(playbasis, "exp", null ,new OnResult<List<Rank>>() {
+            @Override
+            public void onSuccess(List<Rank> result) {
                 Log.d("main", result.toString());
             }
 

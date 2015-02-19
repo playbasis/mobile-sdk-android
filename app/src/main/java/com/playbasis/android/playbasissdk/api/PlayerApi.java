@@ -11,11 +11,14 @@ import com.playbasis.android.playbasissdk.http.PlaybasisResponse;
 import com.playbasis.android.playbasissdk.http.RequestError;
 import com.playbasis.android.playbasissdk.model.Action;
 import com.playbasis.android.playbasissdk.model.Badge;
+import com.playbasis.android.playbasissdk.model.Goods;
 import com.playbasis.android.playbasissdk.model.Level;
 import com.playbasis.android.playbasissdk.model.Player;
 import com.playbasis.android.playbasissdk.model.Point;
 import com.playbasis.android.playbasissdk.model.Quest;
 import com.playbasis.android.playbasissdk.model.Rank;
+import com.playbasis.android.playbasissdk.model.Ranks;
+import com.playbasis.android.playbasissdk.model.Reward;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
@@ -547,19 +550,72 @@ public class PlayerApi extends Api{
     }
     
     //TODO: Claim badge
-    public static void claimBage(@NonNull Playbasis playbasis){
-        
-        
+    public static void claimBage(@NonNull Playbasis playbasis, Boolean isAsync, @NonNull String playerId, 
+                                 @NonNull String badgeId, final OnResult<List<String>> listener){
+        String uri = SDKUtil.getServerUrl(isAsync) + SDKUtil._PLAYER_URL + playerId + "/badges/" + badgeId + "/claim";
+
+        JsonObjectPOST(playbasis, uri, null, new OnResult<JSONObject>() {
+            @Override
+            public void onSuccess(JSONObject result) {
+                try {
+                    List<String> events = JsonHelper.FromJsonArray(result.getJSONArray("result"), String.class);
+                    if (listener != null) listener.onSuccess(events);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    if (listener != null) listener.onError(new HttpError(e));
+                }
+            }
+
+            @Override
+            public void onError(HttpError error) {
+                if (listener != null) listener.onError(error);
+            }
+        });
+
     }
     //TODO: Redeem badge
-    public static void redeemBadge(@NonNull Playbasis playbasis){
+    public static void redeemBadge(@NonNull Playbasis playbasis, Boolean isAsync, @NonNull String playerId,
+                                   @NonNull String badgeId, final OnResult<List<String>> listener){
+        String uri = SDKUtil.getServerUrl(isAsync) + SDKUtil._PLAYER_URL + playerId + "/badges/" + badgeId + "/claim";
 
+        JsonObjectPOST(playbasis, uri, null, new OnResult<JSONObject>() {
+            @Override
+            public void onSuccess(JSONObject result) {
+                try {
+                    List<String> events = JsonHelper.FromJsonArray(result.getJSONArray("result"), String.class);
+                    if (listener != null) listener.onSuccess(events);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    if (listener != null) listener.onError(new HttpError(e));
+                }
+            }
 
+            @Override
+            public void onError(HttpError error) {
+                if (listener != null) listener.onError(error);
+            }
+        });
     }
     
     //TODO: Rank
-     public static void rank(@NonNull Playbasis playbasis){
-         
+     public static void rank(@NonNull Playbasis playbasis, @NonNull String rankBy, Integer limit,
+                             final OnResult<List<Rank>> listener){
+         if(limit == null) limit = 20;
+         String uri = SDKUtil.getServerUrl(false) + SDKUtil._PLAYER_URL + "rank/" + rankBy + "/" + limit;
+
+
+         JsonArrayGET(playbasis, uri, null, new OnResult<JSONArray>() {
+             @Override
+             public void onSuccess(JSONArray result) {
+                 List<Rank> ranks = JsonHelper.FromJsonArray(result, Rank.class);
+                 if (listener != null) listener.onSuccess(ranks);
+             }
+
+             @Override
+             public void onError(HttpError error) {
+                 if (listener != null) listener.onError(error);
+             }
+         });
          
      }
 
@@ -570,7 +626,7 @@ public class PlayerApi extends Api{
      * @param listener Callback interface.
      */
     public static void ranks(@NonNull Playbasis playbasis, Integer limit,  
-                             final OnResult<Rank> listener){
+                             final OnResult<Ranks> listener){
         if(limit == null) limit = 20;
         String uri = SDKUtil.getServerUrl(false) + SDKUtil._PLAYER_URL + "ranks/" + limit;
 
@@ -578,7 +634,7 @@ public class PlayerApi extends Api{
         JsonObjectGET(playbasis, uri, null, new OnResult<JSONObject>() {
             @Override
             public void onSuccess(JSONObject result) {
-                Rank rank = JsonHelper.FromJsonObject(result, Rank.class);
+                Ranks rank = JsonHelper.FromJsonObject(result, Ranks.class);
                 if (listener != null) listener.onSuccess(rank);
             }
 
@@ -589,10 +645,36 @@ public class PlayerApi extends Api{
         });
 
     }
-    
-    //TODO: Goods
-    public static void goods(@NonNull Playbasis playbasis){
 
+    /**
+     *
+     * @param playbasis
+     * @param playerId
+     * @param listener
+     */
+    public static void goods(@NonNull Playbasis playbasis, @NonNull String playerId, 
+                             final OnResult<List<Goods>> listener ){
+
+        String uri = SDKUtil.getServerUrl(false) + SDKUtil._PLAYER_URL + playerId + "goods";
+
+
+        JsonObjectGET(playbasis, uri, null, new OnResult<JSONObject>() {
+            @Override
+            public void onSuccess(JSONObject result) {
+                try {
+                    List<Goods> goodses = JsonHelper.FromJsonArray(result.getJSONArray("goods"), Goods.class);
+                    if(listener!=null)listener.onSuccess(goodses);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    if(listener!=null)listener.onError(new HttpError(e));
+                }
+            }
+
+            @Override
+            public void onError(HttpError error) {
+                if (listener != null) listener.onError(error);
+            }
+        });
 
     }
 
@@ -664,14 +746,61 @@ public class PlayerApi extends Api{
     }
     
     //TODO: quest rewards
-    public static void questReward(@NonNull Playbasis playbasis){
+    public static void questReward(@NonNull Playbasis playbasis, @NonNull String playerId, Integer offset, 
+                                   Integer limit, final OnResult<List<Reward>> listener) {
+        String uri = SDKUtil.getServerUrl(false) + SDKUtil._PLAYER_URL + playerId + "/quest_reward_history";
+
+        List<NameValuePair> params = new ArrayList<>();
+        params.add(new BasicNameValuePair("player_id", playerId));
+        params.add(new BasicNameValuePair("offset", String.valueOf(offset==null ? 0 : offset)));
+        params.add(new BasicNameValuePair("limit", String.valueOf(limit==null ? 50 : limit)));
+
+        JsonObjectGET(playbasis, uri, params, new OnResult<JSONObject>() {
+            @Override
+            public void onSuccess(JSONObject result) {
+                try {
+                    List<Reward> rewards = JsonHelper.FromJsonArray(result.getJSONArray("rewards"), Reward.class);
+                    if (listener != null) listener.onSuccess(rewards);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    if (listener != null) listener.onError(new HttpError(e));
+                }
+            }
+
+            @Override
+            public void onError(HttpError error) {
+                if (listener != null) listener.onError(error);
+            }
+        });
 
 
     }
     
     //TODO: Deduct rewards
-    public static void deductReward(@NonNull Playbasis playbasis){
+    public static void deductReward(@NonNull Playbasis playbasis, Boolean isAsync,  @NonNull String playerId,
+                                    @NonNull String rewardId, @NonNull Integer amount, Boolean force,  
+                                    final OnResult<String> listener){
+        String uri = SDKUtil.getServerUrl(isAsync) + SDKUtil._PLAYER_URL + playerId + "/deduct_reward";
 
+        List<NameValuePair> params = new ArrayList<>();
+        params.add(new BasicNameValuePair("reward", rewardId));
+        params.add(new BasicNameValuePair("amount", String.valueOf(amount)));
+        params.add(new BasicNameValuePair("force", String.valueOf(force==null? 0 : force ? 1 : 0)));
+
+
+        JsonObjectPOST(playbasis, uri, null, new OnResult<JSONObject>() {
+            @Override
+            public void onSuccess(JSONObject result) {
+                    String event = JsonHelper.FromJsonObject(result, String.class);
+                    if (listener != null) listener.onSuccess(event);
+
+            }
+
+            @Override
+            public void onError(HttpError error) {
+                if (listener != null) listener.onError(error);
+            }
+        });
 
     }
 }
