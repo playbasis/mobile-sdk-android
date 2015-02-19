@@ -15,7 +15,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by gregoire barret on 2/18/15.
@@ -24,9 +26,7 @@ import java.util.List;
 public class QuestApi extends Api {
     public static final String TAG = "QuestApi";
 
-    public static void listInfo(@NonNull Playbasis playbasis , final OnResult<List<Quest>>listener){
-        String uri = SDKUtil.getServerUrl(false) + SDKUtil.QUEST_URL;
-
+    private static void quests(@NonNull Playbasis playbasis, @NonNull String uri,  final OnResult<List<Quest>>listener){
         JsonObjectGET(playbasis, uri, null, new OnResult<JSONObject>() {
             @Override
             public void onSuccess(JSONObject result) {
@@ -38,18 +38,16 @@ public class QuestApi extends Api {
                     if (listener != null) listener.onError(new HttpError(e));
                 }
             }
-
             @Override
             public void onError(HttpError error) {
                 if (listener != null) listener.onError(error);
             }
         });
-        
     }
 
-    public static void info(@NonNull Playbasis playbasis, @NonNull String questId, final OnResult<Quest>listener){
-        String uri = SDKUtil.getServerUrl(false) + SDKUtil._QUEST_URL + questId;
 
+    private static void quest(@NonNull Playbasis playbasis, @NonNull String uri,
+                             final OnResult<Quest>listener){
         JsonObjectGET(playbasis, uri, null, new OnResult<JSONObject>() {
             @Override
             public void onSuccess(JSONObject result) {
@@ -67,7 +65,44 @@ public class QuestApi extends Api {
                 if (listener != null) listener.onError(error);
             }
         });
+    }
 
+    private static void postQuest(@NonNull Playbasis playbasis, @NonNull String uri,
+                              @NonNull String playerId, final OnResult<Map<String, Object>>listener ){
+
+        List<NameValuePair> params = new ArrayList<>();
+        params.add(new BasicNameValuePair("player_id", playerId));
+
+        JsonObjectPOST(playbasis, uri, params, new OnResult<JSONObject>() {
+            @Override
+            @SuppressWarnings("unchecked")
+            public void onSuccess(JSONObject result) {
+                try {
+                    HashMap<String,Object> events = JsonHelper.FromJsonObject(result.getJSONObject("events"), HashMap.class);
+                    if (listener != null) listener.onSuccess(events);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    if (listener != null) listener.onError(new HttpError(e));
+                }
+            }
+
+            @Override
+            public void onError(HttpError error) {
+                if (listener != null) listener.onError(error);
+            }
+        });
+    }
+    
+
+    public static void listInfo(@NonNull Playbasis playbasis , final OnResult<List<Quest>>listener){
+        String uri = SDKUtil.getServerUrl(false) + SDKUtil.QUEST_URL;
+        quests(playbasis,uri,listener);
+        
+    }
+
+    public static void info(@NonNull Playbasis playbasis, @NonNull String questId, final OnResult<Quest>listener){
+        String uri = SDKUtil.getServerUrl(false) + SDKUtil._QUEST_URL + questId;
+        quest(playbasis,uri,listener);
     }
 
     public static void missionInfo(@NonNull Playbasis playbasis, @NonNull String questId, @NonNull String missionId,
@@ -86,6 +121,55 @@ public class QuestApi extends Api {
                 if (listener != null) listener.onError(error);
             }
         });
+    }
+    
+    public static void questsAvailable(@NonNull Playbasis playbasis, @NonNull String questId,
+                                  final OnResult<List<Quest>>listener){
+        String uri = SDKUtil.getServerUrl(false) + SDKUtil._QUEST_URL + "available";
+        quests(playbasis,uri,listener);
+    }
+    
+    public static void questAvailable(@NonNull Playbasis playbasis, @NonNull String questId, 
+                                      final OnResult<Quest>listener){
+        String uri = SDKUtil.getServerUrl(false) + SDKUtil._QUEST_URL + questId + "/available";
+        quest(playbasis,uri,listener);
+        
+    }
+    
+    public static void join(@NonNull Playbasis playbasis, Boolean isAsync, @NonNull String questId, 
+                            @NonNull String playerId, final OnResult<Map<String, Object>>listener ){
 
+        String uri = SDKUtil.getServerUrl(isAsync) + SDKUtil._QUEST_URL + questId + "/join";
+        postQuest(playbasis,uri,playerId,listener);
+    }
+
+    public static void joinAll(@NonNull Playbasis playbasis, Boolean isAsync,
+                            @NonNull String playerId, final OnResult<Map<String, Object>>listener ){
+
+        String uri = SDKUtil.getServerUrl(isAsync) + SDKUtil._QUEST_URL + "/joinAll";
+
+        List<NameValuePair> params = new ArrayList<>();
+        params.add(new BasicNameValuePair("player_id", playerId));
+
+        JsonObjectPOST(playbasis, uri, params, new OnResult<JSONObject>() {
+            @Override
+            @SuppressWarnings("unchecked")
+            public void onSuccess(JSONObject result) {
+                    HashMap<String,Object> events = JsonHelper.FromJsonObject(result, HashMap.class);
+                    if (listener != null) listener.onSuccess(events);
+            }
+
+            @Override
+            public void onError(HttpError error) {
+                if (listener != null) listener.onError(error);
+            }
+        });
+    }
+
+    public static void cancel(@NonNull Playbasis playbasis, Boolean isAsync, @NonNull String questId,
+                            @NonNull String playerId, final OnResult<Map<String, Object>>listener ){
+
+        String uri = SDKUtil.getServerUrl(isAsync) + SDKUtil._QUEST_URL + questId + "/cancel";
+        postQuest(playbasis,uri,playerId,listener);
     }
 }

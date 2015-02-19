@@ -11,6 +11,7 @@ import com.playbasis.android.playbasissdk.api.BadgeApi;
 import com.playbasis.android.playbasissdk.api.GoodsApi;
 import com.playbasis.android.playbasissdk.api.OnResult;
 import com.playbasis.android.playbasissdk.api.PlayerApi;
+import com.playbasis.android.playbasissdk.api.QuestApi;
 import com.playbasis.android.playbasissdk.core.Playbasis;
 import com.playbasis.android.playbasissdk.helper.Validator;
 import com.playbasis.android.playbasissdk.http.HttpError;
@@ -23,6 +24,7 @@ import com.playbasis.android.playbasissdk.model.Rank;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 
 public class MainActivity extends Activity {
@@ -231,6 +233,36 @@ public class MainActivity extends Activity {
                 Log.d("main", error.toString());
             }
         });
+
+        QuestApi.cancel(playbasis, false, "54c0ad73be120b42388b47f7", "jontestuser", new OnResult<Map<String, Object>>() {
+            @Override
+            public void onSuccess(Map<String, Object> result) {
+                Log.d("","");
+                Log.d("","");
+            }
+
+            @Override
+            public void onError(HttpError error) {
+                Log.d("","");
+                Log.d("","");
+            }
+        } );
+
+        QuestApi.join(playbasis, false, "54c0ad73be120b42388b47f7", "jontestuser", new OnResult<Map<String, Object>>() {
+            @Override
+            public void onSuccess(Map<String, Object> result) {
+                Log.d("","");
+                Log.d("","");
+            }
+
+            @Override
+            public void onError(HttpError error) {
+                Log.d("","");
+                Log.d("","");
+            }
+        } );
+
+
         
     }
 
