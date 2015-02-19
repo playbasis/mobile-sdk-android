@@ -135,6 +135,46 @@ public abstract class Api {
         playbasis.getHttpManager().addToRequestQueue(jsonObjReq);
     }
 
+    protected static void JsonArrayPOST(final Playbasis playbasis, String uri, final List<NameValuePair> httpParams,
+                                         final OnResult<JSONArray>
+                                                 listener) {
+        HttpsTrustManager.allowAllSSL();
+        final JSONArrayRequest jsonArrReq = new JSONArrayRequest(Request.Method.POST,
+                uri, null,
+                new Response.Listener<JSONArray>() {
+
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        PlayBasisLog.v(TAG, response!=null? response.toString() : "Response is null");
+                        if (listener != null) listener.onSuccess(response);
+                    }
+                }, new Response.ErrorListener() {
+
+
+            @Override
+            public void onErrorResponse(HttpError error) {
+                PlayBasisLog.e(TAG, "Error: " + error.getMessage());
+                if (listener != null) listener.onError(error);
+            }
+        }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+
+                Map<String, String> params = new Hashtable<>();
+                params.put("api_key", playbasis.getKeyStore().getApiKey());
+                params.put("token", playbasis.getAuthenticator().getToken());
+                if(httpParams!=null){
+                    for (NameValuePair pair : httpParams){
+                        params.put(pair.getName(), pair.getValue());
+                    }
+                }
+                return params;
+            }
+        };
+        // Adding request to request queue
+        playbasis.getHttpManager().addToRequestQueue(jsonArrReq);
+    }
+
     protected static void StringGET(final Playbasis playbasis, String uri, List<NameValuePair> params,
                                         final OnResult<String>
                                                 listener) {

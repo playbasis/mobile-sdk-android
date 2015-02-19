@@ -199,7 +199,7 @@ public class QuizApi extends Api  {
     private static void answerQuestion(@NonNull Playbasis playbasis, Boolean isAsync,
                                   @NonNull String quizId, @NonNull String playerId, @NonNull String questionId,
                                   @NonNull String optionId, final OnResult<Map<String, Object>>listener ){
-        String uri = SDKUtil.getServerUrl(isAsync) + SDKUtil._QUIZ_URL + quizId + "answer";
+        String uri = SDKUtil.getServerUrl(isAsync) + SDKUtil._QUIZ_URL + quizId + "/answer";
         
         List<NameValuePair> params = new ArrayList<>();
         params.add(new BasicNameValuePair("player_id", playerId));

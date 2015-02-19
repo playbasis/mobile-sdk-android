@@ -13,6 +13,7 @@ import com.playbasis.android.playbasissdk.api.OnResult;
 import com.playbasis.android.playbasissdk.api.PlayerApi;
 import com.playbasis.android.playbasissdk.api.QuestApi;
 import com.playbasis.android.playbasissdk.api.QuizApi;
+import com.playbasis.android.playbasissdk.api.RedeemApi;
 import com.playbasis.android.playbasissdk.core.Playbasis;
 import com.playbasis.android.playbasissdk.helper.Validator;
 import com.playbasis.android.playbasissdk.http.HttpError;
@@ -22,7 +23,9 @@ import com.playbasis.android.playbasissdk.model.Goods;
 import com.playbasis.android.playbasissdk.model.Player;
 import com.playbasis.android.playbasissdk.model.Quest;
 import com.playbasis.android.playbasissdk.model.Quiz;
+import com.playbasis.android.playbasissdk.model.QuizDetail;
 import com.playbasis.android.playbasissdk.model.Rank;
+import com.playbasis.android.playbasissdk.model.RedeemEvent;
 
 import java.util.Arrays;
 import java.util.List;
@@ -41,7 +44,7 @@ public class MainActivity extends Activity {
                 .setApiSecret("ce9c9335d542674a2a3e286307dba8c0")
                 .build();
 
-        playbasis.getAuthenticator().getAuthToken(new OnResult<AuthToken>() {
+        playbasis.getAuthenticator().requestRenewAuthToken(playbasis, new OnResult<AuthToken>() {
             @Override
             public void onSuccess(AuthToken result) {
                 Log.d("main", result.getToken());
@@ -278,9 +281,9 @@ public class MainActivity extends Activity {
             }
         } );
 
-        QuizApi.detail(playbasis, "54c09131be120bee348b52c9", "jontestuser", new OnResult<Quiz>() {
+        QuizApi.detail(playbasis, "54c09131be120bee348b52c9", "jontestuser", new OnResult<QuizDetail>() {
             @Override
-            public void onSuccess(Quiz result) {
+            public void onSuccess(QuizDetail result) {
                 Log.d("","");
                 Log.d("","");
             }
@@ -292,8 +295,22 @@ public class MainActivity extends Activity {
             }
         });
 
+        RedeemApi.goods(playbasis, false, "54c0b24cbe120b9b388b45c5", "jontestuser", 1, new OnResult<List<RedeemEvent>>() {
+            @Override
+            public void onSuccess(List<RedeemEvent> result) {
+                Log.d("","");
+                Log.d("","");
+            }
+
+            @Override
+            public void onError(HttpError error) {
+                Log.d("","");
+                Log.d("","");
+            }
+        } );
         
     }
+    
 
 
     @Override
