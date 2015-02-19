@@ -45,7 +45,7 @@ public class MainActivity extends Activity {
                 .setApiSecret("ce9c9335d542674a2a3e286307dba8c0")
                 .build();
 
-        playbasis.getAuthenticator().requestRenewAuthToken(playbasis, new OnResult<AuthToken>() {
+        playbasis.getAuthenticator().getAuthToken(new OnResult<AuthToken>() {
             @Override
             public void onSuccess(AuthToken result) {
                 Log.d("main", result.getToken());
