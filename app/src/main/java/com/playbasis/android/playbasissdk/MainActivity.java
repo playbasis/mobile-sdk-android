@@ -8,6 +8,7 @@ import android.view.MenuItem;
 
 import com.playbasis.android.playbasissdk.api.AuthToken;
 import com.playbasis.android.playbasissdk.api.BadgeApi;
+import com.playbasis.android.playbasissdk.api.CommunicationApi;
 import com.playbasis.android.playbasissdk.api.GoodsApi;
 import com.playbasis.android.playbasissdk.api.OnResult;
 import com.playbasis.android.playbasissdk.api.PlayerApi;
@@ -298,6 +299,20 @@ public class MainActivity extends Activity {
         RedeemApi.goods(playbasis, false, "54c0b24cbe120b9b388b45c5", "jontestuser", 1, new OnResult<List<RedeemEvent>>() {
             @Override
             public void onSuccess(List<RedeemEvent> result) {
+                Log.d("","");
+                Log.d("","");
+            }
+
+            @Override
+            public void onError(HttpError error) {
+                Log.d("","");
+                Log.d("","");
+            }
+        } );
+
+        CommunicationApi.sendEmail(playbasis, false, "jontestuser", "test", "test", null, new OnResult<List<String>>() {
+            @Override
+            public void onSuccess(List<String> result) {
                 Log.d("","");
                 Log.d("","");
             }

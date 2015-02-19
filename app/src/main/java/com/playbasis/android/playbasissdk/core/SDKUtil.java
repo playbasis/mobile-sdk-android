@@ -30,6 +30,10 @@ public class SDKUtil {
     
     public static final String REDEEM_API = "/Redeem";
     public static final String _REDEEM_API = REDEEM_API + "/";
+    
+    public static final String _EMAIL_API = "/Email/";
+    public static final String _SMS_API = "/Sms/";
+    public static final String _PUSH_API = "/Push/";
 
 
     public static final String GOOD_GROUP_URL = "/Redeem/goodsGroup";
