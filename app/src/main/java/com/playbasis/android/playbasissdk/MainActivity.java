@@ -12,6 +12,7 @@ import com.playbasis.android.playbasissdk.api.GoodsApi;
 import com.playbasis.android.playbasissdk.api.OnResult;
 import com.playbasis.android.playbasissdk.api.PlayerApi;
 import com.playbasis.android.playbasissdk.api.QuestApi;
+import com.playbasis.android.playbasissdk.api.QuizApi;
 import com.playbasis.android.playbasissdk.core.Playbasis;
 import com.playbasis.android.playbasissdk.helper.Validator;
 import com.playbasis.android.playbasissdk.http.HttpError;
@@ -20,6 +21,7 @@ import com.playbasis.android.playbasissdk.model.Gender;
 import com.playbasis.android.playbasissdk.model.Goods;
 import com.playbasis.android.playbasissdk.model.Player;
 import com.playbasis.android.playbasissdk.model.Quest;
+import com.playbasis.android.playbasissdk.model.Quiz;
 import com.playbasis.android.playbasissdk.model.Rank;
 
 import java.util.Arrays;
@@ -233,6 +235,20 @@ public class MainActivity extends Activity {
                 Log.d("main", error.toString());
             }
         });
+        
+        QuestApi.questsAvailable(playbasis,"jontestuser", new OnResult<List<Quest>>() {
+            @Override
+            public void onSuccess(List<Quest> result) {
+                Log.d("","");
+                Log.d("","");
+            }
+
+            @Override
+            public void onError(HttpError error) {
+                Log.d("","");
+                Log.d("","");
+            }
+        } );
 
         QuestApi.cancel(playbasis, false, "54c0ad73be120b42388b47f7", "jontestuser", new OnResult<Map<String, Object>>() {
             @Override
@@ -262,6 +278,19 @@ public class MainActivity extends Activity {
             }
         } );
 
+        QuizApi.detail(playbasis, "54c09131be120bee348b52c9", "jontestuser", new OnResult<Quiz>() {
+            @Override
+            public void onSuccess(Quiz result) {
+                Log.d("","");
+                Log.d("","");
+            }
+
+            @Override
+            public void onError(HttpError error) {
+                Log.d("","");
+                Log.d("","");
+            }
+        });
 
         
     }

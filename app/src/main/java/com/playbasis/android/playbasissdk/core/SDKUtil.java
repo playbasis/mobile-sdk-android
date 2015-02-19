@@ -24,6 +24,10 @@ public class SDKUtil {
     
     public static final String QUEST_URL = "/Quest";
     public static final String _QUEST_URL = QUEST_URL + "/";
+    
+    public static final String QUIZ_URL = "/Quiz";
+    public static final String _QUIZ_URL = QUIZ_URL + "/";
+
 
     public static final String GOOD_GROUP_URL = "/Redeem/goodsGroup";
 
