@@ -9,6 +9,7 @@ import android.view.MenuItem;
 import com.playbasis.android.playbasissdk.api.AuthToken;
 import com.playbasis.android.playbasissdk.api.BadgeApi;
 import com.playbasis.android.playbasissdk.api.CommunicationApi;
+import com.playbasis.android.playbasissdk.api.EngineApi;
 import com.playbasis.android.playbasissdk.api.GoodsApi;
 import com.playbasis.android.playbasissdk.api.OnResult;
 import com.playbasis.android.playbasissdk.api.PlayerApi;
@@ -18,6 +19,7 @@ import com.playbasis.android.playbasissdk.api.RedeemApi;
 import com.playbasis.android.playbasissdk.core.Playbasis;
 import com.playbasis.android.playbasissdk.helper.Validator;
 import com.playbasis.android.playbasissdk.http.HttpError;
+import com.playbasis.android.playbasissdk.model.ActionConfig;
 import com.playbasis.android.playbasissdk.model.Badge;
 import com.playbasis.android.playbasissdk.model.Gender;
 import com.playbasis.android.playbasissdk.model.Goods;
@@ -28,6 +30,7 @@ import com.playbasis.android.playbasissdk.model.QuizDetail;
 import com.playbasis.android.playbasissdk.model.Rank;
 import com.playbasis.android.playbasissdk.model.Ranks;
 import com.playbasis.android.playbasissdk.model.RedeemEvent;
+import com.playbasis.android.playbasissdk.model.Rule;
 
 import java.util.Arrays;
 import java.util.List;
@@ -352,6 +355,41 @@ public class MainActivity extends Activity {
                 Log.d("","");
             }
         } );
+
+        EngineApi.actionConfig(playbasis, new OnResult<ActionConfig>() {
+            @Override
+            public void onSuccess(ActionConfig result) {
+                Log.d("","");
+            }
+
+            @Override
+            public void onError(HttpError error) {
+                Log.d("","");
+            }
+        });
+        
+        EngineApi.rule(playbasis, false, "like", "jontestuser", null,null,null, new OnResult<Rule>() {
+            @Override
+            public void onSuccess(Rule result) {
+                Log.d("","");
+            }
+
+            @Override
+            public void onError(HttpError error) {
+                Log.d("","");
+            }
+        });
+        EngineApi.rule(playbasis, true, "like", "jontestuser", null,null,null, new OnResult<Rule>() {
+            @Override
+            public void onSuccess(Rule result) {
+                Log.d("","");
+            }
+
+            @Override
+            public void onError(HttpError error) {
+                Log.d("","");
+            }
+        });
         
     }
     
