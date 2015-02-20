@@ -33,6 +33,9 @@ public class SDKUtil {
     
     public static final String ENGINE_URL = "/Engine";
     public static final String _ENGINE_URL = ENGINE_URL + "/";
+    
+    public static final String SERVICE_URL = "/Service";
+    public static final String _SERVICE_URL = SERVICE_URL + "/";
 
     public static final String _EMAIL_API = "/Email/";
     public static final String _SMS_API = "/Sms/";

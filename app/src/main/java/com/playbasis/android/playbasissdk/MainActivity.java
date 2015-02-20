@@ -16,6 +16,7 @@ import com.playbasis.android.playbasissdk.api.PlayerApi;
 import com.playbasis.android.playbasissdk.api.QuestApi;
 import com.playbasis.android.playbasissdk.api.QuizApi;
 import com.playbasis.android.playbasissdk.api.RedeemApi;
+import com.playbasis.android.playbasissdk.api.ServiceApi;
 import com.playbasis.android.playbasissdk.core.Playbasis;
 import com.playbasis.android.playbasissdk.helper.Validator;
 import com.playbasis.android.playbasissdk.http.HttpError;
@@ -24,6 +25,7 @@ import com.playbasis.android.playbasissdk.model.Badge;
 import com.playbasis.android.playbasissdk.model.Gender;
 import com.playbasis.android.playbasissdk.model.Goods;
 import com.playbasis.android.playbasissdk.model.Player;
+import com.playbasis.android.playbasissdk.model.Point;
 import com.playbasis.android.playbasissdk.model.Quest;
 import com.playbasis.android.playbasissdk.model.Quiz;
 import com.playbasis.android.playbasissdk.model.QuizDetail;
@@ -382,6 +384,18 @@ public class MainActivity extends Activity {
         EngineApi.rule(playbasis, true, "like", "jontestuser", null,null,null, new OnResult<Rule>() {
             @Override
             public void onSuccess(Rule result) {
+                Log.d("","");
+            }
+
+            @Override
+            public void onError(HttpError error) {
+                Log.d("","");
+            }
+        });
+
+        ServiceApi.recentPoint(playbasis,null,null,null, new OnResult<List<Point>>() {
+            @Override
+            public void onSuccess(List<Point> result) {
                 Log.d("","");
             }
 
