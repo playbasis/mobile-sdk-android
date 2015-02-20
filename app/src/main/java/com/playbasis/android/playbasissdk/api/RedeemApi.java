@@ -26,7 +26,7 @@ public class RedeemApi extends Api {
     public static final String TAG = "RedeemApi";
 
 
-    public static void goods(@NonNull Playbasis playbasis, Boolean isAsync,
+    public static void goods(@NonNull Playbasis playbasis, boolean isAsync,
                                        @NonNull String goodId, @NonNull String playerId, Integer amount,
                                        final OnResult<List<RedeemEvent>>listener ){
         String endpoint = SDKUtil._REDEEM_API + "/goods";
@@ -85,7 +85,7 @@ public class RedeemApi extends Api {
         }
     }
 
-    public static void goodsGroup(@NonNull Playbasis playbasis, Boolean isAsync,
+    public static void goodsGroup(@NonNull Playbasis playbasis, boolean isAsync,
                                        @NonNull String groupId, @NonNull String playerId, Integer amount,
                                        final OnResult<List<RedeemEvent>>listener ){
 

@@ -76,7 +76,7 @@ public class QuizApi extends Api  {
     public static void activeList(@NonNull Playbasis playbasis, @NonNull String playerId,
                               final OnResult<List<Quiz>>listener ){
 
-        String uri = SDKUtil.getServerUrl(false) + SDKUtil._QUIZ_URL  + "list";
+        String uri = SDKUtil.SERVER_URL + SDKUtil._QUIZ_URL  + "list";
 
         List<NameValuePair> params = new ArrayList<>();
         params.add(new BasicNameValuePair("player_id", playerId));
@@ -87,7 +87,7 @@ public class QuizApi extends Api  {
     public static void detail(@NonNull Playbasis playbasis, @NonNull String quizId, @NonNull String playerId,
                               final OnResult<QuizDetail>listener ){
 
-        String uri = SDKUtil.getServerUrl(false) + SDKUtil._QUIZ_URL + quizId + "/detail";
+        String uri = SDKUtil.SERVER_URL + SDKUtil._QUIZ_URL + quizId + "/detail";
 
         List<NameValuePair> params = new ArrayList<>();
         params.add(new BasicNameValuePair("player_id", playerId));
@@ -114,7 +114,7 @@ public class QuizApi extends Api  {
     public static void random(@NonNull Playbasis playbasis, @NonNull String playerId,
                               final OnResult<Quiz>listener ){
 
-        String uri = SDKUtil.getServerUrl(false) + SDKUtil._QUIZ_URL  + "random";
+        String uri = SDKUtil.SERVER_URL + SDKUtil._QUIZ_URL  + "random";
 
         List<NameValuePair> params = new ArrayList<>();
         params.add(new BasicNameValuePair("player_id", playerId));
@@ -125,7 +125,7 @@ public class QuizApi extends Api  {
     public static void recentDone(@NonNull Playbasis playbasis, @NonNull String playerId, Integer limit,
                                   final OnResult<List<Quiz>>listener ){
 
-        String uri = SDKUtil.getServerUrl(false) + SDKUtil._QUIZ_URL  + "players/" + playerId + "/" + String.valueOf
+        String uri = SDKUtil.SERVER_URL + SDKUtil._QUIZ_URL  + "players/" + playerId + "/" + String.valueOf
                 (limit==null ? 5 : limit);
 
 
@@ -135,7 +135,7 @@ public class QuizApi extends Api  {
     public static void recentPending(@NonNull Playbasis playbasis, @NonNull String playerId, Integer limit,
                                   final OnResult<List<Quiz>>listener ){
 
-        String uri = SDKUtil.getServerUrl(false) + SDKUtil._QUIZ_URL  + "players/" + playerId + "/pending/" + String
+        String uri = SDKUtil.SERVER_URL + SDKUtil._QUIZ_URL  + "players/" + playerId + "/pending/" + String
                 .valueOf
                         (limit == null ? 5 : limit);
 
@@ -145,7 +145,7 @@ public class QuizApi extends Api  {
     public static void rank(@NonNull Playbasis playbasis, @NonNull String quizId, Integer limit,
                               final OnResult<QuizRank>listener ){
 
-        String uri = SDKUtil.getServerUrl(false) + SDKUtil._QUIZ_URL + quizId + "/rank/" + String.valueOf(limit==null
+        String uri = SDKUtil.SERVER_URL + SDKUtil._QUIZ_URL + quizId + "/rank/" + String.valueOf(limit==null
                 ? 5 : limit);
 
         JsonObjectGET(playbasis, uri, null, new OnResult<JSONObject>() {
@@ -170,7 +170,7 @@ public class QuizApi extends Api  {
     public static void qestions(@NonNull Playbasis playbasis, @NonNull String quizId, @NonNull String playerId,
                             final OnResult<List<QuizQuestion>>listener ){
 
-        String uri = SDKUtil.getServerUrl(false) + SDKUtil._QUIZ_URL + quizId + "/question";
+        String uri = SDKUtil.SERVER_URL + SDKUtil._QUIZ_URL + quizId + "/question";
 
         List<NameValuePair> params = new ArrayList<>();
         params.add(new BasicNameValuePair("player_id", playerId));
@@ -196,7 +196,7 @@ public class QuizApi extends Api  {
     }
 
 
-    private static void answerQuestion(@NonNull Playbasis playbasis, Boolean isAsync,
+    private static void answerQuestion(@NonNull Playbasis playbasis, boolean isAsync,
                                   @NonNull String quizId, @NonNull String playerId, @NonNull String questionId,
                                   @NonNull String optionId, final OnResult<Map<String, Object>>listener ){
 

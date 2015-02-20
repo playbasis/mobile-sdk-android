@@ -96,19 +96,19 @@ public class QuestApi extends Api {
     
 
     public static void listInfo(@NonNull Playbasis playbasis , final OnResult<List<Quest>>listener){
-        String uri = SDKUtil.getServerUrl(false) + SDKUtil.QUEST_URL;
+        String uri = SDKUtil.SERVER_URL + SDKUtil.QUEST_URL;
         quests(playbasis,uri, null,listener);
         
     }
 
     public static void info(@NonNull Playbasis playbasis, @NonNull String questId, final OnResult<Quest>listener){
-        String uri = SDKUtil.getServerUrl(false) + SDKUtil._QUEST_URL + questId;
+        String uri = SDKUtil.SERVER_URL + SDKUtil._QUEST_URL + questId;
         quest(playbasis,uri, null,listener);
     }
 
     public static void missionInfo(@NonNull Playbasis playbasis, @NonNull String questId, @NonNull String missionId,
                                    final OnResult<Mission>listener){
-        String uri = SDKUtil.getServerUrl(false) + SDKUtil._QUEST_URL + questId + "/mission/" + missionId;
+        String uri = SDKUtil.SERVER_URL + SDKUtil._QUEST_URL + questId + "/mission/" + missionId;
 
         JsonObjectGET(playbasis, uri, null, new OnResult<JSONObject>() {
             @Override
@@ -126,7 +126,7 @@ public class QuestApi extends Api {
     
     public static void questsAvailable(@NonNull Playbasis playbasis, @NonNull String playerId,
                                   final OnResult<List<Quest>>listener){
-        String uri = SDKUtil.getServerUrl(false) + SDKUtil._QUEST_URL + "available";
+        String uri = SDKUtil.SERVER_URL + SDKUtil._QUEST_URL + "available";
         List<NameValuePair> params = new ArrayList<>();
         params.add(new BasicNameValuePair("player_id", playerId));
         quests(playbasis, uri, params,listener);
@@ -134,14 +134,14 @@ public class QuestApi extends Api {
     
     public static void questAvailable(@NonNull Playbasis playbasis, @NonNull String playerId, 
                                       @NonNull String questId, final OnResult<Quest> listener) {
-        String uri = SDKUtil.getServerUrl(false) + SDKUtil._QUEST_URL + questId + "/available";
+        String uri = SDKUtil.SERVER_URL + SDKUtil._QUEST_URL + questId + "/available";
         List<NameValuePair> params = new ArrayList<>();
         params.add(new BasicNameValuePair("player_id", playerId));
         quest(playbasis,uri, params,listener);
         
     }
     
-    public static void join(@NonNull Playbasis playbasis, Boolean isAsync, @NonNull String questId, 
+    public static void join(@NonNull Playbasis playbasis, boolean isAsync, @NonNull String questId,
                             @NonNull String playerId, final OnResult<Map<String, Object>>listener ){
 
         String endpoint = SDKUtil._QUEST_URL + questId + "/join";
@@ -173,7 +173,7 @@ public class QuestApi extends Api {
         }
     }
 
-    public static void joinAll(@NonNull Playbasis playbasis, Boolean isAsync,
+    public static void joinAll(@NonNull Playbasis playbasis, boolean isAsync,
                             @NonNull String playerId, final OnResult<Map<String, Object>>listener ){
 
         String endpoint = SDKUtil._QUEST_URL + "joinAll";
@@ -227,7 +227,7 @@ public class QuestApi extends Api {
 
     }
 
-    public static void cancel(@NonNull Playbasis playbasis, Boolean isAsync, @NonNull String questId,
+    public static void cancel(@NonNull Playbasis playbasis, boolean isAsync, @NonNull String questId,
                             @NonNull String playerId, final OnResult<Map<String, Object>>listener ){
 
         String endpoint = SDKUtil._QUEST_URL + questId + "/cancel";

@@ -22,7 +22,7 @@ public class BadgeApi extends Api {
     public static final String TAG = "BadgeApi";
 
     public static void badges(@NonNull Playbasis playbasis, final OnResult<List<Badge>> listener){
-        String uri = SDKUtil.getServerUrl(false) + SDKUtil.BADGES_URL;
+        String uri = SDKUtil.SERVER_URL + SDKUtil.BADGES_URL;
 
         JsonObjectGET(playbasis, uri, null, new OnResult<JSONObject>() {
             @Override
@@ -44,7 +44,7 @@ public class BadgeApi extends Api {
 
     public static void badge(@NonNull Playbasis playbasis, @NonNull String badgeId,
                              final OnResult<Badge> listener) {
-        String uri = SDKUtil.getServerUrl(false) + SDKUtil._BADGE_URL + badgeId;
+        String uri = SDKUtil.SERVER_URL + SDKUtil._BADGE_URL + badgeId;
 
         JsonObjectGET(playbasis, uri, null, new OnResult<JSONObject>() {
             @Override

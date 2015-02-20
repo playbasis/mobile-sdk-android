@@ -24,7 +24,7 @@ import java.util.List;
 public class CommunicationApi  extends Api{
     public static final String TAG = "CommunicationApi";
 
-    public static void sendEmail(@NonNull Playbasis playbasis, Boolean isAsync,
+    public static void sendEmail(@NonNull Playbasis playbasis, boolean isAsync,
                              @NonNull String playerId, @NonNull String subject, String message, String templateId,
                              final OnResult<List<String>>listener ){
 
@@ -82,7 +82,7 @@ public class CommunicationApi  extends Api{
         }
     }
 
-    public static void sendEmailCoupon(@NonNull Playbasis playbasis, Boolean isAsync,
+    public static void sendEmailCoupon(@NonNull Playbasis playbasis, boolean isAsync,
                                  @NonNull String playerId, @NonNull String refId, @NonNull String subject,
                                  String message, String templateId,
                                  final OnResult<List<String>>listener ){
@@ -144,7 +144,7 @@ public class CommunicationApi  extends Api{
     }
 
 
-    public static void sendSms(@NonNull Playbasis playbasis, Boolean isAsync,
+    public static void sendSms(@NonNull Playbasis playbasis, boolean isAsync,
                                  @NonNull String playerId, String message, String templateId,
                                  final OnResult<List<String>>listener ){
         String endpoint = SDKUtil._SMS_API + "/send";
@@ -197,7 +197,7 @@ public class CommunicationApi  extends Api{
         }
     }
 
-    public static void sendSmsCoupon(@NonNull Playbasis playbasis, Boolean isAsync,
+    public static void sendSmsCoupon(@NonNull Playbasis playbasis, boolean isAsync,
                                        @NonNull String playerId, @NonNull String refId,
                                        String message, String templateId,
                                        final OnResult<List<String>>listener ){
@@ -253,7 +253,7 @@ public class CommunicationApi  extends Api{
         }
     }
 
-    public static void sendPush(@NonNull Playbasis playbasis, Boolean isAsync,
+    public static void sendPush(@NonNull Playbasis playbasis, boolean isAsync,
                                  @NonNull String playerId, String message, String templateId,
                                  final OnResult<List<String>>listener ){
         
@@ -307,7 +307,7 @@ public class CommunicationApi  extends Api{
         }
     }
 
-    public static void sendPushCoupon(@NonNull Playbasis playbasis, Boolean isAsync,
+    public static void sendPushCoupon(@NonNull Playbasis playbasis, boolean isAsync,
                                        @NonNull String playerId, @NonNull String refId,
                                        String message, String templateId,
                                        final OnResult<List<String>>listener ){
