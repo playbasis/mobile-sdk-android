@@ -1,6 +1,8 @@
 package com.playbasis.android.playbasissdk.http;
 
 import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 
 import com.playbasis.android.playbasissdk.http.toolbox.Http;
 import com.playbasis.android.playbasissdk.http.toolbox.ImageLoader;
@@ -76,5 +78,6 @@ public class HttpManager {
             mRequestQueue.cancelAll(tag);
         }
     }
+    
 
 }

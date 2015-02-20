@@ -1,6 +1,8 @@
 package com.playbasis.android.playbasissdk.core;
 
 import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
@@ -130,6 +132,17 @@ public class Playbasis {
         private KeyStore mKeyStore = new KeyStore();
         private String mChannel;
     }
-    
+
+
+    /**
+     * Return true if the network is available
+     * @return network is available.
+     */
+    public boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
     
 }

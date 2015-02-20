@@ -11,6 +11,7 @@ import com.playbasis.android.playbasissdk.http.toolbox.JSONArrayRequest;
 import com.playbasis.android.playbasissdk.http.toolbox.JSONObjectRequest;
 import com.playbasis.android.playbasissdk.http.toolbox.ParamsHelper;
 import com.playbasis.android.playbasissdk.http.toolbox.StringRequest;
+import com.playbasis.android.playbasissdk.secure.RequestStorage;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
@@ -65,8 +66,15 @@ public abstract class Api {
     }
 
     protected static void JsonObjectPOST(final Playbasis playbasis, String uri, final List<NameValuePair> httpParams,
-                                        final OnResult<JSONObject>
-                                                listener) {
+                                        final OnResult<JSONObject> listener) {
+        if (!playbasis.isNetworkAvailable()){
+            RequestStorage storage = new RequestStorage();
+            storage.saveRequest(playbasis, uri , httpParams);
+        }
+        
+        
+        
+        
         HttpsTrustManager.allowAllSSL();
         final JSONObjectRequest jsonObjReq = new JSONObjectRequest(Request.Method.POST,
                 uri, null,
@@ -179,7 +187,6 @@ public abstract class Api {
                                         final OnResult<String>
                                                 listener) {
         HttpsTrustManager.allowAllSSL();
-
         //Add params to the request
         if(params==null) params = new ArrayList<>();
         params.add(new BasicNameValuePair("api_key", playbasis.getKeyStore().getApiKey()));
