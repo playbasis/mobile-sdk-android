@@ -1,5 +1,7 @@
 package com.playbasis.android.playbasissdk.model;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.playbasis.android.playbasissdk.core.SDKUtil;
@@ -9,6 +11,8 @@ import com.playbasis.android.playbasissdk.http.toolbox.HttpModel;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -698,6 +702,13 @@ public class Player implements HttpModel{
         if(Validator.isValid(birthDate))    params.add(new BasicNameValuePair("birth_date", birthDate));
         
         return params;
+    }
+    
+    public JSONObject toJson() throws JSONException {
+        Gson gson = new GsonBuilder().create();
+        String s = gson.toJson(this);
+        return new JSONObject(s);
+        
     }
 
 

@@ -122,20 +122,7 @@ public class MainActivity extends Activity {
                 Log.d("main", error.toString());
             }
         });
-        
-/*        Player player = new Player("greg@smartsoftasia.com", "greg", "greg").withGender(Gender.MALE).withPassword
-                ("password");
-        PlayerApi.register(playbasis, player, new OnResult<String>() {
-            @Override
-            public void onSuccess(String result) {
-                Log.d("main", result);
-            }
 
-            @Override
-            public void onError(HttpError error) {
-                Log.d("main", error.toString());
-            }
-        });*/
 
         PlayerApi.badges(playbasis, "jontestuser", new OnResult<List<Badge>>() {
             @Override
@@ -264,12 +251,10 @@ public class MainActivity extends Activity {
             @Override
             public void onSuccess(List<Quest> result) {
                 Log.d("","");
-                Log.d("","");
             }
 
             @Override
             public void onError(HttpError error) {
-                Log.d("","");
                 Log.d("","");
             }
         } );
@@ -278,12 +263,10 @@ public class MainActivity extends Activity {
             @Override
             public void onSuccess(Map<String, Object> result) {
                 Log.d("","");
-                Log.d("","");
             }
 
             @Override
             public void onError(HttpError error) {
-                Log.d("","");
                 Log.d("","");
             }
         } );
@@ -292,12 +275,10 @@ public class MainActivity extends Activity {
             @Override
             public void onSuccess(Map<String, Object> result) {
                 Log.d("","");
-                Log.d("","");
             }
 
             @Override
             public void onError(HttpError error) {
-                Log.d("","");
                 Log.d("","");
             }
         } );
@@ -306,12 +287,10 @@ public class MainActivity extends Activity {
             @Override
             public void onSuccess(Map<String, Object> result) {
                 Log.d("","");
-                Log.d("","");
             }
 
             @Override
             public void onError(HttpError error) {
-                Log.d("","");
                 Log.d("","");
             }
         });
@@ -320,12 +299,10 @@ public class MainActivity extends Activity {
             @Override
             public void onSuccess(QuizDetail result) {
                 Log.d("","");
-                Log.d("","");
             }
 
             @Override
             public void onError(HttpError error) {
-                Log.d("","");
                 Log.d("","");
             }
         });
@@ -334,12 +311,10 @@ public class MainActivity extends Activity {
             @Override
             public void onSuccess(List<RedeemEvent> result) {
                 Log.d("","");
-                Log.d("","");
             }
 
             @Override
             public void onError(HttpError error) {
-                Log.d("","");
                 Log.d("","");
             }
         } );

@@ -144,8 +144,33 @@ public class QuestApi extends Api {
     public static void join(@NonNull Playbasis playbasis, Boolean isAsync, @NonNull String questId, 
                             @NonNull String playerId, final OnResult<Map<String, Object>>listener ){
 
-        String uri = SDKUtil.getServerUrl(isAsync) + SDKUtil._QUEST_URL + questId + "/join";
-        postQuest(playbasis, uri, playerId, listener);
+        String endpoint = SDKUtil._QUEST_URL + questId + "/join";
+        if(isAsync){
+
+            JSONObject jsonObject = null;
+            try {
+                jsonObject = JsonHelper.newJsonWithToken(playbasis.getAuthenticator());
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            Async.postData(playbasis, endpoint ,jsonObject , new OnResult<String>() {
+                @Override
+                public void onSuccess(String result) {
+                    if (listener != null) listener.onSuccess(null);
+                }
+
+                @Override
+                public void onError(HttpError error) {
+                    if (listener != null) listener.onError(error);
+                }
+            });
+
+
+        }else {
+
+            String uri = SDKUtil.SERVER_URL + endpoint ;
+            postQuest(playbasis, uri, playerId, listener);
+        }
     }
 
     public static void joinAll(@NonNull Playbasis playbasis, Boolean isAsync,
@@ -205,7 +230,32 @@ public class QuestApi extends Api {
     public static void cancel(@NonNull Playbasis playbasis, Boolean isAsync, @NonNull String questId,
                             @NonNull String playerId, final OnResult<Map<String, Object>>listener ){
 
-        String uri = SDKUtil.getServerUrl(isAsync) + SDKUtil._QUEST_URL + questId + "/cancel";
-        postQuest(playbasis,uri,playerId,listener);
+        String endpoint = SDKUtil._QUEST_URL + questId + "/cancel";
+        if(isAsync){
+
+            JSONObject jsonObject = null;
+            try {
+                jsonObject = JsonHelper.newJsonWithToken(playbasis.getAuthenticator());
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            Async.postData(playbasis, endpoint ,jsonObject , new OnResult<String>() {
+                @Override
+                public void onSuccess(String result) {
+                    if (listener != null) listener.onSuccess(null);
+                }
+
+                @Override
+                public void onError(HttpError error) {
+                    if (listener != null) listener.onError(error);
+                }
+            });
+
+
+        }else {
+
+            String uri = SDKUtil.SERVER_URL + endpoint;
+            postQuest(playbasis, uri, playerId, listener);
+        }
     }
 }

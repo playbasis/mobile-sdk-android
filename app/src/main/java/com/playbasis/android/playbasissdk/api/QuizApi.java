@@ -199,30 +199,61 @@ public class QuizApi extends Api  {
     private static void answerQuestion(@NonNull Playbasis playbasis, Boolean isAsync,
                                   @NonNull String quizId, @NonNull String playerId, @NonNull String questionId,
                                   @NonNull String optionId, final OnResult<Map<String, Object>>listener ){
-        String uri = SDKUtil.getServerUrl(isAsync) + SDKUtil._QUIZ_URL + quizId + "/answer";
-        
-        List<NameValuePair> params = new ArrayList<>();
-        params.add(new BasicNameValuePair("player_id", playerId));
-        params.add(new BasicNameValuePair("question_id", questionId));
-        params.add(new BasicNameValuePair("option_id", optionId));
 
-        JsonObjectPOST(playbasis, uri, params, new OnResult<JSONObject>() {
-            @Override
-            @SuppressWarnings("unchecked")
-            public void onSuccess(JSONObject result) {
-                try {
-                    HashMap<String,Object> events = JsonHelper.FromJsonObject(result.getJSONObject("result"), HashMap.class);
-                    if (listener != null) listener.onSuccess(events);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                    if (listener != null) listener.onError(new HttpError(e));
+        String endpoint = SDKUtil._QUIZ_URL + quizId + "/answer";
+        if(isAsync){
+
+            JSONObject jsonObject = null;
+            try {
+                jsonObject = JsonHelper.newJsonWithToken(playbasis.getAuthenticator());
+                jsonObject.put("player_id", playerId);
+                jsonObject.put("question_id", questionId);
+                jsonObject.put("option_id", optionId);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            Async.postData(playbasis, endpoint ,jsonObject , new OnResult<String>() {
+                @Override
+                public void onSuccess(String result) {
+                    if (listener != null) listener.onSuccess(null);
                 }
-            }
 
-            @Override
-            public void onError(HttpError error) {
-                if (listener != null) listener.onError(error);
-            }
-        });
+                @Override
+                public void onError(HttpError error) {
+                    if (listener != null) listener.onError(error);
+                }
+            });
+
+
+        }else {
+
+            String uri = SDKUtil.SERVER_URL + endpoint;
+
+            List<NameValuePair> params = new ArrayList<>();
+            params.add(new BasicNameValuePair("player_id", playerId));
+            params.add(new BasicNameValuePair("question_id", questionId));
+            params.add(new BasicNameValuePair("option_id", optionId));
+
+            JsonObjectPOST(playbasis, uri, params, new OnResult<JSONObject>() {
+                @Override
+                @SuppressWarnings("unchecked")
+                public void onSuccess(JSONObject result) {
+                    try {
+                        HashMap<String,Object> events = JsonHelper.FromJsonObject(result.getJSONObject("result"), HashMap.class);
+                        if (listener != null) listener.onSuccess(events);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                        if (listener != null) listener.onError(new HttpError(e));
+                    }
+                }
+
+                @Override
+                public void onError(HttpError error) {
+                    if (listener != null) listener.onError(error);
+                }
+            });
+        }
+        
+      
     }
 }
