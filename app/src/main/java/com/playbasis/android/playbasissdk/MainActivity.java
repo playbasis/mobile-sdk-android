@@ -32,8 +32,9 @@ import com.playbasis.android.playbasissdk.model.QuizDetail;
 import com.playbasis.android.playbasissdk.model.Rank;
 import com.playbasis.android.playbasissdk.model.Ranks;
 import com.playbasis.android.playbasissdk.model.RedeemEvent;
+import com.playbasis.android.playbasissdk.model.Request;
 import com.playbasis.android.playbasissdk.model.Rule;
-import com.playbasis.android.playbasissdk.secure.Conceal;
+import com.playbasis.android.playbasissdk.secure.RequestStorage;
 
 import java.util.Arrays;
 import java.util.List;
@@ -382,10 +383,12 @@ public class MainActivity extends Activity {
         });
 
 
-        Conceal conceal = new Conceal(this);
-        conceal.write("hello");
-        String hello = conceal.read();
-        Log.d("conceal", hello);
+        RequestStorage storage = new RequestStorage(this);
+        storage.saveRequest(playbasis, "test1", null);
+        storage.saveRequest(playbasis, "test2", null);
+        List<Request> requests = storage.readAll();
+        Log.d("conceal", requests.toString());
+
     }
     
 

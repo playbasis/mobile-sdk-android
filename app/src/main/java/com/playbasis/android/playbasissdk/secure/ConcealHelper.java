@@ -24,8 +24,20 @@ import java.io.OutputStream;
  */
 public class ConcealHelper {
     public static final String TAG = "ConcrealHelper";
-    
-    public static void encryptFile(Context context, File file, Entity entity, byte[] plainTextBytes) throws IOException, KeyChainException, CryptoInitializationException {
+
+    /**
+     * Write data into the encryptFile, override previous data. 
+     * @param context Context of the application.
+     * @param file File to write.
+     * @param entity Conceal entity.
+     * @param plainTextBytes Data to write.
+     * @throws IOException
+     * @throws KeyChainException
+     * @throws CryptoInitializationException
+     * @return operation success. 
+     */
+    public static Boolean encryptFile(Context context, File file, Entity entity, byte[] plainTextBytes) throws IOException,
+            KeyChainException, CryptoInitializationException {
         // Creates a new Crypto object with default implementations of
 // a key chain as well as native library.
         Crypto crypto = new Crypto(
@@ -35,7 +47,7 @@ public class ConcealHelper {
 // Check for whether the crypto functionality is available
 // This might fail if android does not load libaries correctly.
         if (!crypto.isAvailable()) {
-            return;
+            return false;
         }
 
         OutputStream fileStream = new BufferedOutputStream(
@@ -50,9 +62,19 @@ public class ConcealHelper {
 // Write plaintext to it.
         outputStream.write(plainTextBytes);
         outputStream.close();
-        
+        return true;
     }
-    
+
+    /**
+     * Read the encrypt String file.
+     * @param context Context of the application.
+     * @param file File to read.
+     * @param entity Conceal entity.
+     * @return File string.
+     * @throws IOException
+     * @throws KeyChainException
+     * @throws CryptoInitializationException
+     */
     public static String decryptFile(Context context, File file, Entity entity) throws IOException, KeyChainException, 
             CryptoInitializationException {
         String content = "";
@@ -81,7 +103,6 @@ public class ConcealHelper {
 // Thus not reading till the end of the stream will cause
 // a security bug.
         while ((read = inputStream.read(buffer)) != -1) {
-          //  out.write(buffer, 0, read);
             content += new String(buffer,0, read);
         }
 

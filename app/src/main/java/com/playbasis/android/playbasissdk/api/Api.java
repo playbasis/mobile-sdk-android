@@ -68,7 +68,7 @@ public abstract class Api {
     protected static void JsonObjectPOST(final Playbasis playbasis, String uri, final List<NameValuePair> httpParams,
                                         final OnResult<JSONObject> listener) {
         if (!playbasis.isNetworkAvailable()){
-            RequestStorage storage = new RequestStorage();
+            RequestStorage storage = new RequestStorage(playbasis.getContext());
             storage.saveRequest(playbasis, uri , httpParams);
         }
 
