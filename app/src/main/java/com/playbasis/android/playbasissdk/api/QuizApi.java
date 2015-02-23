@@ -193,7 +193,7 @@ public class QuizApi extends Api  {
     }
 
     /**
-     *
+     * Rank players by their scores for a give quiz.
      * @param playbasis Playbasis object.
      * @param quizId Quiz id.
      * @param limit Limit number of quizzes.
@@ -260,6 +260,16 @@ public class QuizApi extends Api  {
     }
 
 
+    /**
+     * Submit a player's answer for a question for a given quiz.
+     * @param playbasis Playbasis object.
+     * @param isAsync make the request async
+     * @param quizId quiz id
+     * @param playerId player id as used in client's website
+     * @param questionId question id
+     * @param optionId option id
+     * @param listener Callback interface.
+     */
     public static void answerQuestion(@NonNull Playbasis playbasis, boolean isAsync,
                                   @NonNull String quizId, @NonNull String playerId, @NonNull String questionId,
                                   @NonNull String optionId, final OnResult<QuizQuestionAnswer>listener ){

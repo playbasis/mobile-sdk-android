@@ -6,6 +6,7 @@ import com.playbasis.android.playbasissdk.core.Playbasis;
 import com.playbasis.android.playbasissdk.core.SDKUtil;
 import com.playbasis.android.playbasissdk.helper.JsonHelper;
 import com.playbasis.android.playbasissdk.http.HttpError;
+import com.playbasis.android.playbasissdk.model.Event;
 import com.playbasis.android.playbasissdk.model.Mission;
 import com.playbasis.android.playbasissdk.model.Quest;
 
@@ -53,7 +54,7 @@ public class QuestApi extends Api {
             @Override
             public void onSuccess(JSONObject result) {
                 try {
-                    Quest quest = JsonHelper.FromJsonObject(result.getJSONObject("quests"), Quest.class);
+                    Quest quest = JsonHelper.FromJsonObject(result.getJSONObject("quest"), Quest.class);
                     if (listener != null) listener.onSuccess(quest);
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -69,7 +70,7 @@ public class QuestApi extends Api {
     }
 
     private static void postQuest(@NonNull Playbasis playbasis, @NonNull String uri,
-                              @NonNull String playerId, final OnResult<Map<String, Object>>listener ){
+                              @NonNull String playerId, final OnResult<Event>listener ){
 
         List<NameValuePair> params = new ArrayList<>();
         params.add(new BasicNameValuePair("player_id", playerId));
@@ -79,7 +80,7 @@ public class QuestApi extends Api {
             @SuppressWarnings("unchecked")
             public void onSuccess(JSONObject result) {
                 try {
-                    HashMap<String,Object> events = JsonHelper.FromJsonObject(result.getJSONObject("events"), HashMap.class);
+                    Event events = JsonHelper.FromJsonObject(result.getJSONObject("events"), Event.class);
                     if (listener != null) listener.onSuccess(events);
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -93,19 +94,37 @@ public class QuestApi extends Api {
             }
         });
     }
-    
 
+
+    /**
+     * Returns information about all quest for the current site.
+     * @param playbasis Playbasis object.
+     * @param listener Callback interface.
+     */
     public static void listInfo(@NonNull Playbasis playbasis , final OnResult<List<Quest>>listener){
         String uri = SDKUtil.SERVER_URL + SDKUtil.QUEST_URL;
         quests(playbasis,uri, null,listener);
         
     }
 
+    /**
+     *  Returns information about the quest with the specified id.
+     * @param playbasis Playbasis object.
+     * @param questId quest id to query
+     * @param listener Callback interface.
+     */
     public static void info(@NonNull Playbasis playbasis, @NonNull String questId, final OnResult<Quest>listener){
         String uri = SDKUtil.SERVER_URL + SDKUtil._QUEST_URL + questId;
         quest(playbasis,uri, null,listener);
     }
 
+    /**
+     *  Returns information about the mission with the specified id.
+     * @param playbasis Playbasis object.
+     * @param questId Quest id to query.
+     * @param missionId Mission id to query.
+     * @param listener Callback interface.
+     */
     public static void missionInfo(@NonNull Playbasis playbasis, @NonNull String questId, @NonNull String missionId,
                                    final OnResult<Mission>listener){
         String uri = SDKUtil.SERVER_URL + SDKUtil._QUEST_URL + questId + "/mission/" + missionId;
@@ -123,7 +142,13 @@ public class QuestApi extends Api {
             }
         });
     }
-    
+
+    /**
+     *
+     * @param playbasis Playbasis object.
+     * @param playerId Player id as used in client's website.
+     * @param listener Callback interface.
+     */
     public static void questsAvailable(@NonNull Playbasis playbasis, @NonNull String playerId,
                                   final OnResult<List<Quest>>listener){
         String uri = SDKUtil.SERVER_URL + SDKUtil._QUEST_URL + "available";
@@ -131,18 +156,44 @@ public class QuestApi extends Api {
         params.add(new BasicNameValuePair("player_id", playerId));
         quests(playbasis, uri, params,listener);
     }
-    
+
+    /**
+     * Returns information about the quest is available for player.
+     * @param playbasis Playbasis object.
+     * @param playerId Player id as used in client's website.
+     * @param questId Quest id to query.
+     * @param listener Callback interface.
+     */
     public static void questAvailable(@NonNull Playbasis playbasis, @NonNull String playerId, 
-                                      @NonNull String questId, final OnResult<Quest> listener) {
+                                      @NonNull String questId, final OnResult<Event> listener) {
         String uri = SDKUtil.SERVER_URL + SDKUtil._QUEST_URL + questId + "/available";
         List<NameValuePair> params = new ArrayList<>();
         params.add(new BasicNameValuePair("player_id", playerId));
-        quest(playbasis,uri, params,listener);
+        JsonObjectGET(playbasis, uri, params, new OnResult<JSONObject>() {
+            @Override
+            public void onSuccess(JSONObject result) {
+                    Event event = JsonHelper.FromJsonObject(result, Event.class);
+                    if (listener != null) listener.onSuccess(event);
+            }
+
+            @Override
+            public void onError(HttpError error) {
+                if (listener != null) listener.onError(error);
+            }
+        });
         
     }
-    
+
+    /**
+     * Request access token from playbasis server.
+     * @param playbasis Playbasis object.
+     * @param isAsync Make the request async.
+     * @param questId Quest id as player need to join.
+     * @param playerId Player id as used in client's website.
+     * @param listener Callback interface.
+     */
     public static void join(@NonNull Playbasis playbasis, boolean isAsync, @NonNull String questId,
-                            @NonNull String playerId, final OnResult<Map<String, Object>>listener ){
+                            @NonNull String playerId, final OnResult<Event>listener ){
 
         String endpoint = SDKUtil._QUEST_URL + questId + "/join";
         if(isAsync){
@@ -173,6 +224,13 @@ public class QuestApi extends Api {
         }
     }
 
+    /**
+     * Player join all available quests.
+     * @param playbasis Playbasis object.
+     * @param isAsync  Make the request async.
+     * @param playerId Player id as used in client's website.
+     * @param listener Callback interface.
+     */
     public static void joinAll(@NonNull Playbasis playbasis, boolean isAsync,
                             @NonNull String playerId, final OnResult<Map<String, Object>>listener ){
 
@@ -227,8 +285,16 @@ public class QuestApi extends Api {
 
     }
 
+    /**
+     *
+     * @param playbasis Playbasis object.
+     * @param isAsync Make the request async.
+     * @param questId Quest id as player need to join.
+     * @param playerId Player id as used in client's website.
+     * @param listener Callback interface.
+     */
     public static void cancel(@NonNull Playbasis playbasis, boolean isAsync, @NonNull String questId,
-                            @NonNull String playerId, final OnResult<Map<String, Object>>listener ){
+                            @NonNull String playerId, final OnResult<Event>listener ){
 
         String endpoint = SDKUtil._QUEST_URL + questId + "/cancel";
         if(isAsync){

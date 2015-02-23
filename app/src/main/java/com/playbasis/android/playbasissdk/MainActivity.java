@@ -22,7 +22,9 @@ import com.playbasis.android.playbasissdk.core.Playbasis;
 import com.playbasis.android.playbasissdk.http.HttpError;
 import com.playbasis.android.playbasissdk.model.ActionConfig;
 import com.playbasis.android.playbasissdk.model.Badge;
+import com.playbasis.android.playbasissdk.model.Event;
 import com.playbasis.android.playbasissdk.model.Goods;
+import com.playbasis.android.playbasissdk.model.Mission;
 import com.playbasis.android.playbasissdk.model.Player;
 import com.playbasis.android.playbasissdk.model.Point;
 import com.playbasis.android.playbasissdk.model.Quest;
@@ -70,6 +72,9 @@ public class MainActivity extends Activity {
         });
         
         
+        
+        //Test Quiz
+        
         QuizApi.activeList(playbasis, null, new OnResult<List<Quiz>>() {
             @Override
             public void onSuccess(List<Quiz> result) {
@@ -107,7 +112,7 @@ public class MainActivity extends Activity {
             }
         });
         
-        QuizApi.questions(playbasis, "54eaee12be120b92398b45db" , "gregtestuser", new OnResult<QuizQuestion>() {
+        QuizApi.questions(playbasis, "54eaee12be120b92398b45db", "gregtestuser", new OnResult<QuizQuestion>() {
             @Override
             public void onSuccess(QuizQuestion result) {
                 Log.d("quiz", "qestions: " + result.toString());
@@ -116,7 +121,7 @@ public class MainActivity extends Activity {
 
             @Override
             public void onError(HttpError error) {
-                Log.e("quiz", "qestions: " + error.toString() );
+                Log.e("quiz", "qestions: " + error.toString());
 
             }
         });
@@ -174,6 +179,104 @@ public class MainActivity extends Activity {
 
             }
         });
+        
+        
+        
+        //Test Quest
+        
+        QuestApi.listInfo(playbasis,new OnResult<List<Quest>>() {
+            @Override
+            public void onSuccess(List<Quest> result) {
+                Log.d("Quest", "listInfo: " + result.toString());
+            }
+
+            @Override
+            public void onError(HttpError error) {
+                Log.d("Quest", "listInfo: " + error.toString());
+            }
+        });
+        
+        QuestApi.info(playbasis, "54eb1128be120bd03a8b4578", new OnResult<Quest>() {
+            @Override
+            public void onSuccess(Quest result) {
+                Log.d("Quest", "info: " + result.toString());
+            }
+
+            @Override
+            public void onError(HttpError error) {
+                Log.d("Quest", "info: " + error.toString());
+            }
+        });
+        
+        QuestApi.missionInfo(playbasis, "54eb1128be120bd03a8b4578", "54eb1128be120bd03a8b4577", new OnResult<Mission>() {
+            @Override
+            public void onSuccess(Mission result) {
+                Log.d("Quest", "missionInfo: " + result.toString());
+            }
+
+            @Override
+            public void onError(HttpError error) {
+                Log.d("Quest", "missionInfo: " + error.toString());
+            }
+        });
+        
+        QuestApi.questsAvailable(playbasis, "gregtestuser", new OnResult<List<Quest>>() {
+            @Override
+            public void onSuccess(List<Quest> result) {
+                Log.d("Quest", "questsAvailable: " + result.toString());
+            }
+
+            @Override
+            public void onError(HttpError error) {
+                Log.d("Quest", "questsAvailable: " + error.toString());
+            }
+        });
+        
+        QuestApi.questAvailable(playbasis, "gregtestuser", "54eb1128be120bd03a8b4578", new OnResult<Event>() {
+            @Override
+            public void onSuccess(Event result) {
+                Log.d("Quest", "questsAvailable: " + result.toString());
+            }
+
+            @Override
+            public void onError(HttpError error) {
+                Log.d("Quest", "questsAvailable: " + error.toString());
+            }
+        });
+        
+        final  Playbasis pb = playbasis;
+        QuestApi.join(playbasis, false,  "54eb1128be120bd03a8b4578", "gregtestuser", new OnResult<Event>() {
+            @Override
+            public void onSuccess(Event result) {
+                QuestApi.cancel(pb, false,  "54eb1128be120bd03a8b4578", "gregtestuser", new OnResult<Event>() {
+                    @Override
+                    public void onSuccess(Event result) {
+                        Log.d("Quest", "questsAvailable: " + result.toString());
+                    }
+
+                    @Override
+                    public void onError(HttpError error) {
+
+                    }
+                });
+            }
+            @Override
+            public void onError(HttpError error) {
+
+            }
+        } );
+        
+        QuestApi.joinAll(playbasis, false, "gregtestuser", new OnResult<Map<String, Object>>() {
+            @Override
+            public void onSuccess(Map<String, Object> result) {
+                Log.d("Quest", "questsAvailable: " + result.toString());
+            }
+
+            @Override
+            public void onError(HttpError error) {
+                Log.d("Quest", "questsAvailable: " + error.toString());
+            }
+        } );
         
         /*
 
