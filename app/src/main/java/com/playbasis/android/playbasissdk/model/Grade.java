@@ -31,4 +31,5 @@ public class Grade extends AbstractGrade {
     public void setRewards(Rewards rewards) {
         this.rewards = rewards;
     }
+
 }

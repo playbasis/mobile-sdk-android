@@ -2,8 +2,11 @@ package com.playbasis.android.playbasissdk.model;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.playbasis.android.playbasissdk.helper.DateHelper;
+import com.playbasis.android.playbasissdk.helper.StringHelper;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -13,25 +16,15 @@ import java.util.List;
 public class QuizDetail extends Quiz {
     public static final String TAG = "QuizDetail";
 
-    @Expose
-    private String name;
-    @Expose
-    private String image;
-    @Expose
-    private String weight;
+
     @SerializedName("date_start")
     @Expose
-    private Object dateStart;
+    private String dateStart;
     @SerializedName("date_expire")
     @Expose
-    private Object dateExpire;
+    private String dateExpire;
     @Expose
     private Boolean status;
-    @Expose
-    private String description;
-    @SerializedName("description_image")
-    @Expose
-    private String descriptionImage;
     @Expose
     private Boolean deleted;
     @Expose
@@ -55,93 +48,50 @@ public class QuizDetail extends Quiz {
 
 
 
-    /**
-     *
-     * @return
-     *     The name
-     */
-    public String getName() {
-        return name;
-    }
 
     /**
-     *
-     * @param name
-     *     The name
-     */
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    /**
-     *
-     * @return
-     *     The image
-     */
-    public String getImage() {
-        return image;
-    }
-
-    /**
-     *
-     * @param image
-     *     The image
-     */
-    public void setImage(String image) {
-        this.image = image;
-    }
-
-    /**
-     *
-     * @return
-     *     The weight
-     */
-    public String getWeight() {
-        return weight;
-    }
-
-    /**
-     *
-     * @param weight
-     *     The weight
-     */
-    public void setWeight(String weight) {
-        this.weight = weight;
-    }
-
-    /**
-     *
+     * return the date of start in string format.
      * @return
      *     The dateStart
      */
-    public Object getDateStart() {
+    public String getDateStart() {
         return dateStart;
+    }
+    
+    public Date  getDateDateStart(){
+        return DateHelper.stringToDate(dateStart);
+        
     }
 
     /**
-     *
+     * return the date of start in date format.
      * @param dateStart
      *     The date_start
      */
-    public void setDateStart(Object dateStart) {
+    public void setDateStart(String dateStart) {
         this.dateStart = dateStart;
     }
 
     /**
-     *
+     * return the date of expire in string format
      * @return
      *     The dateExpire
      */
-    public Object getDateExpire() {
+    public String getDateExpire() {
         return dateExpire;
+    }
+    
+    public Date getDateDateExpire(){
+        return DateHelper.stringToDate(dateExpire);
+        
     }
 
     /**
-     *
+     * return the date of expire in date format.
      * @param dateExpire
      *     The date_expire
      */
-    public void setDateExpire(Object dateExpire) {
+    public void setDateExpire(String dateExpire) {
         this.dateExpire = dateExpire;
     }
 
@@ -161,42 +111,6 @@ public class QuizDetail extends Quiz {
      */
     public void setStatus(Boolean status) {
         this.status = status;
-    }
-
-    /**
-     *
-     * @return
-     *     The description
-     */
-    public String getDescription() {
-        return description;
-    }
-
-    /**
-     *
-     * @param description
-     *     The description
-     */
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    /**
-     *
-     * @return
-     *     The descriptionImage
-     */
-    public String getDescriptionImage() {
-        return descriptionImage;
-    }
-
-    /**
-     *
-     * @param descriptionImage
-     *     The description_image
-     */
-    public void setDescriptionImage(String descriptionImage) {
-        this.descriptionImage = descriptionImage;
     }
 
     /**

@@ -21,6 +21,23 @@ public class Quiz {
     @Expose
     private Integer totalCompletedQuestions;
 
+    @Expose
+    private String name;
+    
+    @Expose
+    private String weight;
+    
+    @Expose
+    private String description;
+    
+    @SerializedName("description_image")
+    @Expose
+    private String descriptionImage;
+
+    @Expose
+    private String image;
+    
+    
     /**
      *
      * @return
@@ -93,4 +110,102 @@ public class Quiz {
         this.quizId = quizId;
     }
 
+    /**
+     *  
+     * @return The quiz name
+     */
+    public String getName() {
+        return name;
+    }
+
+    /**
+     *  
+     * @param name The quiz name
+     */
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    /**
+     *  
+     * @return The weight
+     */
+    public String getWeight() {
+        return weight;
+    }
+
+    /**
+     *  
+     * @param weight The weight
+     */
+    public void setWeight(String weight) {
+        this.weight = weight;
+    }
+
+    /**
+     *  
+     * @return The description
+     */
+    public String getDescription() {
+        return description;
+    }
+
+    /**
+     *  
+     * @param description The description
+     */
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    /**
+     *  
+     * @return The image description
+     */
+    public String getDescriptionImage() {
+        return descriptionImage;
+    }
+
+    /**
+     *  
+     * @param descriptionImage The image description
+     */
+    public void setDescriptionImage(String descriptionImage) {
+        this.descriptionImage = descriptionImage;
+    }
+
+
+    /**
+     *
+     * @return
+     *     The image
+     */
+    public String getImage() {
+        return image;
+    }
+
+    /**
+     *
+     * @param image
+     *     The image
+     */
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+
+    @Override
+    public String toString() {
+        return "Quiz{" +
+                "quizId='" + quizId + '\'' +
+                ", grade=" + grade +
+                ", value=" + value +
+                ", totalCompletedQuestions=" + totalCompletedQuestions +
+                ", name='" + name + '\'' +
+                ", weight='" + weight + '\'' +
+                ", description='" + description + '\'' +
+                ", descriptionImage='" + descriptionImage + '\'' +
+                ", image='" + image + '\'' +
+                '}';
+    }
 }

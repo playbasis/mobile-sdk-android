@@ -18,4 +18,28 @@ public class QuizQuestionOption {
     @SerializedName("option_id")
     @Expose
     private String OptionId;
+
+    public String getOption() {
+        return option;
+    }
+
+    public void setOption(String option) {
+        this.option = option;
+    }
+
+    public String getOptionImage() {
+        return optionImage;
+    }
+
+    public void setOptionImage(String optionImage) {
+        this.optionImage = optionImage;
+    }
+
+    public String getOptionId() {
+        return OptionId;
+    }
+
+    public void setOptionId(String optionId) {
+        OptionId = optionId;
+    }
 }

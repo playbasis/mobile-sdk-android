@@ -26,7 +26,12 @@ import com.playbasis.android.playbasissdk.model.Goods;
 import com.playbasis.android.playbasissdk.model.Player;
 import com.playbasis.android.playbasissdk.model.Point;
 import com.playbasis.android.playbasissdk.model.Quest;
+import com.playbasis.android.playbasissdk.model.Quiz;
 import com.playbasis.android.playbasissdk.model.QuizDetail;
+import com.playbasis.android.playbasissdk.model.QuizPending;
+import com.playbasis.android.playbasissdk.model.QuizQuestion;
+import com.playbasis.android.playbasissdk.model.QuizQuestionAnswer;
+import com.playbasis.android.playbasissdk.model.QuizRank;
 import com.playbasis.android.playbasissdk.model.Rank;
 import com.playbasis.android.playbasissdk.model.Ranks;
 import com.playbasis.android.playbasissdk.model.RedeemEvent;
@@ -47,9 +52,10 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
 
         Playbasis playbasis = new Playbasis.Builder(this)
-                .setApiKey("3026965093")
-                .setApiSecret("ce9c9335d542674a2a3e286307dba8c0")
+                .setApiKey("3416989394")
+                .setApiSecret("b1fa1529410702557a6fe2f3913768a0")
                 .build();
+
 
         playbasis.getAuthenticator().requestAuthToken(playbasis, new OnResult<AuthToken>() {
             @Override
@@ -62,6 +68,114 @@ public class MainActivity extends Activity {
                 Log.d("requestAuthToken", error.toString());
             }
         });
+        
+        
+        QuizApi.activeList(playbasis, null, new OnResult<List<Quiz>>() {
+            @Override
+            public void onSuccess(List<Quiz> result) {
+                Log.d("quiz", "ActiveList: " + result.toString());
+            }
+
+            @Override
+            public void onError(HttpError error) {
+                Log.e("quiz", "ActiveList: " + error.toString() );
+            }
+        });
+        
+        
+        QuizApi.detail(playbasis, "54c09131be120bee348b52c9", null, new OnResult<QuizDetail>() {
+            @Override
+            public void onSuccess(QuizDetail result) {
+                Log.d("quiz", "detail: " + result.toString());
+            }
+
+            @Override
+            public void onError(HttpError error) {
+                Log.e("quiz", "detail: " + error.toString() );
+            }
+        });
+        
+        QuizApi.random(playbasis, "gregtestuser", new OnResult<Quiz>() {
+            @Override
+            public void onSuccess(Quiz result) {
+                Log.d("quiz", "random: " + result.toString());
+            }
+
+            @Override
+            public void onError(HttpError error) {
+                Log.e("quiz", "random: " + error.toString() );
+            }
+        });
+        
+        QuizApi.questions(playbasis, "54eaee12be120b92398b45db" , "gregtestuser", new OnResult<QuizQuestion>() {
+            @Override
+            public void onSuccess(QuizQuestion result) {
+                Log.d("quiz", "qestions: " + result.toString());
+
+            }
+
+            @Override
+            public void onError(HttpError error) {
+                Log.e("quiz", "qestions: " + error.toString() );
+
+            }
+        });
+        
+        QuizApi.recentPending(playbasis, "gregtestuser" , null, new OnResult<List<QuizPending>>() {
+            @Override
+            public void onSuccess(List<QuizPending> result) {
+                Log.d("quiz", "recentPending: " + result.toString());
+
+            }
+
+            @Override
+            public void onError(HttpError error) {
+                Log.e("quiz", "recentPending: " + error.toString() );
+
+            }
+        } );
+        
+        
+/*        QuizApi.answerQuestion(playbasis, false, "54eaee12be120b92398b45db" , "gregtestuser",
+                "3157806f3f77a416a27eaac1" , "33095474a08f442a1854ede6", new OnResult<QuizQuestionAnswer>() {
+                    @Override
+                    public void onSuccess(QuizQuestionAnswer result) {
+                        Log.d("quiz", "answerQuestion: " + result.toString());
+                    }
+
+                    @Override
+                    public void onError(HttpError error) {
+                        Log.d("quiz", "answerQuestion: " + error.toString());
+                    }
+                });*/
+        
+        QuizApi.recentDone(playbasis, "gregtestuser", null , new OnResult<List<Quiz>>() {
+            @Override
+            public void onSuccess(List<Quiz> result) {
+                Log.d("quiz", "recentDone: " + result.toString());
+            }
+
+            @Override
+            public void onError(HttpError error) {
+                Log.d("quiz", "recentDone: " + error.toString());
+            }
+        });
+        
+        QuizApi.rank(playbasis, "54eaee12be120b92398b45db" , null , new OnResult<List<QuizRank>>() {
+            @Override
+            public void onSuccess(List<QuizRank> result) {
+                Log.d("quiz", "rank: " + result.toString());
+
+            }
+
+            @Override
+            public void onError(HttpError error) {
+                Log.d("quiz", "rank: " + error.toString());
+
+            }
+        });
+        
+        /*
 
         PlayerApi.getPlayerInfo(playbasis, "jontestuser", new OnResult<Player>() {
             @Override
@@ -379,9 +493,9 @@ public class MainActivity extends Activity {
                 Log.d("recentPoint","");
             }
         });
+*/
 
 
-        Api.resendRequests(playbasis);
 
     }
     

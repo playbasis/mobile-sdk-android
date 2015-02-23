@@ -8,7 +8,9 @@ import com.playbasis.android.playbasissdk.helper.JsonHelper;
 import com.playbasis.android.playbasissdk.http.HttpError;
 import com.playbasis.android.playbasissdk.model.Quiz;
 import com.playbasis.android.playbasissdk.model.QuizDetail;
+import com.playbasis.android.playbasissdk.model.QuizPending;
 import com.playbasis.android.playbasissdk.model.QuizQuestion;
+import com.playbasis.android.playbasissdk.model.QuizQuestionAnswer;
 import com.playbasis.android.playbasissdk.model.QuizRank;
 
 import org.apache.http.NameValuePair;
@@ -72,25 +74,38 @@ public class QuizApi extends Api  {
     }
 
 
-
-    public static void activeList(@NonNull Playbasis playbasis, @NonNull String playerId,
+    /**
+     * Returns a list of active quizzes.
+     * @param playbasis Playbasis object.
+     * @param playerId Player id as used in client's website.
+     * @param listener Callback interface.
+     */
+    public static void activeList(@NonNull Playbasis playbasis, String playerId,
                               final OnResult<List<Quiz>>listener ){
 
         String uri = SDKUtil.SERVER_URL + SDKUtil._QUIZ_URL  + "list";
 
         List<NameValuePair> params = new ArrayList<>();
-        params.add(new BasicNameValuePair("player_id", playerId));
+        if(playerId!=null)params.add(new BasicNameValuePair("player_id", playerId));
 
         quizzes(playbasis,uri,params,listener);
     }
 
-    public static void detail(@NonNull Playbasis playbasis, @NonNull String quizId, @NonNull String playerId,
+    /**
+     * Get detail of a quiz.
+     * @param playbasis Playbasis object.
+     * @param quizId Quiz id.
+     * @param playerId Player id as used in client's website.
+     * @param listener Callback interface.
+     */
+    public static void detail(@NonNull Playbasis playbasis, @NonNull String quizId, String playerId,
                               final OnResult<QuizDetail>listener ){
 
         String uri = SDKUtil.SERVER_URL + SDKUtil._QUIZ_URL + quizId + "/detail";
 
         List<NameValuePair> params = new ArrayList<>();
-        params.add(new BasicNameValuePair("player_id", playerId));
+        if(playerId!=null)params.add(new BasicNameValuePair("player_id", playerId));
+
 
         JsonObjectGET(playbasis, uri, params, new OnResult<JSONObject>() {
             @Override
@@ -111,6 +126,12 @@ public class QuizApi extends Api  {
         });
     }
 
+    /**
+     * Randomly get one quiz of a list of active quizzes for a given player.
+     * @param playbasis Playbasis object.
+     * @param playerId Player id as used in client's website.
+     * @param listener  Callback interface.
+     */
     public static void random(@NonNull Playbasis playbasis, @NonNull String playerId,
                               final OnResult<Quiz>listener ){
 
@@ -119,31 +140,67 @@ public class QuizApi extends Api  {
         List<NameValuePair> params = new ArrayList<>();
         params.add(new BasicNameValuePair("player_id", playerId));
 
-       quiz(playbasis,uri,params,listener);
+       quiz(playbasis, uri, params, listener);
     }
 
+    /**
+     * List recent quizzes done by the player.
+     * @param playbasis Playbasis object.
+     * @param playerId Player id as used in client's website.
+     * @param limit Limit number of quizzes.
+     * @param listener Callback interface.
+     */
     public static void recentDone(@NonNull Playbasis playbasis, @NonNull String playerId, Integer limit,
                                   final OnResult<List<Quiz>>listener ){
 
-        String uri = SDKUtil.SERVER_URL + SDKUtil._QUIZ_URL  + "players/" + playerId + "/" + String.valueOf
+        String uri = SDKUtil.SERVER_URL + SDKUtil._QUIZ_URL  + "player/" + playerId + "/" + String.valueOf
                 (limit==null ? 5 : limit);
 
 
-        quizzes(playbasis,uri,null,listener);
+        quizzes(playbasis, uri, null, listener);
     }
 
+    /**
+     * List pending quizzes by the player.
+     * @param playbasis Playbasis object.
+     * @param playerId Player id as used in client's website.
+     * @param limit Limit number of quizzes.
+     * @param listener Callback interface.
+     */
     public static void recentPending(@NonNull Playbasis playbasis, @NonNull String playerId, Integer limit,
-                                  final OnResult<List<Quiz>>listener ){
+                                  final OnResult<List<QuizPending>>listener ){
 
-        String uri = SDKUtil.SERVER_URL + SDKUtil._QUIZ_URL  + "players/" + playerId + "/pending/" + String
-                .valueOf
-                        (limit == null ? 5 : limit);
+        String uri = SDKUtil.SERVER_URL + SDKUtil._QUIZ_URL  + "player/" + playerId + "/pending/" + String
+                .valueOf(limit == null ? 5 : limit);
 
-        quizzes(playbasis,uri,null,listener);
+        JsonObjectGET(playbasis, uri, null, new OnResult<JSONObject>() {
+            @Override
+            public void onSuccess(JSONObject result) {
+                try {
+                    List<QuizPending> quizzes = JsonHelper.FromJsonArray(result.getJSONArray("result"),
+                            QuizPending.class);
+                    if (listener != null) listener.onSuccess(quizzes);
+                } catch (JSONException e) {
+                    if (listener != null) listener.onError(new HttpError(e));
+                }
+            }
+
+            @Override
+            public void onError(HttpError error) {
+                if (listener != null) listener.onError(error);
+            }
+        });
     }
 
+    /**
+     *
+     * @param playbasis Playbasis object.
+     * @param quizId Quiz id.
+     * @param limit Limit number of quizzes.
+     * @param listener Callback interface.
+     */
     public static void rank(@NonNull Playbasis playbasis, @NonNull String quizId, Integer limit,
-                              final OnResult<QuizRank>listener ){
+                              final OnResult<List<QuizRank>>listener ){
 
         String uri = SDKUtil.SERVER_URL + SDKUtil._QUIZ_URL + quizId + "/rank/" + String.valueOf(limit==null
                 ? 5 : limit);
@@ -152,8 +209,8 @@ public class QuizApi extends Api  {
             @Override
             public void onSuccess(JSONObject result) {
                 try {
-                    QuizRank quizRank = JsonHelper.FromJsonObject(result.getJSONObject("result"), QuizRank.class);
-                    if (listener != null) listener.onSuccess(quizRank);
+                    List<QuizRank> quizRanks = JsonHelper.FromJsonArray(result.getJSONArray("result"), QuizRank.class);
+                    if (listener != null) listener.onSuccess(quizRanks);
                 } catch (JSONException e) {
                     if (listener != null) listener.onError(new HttpError(e));
                 }
@@ -167,8 +224,15 @@ public class QuizApi extends Api  {
         });
     }
 
-    public static void qestions(@NonNull Playbasis playbasis, @NonNull String quizId, @NonNull String playerId,
-                            final OnResult<List<QuizQuestion>>listener ){
+    /**
+     *  Get a question with a list of options for a given quiz.
+     * @param playbasis Playbasis object.
+     * @param quizId Quiz id.
+     * @param playerId Player id as used in client's website.
+     * @param listener Callback interface.
+     */
+    public static void questions(@NonNull Playbasis playbasis, @NonNull String quizId, @NonNull String playerId,
+                            final OnResult<QuizQuestion>listener ){
 
         String uri = SDKUtil.SERVER_URL + SDKUtil._QUIZ_URL + quizId + "/question";
 
@@ -179,9 +243,9 @@ public class QuizApi extends Api  {
             @Override
             public void onSuccess(JSONObject result) {
                 try {
-                    List<QuizQuestion> quizQuestions = JsonHelper.FromJsonArray(result.getJSONArray("result"),
+                    QuizQuestion quizQuestion = JsonHelper.FromJsonObject(result.getJSONObject("result"),
                             QuizQuestion.class);
-                    if (listener != null) listener.onSuccess(quizQuestions);
+                    if (listener != null) listener.onSuccess(quizQuestion);
                 } catch (JSONException e) {
                     if (listener != null) listener.onError(new HttpError(e));
                 }
@@ -196,9 +260,9 @@ public class QuizApi extends Api  {
     }
 
 
-    private static void answerQuestion(@NonNull Playbasis playbasis, boolean isAsync,
+    public static void answerQuestion(@NonNull Playbasis playbasis, boolean isAsync,
                                   @NonNull String quizId, @NonNull String playerId, @NonNull String questionId,
-                                  @NonNull String optionId, final OnResult<Map<String, Object>>listener ){
+                                  @NonNull String optionId, final OnResult<QuizQuestionAnswer>listener ){
 
         String endpoint = SDKUtil._QUIZ_URL + quizId + "/answer";
         if(isAsync){
@@ -236,13 +300,11 @@ public class QuizApi extends Api  {
 
             JsonObjectPOST(playbasis, uri, params, new OnResult<JSONObject>() {
                 @Override
-                @SuppressWarnings("unchecked")
                 public void onSuccess(JSONObject result) {
                     try {
-                        HashMap<String,Object> events = JsonHelper.FromJsonObject(result.getJSONObject("result"), HashMap.class);
-                        if (listener != null) listener.onSuccess(events);
+                        QuizQuestionAnswer quizQuestionAnswer = JsonHelper.FromJsonObject(result.getJSONObject("result"), QuizQuestionAnswer.class);
+                        if (listener != null) listener.onSuccess(quizQuestionAnswer);
                     } catch (JSONException e) {
-                        e.printStackTrace();
                         if (listener != null) listener.onError(new HttpError(e));
                     }
                 }
