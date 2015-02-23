@@ -6,12 +6,12 @@ import android.util.Log;
 import com.facebook.crypto.Entity;
 import com.facebook.crypto.exception.CryptoInitializationException;
 import com.facebook.crypto.exception.KeyChainException;
-import com.google.gson.JsonArray;
 import com.playbasis.android.playbasissdk.core.Playbasis;
+import com.playbasis.android.playbasissdk.core.SDKUtil;
 import com.playbasis.android.playbasissdk.helper.JsonHelper;
 import com.playbasis.android.playbasissdk.helper.StringHelper;
 import com.playbasis.android.playbasissdk.model.KeyValue;
-import com.playbasis.android.playbasissdk.model.Request;
+import com.playbasis.android.playbasissdk.model.StoredRequest;
 
 import org.apache.http.NameValuePair;
 import org.json.JSONArray;
@@ -21,11 +21,8 @@ import org.json.JSONObject;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by gregoire barret on 2/20/15.
@@ -53,24 +50,30 @@ public class RequestStorage {
      * @return save success.              
      */
     public Boolean save(Playbasis playbasis, String url, List<NameValuePair> param){
-        Request request = new Request()
-                .withUrl(url)
+        StoredRequest storedRequest = new StoredRequest()
+                .withUrl(StringHelper.removeFirstOccurence(SDKUtil.SERVER_URL, url))
                 .withAsync(false)
                 .withKeyValueBody(keyValueParams(playbasis, param))
                 .withKeyValueHeader(null);
 
-        return write(request);
+        return write(storedRequest);
         
     }
-
+    /**
+     * Save the sync request into the local storage.
+     * @param playbasis Playbasis object.
+     * @param url Url of the request.
+     * @param params Json Param of the request.
+     * @return save success.
+     */
     public Boolean save(Playbasis playbasis, String url, JSONObject params){
-        Request request = new Request()
+        StoredRequest storedRequest = new StoredRequest()
                 .withUrl(url)
                 .withAsync(false)
                 .withKeyValueBody(keyValueParams(params))
                 .withKeyValueHeader(null);
 
-        return write(request);
+        return write(storedRequest);
 
     }
 
@@ -78,10 +81,10 @@ public class RequestStorage {
      * Read all saved request form cache and clear the cache. 
      * @return list saved request.
      */
-    public List<Request> LoadAll(){
-        List<Request> requests = readAll();
+    public List<StoredRequest> loadAll(){
+        List<StoredRequest> storedRequests = readAll();
         clearCache();
-        return requests;
+        return storedRequests;
     }
 
     /**
@@ -134,26 +137,26 @@ public class RequestStorage {
     
     /**
      * Add the request to the cache storage. 
-     * @param request Request to add.
+     * @param storedRequest Request to add.
      * @return success.
      */
-    private Boolean write(Request request){
-        List<Request> requests = readAll();
-        requests.add(request);
-        return write(requests);
+    private Boolean write(StoredRequest storedRequest){
+        List<StoredRequest> storedRequests = readAll();
+        storedRequests.add(storedRequest);
+        return write(storedRequests);
     }
 
     /**
      * Write list Request to the local storage. 
-     * @param requests request list.
+     * @param storedRequests request list.
      * @return success.
      */
-    private Boolean write(List<Request> requests){
+    private Boolean write(List<StoredRequest> storedRequests){
         String content = "[";
-        if(requests!=null){
-            for (Request request :requests){
-                if(request!=null){
-                    content+= request.toJsonString();
+        if(storedRequests !=null){
+            for (StoredRequest storedRequest : storedRequests){
+                if(storedRequest !=null){
+                    content+= storedRequest.toJsonString();
                     content+=",";
                 }
             }
@@ -219,15 +222,15 @@ public class RequestStorage {
      * Read al request saved into the cache. 
      * @return Request list
      */
-    private List<Request> readAll(){
-        List<Request> requests = new ArrayList<>();
+    private List<StoredRequest> readAll(){
+        List<StoredRequest> storedRequests = new ArrayList<>();
 
         try {
-            requests = JsonHelper.FromJsonArray(readJSONArray(), Request.class);
+            storedRequests = JsonHelper.FromJsonArray(readJSONArray(), StoredRequest.class);
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        return requests;
+        return storedRequests;
     }
     
 }

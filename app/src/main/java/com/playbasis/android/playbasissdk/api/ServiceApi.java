@@ -71,7 +71,7 @@ public class ServiceApi extends Api{
                 e.printStackTrace();
             }
 
-            Async.postData(playbasis, endpoint ,jsonObject , new OnResult<String>() {
+            asyncPost(playbasis, endpoint ,jsonObject , new OnResult<String>() {
                 @Override
                 public void onSuccess(String result) {
                     if (listener != null) listener.onSuccess(null);

@@ -3,7 +3,6 @@ package com.playbasis.android.playbasissdk.model;
 import com.google.gson.Gson;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-import com.playbasis.android.playbasissdk.helper.JsonHelper;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -15,7 +14,7 @@ import java.util.List;
  * For PlayBasisSdk project.
  * This object is the request saved on the local storage 
  */
-public class Request {
+public class StoredRequest {
     public static final String TAG = "Request";
 
     @Expose
@@ -37,7 +36,7 @@ public class Request {
         this.url = url;
     }
     
-    public Request withUrl(String url){
+    public StoredRequest withUrl(String url){
         this.url = url;
         return this;
     }
@@ -50,7 +49,7 @@ public class Request {
         this.isAsync = isAsync;
     }
     
-    public Request withAsync(boolean isAsync){
+    public StoredRequest withAsync(boolean isAsync){
         this.isAsync = isAsync;
         return this;
     }
@@ -63,7 +62,7 @@ public class Request {
         this.keyValuesBoddy = keyValuesBoddy;
     }
     
-    public Request withKeyValueBody(List<KeyValue> keyValuesBoddy){
+    public StoredRequest withKeyValueBody(List<KeyValue> keyValuesBoddy){
         this.keyValuesBoddy = keyValuesBoddy;
         return this;
     }
@@ -76,7 +75,7 @@ public class Request {
         this.keyValuesHeader = keyValuesHeader;
     }
     
-    public Request withKeyValueHeader(List<KeyValue> keyValuesHeader){
+    public StoredRequest withKeyValueHeader(List<KeyValue> keyValuesHeader){
         this.keyValuesHeader = keyValuesHeader;
         return this;
         
@@ -108,13 +107,31 @@ public class Request {
      * @param jsonObject Request jsonObject
      * @return request
      */
-    public Request FromJson(JSONObject jsonObject){
+    public StoredRequest FromJson(JSONObject jsonObject){
         Gson gson = new Gson();
-        Request request = gson.fromJson(jsonObject.toString(), Request.class);
-        this.url = request.url;
-        this.isAsync = request.isAsync;
-        this.keyValuesBoddy = request.keyValuesBoddy;
-        this.keyValuesHeader = request.keyValuesHeader;
+        StoredRequest storedRequest = gson.fromJson(jsonObject.toString(), StoredRequest.class);
+        this.url = storedRequest.url;
+        this.isAsync = storedRequest.isAsync;
+        this.keyValuesBoddy = storedRequest.keyValuesBoddy;
+        this.keyValuesHeader = storedRequest.keyValuesHeader;
         return this;
+    }
+
+    /**
+     * Render keyValue params into json params 
+     * @return json params
+     */
+    public JSONObject paramsToJson(){
+        JSONObject json = new JSONObject();
+        if(keyValuesBoddy!=null){
+            for (KeyValue keyValue : keyValuesBoddy) {
+                try {
+                    json.put(keyValue.getKey(), keyValue.getValue());
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return json;
     }
 }

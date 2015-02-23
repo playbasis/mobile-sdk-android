@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.playbasis.android.playbasissdk.api.Api;
 import com.playbasis.android.playbasissdk.api.AuthToken;
 import com.playbasis.android.playbasissdk.api.BadgeApi;
 import com.playbasis.android.playbasissdk.api.CommunicationApi;
@@ -18,21 +19,18 @@ import com.playbasis.android.playbasissdk.api.QuizApi;
 import com.playbasis.android.playbasissdk.api.RedeemApi;
 import com.playbasis.android.playbasissdk.api.ServiceApi;
 import com.playbasis.android.playbasissdk.core.Playbasis;
-import com.playbasis.android.playbasissdk.helper.Validator;
 import com.playbasis.android.playbasissdk.http.HttpError;
 import com.playbasis.android.playbasissdk.model.ActionConfig;
 import com.playbasis.android.playbasissdk.model.Badge;
-import com.playbasis.android.playbasissdk.model.Gender;
 import com.playbasis.android.playbasissdk.model.Goods;
 import com.playbasis.android.playbasissdk.model.Player;
 import com.playbasis.android.playbasissdk.model.Point;
 import com.playbasis.android.playbasissdk.model.Quest;
-import com.playbasis.android.playbasissdk.model.Quiz;
 import com.playbasis.android.playbasissdk.model.QuizDetail;
 import com.playbasis.android.playbasissdk.model.Rank;
 import com.playbasis.android.playbasissdk.model.Ranks;
 import com.playbasis.android.playbasissdk.model.RedeemEvent;
-import com.playbasis.android.playbasissdk.model.Request;
+import com.playbasis.android.playbasissdk.model.StoredRequest;
 import com.playbasis.android.playbasissdk.model.Rule;
 import com.playbasis.android.playbasissdk.secure.RequestStorage;
 
@@ -383,11 +381,7 @@ public class MainActivity extends Activity {
         });
 
 
-        RequestStorage storage = new RequestStorage(this);
-        storage.saveRequest(playbasis, "test1", null);
-        storage.saveRequest(playbasis, "test2", null);
-        List<Request> requests = storage.readAll();
-        Log.d("conceal", requests.toString());
+        Api.resendRequests(playbasis);
 
     }
     

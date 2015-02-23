@@ -29,7 +29,7 @@ public class RedeemApi extends Api {
     public static void goods(@NonNull Playbasis playbasis, boolean isAsync,
                                        @NonNull String goodId, @NonNull String playerId, Integer amount,
                                        final OnResult<List<RedeemEvent>>listener ){
-        String endpoint = SDKUtil._REDEEM_API + "/goods";
+        String endpoint = SDKUtil._REDEEM_API + "goods";
 
         if(isAsync){
 
@@ -42,7 +42,7 @@ public class RedeemApi extends Api {
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-            Async.postData(playbasis, endpoint ,jsonObject , new OnResult<String>() {
+            asyncPost(playbasis, endpoint ,jsonObject , new OnResult<String>() {
                 @Override
                 public void onSuccess(String result) {
                     if (listener != null) listener.onSuccess(null);
@@ -89,7 +89,7 @@ public class RedeemApi extends Api {
                                        @NonNull String groupId, @NonNull String playerId, Integer amount,
                                        final OnResult<List<RedeemEvent>>listener ){
 
-        String endpoint = SDKUtil._REDEEM_API + "/goodsGroup";
+        String endpoint = SDKUtil._REDEEM_API + "goodsGroup";
         
         if(isAsync){
 
@@ -102,7 +102,7 @@ public class RedeemApi extends Api {
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-            Async.postData(playbasis, endpoint ,jsonObject , new OnResult<String>() {
+            asyncPost(playbasis, endpoint ,jsonObject , new OnResult<String>() {
                 @Override
                 public void onSuccess(String result) {
                     if (listener != null) listener.onSuccess(null);

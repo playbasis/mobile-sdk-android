@@ -13,4 +13,17 @@ public class StringHelper {
         }
         return str;
     }
+    
+    public static String removeFirstOccurence(String occurence, String s){
+        int index = s.indexOf(occurence);
+        if (index == -1)
+        {
+            return s;
+        }
+        else
+        {
+            return  s.substring(0, index) +
+                    s.substring(index + occurence.length());
+        }
+    }
 }

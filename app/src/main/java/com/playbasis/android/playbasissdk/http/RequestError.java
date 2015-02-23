@@ -29,6 +29,11 @@ public class RequestError {
         this.errorCode = response.errorCode;
         
     }
+    
+    public static RequestError NoNetwork(){
+        return new RequestError("No network available", ERROR_CODE.DEFAULT);
+        
+    }
 
     /**
      * Error code of server error 

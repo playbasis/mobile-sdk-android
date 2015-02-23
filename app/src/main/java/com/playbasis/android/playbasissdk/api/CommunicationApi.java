@@ -28,7 +28,7 @@ public class CommunicationApi  extends Api{
                              @NonNull String playerId, @NonNull String subject, String message, String templateId,
                              final OnResult<List<String>>listener ){
 
-        String endpoint = SDKUtil._EMAIL_API + "/send";
+        String endpoint = SDKUtil._EMAIL_API + "send";
 
         if(isAsync){
 
@@ -42,7 +42,7 @@ public class CommunicationApi  extends Api{
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-            Async.postData(playbasis, endpoint ,jsonObject , new OnResult<String>() {
+            asyncPost(playbasis, endpoint ,jsonObject , new OnResult<String>() {
                 @Override
                 public void onSuccess(String result) {
                     if (listener != null) listener.onSuccess(null);
@@ -87,7 +87,7 @@ public class CommunicationApi  extends Api{
                                  String message, String templateId,
                                  final OnResult<List<String>>listener ){
 
-        String endpoint = SDKUtil._EMAIL_API + "/goods";
+        String endpoint = SDKUtil._EMAIL_API + "goods";
 
         if(isAsync){
 
@@ -102,7 +102,7 @@ public class CommunicationApi  extends Api{
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-            Async.postData(playbasis, endpoint ,jsonObject , new OnResult<String>() {
+            asyncPost(playbasis, endpoint ,jsonObject , new OnResult<String>() {
                 @Override
                 public void onSuccess(String result) {
                     if (listener != null) listener.onSuccess(null);
@@ -147,7 +147,7 @@ public class CommunicationApi  extends Api{
     public static void sendSms(@NonNull Playbasis playbasis, boolean isAsync,
                                  @NonNull String playerId, String message, String templateId,
                                  final OnResult<List<String>>listener ){
-        String endpoint = SDKUtil._SMS_API + "/send";
+        String endpoint = SDKUtil._SMS_API + "send";
 
         if(isAsync){
 
@@ -160,7 +160,7 @@ public class CommunicationApi  extends Api{
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-            Async.postData(playbasis, endpoint ,jsonObject , new OnResult<String>() {
+            asyncPost(playbasis, endpoint ,jsonObject , new OnResult<String>() {
                 @Override
                 public void onSuccess(String result) {
                     if (listener != null) listener.onSuccess(null);
@@ -201,7 +201,7 @@ public class CommunicationApi  extends Api{
                                        @NonNull String playerId, @NonNull String refId,
                                        String message, String templateId,
                                        final OnResult<List<String>>listener ){
-        String endpoint = SDKUtil._SMS_API + "/goods";
+        String endpoint = SDKUtil._SMS_API + "goods";
 
         if(isAsync){
 
@@ -215,7 +215,7 @@ public class CommunicationApi  extends Api{
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-            Async.postData(playbasis, endpoint ,jsonObject , new OnResult<String>() {
+            asyncPost(playbasis, endpoint ,jsonObject , new OnResult<String>() {
                 @Override
                 public void onSuccess(String result) {
                     if (listener != null) listener.onSuccess(null);
@@ -257,7 +257,7 @@ public class CommunicationApi  extends Api{
                                  @NonNull String playerId, String message, String templateId,
                                  final OnResult<List<String>>listener ){
         
-        String endpoint = SDKUtil._PUSH_API + "/send";
+        String endpoint = SDKUtil._PUSH_API + "send";
 
         if(isAsync){
 
@@ -270,7 +270,7 @@ public class CommunicationApi  extends Api{
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-            Async.postData(playbasis, endpoint ,jsonObject , new OnResult<String>() {
+            asyncPost(playbasis, endpoint ,jsonObject , new OnResult<String>() {
                 @Override
                 public void onSuccess(String result) {
                     if (listener != null) listener.onSuccess(null);
@@ -312,7 +312,7 @@ public class CommunicationApi  extends Api{
                                        String message, String templateId,
                                        final OnResult<List<String>>listener ){
 
-        String endpoint = SDKUtil._PUSH_API + "/goods";
+        String endpoint = SDKUtil._PUSH_API + "goods";
 
         if(isAsync){
 
@@ -326,7 +326,7 @@ public class CommunicationApi  extends Api{
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-            Async.postData(playbasis, endpoint ,jsonObject , new OnResult<String>() {
+            asyncPost(playbasis, endpoint ,jsonObject , new OnResult<String>() {
                 @Override
                 public void onSuccess(String result) {
                     if (listener != null) listener.onSuccess(null);
