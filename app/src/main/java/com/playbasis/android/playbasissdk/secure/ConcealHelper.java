@@ -22,7 +22,7 @@ import java.io.OutputStream;
  * Created by gregoire barret on 2/20/15.
  * For PlayBasisSdk project.
  */
-public class ConcrealHelper {
+public class ConcealHelper {
     public static final String TAG = "ConcrealHelper";
     
     public static void encryptFile(Context context, File file, Entity entity, byte[] plainTextBytes) throws IOException, KeyChainException, CryptoInitializationException {
@@ -53,7 +53,9 @@ public class ConcrealHelper {
         
     }
     
-    public static byte[] decryptFile(Context context, File file, Entity entity) throws IOException, KeyChainException, CryptoInitializationException {
+    public static String decryptFile(Context context, File file, Entity entity) throws IOException, KeyChainException, 
+            CryptoInitializationException {
+        String content = "";
         // Creates a new Crypto object with default implementations of
 // a key chain as well as native library.
         Crypto crypto = new Crypto(
@@ -74,19 +76,17 @@ public class ConcrealHelper {
 // Read into a byte array.
         int read;
         byte[] buffer = new byte[1024];
-        File out = new File("test");
-
 // You must read the entire stream to completion.
 // The verification is done at the end of the stream.
 // Thus not reading till the end of the stream will cause
 // a security bug.
         while ((read = inputStream.read(buffer)) != -1) {
           //  out.write(buffer, 0, read);
-          ///  byte[] bytes = read;
+            content += new String(buffer,0, read);
         }
 
         inputStream.close();
-        
+        return content;
     }
     
 }

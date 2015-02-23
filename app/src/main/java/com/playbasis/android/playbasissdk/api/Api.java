@@ -71,10 +71,7 @@ public abstract class Api {
             RequestStorage storage = new RequestStorage();
             storage.saveRequest(playbasis, uri , httpParams);
         }
-        
-        
-        
-        
+
         HttpsTrustManager.allowAllSSL();
         final JSONObjectRequest jsonObjReq = new JSONObjectRequest(Request.Method.POST,
                 uri, null,

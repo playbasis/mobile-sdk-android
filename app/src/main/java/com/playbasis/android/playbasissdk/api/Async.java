@@ -59,6 +59,7 @@ public class Async extends Api {
 
                     @Override
                     public void onErrorResponse(HttpError error) {
+
                         PlayBasisLog.e(TAG, "Error: " + error.getMessage());
                         if (listener != null) listener.onError(error);
                     }

@@ -33,6 +33,7 @@ import com.playbasis.android.playbasissdk.model.Rank;
 import com.playbasis.android.playbasissdk.model.Ranks;
 import com.playbasis.android.playbasissdk.model.RedeemEvent;
 import com.playbasis.android.playbasissdk.model.Rule;
+import com.playbasis.android.playbasissdk.secure.Conceal;
 
 import java.util.Arrays;
 import java.util.List;
@@ -51,7 +52,7 @@ public class MainActivity extends Activity {
                 .setApiSecret("ce9c9335d542674a2a3e286307dba8c0")
                 .build();
 
-        playbasis.getAuthenticator().getAuthToken(new OnResult<AuthToken>() {
+        playbasis.getAuthenticator().requestAuthToken(playbasis, new OnResult<AuthToken>() {
             @Override
             public void onSuccess(AuthToken result) {
                 Log.d("main", result.getToken());
@@ -379,7 +380,12 @@ public class MainActivity extends Activity {
                 Log.d("","");
             }
         });
-        
+
+
+        Conceal conceal = new Conceal(this);
+        conceal.write("hello");
+        String hello = conceal.read();
+        Log.d("conceal", hello);
     }
     
 
