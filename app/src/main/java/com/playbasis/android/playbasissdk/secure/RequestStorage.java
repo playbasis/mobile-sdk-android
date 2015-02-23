@@ -10,6 +10,7 @@ import com.playbasis.android.playbasissdk.core.Playbasis;
 import com.playbasis.android.playbasissdk.core.SDKUtil;
 import com.playbasis.android.playbasissdk.helper.JsonHelper;
 import com.playbasis.android.playbasissdk.helper.StringHelper;
+import com.playbasis.android.playbasissdk.helper.Validator;
 import com.playbasis.android.playbasissdk.model.KeyValue;
 import com.playbasis.android.playbasissdk.model.StoredRequest;
 
@@ -215,7 +216,11 @@ public class RequestStorage {
      * @throws JSONException
      */
     private JSONArray readJSONArray() throws JSONException {
-        return new JSONArray(read());
+        String read = read();
+        if(Validator.isValid(read))
+            return new JSONArray(read);
+        else
+            return new JSONArray();
     }
 
     /**

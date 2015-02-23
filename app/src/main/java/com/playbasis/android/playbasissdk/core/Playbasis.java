@@ -6,6 +6,7 @@ import android.net.NetworkInfo;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import com.playbasis.android.playbasissdk.api.Api;
 import com.playbasis.android.playbasissdk.api.AuthAuthenticator;
 import com.playbasis.android.playbasissdk.http.HttpManager;
 import com.playbasis.android.playbasissdk.http.toolbox.KeyStore;
@@ -124,6 +125,8 @@ public class Playbasis {
                 instance.mContext = mPlayBasisContent.mContext;
                 instance.mKeyStore = mPlayBasisContent.mKeyStore;
             }
+            //Send stored requests
+            Api.resendRequests(instance);
             return instance;
         }
     }

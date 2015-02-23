@@ -36,11 +36,14 @@ import java.util.Objects;
  */
 public abstract class Api {
     public static final String TAG = "Api";
+    private static Boolean isResendRunning = false;
 
 
     protected static void JsonObjectGET(final Playbasis playbasis, String uri, List<NameValuePair> params,
                                  final OnResult<JSONObject>
             listener) {
+        resendRequests(playbasis);
+        
         HttpsTrustManager.allowAllSSL();
 
         //Add params to the request
@@ -76,7 +79,7 @@ public abstract class Api {
             storage.save(playbasis, uri, httpParams);
             if (listener!=null) listener.onError(new HttpError(RequestError.NoNetwork()));
             return;
-        }
+        }else resendRequests(playbasis);
 
         HttpsTrustManager.allowAllSSL();
         final JSONObjectRequest jsonObjReq = new JSONObjectRequest(Request.Method.POST,
@@ -118,6 +121,7 @@ public abstract class Api {
     protected static void JsonArrayGET(final Playbasis playbasis, String uri, List<NameValuePair> params,
                                          final OnResult<JSONArray>
                                                  listener) {
+        resendRequests(playbasis);
         HttpsTrustManager.allowAllSSL();
 
         //Add params to the request
@@ -155,7 +159,7 @@ public abstract class Api {
             storage.save(playbasis, uri, httpParams);
             if (listener!=null) listener.onError(new HttpError(RequestError.NoNetwork()));
             return;
-        }
+        }else resendRequests(playbasis);
         
         HttpsTrustManager.allowAllSSL();
         final JSONArrayRequest jsonArrReq = new JSONArrayRequest(Request.Method.POST,
@@ -197,6 +201,7 @@ public abstract class Api {
     protected static void StringGET(final Playbasis playbasis, String uri, List<NameValuePair> params,
                                         final OnResult<String>
                                                 listener) {
+        resendRequests(playbasis);
         HttpsTrustManager.allowAllSSL();
         //Add params to the request
         if(params==null) params = new ArrayList<>();
@@ -242,7 +247,7 @@ public abstract class Api {
             storage.save(playbasis, endpoint , params);
             if (listener!=null) listener.onError(new HttpError(RequestError.NoNetwork()));
             return;
-        }
+        }else resendRequests(playbasis);
 
         HttpsTrustManager.allowAllSSL();
         StringJSONBodyRequest jsonBodyRequest = new StringJSONBodyRequest(Request.Method.POST,
@@ -277,16 +282,24 @@ public abstract class Api {
         playbasis.getHttpManager().addToRequestQueue(jsonBodyRequest);
     }
 
-    public static void resendRequests(Playbasis playbasis){
-        if (!playbasis.isNetworkAvailable()) return;
+    public static void resendRequests(final Playbasis playbasis){
+        if (!playbasis.isNetworkAvailable() || isResendRunning) return;
 
-        RequestStorage storage = new RequestStorage(playbasis.getContext());
-        List<StoredRequest> requests = storage.loadAll();
-        if(requests!=null && requests.size() > 0){
-            for (StoredRequest request : requests) {
-                if(request!=null) asyncPost(playbasis, request.getUrl(), request.paramsToJson(), null);
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                isResendRunning=true;
+                RequestStorage storage = new RequestStorage(playbasis.getContext());
+                List<StoredRequest> requests = storage.loadAll();
+                if(requests!=null && requests.size() > 0){
+                    for (StoredRequest request : requests) {
+                        if(request!=null) asyncPost(playbasis, request.getUrl(), request.paramsToJson(), null);
+                    }
+                }
+                isResendRunning=false;
             }
-        }
+        }).start();
+
 
     }
 
