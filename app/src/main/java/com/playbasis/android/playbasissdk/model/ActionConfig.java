@@ -2,7 +2,12 @@ package com.playbasis.android.playbasissdk.model;
 
 import com.google.gson.annotations.Expose;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -55,11 +60,45 @@ public class ActionConfig {
         this.config = config;
     }
 
+    /**
+     *  Get config Id.
+     * @return config Id
+     */
     public String getKey() {
         return key;
     }
 
+    /**
+     *  Config Id.
+     * @param key Config Id
+     */
     public void setKey(String key) {
         this.key = key;
+    }
+    
+    
+    public static List<ActionConfig> parseEngineRules(JSONObject json) throws JSONException {
+        List<ActionConfig> actionConfigs = new ArrayList<>();
+        
+        Iterator<String> iterator = json.keys();
+        while (iterator.hasNext()){
+            String jsonKey = iterator.next();
+            ActionConfig actionConfig = new ActionConfig();
+            
+            JSONObject jsonActionConfig = json.getJSONObject(jsonKey);
+            JSONArray jsonConfig = jsonActionConfig.getJSONArray("config");
+            actionConfig.setKey(jsonKey);
+            actionConfig.setName(jsonActionConfig.getString("name"));
+            
+            List<Config> configs = new ArrayList<>();
+            for (int i = 0; i < jsonConfig.length(); i++) {
+                Config config = new Config();
+                config.setUrl(jsonConfig.getJSONObject(i).getString("url"));
+                configs.add(config);
+            }
+            actionConfig.setConfig(configs);
+            actionConfigs.add(actionConfig);
+        }
+        return actionConfigs;
     }
 }

@@ -27,14 +27,24 @@ public class EngineApi extends Api {
     public static final String TAG = "EngineApi";
 
 
-    public static void actionConfig(@NonNull Playbasis playbasis, final OnResult<ActionConfig> listener) {
+    /**
+     * Returns names of actions that can trigger game rules within a client’s website.
+     * @param playbasis Playbasis object.
+     * @param listener Callback interface.
+     */
+    public static void actionConfig(@NonNull Playbasis playbasis, final OnResult<List<ActionConfig>> listener) {
         String uri = SDKUtil.SERVER_URL + SDKUtil._ENGINE_URL + "actionConfig";
 
         JsonObjectGET(playbasis, uri, null, new OnResult<JSONObject>() {
             @Override
             public void onSuccess(JSONObject result) {
-                ActionConfig actionConfig = JsonHelper.FromJsonObject(result, ActionConfig.class);
-                if (listener != null) listener.onSuccess(actionConfig);
+                try {
+                    List<ActionConfig> actionConfigs = ActionConfig.parseEngineRules(result);
+                    if (listener != null) listener.onSuccess(actionConfigs);
+                } catch (JSONException e) {
+                    listener.onError(new HttpError(e));
+                }
+                
             }
 
             @Override
@@ -43,7 +53,22 @@ public class EngineApi extends Api {
             }
         });
     }
-    
+
+    /**
+     *  Process an action through all the game rules defined for a client’s website.
+     * @param playbasis Playbasis object.
+     * @param isAsync Make the request async.
+     * @param action Name of action performed.
+     * @param playerId Player id as used in client's website.
+     * @param url URL of the page that trigger the action or any identifier string - Used for logging, 
+     *                        URL specific rules, and rules that trigger only when a specific identifier string is
+     *                        supplied.
+     * @param reward Name of the point-based reward to give to player, if the action trigger custom-point reward
+     *                             that doesn't specify reward name.
+     * @param quantity Amount of the point-based reward to give to player, if the action trigger custom-point reward
+     *                                  that doesn't specify reward quantity.
+     * @param listener Callback interface.
+     */
     public static void rule(@NonNull Playbasis playbasis, boolean isAsync, 
                             @NonNull String action, @NonNull String playerId, String url, String reward, 
                             String quantity,  final OnResult<Rule> listener){

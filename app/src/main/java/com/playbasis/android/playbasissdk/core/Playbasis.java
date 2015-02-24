@@ -8,8 +8,12 @@ import android.support.annotation.Nullable;
 
 import com.playbasis.android.playbasissdk.api.Api;
 import com.playbasis.android.playbasissdk.api.AuthAuthenticator;
+import com.playbasis.android.playbasissdk.api.EngineApi;
+import com.playbasis.android.playbasissdk.api.OnResult;
 import com.playbasis.android.playbasissdk.http.HttpManager;
 import com.playbasis.android.playbasissdk.http.toolbox.KeyStore;
+import com.playbasis.android.playbasissdk.model.Rule;
+import com.playbasis.android.playbasissdk.model.RuleAction;
 
 /**
  * Created by gregoire barret on 2/13/15.
@@ -146,6 +150,233 @@ public class Playbasis {
                 = (ConnectivityManager) mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
+    
+    
+    
+    //Engine rules
+
+    /**
+     * High level function who make a sync engine rule request to the backend.
+     * @param playerId Player id as used in client's website.
+     * @param action Name of the action performed from ActionRule Enum.
+     * @param listener Callback interface.
+     */
+    public void Do(@NonNull String playerId, RuleAction action, OnResult<Rule> listener){
+        EngineApi.rule(this, false, action.toString(), playerId, null, null,null, listener );
+    }
+
+    /**
+     *  {@link #Do(String, com.playbasis.android.playbasissdk.model.RuleAction,
+     *     com.playbasis.android.playbasissdk.api.OnResult)}
+     * @param playerId Player id as used in client's website.
+     * @param action Name of the action performed.
+     * @param listener Callback interface.
+     */
+    public void Do(@NonNull String playerId, String action, OnResult<Rule> listener){
+        EngineApi.rule(this, false, action, playerId, null, null,null, listener );
+    }
+
+    /**
+     *  {@link #Do(String, com.playbasis.android.playbasissdk.model.RuleAction,
+     *     com.playbasis.android.playbasissdk.api.OnResult)}
+     * @param playerId Player id as used in client's website.
+     * @param action Name of the action performed from ActionRule Enum.
+     * @param url URL of the page that trigger the action or any identifier string - Used for logging, 
+     *              URL specific  rules, and rules that trigger only when a specific identifier string is
+     *              supplied
+     * @param listener Callback interface.
+     */
+    public void Do(@NonNull String playerId, RuleAction action, String url, OnResult<Rule> listener){
+        EngineApi.rule(this, false, action.toString(), playerId, url, null,null, listener );
+    }
+
+    /**
+     *  {@link #Do(String, com.playbasis.android.playbasissdk.model.RuleAction,
+     *     com.playbasis.android.playbasissdk.api.OnResult)}
+     * @param playerId Player id as used in client's website.
+     * @param action AName of the action performed.
+     * @param url URL of the page that trigger the action or any identifier string - Used for logging, 
+     *              URL specific  rules, and rules that trigger only when a specific identifier string is
+     *              supplied
+     * @param listener Callback interface.
+     */
+    public void Do(@NonNull String playerId, String action, String url, OnResult<Rule> listener){
+        EngineApi.rule(this, false, action, playerId, url, null,null, listener );
+    }
+
+
+    /**
+     *  {@link #Do(String, com.playbasis.android.playbasissdk.model.RuleAction,
+     *     com.playbasis.android.playbasissdk.api.OnResult)}
+     * @param playerId Player id as used in client's website.
+     * @param action Name of the action performed from ActionRule Enum.
+     * @param url URL of the page that trigger the action or any identifier string - Used for logging, 
+     *              URL specific  rules, and rules that trigger only when a specific identifier string is
+     *              supplied
+     * @param reward name of the point-based reward to give to player, if the action trigger custom-point reward that
+     *                  doesn't specify reward name
+     * @param listener Callback interface.
+     */
+    public void Do(@NonNull String playerId, RuleAction action, String url, String reward, OnResult<Rule> listener){
+        EngineApi.rule(this, false, action.toString(), playerId, url, reward, null, listener );
+    }
+
+    /**
+     *  {@link #Do(String, com.playbasis.android.playbasissdk.model.RuleAction,
+     *     com.playbasis.android.playbasissdk.api.OnResult)}
+     * @param playerId Player id as used in client's website.
+     * @param action Name of the action performed.
+     * @param url URL of the page that trigger the action or any identifier string - Used for logging, 
+     *              URL specific  rules, and rules that trigger only when a specific identifier string is
+     *              supplied
+     * @param reward name of the point-based reward to give to player, if the action trigger custom-point reward that
+     *                  doesn't specify reward name
+     * @param listener Callback interface.
+     */
+    public void Do(@NonNull String playerId, String action, String url, String reward, OnResult<Rule> listener){
+        EngineApi.rule(this, false, action, playerId, url, reward, null, listener );
+    }
+
+    /**
+     *  {@link #Do(String, com.playbasis.android.playbasissdk.model.RuleAction,
+     *     com.playbasis.android.playbasissdk.api.OnResult)}
+     * @param playerId Player id as used in client's website.
+     * @param action Name of the action performed from ActionRule Enum.
+     * @param url URL of the page that trigger the action or any identifier string - Used for logging, 
+     *              URL specific  rules, and rules that trigger only when a specific identifier string is
+     *              supplied
+     * @param reward name of the point-based reward to give to player, if the action trigger custom-point reward that
+     *                  doesn't specify reward name
+     * @param quantity amount of the point-based reward to give to player, if the action trigger custom-point reward 
+     *                  that doesn't specify reward quantity
+     * @param listener Callback interface.
+     */
+    public void Do(@NonNull String playerId, RuleAction action, String url, String reward, String quantity, 
+                   OnResult<Rule> listener){
+        EngineApi.rule(this, false, action.toString(), playerId, url, reward, quantity, listener );
+    }
+
+
+    /**
+     *  {@link #Do(String, com.playbasis.android.playbasissdk.model.RuleAction,
+     *     com.playbasis.android.playbasissdk.api.OnResult)}
+     * @param playerId Player id as used in client's website.
+     * @param action Name of the action performed.
+     * @param url URL of the page that trigger the action or any identifier string - Used for logging, 
+     *              URL specific  rules, and rules that trigger only when a specific identifier string is
+     *              supplied
+     * @param reward name of the point-based reward to give to player, if the action trigger custom-point reward that
+     *                  doesn't specify reward name
+     * @param quantity amount of the point-based reward to give to player, if the action trigger custom-point reward 
+     *                  that doesn't specify reward quantity
+     * @param listener Callback interface.
+     */
+    public void Do(@NonNull String playerId, String action, String url, String reward, String quantity,
+                   OnResult<Rule> listener){
+        EngineApi.rule(this, false, action, playerId, url, reward, quantity, listener );
+    }
+    
+    /**
+     * High level function who make an async engine rule request to the backend.
+     * @param playerId Player id as used in client's website.
+     * @param action Name of the action performed from ActionRule Enum.
+     */
+    public void Track(@NonNull String playerId, RuleAction action){
+        EngineApi.rule(this, true, action.toString(), playerId, null, null,null, null );
+    }
+
+    /**
+     * High level function who make an async engine rule request to the backend.
+     * @param playerId Player id as used in client's website.
+     * @param action Name of the action performed.
+     */
+    public void Track(@NonNull String playerId, String action){
+        EngineApi.rule(this, true, action, playerId, null, null,null, null );
+    }
+
+    /**
+     * {@link #Track(String, com.playbasis.android.playbasissdk.model.RuleAction)}
+     * @param playerId Player id as used in client's website.
+     * @param action Name of the action performed from ActionRule Enum.
+     * @param url URL of the page that trigger the action or any identifier string - Used for logging, 
+     *              URL specific  rules, and rules that trigger only when a specific identifier string is
+     *              supplied
+     */
+    public void Track(@NonNull String playerId, RuleAction action, String url){
+        EngineApi.rule(this, true, action.toString(), playerId, url, null,null, null );
+    }
+
+    /**
+     * {@link #Track(String, com.playbasis.android.playbasissdk.model.RuleAction)}
+     * @param playerId Player id as used in client's website.
+     * @param action Name of the action performed.
+     * @param url URL of the page that trigger the action or any identifier string - Used for logging, 
+     *              URL specific  rules, and rules that trigger only when a specific identifier string is
+     *              supplied
+     */
+    public void Track(@NonNull String playerId, String action, String url){
+        EngineApi.rule(this, true, action, playerId, url, null,null, null );
+    }
+
+    /** 
+     * {@link #Track(String, com.playbasis.android.playbasissdk.model.RuleAction)}
+     * @param playerId Player id as used in client's website.
+     * @param actionName of the action performed from ActionRule Enum.
+     * @param url URL of the page that trigger the action or any identifier string - Used for logging, 
+     *              URL specific  rules, and rules that trigger only when a specific identifier string is
+     *              supplied
+     * @param reward name of the point-based reward to give to player, if the action trigger custom-point reward that
+     *                  doesn't specify reward name
+     */
+    public void Track(@NonNull String playerId, RuleAction action, String url, String reward){
+        EngineApi.rule(this, true, action.toString(), playerId, url, reward,null, null );
+    }
+
+    /**
+     * {@link #Track(String, com.playbasis.android.playbasissdk.model.RuleAction)}
+     * @param playerId Player id as used in client's website.
+     * @param action Name of the action performed.
+     * @param url URL of the page that trigger the action or any identifier string - Used for logging, 
+     *              URL specific  rules, and rules that trigger only when a specific identifier string is
+     *              supplied
+     * @param reward name of the point-based reward to give to player, if the action trigger custom-point reward that
+     *                  doesn't specify reward name
+     */
+    public void Track(@NonNull String playerId, String action, String url, String reward){
+        EngineApi.rule(this, true, action, playerId, url, reward,null, null );
+    }
+
+    /**
+     * {@link #Track(String, com.playbasis.android.playbasissdk.model.RuleAction)}
+     * @param playerId Player id as used in client's website.
+     * @param action Name of the action performed from ActionRule Enum.
+     * @param url URL of the page that trigger the action or any identifier string - Used for logging, 
+     *              URL specific  rules, and rules that trigger only when a specific identifier string is
+     *              supplied
+     * @param reward name of the point-based reward to give to player, if the action trigger custom-point reward that
+     *                  doesn't specify reward name
+     * @param quantity amount of the point-based reward to give to player, if the action trigger custom-point reward 
+     *                  that doesn't specify reward quantity
+     */
+    public void Track(@NonNull String playerId, RuleAction action, String url, String reward, String quantity) {
+        EngineApi.rule(this, true, action.toString(), playerId, url, reward, reward, null );
+    }
+
+    /**
+     * {@link #Track(String, com.playbasis.android.playbasissdk.model.RuleAction)}
+     * @param playerId Player id as used in client's website.
+     * @param action Name of the action performed.
+     * @param url URL of the page that trigger the action or any identifier string - Used for logging,
+     *              URL specific  rules, and rules that trigger only when a specific identifier string is
+     *              supplied
+     * @param reward name of the point-based reward to give to player, if the action trigger custom-point reward that
+     *                  doesn't specify reward name
+     * @param quantity amount of the point-based reward to give to player, if the action trigger custom-point reward
+     *                  that doesn't specify reward quantity
+     */
+    public void Track(@NonNull String playerId, String action, String url, String reward, String quantity) {
+        EngineApi.rule(this, true, action, playerId, url, reward, reward, null );
     }
     
 }
