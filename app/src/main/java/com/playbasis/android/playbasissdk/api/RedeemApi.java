@@ -66,7 +66,6 @@ public class RedeemApi extends Api {
 
             JsonObjectPOST(playbasis, uri, params, new OnResult<JSONObject>() {
                 @Override
-                @SuppressWarnings("unchecked")
                 public void onSuccess(JSONObject result) {
                     try {
                         List<RedeemEvent> events = JsonHelper.FromJsonArray(result.getJSONArray("events"), RedeemEvent.class);

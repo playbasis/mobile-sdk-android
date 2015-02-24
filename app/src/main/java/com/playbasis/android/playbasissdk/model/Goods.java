@@ -2,8 +2,10 @@ package com.playbasis.android.playbasissdk.model;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.playbasis.android.playbasissdk.helper.DateHelper;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -41,13 +43,15 @@ public class Goods {
     private Boolean sponsor;
     @SerializedName("date_start")
     @Expose
-    private Object dateStart;
+    private String dateStart;
     @SerializedName("date_expire")
     @Expose
-    private Object dateExpire;
+    private String dateExpire;
     @SerializedName("is_group")
     @Expose
     private Boolean isGroup;
+    @Expose 
+    private String group;
 
     /**
      *
@@ -248,41 +252,77 @@ public class Goods {
     }
 
     /**
-     *
+     * Get start date into string format.
      * @return
      * The dateStart
      */
-    public Object getDateStart() {
+    public String getDateStart() {
         return dateStart;
     }
 
     /**
-     *
+     * Get start date into date format. 
+     * @return date of start
+     */
+    public Date getDateDateStart(){
+        return DateHelper.stringToDate(dateStart);
+        
+    }
+
+    /**
+     * set date of start into String format.
      * @param dateStart
      * The date_start
      */
-    public void setDateStart(Object dateStart) {
+    public void setDateStart(String dateStart) {
         this.dateStart = dateStart;
     }
 
     /**
-     *
+     * Set date of start into date format. 
+     * @param dateStart date of start
+     */
+    public void setDateStart(Date dateStart){
+        this.dateStart = DateHelper.dateToString(dateStart);
+        
+    }
+    
+    /**
+     * Get date of expire into String format.
      * @return
      * The dateExpire
      */
-    public Object getDateExpire() {
+    public String getDateExpire() {
         return dateExpire;
     }
 
     /**
-     *
+     * Get date of expire into date format. 
+     * @return date of expire
+     */
+    public Date getDateDateExpire(){
+        return DateHelper.stringToDate(dateExpire);
+        
+    }
+
+    /**
+     * Set date of expire into String format
      * @param dateExpire
      * The date_expire
      */
-    public void setDateExpire(Object dateExpire) {
+    public void setDateExpire(String dateExpire) {
         this.dateExpire = dateExpire;
     }
 
+    /**
+     * Det date of expire into Date format.
+     * @param dateExpire date of expire
+     */
+    public void setDateExpire(Date dateExpire){
+        this.dateExpire = DateHelper.dateToString(dateExpire);
+        
+    }
+    
     /**
      *
      * @return
@@ -300,7 +340,24 @@ public class Goods {
     public void setIsGroup(Boolean isGroup) {
         this.isGroup = isGroup;
     }
-    
+
+
+    /**
+     *  
+     * @return group name
+     */
+    public String getGroup() {
+        return group;
+    }
+
+    /**
+     *  
+     * @param group group name
+     */
+    public void setGroup(String group) {
+        this.group = group;
+    }
+
     private class Redeem {
 
         @Expose
@@ -346,5 +403,6 @@ public class Goods {
 
     }
 
+    
 
 }

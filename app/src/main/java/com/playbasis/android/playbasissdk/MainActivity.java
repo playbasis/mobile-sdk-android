@@ -278,6 +278,67 @@ public class MainActivity extends Activity {
             }
         } );
         
+        
+        GoodsApi.listInfo(playbasis, new OnResult<List<Goods>>() {
+            @Override
+            public void onSuccess(List<Goods> result) {
+                Log.d("GoodsApi", "listInfo: " + result.toString());
+            }
+
+            @Override
+            public void onError(HttpError error) {
+                Log.d("GoodsApi", "listInfo: " + error.toString());
+            }
+        });
+        
+        GoodsApi.info(playbasis, "54ebe635be120b81148b499a",  new OnResult<Goods>() {
+            @Override
+            public void onSuccess(Goods result) {
+                Log.d("GoodsApi", "info: " + result.toString());
+            }
+
+            @Override
+            public void onError(HttpError error) {
+                Log.d("GoodsApi", "info: " + error.toString());
+            }
+        });
+        
+        GoodsApi.groupAvailable(playbasis, "gregtestuser" , "mygrpup", null, new OnResult<Integer>() {
+            @Override
+            public void onSuccess(Integer result) {
+                Log.d("GoodsApi", "groupAvailable: " + result.toString());
+            }
+
+            @Override
+            public void onError(HttpError error) {
+                Log.d("GoodsApi", "groupAvailable: " + error.toString());
+            }
+        });
+        
+        RedeemApi.goods(playbasis, false, "54ebe635be120b81148b499a", "gregtestuser", 1, new OnResult<List<RedeemEvent>>() {
+            @Override
+            public void onSuccess(List<RedeemEvent> result) {
+                Log.d("RedeemApi", "goods: " + result.toString());
+            }
+
+            @Override
+            public void onError(HttpError error) {
+                Log.d("RedeemApi", "goods: " + error.toString());
+            }
+        } );
+        
+        RedeemApi.goodsGroup(playbasis, false, "mygroup", "gregtestuser" , 1 , new OnResult<List<RedeemEvent>>() {
+            @Override
+            public void onSuccess(List<RedeemEvent> result) {
+                Log.d("RedeemApi", "goodsGroup: " + result.toString());
+            }
+
+            @Override
+            public void onError(HttpError error) {
+                Log.d("RedeemApi", "goodsGroup: " + error.toString());
+            }
+        });
+        
         /*
 
         PlayerApi.getPlayerInfo(playbasis, "jontestuser", new OnResult<Player>() {

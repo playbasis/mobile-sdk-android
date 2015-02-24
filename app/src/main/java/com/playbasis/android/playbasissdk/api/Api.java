@@ -228,7 +228,7 @@ public abstract class Api {
         playbasis.getHttpManager().addToRequestQueue(stringRequest);
     }
 
-    public static void asyncPost(final Playbasis playbasis, String endpoint, JSONObject jsonObject,
+    protected static void asyncPost(final Playbasis playbasis, String endpoint, JSONObject jsonObject,
                                 final OnResult<String>
                                         listener) {
 

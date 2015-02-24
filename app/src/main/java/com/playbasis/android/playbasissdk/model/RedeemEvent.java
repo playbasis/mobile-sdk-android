@@ -1,6 +1,7 @@
 package com.playbasis.android.playbasissdk.model;
 
 import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 
 import java.util.HashMap;
 import java.util.List;
@@ -15,8 +16,14 @@ public class RedeemEvent {
     @Expose
     private String message;
     
-    @Expose
+
     private List<TokenValue> incomplete;
+    
+    private Integer incompleteValue;
+    
+    @SerializedName("event_type")
+    @Expose
+    private  String eventType;
 
     public String getMessage() {
         return message;
@@ -34,4 +41,19 @@ public class RedeemEvent {
         this.incomplete = incomplete;
     }
 
+    public String getEventType() {
+        return eventType;
+    }
+
+    public void setEventType(String eventType) {
+        this.eventType = eventType;
+    }
+
+    public Integer getIncompleteValue() {
+        return incompleteValue;
+    }
+
+    public void setIncompleteValue(Integer incompleteValue) {
+        this.incompleteValue = incompleteValue;
+    }
 }

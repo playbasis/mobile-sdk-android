@@ -7,10 +7,12 @@ import com.playbasis.android.playbasissdk.core.Playbasis;
 import com.playbasis.android.playbasissdk.http.toolbox.ParameterizedList;
 import com.playbasis.android.playbasissdk.model.ActionConfig;
 import com.playbasis.android.playbasissdk.model.Rank;
+import com.playbasis.android.playbasissdk.model.RedeemEvent;
 import com.playbasis.android.playbasissdk.model.Reward;
 import com.playbasis.android.playbasissdk.model.TokenValue;
 import com.playbasis.android.playbasissdk.parser.ActionConfigArrayAdapter;
 import com.playbasis.android.playbasissdk.parser.RankTypeArrayAdapter;
+import com.playbasis.android.playbasissdk.parser.RendeemEventArrayAdapter;
 import com.playbasis.android.playbasissdk.parser.RewardTypeArrayAdapter;
 import com.playbasis.android.playbasissdk.parser.TokenValueArrayAdapter;
 
@@ -33,6 +35,7 @@ public class JsonHelper {
         gsonBuilder.registerTypeAdapter(TokenValue.class, new TokenValueArrayAdapter());
         gsonBuilder.registerTypeAdapter(Rank.class, new RankTypeArrayAdapter());
         gsonBuilder.registerTypeAdapter(ActionConfig.class, new ActionConfigArrayAdapter());
+        gsonBuilder.registerTypeAdapter(RedeemEvent.class, new RendeemEventArrayAdapter());
         Gson gson = gsonBuilder.create();
         return gson.fromJson(jsonArray.toString(), new ParameterizedList<T>(klass));
 
@@ -44,6 +47,7 @@ public class JsonHelper {
         gsonBuilder.registerTypeAdapter(TokenValue.class, new TokenValueArrayAdapter());
         gsonBuilder.registerTypeAdapter(Rank.class, new RankTypeArrayAdapter());
         gsonBuilder.registerTypeAdapter(ActionConfig.class, new ActionConfigArrayAdapter());
+        gsonBuilder.registerTypeAdapter(RedeemEvent.class, new RendeemEventArrayAdapter());
         Gson gson = gsonBuilder.create();
         T item = gson.fromJson(jsonObject.toString(), type);
         return item;
