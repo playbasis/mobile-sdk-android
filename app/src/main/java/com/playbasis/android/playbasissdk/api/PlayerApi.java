@@ -7,7 +7,6 @@ import com.playbasis.android.playbasissdk.core.SDKUtil;
 import com.playbasis.android.playbasissdk.helper.JsonHelper;
 import com.playbasis.android.playbasissdk.helper.StringHelper;
 import com.playbasis.android.playbasissdk.http.HttpError;
-import com.playbasis.android.playbasissdk.http.PlaybasisResponse;
 import com.playbasis.android.playbasissdk.http.RequestError;
 import com.playbasis.android.playbasissdk.model.Action;
 import com.playbasis.android.playbasissdk.model.Badge;
@@ -15,7 +14,7 @@ import com.playbasis.android.playbasissdk.model.Goods;
 import com.playbasis.android.playbasissdk.model.Level;
 import com.playbasis.android.playbasissdk.model.Player;
 import com.playbasis.android.playbasissdk.model.Point;
-import com.playbasis.android.playbasissdk.model.PointHistory;
+import com.playbasis.android.playbasissdk.model.PointDetail;
 import com.playbasis.android.playbasissdk.model.Quest;
 import com.playbasis.android.playbasissdk.model.Rank;
 import com.playbasis.android.playbasissdk.model.Ranks;
@@ -29,7 +28,6 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -597,7 +595,7 @@ public class PlayerApi extends Api{
      */
     public static void pointHistory(@NonNull Playbasis playbasis, @NonNull String playerId,
                                     String pointName, Integer offset, Integer limit,
-                             final OnResult<List<PointHistory>> listener){
+                             final OnResult<List<PointDetail>> listener){
         String uri = SDKUtil.SERVER_URL + SDKUtil._PLAYER_URL + playerId + "/point_history";
 
         List<NameValuePair> params = new ArrayList<>();
@@ -609,7 +607,7 @@ public class PlayerApi extends Api{
             @Override
             public void onSuccess(JSONObject result) {
                 try {
-                    List<PointHistory> points = JsonHelper.FromJsonArray(result.getJSONArray("points"), PointHistory.class);
+                    List<PointDetail> points = JsonHelper.FromJsonArray(result.getJSONArray("points"), PointDetail.class);
                     if (listener != null) listener.onSuccess(points);
                 } catch (JSONException e) {
                     e.printStackTrace();

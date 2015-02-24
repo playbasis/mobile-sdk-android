@@ -26,7 +26,6 @@ public class Playbasis {
 
     private Context mContext;
 
-    //TODO: merge KeyStore and Authenticator?
     private KeyStore mKeyStore;
 
     private HttpManager mHttpManager;
@@ -44,33 +43,55 @@ public class Playbasis {
         return instance;
     }
 
+    /**
+     * Constructor used by the builder. 
+     * @param playBasisContent builder handler.
+     */
     private Playbasis(PlayBasisContent playBasisContent) {
-        this.mContext = playBasisContent.mContext;
-        this.mKeyStore = playBasisContent.mKeyStore;
+        this.mContext = playBasisContent.context;
+        this.mKeyStore = playBasisContent.keyStore;
+        this.mChannel = playBasisContent.channel;
         this.mHttpManager = HttpManager.getInstance(mContext);
         this.authenticator = new AuthAuthenticator(mContext, this);
     }
 
-    
 
-
-
+    /**
+     * Get Playbasis context.
+     * @return context
+     */
     public Context getContext() {
         return mContext;
     }
 
+    /**
+     * Get Playbasis  key store.
+     * @return key store
+     */
     public KeyStore getKeyStore() {
         return mKeyStore;
     }
 
+    /**
+     * Get Playbasis httpManager.
+     * @return httpManager
+     */
     public HttpManager getHttpManager() {
         return mHttpManager;
     }
 
+    /**
+     * Get Playbasis authenticator.
+     * @return authenticator
+     */
     public AuthAuthenticator getAuthenticator(){
         return authenticator;
     }
 
+    /**
+     * Get Playbasis channel.
+     * @return channel
+     */
     public String getChannel() {
         return mChannel;
     }
@@ -83,21 +104,21 @@ public class Playbasis {
 
         /**
          * Constructor using a context
-         * @param context
+         * @param context context
          */
         public Builder(@NonNull Context context) {
             mPlayBasisContent = new PlayBasisContent();
-            mPlayBasisContent.mContext = context;
+            mPlayBasisContent.context = context;
         }
 
         /**
          * This method is mandatory. <p>
          * Set the api key, should be save securely on the app.
          * @param apiKey Secret key given by PlayBasis.
-         * @return
+         * @return builder
          */
         public Builder setApiKey(@NonNull String apiKey){
-            this.mPlayBasisContent.mKeyStore.setApiKey(apiKey);
+            this.mPlayBasisContent.keyStore.setApiKey(apiKey);
             return this;
         }
 
@@ -105,15 +126,22 @@ public class Playbasis {
          * This method is mandatory. <p>
          * Set the api secret, should be save securely on the app 
          * @param apiSecret Secret key given by PlayBasis.
-         * @return
+         * @return builder
          */
         public Builder setApiSecret(@NonNull String apiSecret){
-            this.mPlayBasisContent.mKeyStore.setApiSecret(apiSecret);
+            this.mPlayBasisContent.keyStore.setApiSecret(apiSecret);
             return this;
         }
-        
+
+        /**
+         * Set channel params of async methods.
+         * @param channel Optional. If you wish to see the response from this request, 
+         *                 set this to the domain name  of your site.
+         * See section "Receiving Responses from Asynchronous Calls" for more details.
+         * @return builder
+         */
         public Builder setChannel(String channel){
-            this.mPlayBasisContent.mChannel = channel;
+            this.mPlayBasisContent.channel = channel;
             return this;
         }
 
@@ -126,18 +154,20 @@ public class Playbasis {
                 instance = new Playbasis(mPlayBasisContent);
             }
             else {
-                instance.mContext = mPlayBasisContent.mContext;
-                instance.mKeyStore = mPlayBasisContent.mKeyStore;
+                instance.mContext = mPlayBasisContent.context;
+                instance.mKeyStore = mPlayBasisContent.keyStore;
+                instance.mChannel = mPlayBasisContent.channel;
             }
             //Send stored requests
             Api.resendRequests(instance);
             return instance;
         }
     }
+    // handler for the playbasis constructor.
     private static class PlayBasisContent{
-        private Context mContext;
-        private KeyStore mKeyStore = new KeyStore();
-        private String mChannel;
+        public Context context;
+        public KeyStore keyStore = new KeyStore();
+        public String channel;
     }
 
 
@@ -322,7 +352,7 @@ public class Playbasis {
     /** 
      * {@link #Track(String, com.playbasis.android.playbasissdk.model.RuleAction)}
      * @param playerId Player id as used in client's website.
-     * @param actionName of the action performed from ActionRule Enum.
+     * @param action Name of the action performed from ActionRule Enum.
      * @param url URL of the page that trigger the action or any identifier string - Used for logging, 
      *              URL specific  rules, and rules that trigger only when a specific identifier string is
      *              supplied

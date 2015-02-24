@@ -8,6 +8,7 @@ import com.playbasis.android.playbasissdk.helper.JsonHelper;
 import com.playbasis.android.playbasissdk.http.HttpError;
 import com.playbasis.android.playbasissdk.model.ActionConfig;
 import com.playbasis.android.playbasissdk.model.Point;
+import com.playbasis.android.playbasissdk.model.PointDetail;
 import com.playbasis.android.playbasissdk.model.Rule;
 
 import org.apache.http.NameValuePair;
@@ -26,8 +27,16 @@ public class ServiceApi extends Api{
     public static final String TAG = "ServiceApi";
 
 
+    /**
+     * Returns recent activity points of all players.
+     * @param playbasis Playbasis object.
+     * @param pointName Name of the point-based reward to query.
+     * @param offset Number of records starting.
+     * @param limit Number of results to return.
+     * @param listener Callback interface.
+     */
     public static void recentPoint(@NonNull Playbasis playbasis, String pointName,
-                                   Integer offset, Integer limit, final OnResult<List<Point>> listener) {
+                                   Integer offset, Integer limit, final OnResult<List<PointDetail>> listener) {
         
         String uri = SDKUtil.SERVER_URL + SDKUtil._SERVICE_URL + "recent_point";
 
@@ -40,7 +49,7 @@ public class ServiceApi extends Api{
             @Override
             public void onSuccess(JSONObject result) {
                 try {
-                    List<Point> points = JsonHelper.FromJsonArray(result.getJSONArray("points"), Point.class);
+                    List<PointDetail> points = JsonHelper.FromJsonArray(result.getJSONArray("points"), PointDetail.class);
                     if (listener != null) listener.onSuccess(points);
                 } catch (JSONException e) {
                     if (listener != null) listener.onError(new HttpError(e));
@@ -55,7 +64,23 @@ public class ServiceApi extends Api{
         });
     }
 
-
+    /**
+     * Reset point of all players.
+     * @param playbasis  Playbasis object.
+     * @param pointName Name of the point-based reward to query.
+     * @param listener Callback interface.
+     */
+    public static void resetPoint(@NonNull Playbasis playbasis,
+                                  String pointName, final OnResult<String> listener){
+        resetPoint(playbasis,false,pointName,listener);
+    }
+    /**
+     * {@link #resetPoint(com.playbasis.android.playbasissdk.core.Playbasis, String, OnResult)}
+     * @param playbasis  Playbasis object.
+     * @param isAsync Make the request async.
+     * @param pointName Name of the point-based reward to query.
+     * @param listener Callback interface.
+     */
     public static void resetPoint(@NonNull Playbasis playbasis, boolean isAsync,
                              String pointName, final OnResult<String> listener){
 

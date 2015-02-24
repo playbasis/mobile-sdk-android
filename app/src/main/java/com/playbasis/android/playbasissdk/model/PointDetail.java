@@ -7,8 +7,8 @@ import com.google.gson.annotations.SerializedName;
  * Created by gregoire barret on 2/24/15.
  * For PlayBasisSdk project.
  */
-public class PointHistory extends Point {
-    public static final String TAG = "PointHistory";
+public class PointDetail extends Point {
+    public static final String TAG = "PointDetail";
 
 
     @Expose

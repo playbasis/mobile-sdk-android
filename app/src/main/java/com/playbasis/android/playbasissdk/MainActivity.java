@@ -6,17 +6,14 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.playbasis.android.playbasissdk.api.Api;
 import com.playbasis.android.playbasissdk.api.AuthToken;
 import com.playbasis.android.playbasissdk.api.BadgeApi;
-import com.playbasis.android.playbasissdk.api.CommunicationApi;
 import com.playbasis.android.playbasissdk.api.EngineApi;
 import com.playbasis.android.playbasissdk.api.GoodsApi;
 import com.playbasis.android.playbasissdk.api.OnResult;
 import com.playbasis.android.playbasissdk.api.PlayerApi;
 import com.playbasis.android.playbasissdk.api.QuestApi;
 import com.playbasis.android.playbasissdk.api.QuizApi;
-import com.playbasis.android.playbasissdk.api.RedeemApi;
 import com.playbasis.android.playbasissdk.api.ServiceApi;
 import com.playbasis.android.playbasissdk.core.Playbasis;
 import com.playbasis.android.playbasissdk.http.HttpError;
@@ -29,23 +26,18 @@ import com.playbasis.android.playbasissdk.model.Level;
 import com.playbasis.android.playbasissdk.model.Mission;
 import com.playbasis.android.playbasissdk.model.Player;
 import com.playbasis.android.playbasissdk.model.Point;
-import com.playbasis.android.playbasissdk.model.PointHistory;
+import com.playbasis.android.playbasissdk.model.PointDetail;
 import com.playbasis.android.playbasissdk.model.Quest;
 import com.playbasis.android.playbasissdk.model.Quiz;
 import com.playbasis.android.playbasissdk.model.QuizDetail;
 import com.playbasis.android.playbasissdk.model.QuizPending;
 import com.playbasis.android.playbasissdk.model.QuizQuestion;
-import com.playbasis.android.playbasissdk.model.QuizQuestionAnswer;
 import com.playbasis.android.playbasissdk.model.QuizRank;
 import com.playbasis.android.playbasissdk.model.Rank;
 import com.playbasis.android.playbasissdk.model.Ranks;
-import com.playbasis.android.playbasissdk.model.RedeemEvent;
-import com.playbasis.android.playbasissdk.model.RedeemGood;
 import com.playbasis.android.playbasissdk.model.Reward;
 import com.playbasis.android.playbasissdk.model.RuleAction;
-import com.playbasis.android.playbasissdk.model.StoredRequest;
 import com.playbasis.android.playbasissdk.model.Rule;
-import com.playbasis.android.playbasissdk.secure.RequestStorage;
 
 import java.util.Arrays;
 import java.util.List;
@@ -608,9 +600,9 @@ public class MainActivity extends Activity {
             }
         });
         
-        PlayerApi.pointHistory(playbasis, "gregtestuser", null, null , null , new OnResult<List<PointHistory>>() {
+        PlayerApi.pointHistory(playbasis, "gregtestuser", null, null , null , new OnResult<List<PointDetail>>() {
             @Override
-            public void onSuccess(List<PointHistory> result) {
+            public void onSuccess(List<PointDetail> result) {
                 Log.d("pointHistory", result.toString());
             }
 
@@ -697,6 +689,7 @@ public class MainActivity extends Activity {
         
 
 
+        
         playbasis.Do("gregtestuser", RuleAction.LIKE, new OnResult<Rule>() {
             @Override
             public void onSuccess(Rule result) {
@@ -710,9 +703,33 @@ public class MainActivity extends Activity {
         });
 
         playbasis.Track("gregtestuser", RuleAction.BUY, "www.facebook.com");
+        
+        
+        ServiceApi.recentPoint(playbasis, null,null,null,new OnResult<List<PointDetail>>() {
+            @Override
+            public void onSuccess(List<PointDetail> result) {
+                Log.d("recentPoint", result.toString());
+            }
 
+            @Override
+            public void onError(HttpError error) {
+                Log.d("recentPoint", error.toString());
+            }
+        }  );
+        
+        ServiceApi.resetPoint(playbasis, null, new OnResult<String>() {
+            @Override
+            public void onSuccess(String result) {
+                Log.d("resetPoint", result);
+            }
 
+            @Override
+            public void onError(HttpError error) {
+                Log.d("resetPoint", error.toString());
+            }
+        });
     }
+    
     
 
 
