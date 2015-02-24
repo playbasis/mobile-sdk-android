@@ -278,7 +278,7 @@ public class MainActivity extends Activity {
             }
         } );
         
-        
+        // Goods
         GoodsApi.listInfo(playbasis, new OnResult<List<Goods>>() {
             @Override
             public void onSuccess(List<Goods> result) {
@@ -315,7 +315,7 @@ public class MainActivity extends Activity {
             }
         });
         
-        RedeemApi.goods(playbasis, false, "54ebe635be120b81148b499a", "gregtestuser", 1, new OnResult<List<RedeemEvent>>() {
+/*        RedeemApi.goods(playbasis, false, "54ebe635be120b81148b499a", "gregtestuser", 1, new OnResult<List<RedeemEvent>>() {
             @Override
             public void onSuccess(List<RedeemEvent> result) {
                 Log.d("RedeemApi", "goods: " + result.toString());
@@ -337,7 +337,48 @@ public class MainActivity extends Activity {
             public void onError(HttpError error) {
                 Log.d("RedeemApi", "goodsGroup: " + error.toString());
             }
+        });*/
+        
+        
+        //badges
+
+        BadgeApi.badges(playbasis, new OnResult<List<Badge>>() {
+            @Override
+            public void onSuccess(List<Badge> result) {
+                Log.d("badges", result.toString());
+            }
+
+            @Override
+            public void onError(HttpError error) {
+                Log.d("badges", error.toString());
+            }
         });
+
+        BadgeApi.badge(playbasis, "54eb1187be120bd13a8b458d", new OnResult<Badge>() {
+            @Override
+            public void onSuccess(Badge result) {
+                Log.d("badge", result.toString());
+            }
+
+            @Override
+            public void onError(HttpError error) {
+                Log.d("badge", error.toString());
+            }
+        } );
+        
+        PlayerApi.claimBadge(playbasis, false, "gregtestuser", "54eb1187be120bd13a8b458d",
+                new OnResult<Boolean>() {
+            @Override
+            public void onSuccess(Boolean result) {
+                Log.d("badge", result.toString());
+            }
+
+            @Override
+            public void onError(HttpError error) {
+                Log.d("badge", error.toString());
+            }
+        });
+        
         
         /*
 
@@ -464,29 +505,7 @@ public class MainActivity extends Activity {
         
         
 
-        BadgeApi.badges(playbasis, new OnResult<List<Badge>>() {
-            @Override
-            public void onSuccess(List<Badge> result) {
-                Log.d("badges", result.toString());
-            }
-
-            @Override
-            public void onError(HttpError error) {
-                Log.d("badges", error.toString());
-            }
-        });
-        
-        BadgeApi.badge(playbasis, "54c0adc9be120b42388b482d", new OnResult<Badge>() {
-            @Override
-            public void onSuccess(Badge result) {
-                Log.d("badge", result.toString());
-            }
-
-            @Override
-            public void onError(HttpError error) {
-                Log.d("badge", error.toString());
-            }
-        } );
+     
 
         GoodsApi.listInfo(playbasis,  new OnResult<List<Goods>>() {
             @Override

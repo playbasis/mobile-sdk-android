@@ -21,6 +21,11 @@ import java.util.List;
 public class BadgeApi extends Api {
     public static final String TAG = "BadgeApi";
 
+    /**
+     * Returns information about all available badges for the current site.
+     * @param playbasis Playbasis object.
+     * @param listener Callback interface.
+     */
     public static void badges(@NonNull Playbasis playbasis, final OnResult<List<Badge>> listener){
         String uri = SDKUtil.SERVER_URL + SDKUtil.BADGES_URL;
 
@@ -42,6 +47,12 @@ public class BadgeApi extends Api {
         });
     }
 
+    /**
+     * Returns information about the badge with the specified id.
+     * @param playbasis Playbasis object.
+     * @param badgeId Badge id to query.
+     * @param listener Callback interface.
+     */
     public static void badge(@NonNull Playbasis playbasis, @NonNull String badgeId,
                              final OnResult<Badge> listener) {
         String uri = SDKUtil.SERVER_URL + SDKUtil._BADGE_URL + badgeId;

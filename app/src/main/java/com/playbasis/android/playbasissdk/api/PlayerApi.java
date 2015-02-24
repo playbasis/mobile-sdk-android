@@ -703,11 +703,11 @@ public class PlayerApi extends Api{
      * @param badgeId Id for the badge to change the state.
      * @param listener  Callback interface.
      */
-    public static void claimBage(@NonNull Playbasis playbasis, boolean isAsync, @NonNull String playerId,
-                                 @NonNull String badgeId, final OnResult<List<String>> listener){
+    public static void claimBadge(@NonNull Playbasis playbasis, boolean isAsync, @NonNull String playerId,
+                                 @NonNull String badgeId, final OnResult<Boolean> listener){
         
 
-        String endpoint =  SDKUtil._PLAYER_URL + playerId + "/badges/" + badgeId + "/claim";
+        String endpoint =  SDKUtil._PLAYER_URL + playerId + "/badge/" + badgeId + "/claim";
         if(isAsync){
 
             JSONObject jsonObject = null;
@@ -736,13 +736,7 @@ public class PlayerApi extends Api{
             JsonObjectPOST(playbasis, uri, null, new OnResult<JSONObject>() {
                 @Override
                 public void onSuccess(JSONObject result) {
-                    try {
-                        List<String> events = JsonHelper.FromJsonArray(result.getJSONArray("result"), String.class);
-                        if (listener != null) listener.onSuccess(events);
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                        if (listener != null) listener.onError(new HttpError(e));
-                    }
+                        if (listener != null) listener.onSuccess(true);
                 }
 
                 @Override
@@ -763,9 +757,9 @@ public class PlayerApi extends Api{
      * @param listener  Callback interface.
      */
     public static void redeemBadge(@NonNull Playbasis playbasis, boolean isAsync, @NonNull String playerId,
-                                   @NonNull String badgeId, final OnResult<List<String>> listener){
+                                   @NonNull String badgeId, final OnResult<Boolean> listener){
 
-        String endpoint =   SDKUtil._PLAYER_URL + playerId + "/badges/" + badgeId + "/claim";
+        String endpoint =   SDKUtil._PLAYER_URL + playerId + "/badge/" + badgeId + "/redeem";
         if(isAsync){
 
             JSONObject jsonObject = null;
@@ -795,13 +789,7 @@ public class PlayerApi extends Api{
             JsonObjectPOST(playbasis, uri, null, new OnResult<JSONObject>() {
                 @Override
                 public void onSuccess(JSONObject result) {
-                    try {
-                        List<String> events = JsonHelper.FromJsonArray(result.getJSONArray("result"), String.class);
-                        if (listener != null) listener.onSuccess(events);
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                        if (listener != null) listener.onError(new HttpError(e));
-                    }
+                        if (listener != null) listener.onSuccess(true);
                 }
 
                 @Override
