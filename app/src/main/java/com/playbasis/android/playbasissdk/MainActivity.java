@@ -20,13 +20,16 @@ import com.playbasis.android.playbasissdk.api.RedeemApi;
 import com.playbasis.android.playbasissdk.api.ServiceApi;
 import com.playbasis.android.playbasissdk.core.Playbasis;
 import com.playbasis.android.playbasissdk.http.HttpError;
+import com.playbasis.android.playbasissdk.model.Action;
 import com.playbasis.android.playbasissdk.model.ActionConfig;
 import com.playbasis.android.playbasissdk.model.Badge;
 import com.playbasis.android.playbasissdk.model.Event;
 import com.playbasis.android.playbasissdk.model.Goods;
+import com.playbasis.android.playbasissdk.model.Level;
 import com.playbasis.android.playbasissdk.model.Mission;
 import com.playbasis.android.playbasissdk.model.Player;
 import com.playbasis.android.playbasissdk.model.Point;
+import com.playbasis.android.playbasissdk.model.PointHistory;
 import com.playbasis.android.playbasissdk.model.Quest;
 import com.playbasis.android.playbasissdk.model.Quiz;
 import com.playbasis.android.playbasissdk.model.QuizDetail;
@@ -37,6 +40,8 @@ import com.playbasis.android.playbasissdk.model.QuizRank;
 import com.playbasis.android.playbasissdk.model.Rank;
 import com.playbasis.android.playbasissdk.model.Ranks;
 import com.playbasis.android.playbasissdk.model.RedeemEvent;
+import com.playbasis.android.playbasissdk.model.RedeemGood;
+import com.playbasis.android.playbasissdk.model.Reward;
 import com.playbasis.android.playbasissdk.model.StoredRequest;
 import com.playbasis.android.playbasissdk.model.Rule;
 import com.playbasis.android.playbasissdk.secure.RequestStorage;
@@ -354,7 +359,7 @@ public class MainActivity extends Activity {
             }
         });
 
-        BadgeApi.badge(playbasis, "54eb1187be120bd13a8b458d", new OnResult<Badge>() {
+/*        BadgeApi.badge(playbasis, "54eb1187be120bd13a8b458d", new OnResult<Badge>() {
             @Override
             public void onSuccess(Badge result) {
                 Log.d("badge", result.toString());
@@ -368,16 +373,317 @@ public class MainActivity extends Activity {
         
         PlayerApi.claimBadge(playbasis, false, "gregtestuser", "54eb1187be120bd13a8b458d",
                 new OnResult<Boolean>() {
+                    @Override
+                    public void onSuccess(Boolean result) {
+                        Log.d("badge", result.toString());
+                    }
+
+                    @Override
+                    public void onError(HttpError error) {
+                        Log.d("badge", error.toString());
+                    }
+                });*/
+        
+        PlayerApi.rank(playbasis, "point", null, new OnResult<List<Rank>>() {
             @Override
-            public void onSuccess(Boolean result) {
-                Log.d("badge", result.toString());
+            public void onSuccess(List<Rank> result) {
+                Log.d("rank", result.toString());
             }
 
             @Override
             public void onError(HttpError error) {
-                Log.d("badge", error.toString());
+                Log.d("rank", error.toString());
+            }
+        } );
+        
+        PlayerApi.ranks(playbasis, null, new OnResult<Ranks>() {
+            @Override
+            public void onSuccess(Ranks result) {
+                Log.d("ranks", result.toString());
+            }
+
+            @Override
+            public void onError(HttpError error) {
+                Log.d("ranks", error.toString());
             }
         });
+        
+        PlayerApi.levels(playbasis, new OnResult<List<Level>>() {
+            @Override
+            public void onSuccess(List<Level> result) {
+                Log.d("levels", result.toString());
+            }
+
+            @Override
+            public void onError(HttpError error) {
+                Log.d("levels", error.toString());
+            }
+        });
+        
+        PlayerApi.level(playbasis, "2", new OnResult<Level>() {
+            @Override
+            public void onSuccess(Level result) {
+                Log.d("level", result.toString());
+            }
+
+            @Override
+            public void onError(HttpError error) {
+                Log.d("level", error.toString());
+            }
+        });
+
+        //Communication
+/*
+        CommunicationApi.sendEmail(playbasis, false, "gregtestuser", "test", "test", null, 
+                new OnResult<List<String>>() {
+            @Override
+            public void onSuccess(List<String> result) {
+                Log.d("sendEmail","");
+            }
+
+            @Override
+            public void onError(HttpError error) {
+                Log.d("","");
+            }
+        } );
+
+        CommunicationApi.sendSms(playbasis, false, "gregtestuser", "test", null, new OnResult<List<String>>() {
+            @Override
+            public void onSuccess(List<String> result) {
+                Log.d("sendEmail","");
+            }
+
+            @Override
+            public void onError(HttpError error) {
+                Log.d("","");
+            }
+        } );
+
+        CommunicationApi.sendPush(playbasis, false, "gregtestuser", "test", null, new OnResult<List<String>>() {
+            @Override
+            public void onSuccess(List<String> result) {
+                Log.d("sendEmail","");
+            }
+
+            @Override
+            public void onError(HttpError error) {
+                Log.d("","");
+            }
+        } );*/
+        
+        //Player
+
+        PlayerApi.getPlayerInfo(playbasis, "gregtestuser", new OnResult<Player>() {
+            @Override
+            public void onSuccess(Player result) {
+                Log.d("getPlayerInfo", result.toString());
+            }
+
+            @Override
+            public void onError(HttpError error) {
+                Log.d("getPlayerInfo", error.toString());
+            }
+        } );
+
+        PlayerApi.getPlayerPrivateInfo(playbasis, "gregtestuser", new OnResult<Player>() {
+            @Override
+            public void onSuccess(Player result) {
+                Log.d("getPlayerPrivateInfo", result.toString());
+            }
+
+            @Override
+            public void onError(HttpError error) {
+                Log.d("getPlayerPrivateInfo", error.toString());
+            }
+        });
+
+        PlayerApi.getListPlayerInfo(playbasis, Arrays.asList("gregtestuser"), new OnResult<List<Player>>() {
+            @Override
+            public void onSuccess(List<Player> result) {
+                Log.d("getListPlayerInfo", result.toString());
+            }
+
+            @Override
+            public void onError(HttpError error) {
+                Log.d("getListPlayerInfo", error.toString());
+            }
+        });
+
+        PlayerApi.getDetailedPlayerListInfo(playbasis, "gregtestuser", new OnResult<Player>() {
+            @Override
+            public void onSuccess(Player result) {
+                Log.d("getDetailedListInfo", result.toString());
+            }
+
+            @Override
+            public void onError(HttpError error) {
+                Log.d("getDetailedListInfo", error.toString());
+            }
+        });
+
+        PlayerApi.getDetailedPlayerPrivateInfo(playbasis, "gregtestuser", new OnResult<Player>() {
+            @Override
+            public void onSuccess(Player result) {
+                Log.d("etDetailedPlayerPrivate", result.toString());
+            }
+
+            @Override
+            public void onError(HttpError error) {
+                Log.d("etDetailedPlayerPrivate", error.toString());
+            }
+        });
+
+
+        PlayerApi.badges(playbasis, "gregtestuser", new OnResult<List<Badge>>() {
+            @Override
+            public void onSuccess(List<Badge> result) {
+                Log.d("badges", result.toString());
+            }
+
+            @Override
+            public void onError(HttpError error) {
+                Log.d("badges", error.toString());
+            }
+        });
+
+
+        PlayerApi.quest(playbasis, "gregtestuser", "54eb1128be120bd03a8b4578", new OnResult<Quest>() {
+            @Override
+            public void onSuccess(Quest result) {
+                Log.d("quest", result.toString());
+            }
+
+            @Override
+            public void onError(HttpError error) {
+                Log.d("quest", error.toString());
+            }
+        } );
+
+        PlayerApi.quests(playbasis, "gregtestuser", new OnResult<List<Quest>>() {
+            @Override
+            public void onSuccess(List<Quest> result) {
+                Log.d("quests", result.toString());
+            }
+
+            @Override
+            public void onError(HttpError error) {
+                Log.d("quests", error.toString());
+            }
+        } );
+        
+        PlayerApi.questReward(playbasis, "gregtestuser", null, null , new OnResult<List<Reward>>() {
+            @Override
+            public void onSuccess(List<Reward> result) {
+                Log.d("questReward", result.toString());
+            }
+
+            @Override
+            public void onError(HttpError error) {
+                Log.d("questReward", error.toString());
+            }
+        });
+        
+        PlayerApi.points(playbasis, "gregtestuser", new OnResult<List<Point>>() {
+            @Override
+            public void onSuccess(List<Point> result) {
+                Log.d("points", result.toString());
+            }
+
+            @Override
+            public void onError(HttpError error) {
+                Log.d("points", error.toString());
+            }
+        });
+        
+        PlayerApi.point(playbasis , "gregtestuser", "point", new OnResult<List<Point>>() {
+            @Override
+            public void onSuccess(List<Point> result) {
+                Log.d("point", result.toString());
+            }
+
+            @Override
+            public void onError(HttpError error) {
+                Log.d("point", error.toString());
+            }
+        });
+        
+        PlayerApi.pointHistory(playbasis, "gregtestuser", null, null , null , new OnResult<List<PointHistory>>() {
+            @Override
+            public void onSuccess(List<PointHistory> result) {
+                Log.d("pointHistory", result.toString());
+            }
+
+            @Override
+            public void onError(HttpError error) {
+                Log.d("pointHistory", error.toString());
+            }
+        } );
+        
+        
+        PlayerApi.actionTime(playbasis, "gregtestuser", "like", new OnResult<Action>() {
+            @Override
+            public void onSuccess(Action result) {
+                Log.d("actionTime", result.toString());
+            }
+
+            @Override
+            public void onError(HttpError error) {
+                Log.d("actionTime", error.toString());
+            }
+        });
+        
+        
+        PlayerApi.actionCount(playbasis, "gregtestuser", "like", new OnResult<Action>() {
+            @Override
+            public void onSuccess(Action result) {
+                Log.d("actionCount", result.toString());
+            }
+
+            @Override
+            public void onError(HttpError error) {
+                Log.d("actionCount", error.toString());
+            }
+        });
+        
+        
+        PlayerApi.actionLast(playbasis, "gregtestuser", new OnResult<Action>() {
+            @Override
+            public void onSuccess(Action result) {
+                Log.d("actionLast", result.toString());
+            }
+
+            @Override
+            public void onError(HttpError error) {
+                Log.d("actionLast", error.toString());
+            }
+        });
+        
+/*        RedeemApi.goods(playbasis, false, "54ec1198be120b29168b4aaa", "gregtestuser", 1 , new OnResult<List<RedeemGood>>() {
+            @Override
+            public void onSuccess(List<RedeemGood> result) {
+
+            }
+
+            @Override
+            public void onError(HttpError error) {
+                Log.d("goods", error.toString());
+            }
+        } );*/
+
+        PlayerApi.goods(pb, "gregtestuser", new OnResult<List<Goods>>() {
+            @Override
+            public void onSuccess(List<Goods> result) {
+                Log.d("goods", result.toString());
+            }
+
+            @Override
+            public void onError(HttpError error) {
+                Log.d("goods", error.toString());
+            }
+        });
+        
+
+        
         
         
         /*

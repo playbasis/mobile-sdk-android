@@ -24,6 +24,31 @@ import java.util.List;
 public class CommunicationApi  extends Api{
     public static final String TAG = "CommunicationApi";
 
+    /**
+     * Send email to a player.
+     * @param playbasis Playbasis object.
+     * @param playerId Player id as used in client's website.
+     * @param subject Email subject.
+     * @param message Email message (either message or template_id is required).
+     * @param templateId Template message (either message or template_id is required).
+     * @param listener Callback interface.
+     */
+    public static void sendEmail(@NonNull Playbasis playbasis,
+                                 @NonNull String playerId, @NonNull String subject, String message, String templateId,
+                                 final OnResult<List<String>>listener ){
+        sendEmail(playbasis, false, playerId, subject, message, templateId, listener);
+    }
+    
+    /**
+     *  {@link #sendEmail(com.playbasis.android.playbasissdk.core.Playbasis, String, String, String, String, OnResult)}
+     * @param playbasis  Playbasis object.
+     * @param isAsync Make the request async.
+     * @param playerId Player id as used in client's website.
+     * @param subject Email subject.
+     * @param message Email message (either message or template_id is required).
+     * @param templateId Template message (either message or template_id is required).
+     * @param listener Callback interface.
+     */
     public static void sendEmail(@NonNull Playbasis playbasis, boolean isAsync,
                              @NonNull String playerId, @NonNull String subject, String message, String templateId,
                              final OnResult<List<String>>listener ){
@@ -82,6 +107,34 @@ public class CommunicationApi  extends Api{
         }
     }
 
+    /**
+     * Send coupon to a player via email.
+     * @param playbasis Playbasis object.
+     * @param playerId  Player id as used in client's website.
+     * @param refId Reference transaction id for redemption.
+     * @param subject Email subject.
+     * @param message Email message (either message or template_id is required).
+     * @param templateId Template message (either message or template_id is required).
+     * @param listener  Callback interface.
+     */
+    public static void sendEmailCoupon(@NonNull Playbasis playbasis,
+                                       @NonNull String playerId, @NonNull String refId, @NonNull String subject,
+                                       String message, String templateId,
+                                       final OnResult<List<String>>listener ){
+        sendEmailCoupon(playbasis, false, playerId, refId,subject,message,templateId,listener);
+    }
+
+    /**
+     * {@link #sendEmailCoupon(com.playbasis.android.playbasissdk.core.Playbasis, String, String, String, String, String, OnResult)} 
+     * @param playbasis Playbasis object.
+     * @param isAsync Make the request async.
+     * @param playerId  Player id as used in client's website.
+     * @param refId Reference transaction id for redemption.
+     * @param subject Email subject.
+     * @param message Email message (either message or template_id is required).
+     * @param templateId Template message (either message or template_id is required).
+     * @param listener  Callback interface.
+     */
     public static void sendEmailCoupon(@NonNull Playbasis playbasis, boolean isAsync,
                                  @NonNull String playerId, @NonNull String refId, @NonNull String subject,
                                  String message, String templateId,
@@ -143,7 +196,29 @@ public class CommunicationApi  extends Api{
 
     }
 
+    /**
+     * Send SMS to a player.
+     * @param playbasis Playbasis object.
+     * @param playerId  Player id as used in client's website.
+     * @param message SMS message, can use variable {{code}} for the actual code.
+     * @param templateId Template message (either message or template_id is required).
+     * @param listener  Callback interface.
+     */
+    public static void sendSms(@NonNull Playbasis playbasis,
+                               @NonNull String playerId, String message, String templateId,
+                               final OnResult<List<String>>listener ){
+        sendSms(playbasis, false, playerId, message,templateId,listener);
+    }
 
+    /**
+     * {@link #sendSms(com.playbasis.android.playbasissdk.core.Playbasis, String, String, String, OnResult)}
+     * @param playbasis Playbasis object.
+     * @param isAsync Make the request async.
+     * @param playerId  Player id as used in client's website.
+     * @param message SMS message, can use variable {{code}} for the actual code.
+     * @param templateId Template message (either message or template_id is required).
+     * @param listener  Callback interface.
+     */
     public static void sendSms(@NonNull Playbasis playbasis, boolean isAsync,
                                  @NonNull String playerId, String message, String templateId,
                                  final OnResult<List<String>>listener ){
@@ -197,6 +272,33 @@ public class CommunicationApi  extends Api{
         }
     }
 
+    /**
+     * Send coupon to a player via SMS.
+     * @param playbasis Playbasis object.
+     * @param playerId  Player id as used in client's website.
+     * @param refId Reference transaction id for redemption.
+     * @param message SMS message, can use variable {{code}} for the actual code.
+     * @param templateId Template message (either message or template_id is required).
+     * @param listener  Callback interface.
+     */
+    public static void sendSmsCoupon(@NonNull Playbasis playbasis,
+                                     @NonNull String playerId, @NonNull String refId,
+                                     String message, String templateId,
+                                     final OnResult<List<String>>listener ){
+        sendSmsCoupon(playbasis,false,playerId,refId,message,templateId,listener);
+        
+    }
+
+    /**
+     * {@link #sendEmailCoupon(com.playbasis.android.playbasissdk.core.Playbasis, String, String, String, String, String, OnResult)}
+     * @param playbasis Playbasis object.
+     * @param isAsync Make the request async.
+     * @param playerId  Player id as used in client's website.
+     * @param refId Reference transaction id for redemption.
+     * @param message SMS message, can use variable {{code}} for the actual code.
+     * @param templateId Template message (either message or template_id is required).
+     * @param listener  Callback interface.
+     */
     public static void sendSmsCoupon(@NonNull Playbasis playbasis, boolean isAsync,
                                        @NonNull String playerId, @NonNull String refId,
                                        String message, String templateId,
@@ -253,6 +355,28 @@ public class CommunicationApi  extends Api{
         }
     }
 
+    /**
+     * Send push notification to a player.
+     * @param playbasis Playbasis object.
+     * @param playerId  Player id as used in client's website.
+     * @param message SMS message, can use variable {{code}} for the actual code.
+     * @param templateId Template message (either message or template_id is required).
+     * @param listener  Callback interface.
+     */
+    public static void sendPush(@NonNull Playbasis playbasis,
+                                @NonNull String playerId, String message, String templateId,
+                                final OnResult<List<String>>listener ){
+        sendPush(playbasis,false,playerId,message,templateId, listener);
+    }
+    /**
+     * {@link #sendPush(com.playbasis.android.playbasissdk.core.Playbasis, String, String, String, OnResult)}
+     * @param playbasis Playbasis object.
+     * @param isAsync Make the request async.
+     * @param playerId  Player id as used in client's website.
+     * @param message SMS message, can use variable {{code}} for the actual code.
+     * @param templateId Template message (either message or template_id is required).
+     * @param listener  Callback interface.
+     */
     public static void sendPush(@NonNull Playbasis playbasis, boolean isAsync,
                                  @NonNull String playerId, String message, String templateId,
                                  final OnResult<List<String>>listener ){
@@ -307,6 +431,31 @@ public class CommunicationApi  extends Api{
         }
     }
 
+    /**
+     * Send coupon to a player via push notification.
+     * @param playbasis Playbasis object.
+     * @param playerId  Player id as used in client's website.
+     * @param refId Reference transaction id for redemption.
+     * @param message SMS message, can use variable {{code}} for the actual code.
+     * @param templateId Template message (either message or template_id is required).
+     * @param listener  Callback interface.
+     */
+    public static void sendPushCoupon(@NonNull Playbasis playbasis, 
+                                      @NonNull String playerId, @NonNull String refId,
+                                      String message, String templateId,
+                                      final OnResult<List<String>>listener ){
+        sendPushCoupon(playbasis,false,playerId,refId,message,templateId,listener);
+    }
+    /**
+     * {@link #sendPushCoupon(com.playbasis.android.playbasissdk.core.Playbasis, String, String, String, String, OnResult)}
+     * @param playbasis Playbasis object.
+     * @param isAsync Make the request async.
+     * @param playerId  Player id as used in client's website.
+     * @param refId Reference transaction id for redemption.
+     * @param message SMS message, can use variable {{code}} for the actual code.
+     * @param templateId Template message (either message or template_id is required).
+     * @param listener  Callback interface.
+     */
     public static void sendPushCoupon(@NonNull Playbasis playbasis, boolean isAsync,
                                        @NonNull String playerId, @NonNull String refId,
                                        String message, String templateId,

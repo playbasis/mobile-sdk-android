@@ -15,6 +15,7 @@ import com.playbasis.android.playbasissdk.model.Goods;
 import com.playbasis.android.playbasissdk.model.Level;
 import com.playbasis.android.playbasissdk.model.Player;
 import com.playbasis.android.playbasissdk.model.Point;
+import com.playbasis.android.playbasissdk.model.PointHistory;
 import com.playbasis.android.playbasissdk.model.Quest;
 import com.playbasis.android.playbasissdk.model.Rank;
 import com.playbasis.android.playbasissdk.model.Ranks;
@@ -193,15 +194,23 @@ public class PlayerApi extends Api{
     /**
      * Register a user from client's website as a Playbasis player.
      * @param playbasis Playbasis object.
-     * @param player The player.
+     * @param player Id of the player.
      * @param listener Callback interface.
      */
     public static void register(@NonNull Playbasis playbasis, @NonNull Player player,
-                                final OnResult<String> listener){
+                                final OnResult<Boolean> listener){
         register(playbasis,false,player,listener);
     }
+
+    /**
+     * {@link #register(com.playbasis.android.playbasissdk.core.Playbasis, com.playbasis.android.playbasissdk.model.Player, OnResult)}
+     * @param playbasis Playbasis object.
+     * @param isAsync  Make the request async.
+     * @param player Id of the player.
+     * @param listener Callback interface.
+     */
     public static void register(@NonNull Playbasis playbasis, boolean isAsync, @NonNull Player player,
-                                final OnResult<String> listener){
+                                final OnResult<Boolean> listener){
 
         if (!player.isValid()) {
             if (listener != null) listener.onError(new HttpError(
@@ -224,7 +233,7 @@ public class PlayerApi extends Api{
             asyncPost(playbasis, endpoint ,jsonObject , new OnResult<String>() {
                 @Override
                 public void onSuccess(String result) {
-                    if (listener != null) listener.onSuccess(null);
+                    if (listener != null) listener.onSuccess(true);
                 }
 
                 @Override
@@ -242,7 +251,7 @@ public class PlayerApi extends Api{
             JsonObjectPOST(playbasis, uri, player.toParams(), new OnResult<JSONObject>() {
                 @Override
                 public void onSuccess(JSONObject result) {
-                    if (listener != null) listener.onSuccess("");
+                    if (listener != null) listener.onSuccess(true);
                 }
 
                 @Override
@@ -257,15 +266,23 @@ public class PlayerApi extends Api{
     /**
      * Update player information.
      * @param playbasis Playbasis object.
-     * @param player The player.
+     * @param player Id of the player.
      * @param listener Callback interface.
      */
     public static void update(@NonNull Playbasis playbasis, @NonNull Player player,
-                              final OnResult<String> listener){
+                              final OnResult<Boolean> listener){
         update(playbasis,false,player,listener);
     }
+
+    /**
+     * {@link #update(com.playbasis.android.playbasissdk.core.Playbasis, com.playbasis.android.playbasissdk.model.Player, OnResult)}
+     * @param playbasis Playbasis object.
+     * @param isAsync Make the request async.
+     * @param player  Id of the player.
+     * @param listener Callback interface.
+     */ 
     public static void update(@NonNull Playbasis playbasis, boolean isAsync, @NonNull Player player,
-                                final OnResult<String> listener){
+                                final OnResult<Boolean> listener){
         if(!player.isValid()){
             if(listener!=null)listener.onError(new HttpError(
                     new RequestError("player not valid", RequestError.ERROR_CODE.DEFAULT)));
@@ -287,7 +304,7 @@ public class PlayerApi extends Api{
             asyncPost(playbasis, endpoint ,jsonObject , new OnResult<String>() {
                 @Override
                 public void onSuccess(String result) {
-                    if (listener != null) listener.onSuccess(null);
+                    if (listener != null) listener.onSuccess(true);
                 }
 
                 @Override
@@ -305,7 +322,7 @@ public class PlayerApi extends Api{
             JsonObjectPOST(playbasis, uri, player.toParams(), new OnResult<JSONObject>() {
                 @Override
                 public void onSuccess(JSONObject result) {
-                    if (listener != null) listener.onSuccess("");
+                    if (listener != null) listener.onSuccess(true);
                 }
 
                 @Override
@@ -324,11 +341,19 @@ public class PlayerApi extends Api{
      * @param listener Callback interface.
      */
     public static void delete(@NonNull Playbasis playbasis, @NonNull String playerId,
-                              final OnResult<String> listener){
+                              final OnResult<Boolean> listener){
         delete(playbasis,false,playerId,listener);
     }
+
+    /**
+     * {@link #delete(com.playbasis.android.playbasissdk.core.Playbasis, String, OnResult)}
+     * @param playbasis  Playbasis object.
+     * @param isAsync Make the request async.
+     * @param playerId Id of the player.
+     * @param listener Callback interface.
+     */
     public static void delete(@NonNull Playbasis playbasis, boolean isAsync, @NonNull String playerId,
-                              final OnResult<String> listener){
+                              final OnResult<Boolean> listener){
 
         String endpoint =  SDKUtil._PLAYER_URL + playerId + "/delete";
         if(isAsync){
@@ -343,7 +368,7 @@ public class PlayerApi extends Api{
             asyncPost(playbasis, endpoint ,jsonObject , new OnResult<String>() {
                 @Override
                 public void onSuccess(String result) {
-                    if (listener != null) listener.onSuccess(null);
+                    if (listener != null) listener.onSuccess(true);
                 }
 
                 @Override
@@ -360,7 +385,7 @@ public class PlayerApi extends Api{
             JsonObjectPOST(playbasis, uri, null, new OnResult<JSONObject>() {
                 @Override
                 public void onSuccess(JSONObject result) {
-                    if (listener != null) listener.onSuccess("");
+                    if (listener != null) listener.onSuccess(true);
                 }
 
                 @Override
@@ -379,11 +404,19 @@ public class PlayerApi extends Api{
      * @param listener Callback interface.
      */
     public static void login(@NonNull Playbasis playbasis, @NonNull String playerId,
-                             final OnResult<String> listener){
+                             final OnResult<Boolean> listener){
         login(playbasis,false,playerId,listener);
     }
+
+    /**
+     * {@link #delete(com.playbasis.android.playbasissdk.core.Playbasis, String, OnResult)}
+     * @param playbasis Playbasis object.
+     * @param isAsync Make the request async.
+     * @param playerId Id of the player.
+     * @param listener Callback interface.
+     */
     public static void login(@NonNull Playbasis playbasis, boolean isAsync, @NonNull String playerId,
-                              final OnResult<String> listener){
+                              final OnResult<Boolean> listener){
 
 
         String endpoint =  SDKUtil._PLAYER_URL + playerId + "/login";
@@ -399,7 +432,7 @@ public class PlayerApi extends Api{
             asyncPost(playbasis, endpoint ,jsonObject , new OnResult<String>() {
                 @Override
                 public void onSuccess(String result) {
-                    if (listener != null) listener.onSuccess(null);
+                    if (listener != null) listener.onSuccess(true);
                 }
 
                 @Override
@@ -416,7 +449,7 @@ public class PlayerApi extends Api{
             JsonObjectPOST(playbasis, uri, null, new OnResult<JSONObject>() {
                 @Override
                 public void onSuccess(JSONObject result) {
-                    if (listener != null) listener.onSuccess("");
+                    if (listener != null) listener.onSuccess(true);
                 }
 
                 @Override
@@ -436,11 +469,19 @@ public class PlayerApi extends Api{
      * @param listener Callback interface.
      */
     public static void logout(@NonNull Playbasis playbasis, @NonNull String playerId,
-                              final OnResult<String> listener){
+                              final OnResult<Boolean> listener){
         logout(playbasis,false,playerId,listener);
     }
+
+    /**
+     * {@link #logout(com.playbasis.android.playbasissdk.core.Playbasis, String, OnResult)}
+     * @param playbasis Playbasis object.
+     * @param isAsync Make the request async.
+     * @param playerId Id of the player.
+     * @param listener Callback interface.
+     */
     public static void logout(@NonNull Playbasis playbasis, boolean isAsync, @NonNull String playerId,
-                              final OnResult<String> listener){
+                              final OnResult<Boolean> listener){
 
         String endpoint =  SDKUtil._PLAYER_URL + playerId + "/logout";
         if(isAsync){
@@ -455,7 +496,7 @@ public class PlayerApi extends Api{
             asyncPost(playbasis, endpoint ,jsonObject , new OnResult<String>() {
                 @Override
                 public void onSuccess(String result) {
-                    if (listener != null) listener.onSuccess(null);
+                    if (listener != null) listener.onSuccess(true);
                 }
 
                 @Override
@@ -472,7 +513,7 @@ public class PlayerApi extends Api{
             JsonObjectPOST(playbasis, uri, null, new OnResult<JSONObject>() {
                 @Override
                 public void onSuccess(JSONObject result) {
-                    if (listener != null) listener.onSuccess("");
+                    if (listener != null) listener.onSuccess(true);
                 }
 
                 @Override
@@ -522,15 +563,15 @@ public class PlayerApi extends Api{
      * @param listener Callback interface.
      */
     public static void point(@NonNull Playbasis playbasis, @NonNull String playerId, @NonNull String pointName,
-                              final OnResult<Point> listener){
+                              final OnResult<List<Point>> listener){
         String uri = SDKUtil.SERVER_URL + SDKUtil._PLAYER_URL + playerId + "/point/" + pointName;
 
         JsonObjectGET(playbasis, uri, null, new OnResult<JSONObject>() {
             @Override
             public void onSuccess(JSONObject result) {
                 try {
-                    Point point = JsonHelper.FromJsonObject(result.getJSONObject("point"), Point.class);
-                    if (listener != null) listener.onSuccess(point);
+                    List<Point> points = JsonHelper.FromJsonArray(result.getJSONArray("point"), Point.class);
+                    if (listener != null) listener.onSuccess(points);
                 } catch (JSONException e) {
                     e.printStackTrace();
                     if (listener != null) listener.onError(new HttpError(e));
@@ -556,7 +597,7 @@ public class PlayerApi extends Api{
      */
     public static void pointHistory(@NonNull Playbasis playbasis, @NonNull String playerId,
                                     String pointName, Integer offset, Integer limit,
-                             final OnResult<List<Point>> listener){
+                             final OnResult<List<PointHistory>> listener){
         String uri = SDKUtil.SERVER_URL + SDKUtil._PLAYER_URL + playerId + "/point_history";
 
         List<NameValuePair> params = new ArrayList<>();
@@ -568,7 +609,7 @@ public class PlayerApi extends Api{
             @Override
             public void onSuccess(JSONObject result) {
                 try {
-                    List<Point> points = JsonHelper.FromJsonArray(result.getJSONArray("points"), Point.class);
+                    List<PointHistory> points = JsonHelper.FromJsonArray(result.getJSONArray("points"), PointHistory.class);
                     if (listener != null) listener.onSuccess(points);
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -614,11 +655,12 @@ public class PlayerApi extends Api{
      *  Returns the number of times that a player has performed the specified action.
      * @param playbasis Playbasis object.
      * @param playerId Player id as used in client's website.
+     * @param actionName Name of the action to query.
      * @param listener Callback interface.
      */
-    public static void actionCount(@NonNull Playbasis playbasis,@NonNull String playerId,
+    public static void actionCount(@NonNull Playbasis playbasis,@NonNull String playerId, @NonNull String actionName,
                                    final OnResult<Action> listener){
-        String uri = SDKUtil.SERVER_URL + SDKUtil._PLAYER_URL + playerId + "/action/time";
+        String uri = SDKUtil.SERVER_URL + SDKUtil._PLAYER_URL + playerId + "/action/" + actionName + "/count";
         getAction(playbasis,uri,listener);
     }
 
@@ -678,7 +720,7 @@ public class PlayerApi extends Api{
      * @param listener Callback interface.
      */
     public static void levels(@NonNull Playbasis playbasis, final OnResult<List<Level>> listener){
-        String uri = SDKUtil.SERVER_URL + SDKUtil._PLAYER_URL + "level";
+        String uri = SDKUtil.SERVER_URL + SDKUtil._PLAYER_URL + "levels";
 
 
         JsonArrayGET(playbasis, uri, null, new OnResult<JSONArray>() {
@@ -697,6 +739,18 @@ public class PlayerApi extends Api{
 
     /**
      * Claim a badge that a player has earned.
+     * @param playbasis Playbasis object.
+     * @param playerId Player id as used in client's website.
+     * @param badgeId Id for the badge to change the state.
+     * @param listener  Callback interface.
+     */
+    public static void claimBadge(@NonNull Playbasis playbasis, @NonNull String playerId,
+                                  @NonNull String badgeId, final OnResult<Boolean> listener){
+        claimBadge(playbasis, false, playerId,badgeId,listener);
+    }
+    
+    /**
+     * {@link #claimBadge(com.playbasis.android.playbasissdk.core.Playbasis, String, String, OnResult)}
      * @param playbasis Playbasis object.
      * @param isAsync Boolean id request is on async mode or sync mode.
      * @param playerId Player id as used in client's website.
@@ -750,6 +804,18 @@ public class PlayerApi extends Api{
 
     /**
      * Redeem a badge that a player has claimed.
+     * @param playbasis  Playbasis object.
+     * @param playerId Player id as used in client's website.
+     * @param badgeId Id for the badge to change the state.
+     * @param listener  Callback interface.
+     */
+    public static void redeemBadge(@NonNull Playbasis playbasis, @NonNull String playerId,
+                                   @NonNull String badgeId, final OnResult<Boolean> listener){
+        redeemBadge(playbasis, false, playerId, badgeId, listener);
+    }
+
+    /**
+     * {@link #redeemBadge(com.playbasis.android.playbasissdk.core.Playbasis, String, String, OnResult)}
      * @param playbasis  Playbasis object.
      * @param isAsync Boolean id request is on async mode or sync mode.
      * @param playerId Player id as used in client's website.
@@ -864,7 +930,7 @@ public class PlayerApi extends Api{
     public static void goods(@NonNull Playbasis playbasis, @NonNull String playerId, 
                              final OnResult<List<Goods>> listener ){
 
-        String uri = SDKUtil.SERVER_URL + SDKUtil._PLAYER_URL + playerId + "goods";
+        String uri = SDKUtil.SERVER_URL + SDKUtil._PLAYER_URL + playerId + "/goods";
 
 
         JsonObjectGET(playbasis, uri, null, new OnResult<JSONObject>() {
@@ -992,10 +1058,11 @@ public class PlayerApi extends Api{
 
     }
 
+
+
     /**
-     *
+     * Deduct a reward from a given player.
      * @param playbasis Playbasis object.
-     * @param isAsync Make the request async.
      * @param playerId Player id as used in client's website.
      * @param rewardId The name of the reward.
      * @param amount Amount.
@@ -1003,6 +1070,25 @@ public class PlayerApi extends Api{
      *              *              true = force to do the deduct (and player's reward becomes zero)
      * @param listener Callback interface.
      */
+    public static void deductReward(@NonNull Playbasis playbasis, @NonNull String playerId,
+                                    @NonNull String rewardId, @NonNull Integer amount, Boolean force,
+                                    final OnResult<String> listener){
+        deductReward(playbasis, false, playerId, rewardId, amount, force, listener);
+    }
+
+
+        /**
+         * {@link #deductReward(com.playbasis.android.playbasissdk.core.Playbasis, String, String, Integer, Boolean,
+         *  OnResult)}
+         * @param playbasis Playbasis object.
+         * @param isAsync Make the request async.
+         * @param playerId Player id as used in client's website.
+         * @param rewardId The name of the reward.
+         * @param amount Amount.
+         * @param force false = not force if player has not enough reward to deduct, 
+         *              *              true = force to do the deduct (and player's reward becomes zero)
+         * @param listener Callback interface.
+         */
     public static void deductReward(@NonNull Playbasis playbasis, boolean isAsync,  @NonNull String playerId,
                                     @NonNull String rewardId, @NonNull Integer amount, Boolean force,  
                                     final OnResult<String> listener){

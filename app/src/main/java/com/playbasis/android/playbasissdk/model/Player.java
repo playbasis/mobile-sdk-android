@@ -65,7 +65,7 @@ public class Player implements HttpModel{
     @Expose
     private List<Badge> badges = new ArrayList<>();
     @Expose
-    private List<Point> points = new ArrayList<>();
+    private List<PointHistory> points = new ArrayList<>();
     @SerializedName("last_login")
     @Expose
     private String lastLogin;
@@ -455,7 +455,7 @@ public class Player implements HttpModel{
      * @return
      *     The points
      */
-    public List<Point> getPoints() {
+    public List<PointHistory> getPoints() {
         return points;
     }
 
@@ -464,7 +464,7 @@ public class Player implements HttpModel{
      * @param points
      *     The points
      */
-    public void setPoints(List<Point> points) {
+    public void setPoints(List<PointHistory> points) {
         this.points = points;
     }
 
