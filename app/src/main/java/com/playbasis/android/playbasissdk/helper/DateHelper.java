@@ -39,4 +39,9 @@ public class DateHelper {
         }
     }
     
+    
+    public static long currentTimetamp(){
+        return System.currentTimeMillis()/1000;
+    }
+    
 }

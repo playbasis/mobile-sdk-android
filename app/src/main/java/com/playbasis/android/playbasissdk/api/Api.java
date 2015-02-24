@@ -228,15 +228,19 @@ public abstract class Api {
         playbasis.getHttpManager().addToRequestQueue(stringRequest);
     }
 
-    protected static void asyncPost(final Playbasis playbasis, String endpoint, JSONObject jsonObject,
-                                final OnResult<String>
-                                        listener) {
+    protected static void asyncPost(final Playbasis playbasis, String endpoint,
+                                    JSONObject jsonObject, final OnResult<String> listener) {
+        asyncPost(playbasis,endpoint,null,jsonObject,listener);
+    }
+    protected static void asyncPost(final Playbasis playbasis, String endpoint, Long timestamp,
+                                    JSONObject jsonObject, final OnResult<String> listener) {
 
         JSONObject params = new JSONObject();
         try {
             params.put("endpoint", endpoint);
             params.put("data", jsonObject);
             params.putOpt("channel", playbasis.getChannel());
+            params.put("timestamp", timestamp);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -293,7 +297,9 @@ public abstract class Api {
                 List<StoredRequest> requests = storage.loadAll();
                 if(requests!=null && requests.size() > 0){
                     for (StoredRequest request : requests) {
-                        if(request!=null) asyncPost(playbasis, request.getUrl(), request.paramsToJson(), null);
+                        if(request!=null) asyncPost(playbasis, request.getUrl(), request.getTimestamp(), 
+                                request.paramsToJson(), 
+                                null);
                     }
                 }
                 isResendRunning=false;

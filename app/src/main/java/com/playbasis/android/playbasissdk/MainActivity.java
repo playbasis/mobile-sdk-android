@@ -51,10 +51,75 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Playbasis playbasis = new Playbasis.Builder(this)
+        final Playbasis playbasis = new Playbasis.Builder(this)
                 .setApiKey("3416989394")
                 .setApiSecret("b1fa1529410702557a6fe2f3913768a0")
                 .build();
+
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                for (int i=0 ; i<=11; i++){
+                    playbasis.Track("gregusertest", RuleAction.CLICK);
+                    try {
+                        Thread.sleep(5000,0);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }).start();
+
+    }
+    
+    
+    
+    
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        return super.onOptionsItemSelected(item);
+    }
+
+
+    public void highLevelTest(Playbasis playbasis){
+        
+        playbasis.Track("gregusertest", RuleAction.BUY);
+        playbasis.Track("gregusertest", RuleAction.CHECKIN);
+        playbasis.Track("gregusertest", RuleAction.CLICK);
+        playbasis.Track("gregusertest", RuleAction.COMMENT);
+        playbasis.Track("gregusertest", RuleAction.COMPARE);
+        playbasis.Track("gregusertest", RuleAction.FBCOMMENT);
+        playbasis.Track("gregusertest", RuleAction.FBLIKE);
+        playbasis.Track("gregusertest", RuleAction.FBPOST);
+        playbasis.Track("gregusertest", RuleAction.FBSTATUS);
+        playbasis.Track("gregusertest", RuleAction.LIKE);
+        playbasis.Track("gregusertest", RuleAction.LOGIN);
+        playbasis.Track("gregusertest", RuleAction.LOGOUT);
+        playbasis.Track("gregusertest", RuleAction.LOVE);
+        playbasis.Track("gregusertest", RuleAction.ORDER);
+        playbasis.Track("gregusertest", RuleAction.PAYMENT);
+        playbasis.Track("gregusertest", RuleAction.READ);
+        playbasis.Track("gregusertest", RuleAction.REDEEM);
+        playbasis.Track("gregusertest", RuleAction.REGISTER);
+        playbasis.Track("gregusertest", RuleAction.REVIEW);
+        playbasis.Track("gregusertest", RuleAction.SHARE);
+        playbasis.Track("gregusertest", RuleAction.TWEET);
+        playbasis.Track("gregusertest", RuleAction.VISIT);
+        playbasis.Track("gregusertest", RuleAction.WANT);
+        playbasis.Track("gregusertest", RuleAction.WATCH);
+
+    }
+
+    public void lowLevelTest(Playbasis playbasis){
 
 
         playbasis.getAuthenticator().requestAuthToken(playbasis, new OnResult<AuthToken>() {
@@ -68,11 +133,11 @@ public class MainActivity extends Activity {
                 Log.d("requestAuthToken", error.toString());
             }
         });
-        
-        
-        
+
+
+
         //Test Quiz
-        
+
         QuizApi.activeList(playbasis, null, new OnResult<List<Quiz>>() {
             @Override
             public void onSuccess(List<Quiz> result) {
@@ -84,8 +149,8 @@ public class MainActivity extends Activity {
                 Log.e("quiz", "ActiveList: " + error.toString() );
             }
         });
-        
-        
+
+
         QuizApi.detail(playbasis, "54c09131be120bee348b52c9", null, new OnResult<QuizDetail>() {
             @Override
             public void onSuccess(QuizDetail result) {
@@ -97,7 +162,7 @@ public class MainActivity extends Activity {
                 Log.e("quiz", "detail: " + error.toString() );
             }
         });
-        
+
         QuizApi.random(playbasis, "gregtestuser", new OnResult<Quiz>() {
             @Override
             public void onSuccess(Quiz result) {
@@ -109,7 +174,7 @@ public class MainActivity extends Activity {
                 Log.e("quiz", "random: " + error.toString() );
             }
         });
-        
+
         QuizApi.questions(playbasis, "54eaee12be120b92398b45db", "gregtestuser", new OnResult<QuizQuestion>() {
             @Override
             public void onSuccess(QuizQuestion result) {
@@ -123,7 +188,7 @@ public class MainActivity extends Activity {
 
             }
         });
-        
+
         QuizApi.recentPending(playbasis, "gregtestuser" , null, new OnResult<List<QuizPending>>() {
             @Override
             public void onSuccess(List<QuizPending> result) {
@@ -151,7 +216,7 @@ public class MainActivity extends Activity {
                         Log.d("quiz", "answerQuestion: " + error.toString());
                     }
                 });*/
-        
+
         QuizApi.recentDone(playbasis, "gregtestuser", null , new OnResult<List<Quiz>>() {
             @Override
             public void onSuccess(List<Quiz> result) {
@@ -163,7 +228,7 @@ public class MainActivity extends Activity {
                 Log.d("quiz", "recentDone: " + error.toString());
             }
         });
-        
+
         QuizApi.rank(playbasis, "54eaee12be120b92398b45db" , null , new OnResult<List<QuizRank>>() {
             @Override
             public void onSuccess(List<QuizRank> result) {
@@ -177,11 +242,11 @@ public class MainActivity extends Activity {
 
             }
         });
-        
-        
-        
+
+
+
         //Test Quest
-        
+
         QuestApi.listInfo(playbasis,new OnResult<List<Quest>>() {
             @Override
             public void onSuccess(List<Quest> result) {
@@ -193,7 +258,7 @@ public class MainActivity extends Activity {
                 Log.d("Quest", "listInfo: " + error.toString());
             }
         });
-        
+
         QuestApi.info(playbasis, "54eb1128be120bd03a8b4578", new OnResult<Quest>() {
             @Override
             public void onSuccess(Quest result) {
@@ -205,7 +270,7 @@ public class MainActivity extends Activity {
                 Log.d("Quest", "info: " + error.toString());
             }
         });
-        
+
         QuestApi.missionInfo(playbasis, "54eb1128be120bd03a8b4578", "54eb1128be120bd03a8b4577", new OnResult<Mission>() {
             @Override
             public void onSuccess(Mission result) {
@@ -217,7 +282,7 @@ public class MainActivity extends Activity {
                 Log.d("Quest", "missionInfo: " + error.toString());
             }
         });
-        
+
         QuestApi.questsAvailable(playbasis, "gregtestuser", new OnResult<List<Quest>>() {
             @Override
             public void onSuccess(List<Quest> result) {
@@ -229,7 +294,7 @@ public class MainActivity extends Activity {
                 Log.d("Quest", "questsAvailable: " + error.toString());
             }
         });
-        
+
         QuestApi.questAvailable(playbasis, "gregtestuser", "54eb1128be120bd03a8b4578", new OnResult<Event>() {
             @Override
             public void onSuccess(Event result) {
@@ -241,7 +306,7 @@ public class MainActivity extends Activity {
                 Log.d("Quest", "questsAvailable: " + error.toString());
             }
         });
-        
+
         final  Playbasis pb = playbasis;
         QuestApi.join(playbasis, false,  "54eb1128be120bd03a8b4578", "gregtestuser", new OnResult<Event>() {
             @Override
@@ -263,7 +328,7 @@ public class MainActivity extends Activity {
 
             }
         } );
-        
+
         QuestApi.joinAll(playbasis, false, "gregtestuser", new OnResult<Map<String, Object>>() {
             @Override
             public void onSuccess(Map<String, Object> result) {
@@ -275,7 +340,7 @@ public class MainActivity extends Activity {
                 Log.d("Quest", "questsAvailable: " + error.toString());
             }
         } );
-        
+
         // Goods
         GoodsApi.listInfo(playbasis, new OnResult<List<Goods>>() {
             @Override
@@ -288,7 +353,7 @@ public class MainActivity extends Activity {
                 Log.d("GoodsApi", "listInfo: " + error.toString());
             }
         });
-        
+
         GoodsApi.info(playbasis, "54ebe635be120b81148b499a",  new OnResult<Goods>() {
             @Override
             public void onSuccess(Goods result) {
@@ -300,7 +365,7 @@ public class MainActivity extends Activity {
                 Log.d("GoodsApi", "info: " + error.toString());
             }
         });
-        
+
         GoodsApi.groupAvailable(playbasis, "gregtestuser" , "mygrpup", null, new OnResult<Integer>() {
             @Override
             public void onSuccess(Integer result) {
@@ -336,8 +401,8 @@ public class MainActivity extends Activity {
                 Log.d("RedeemApi", "goodsGroup: " + error.toString());
             }
         });*/
-        
-        
+
+
         //badges
 
         BadgeApi.badges(playbasis, new OnResult<List<Badge>>() {
@@ -376,7 +441,7 @@ public class MainActivity extends Activity {
                         Log.d("badge", error.toString());
                     }
                 });*/
-        
+
         PlayerApi.rank(playbasis, "point", null, new OnResult<List<Rank>>() {
             @Override
             public void onSuccess(List<Rank> result) {
@@ -388,7 +453,7 @@ public class MainActivity extends Activity {
                 Log.d("rank", error.toString());
             }
         } );
-        
+
         PlayerApi.ranks(playbasis, null, new OnResult<Ranks>() {
             @Override
             public void onSuccess(Ranks result) {
@@ -400,7 +465,7 @@ public class MainActivity extends Activity {
                 Log.d("ranks", error.toString());
             }
         });
-        
+
         PlayerApi.levels(playbasis, new OnResult<List<Level>>() {
             @Override
             public void onSuccess(List<Level> result) {
@@ -412,7 +477,7 @@ public class MainActivity extends Activity {
                 Log.d("levels", error.toString());
             }
         });
-        
+
         PlayerApi.level(playbasis, "2", new OnResult<Level>() {
             @Override
             public void onSuccess(Level result) {
@@ -463,7 +528,7 @@ public class MainActivity extends Activity {
                 Log.d("","");
             }
         } );*/
-        
+
         //Player
 
         PlayerApi.getPlayerInfo(playbasis, "gregtestuser", new OnResult<Player>() {
@@ -563,7 +628,7 @@ public class MainActivity extends Activity {
                 Log.d("quests", error.toString());
             }
         } );
-        
+
         PlayerApi.questReward(playbasis, "gregtestuser", null, null , new OnResult<List<Reward>>() {
             @Override
             public void onSuccess(List<Reward> result) {
@@ -575,7 +640,7 @@ public class MainActivity extends Activity {
                 Log.d("questReward", error.toString());
             }
         });
-        
+
         PlayerApi.points(playbasis, "gregtestuser", new OnResult<List<Point>>() {
             @Override
             public void onSuccess(List<Point> result) {
@@ -587,7 +652,7 @@ public class MainActivity extends Activity {
                 Log.d("points", error.toString());
             }
         });
-        
+
         PlayerApi.point(playbasis , "gregtestuser", "point", new OnResult<List<Point>>() {
             @Override
             public void onSuccess(List<Point> result) {
@@ -599,7 +664,7 @@ public class MainActivity extends Activity {
                 Log.d("point", error.toString());
             }
         });
-        
+
         PlayerApi.pointHistory(playbasis, "gregtestuser", null, null , null , new OnResult<List<PointDetail>>() {
             @Override
             public void onSuccess(List<PointDetail> result) {
@@ -611,8 +676,8 @@ public class MainActivity extends Activity {
                 Log.d("pointHistory", error.toString());
             }
         } );
-        
-        
+
+
         PlayerApi.actionTime(playbasis, "gregtestuser", "like", new OnResult<Action>() {
             @Override
             public void onSuccess(Action result) {
@@ -624,8 +689,8 @@ public class MainActivity extends Activity {
                 Log.d("actionTime", error.toString());
             }
         });
-        
-        
+
+
         PlayerApi.actionCount(playbasis, "gregtestuser", "like", new OnResult<Action>() {
             @Override
             public void onSuccess(Action result) {
@@ -637,8 +702,8 @@ public class MainActivity extends Activity {
                 Log.d("actionCount", error.toString());
             }
         });
-        
-        
+
+
         PlayerApi.actionLast(playbasis, "gregtestuser", new OnResult<Action>() {
             @Override
             public void onSuccess(Action result) {
@@ -674,7 +739,7 @@ public class MainActivity extends Activity {
                 Log.d("goods", error.toString());
             }
         });
-        
+
         EngineApi.actionConfig(playbasis, new OnResult<List<ActionConfig>>() {
             @Override
             public void onSuccess(List<ActionConfig> result) {
@@ -686,25 +751,7 @@ public class MainActivity extends Activity {
                 Log.d("actionConfig", error.toString());
             }
         });
-        
 
-
-        
-        playbasis.Do("gregtestuser", RuleAction.LIKE, new OnResult<Rule>() {
-            @Override
-            public void onSuccess(Rule result) {
-                Log.d("actionConfig", result.toString());
-            }
-
-            @Override
-            public void onError(HttpError error) {
-                Log.d("actionConfig", error.toString());
-            }
-        });
-
-        playbasis.Track("gregtestuser", RuleAction.BUY, "www.facebook.com");
-        
-        
         ServiceApi.recentPoint(playbasis, null,null,null,new OnResult<List<PointDetail>>() {
             @Override
             public void onSuccess(List<PointDetail> result) {
@@ -717,30 +764,6 @@ public class MainActivity extends Activity {
             }
         }  );
         
-        ServiceApi.resetPoint(playbasis, null, new OnResult<String>() {
-            @Override
-            public void onSuccess(String result) {
-                Log.d("resetPoint", result);
-            }
-
-            @Override
-            public void onError(HttpError error) {
-                Log.d("resetPoint", error.toString());
-            }
-        });
-    }
-    
-    
-
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        return super.onOptionsItemSelected(item);
-    }
 }

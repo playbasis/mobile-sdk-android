@@ -8,6 +8,7 @@ import com.facebook.crypto.exception.CryptoInitializationException;
 import com.facebook.crypto.exception.KeyChainException;
 import com.playbasis.android.playbasissdk.core.Playbasis;
 import com.playbasis.android.playbasissdk.core.SDKUtil;
+import com.playbasis.android.playbasissdk.helper.DateHelper;
 import com.playbasis.android.playbasissdk.helper.JsonHelper;
 import com.playbasis.android.playbasissdk.helper.StringHelper;
 import com.playbasis.android.playbasissdk.helper.Validator;
@@ -55,6 +56,7 @@ public class RequestStorage {
                 .withUrl(StringHelper.removeFirstOccurence(SDKUtil.SERVER_URL, url))
                 .withAsync(false)
                 .withKeyValueBody(keyValueParams(playbasis, param))
+                .withTimestamp(DateHelper.currentTimetamp())
                 .withKeyValueHeader(null);
 
         return write(storedRequest);

@@ -28,6 +28,9 @@ public class StoredRequest {
     @Expose
     private List<KeyValue> keyValuesHeader;
 
+    @Expose
+    private Long timestamp;
+    
     public String getUrl() {
         return url;
     }
@@ -81,6 +84,19 @@ public class StoredRequest {
         
     }
 
+    public Long getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(Long timestamp) {
+        this.timestamp = timestamp;
+    }
+
+    public StoredRequest withTimestamp(Long timestamp){
+        this.timestamp = timestamp;
+        return this;
+
+    }
 
     /**
      * return the current object into JSONObject.
@@ -114,6 +130,7 @@ public class StoredRequest {
         this.isAsync = storedRequest.isAsync;
         this.keyValuesBoddy = storedRequest.keyValuesBoddy;
         this.keyValuesHeader = storedRequest.keyValuesHeader;
+        this.timestamp = storedRequest.timestamp;
         return this;
     }
 
