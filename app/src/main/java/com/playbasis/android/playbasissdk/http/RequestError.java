@@ -35,6 +35,14 @@ public class RequestError {
         
     }
 
+    @Override
+    public String toString() {
+        return "RequestError{" +
+                "message='" + message + '\'' +
+                ", errorCode=" + errorCode +
+                '}';
+    }
+
     /**
      * Error code of server error 
      */

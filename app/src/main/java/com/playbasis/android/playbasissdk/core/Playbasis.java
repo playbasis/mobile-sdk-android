@@ -34,9 +34,6 @@ public class Playbasis {
     private AuthAuthenticator authenticator;
     
     private String mChannel;
-    
-    //INFO: only for test
-    public Boolean networkAvailable = true;
 
     /**
      * This method return the Playbasis singleton. If call before the builder return null.

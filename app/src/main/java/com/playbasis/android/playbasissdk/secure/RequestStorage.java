@@ -74,7 +74,8 @@ public class RequestStorage {
                 .withUrl(url)
                 .withAsync(false)
                 .withKeyValueBody(keyValueParams(params))
-                .withKeyValueHeader(null);
+                .withKeyValueHeader(null)
+                .withTimestamp(DateHelper.currentTimetamp());
 
         return write(storedRequest);
 
@@ -105,8 +106,8 @@ public class RequestStorage {
      */
     private List<KeyValue> keyValueParams(Playbasis playbasis, List<NameValuePair> httpParams){
         List<KeyValue> params = new ArrayList<>();
-        params.add(new KeyValue("api_key",playbasis.getKeyStore().getApiKey() ));
-        params.add(new KeyValue("token",playbasis.getAuthenticator().getToken() ));
+      //  params.add(new KeyValue("api_key",playbasis.getKeyStore().getApiKey() ));
+     //   params.add(new KeyValue("token",playbasis.getAuthenticator().getToken() ));
         if(httpParams!=null){
             for (NameValuePair pair : httpParams){
                 params.add(new KeyValue(pair.getName(), pair.getValue()));

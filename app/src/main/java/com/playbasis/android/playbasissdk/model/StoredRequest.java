@@ -4,9 +4,12 @@ import com.google.gson.Gson;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -150,5 +153,19 @@ public class StoredRequest {
             }
         }
         return json;
+    }
+
+    /**
+     * Return request params into ValuePair array format
+     * @return list of params
+     */
+    public List<NameValuePair> paramsToValuePair(){
+        List<NameValuePair> params = new ArrayList<>();
+        if(keyValuesBoddy!=null){
+            for (KeyValue keyValue : keyValuesBoddy) {
+                    params.add(new BasicNameValuePair(keyValue.getKey(), keyValue.getValue()));
+            }
+        }
+        return params;
     }
 }

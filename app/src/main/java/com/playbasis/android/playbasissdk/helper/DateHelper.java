@@ -75,7 +75,7 @@ public class DateHelper {
      * @return timestamp into unix format
      */
     public static long currentTimetamp(){
-        return System.currentTimeMillis()/1000;
+        return System.currentTimeMillis();
     }
     
 }

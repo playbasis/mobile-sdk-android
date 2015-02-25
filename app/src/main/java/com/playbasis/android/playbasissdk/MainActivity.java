@@ -17,6 +17,9 @@ import com.playbasis.android.playbasissdk.api.QuestApi;
 import com.playbasis.android.playbasissdk.api.QuizApi;
 import com.playbasis.android.playbasissdk.api.ServiceApi;
 import com.playbasis.android.playbasissdk.core.Playbasis;
+import com.playbasis.android.playbasissdk.core.SDKUtil;
+import com.playbasis.android.playbasissdk.helper.DateHelper;
+import com.playbasis.android.playbasissdk.helper.JsonHelper;
 import com.playbasis.android.playbasissdk.http.HttpError;
 import com.playbasis.android.playbasissdk.model.Action;
 import com.playbasis.android.playbasissdk.model.ActionConfig;
@@ -40,7 +43,13 @@ import com.playbasis.android.playbasissdk.model.Reward;
 import com.playbasis.android.playbasissdk.model.RuleAction;
 import com.playbasis.android.playbasissdk.model.Rule;
 
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -57,7 +66,48 @@ public class MainActivity extends Activity {
                 .setApiSecret("b1fa1529410702557a6fe2f3913768a0")
                 .build();
 
-        lowLevelTest(playbasis);
+
+
+//        new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+//                for (int i = 0; i < 6 ; i++) {
+//                    playbasis.Track("gregusertest", RuleAction.CLICK);
+//
+//                    try {
+//                        Thread.sleep(100);
+//                    } catch (InterruptedException e) {
+//                        e.printStackTrace();
+//                    }
+//                }
+//                
+//                playbasis.networkavailable = false;
+//                for (int i = 0; i < 6 ; i++) {
+//                    playbasis.Track("gregusertest", RuleAction.CLICK);
+//
+//                    try {
+//                        Thread.sleep(100);
+//                    } catch (InterruptedException e) {
+//                        e.printStackTrace();
+//                    }
+//                }
+//
+//                try {
+//                    Thread.sleep(21000);
+//                } catch (InterruptedException e) {
+//                    e.printStackTrace();
+//                }
+//
+//                playbasis.networkavailable = true;
+//                
+//                Api.resendRequests(playbasis);
+//                Log.d("PLAYBASIS", "RESEND");
+//
+//
+//            }
+//        }).start();
+
+        
 
     }
     
@@ -104,13 +154,25 @@ public class MainActivity extends Activity {
         playbasis.Track("gregusertest", RuleAction.VISIT);
         playbasis.Track("gregusertest", RuleAction.WANT);
         playbasis.Track("gregusertest", RuleAction.WATCH);
+       
+        playbasis.Do("gregusertest", RuleAction.COMPARE, new OnResult<Rule>() {
+            @Override
+            public void onSuccess(Rule result) {
+                Log.d("COMPARE", result.toString());
+            }
+
+            @Override
+            public void onError(HttpError error) {
+                Log.d("COMPARE", (error.requestError!=null? error.requestError.toString() : error.toString()));
+            }
+        });
 
     }
 
     public void lowLevelTest(Playbasis playbasis){
 
 
-        playbasis.getAuthenticator().requestAuthToken(new OnResult<AuthToken>() {
+/*        playbasis.getAuthenticator().requestAuthToken(new OnResult<AuthToken>() {
             @Override
             public void onSuccess(AuthToken result) {
                 Log.d("requestAuthToken", result.getToken());
@@ -118,9 +180,9 @@ public class MainActivity extends Activity {
 
             @Override
             public void onError(HttpError error) {
-                Log.d("requestAuthToken", error.toString());
+                Log.d("requestAuthToken", (error.requestError!=null? error.requestError.toString() : error.toString()));
             }
-        });
+        });*/
 
 
 
@@ -134,7 +196,7 @@ public class MainActivity extends Activity {
 
             @Override
             public void onError(HttpError error) {
-                Log.e("quiz", "ActiveList: " + error.toString() );
+                Log.e("quiz", "ActiveList: " + (error.requestError!=null? error.requestError.toString() : error.toString()) );
             }
         });
 
@@ -147,7 +209,7 @@ public class MainActivity extends Activity {
 
             @Override
             public void onError(HttpError error) {
-                Log.e("quiz", "detail: " + error.toString() );
+                Log.e("quiz", "detail: " + (error.requestError!=null? error.requestError.toString() : error.toString()) );
             }
         });
 
@@ -159,7 +221,7 @@ public class MainActivity extends Activity {
 
             @Override
             public void onError(HttpError error) {
-                Log.e("quiz", "random: " + error.toString() );
+                Log.e("quiz", "random: " + (error.requestError!=null? error.requestError.toString() : error.toString()) );
             }
         });
 
@@ -172,7 +234,7 @@ public class MainActivity extends Activity {
 
             @Override
             public void onError(HttpError error) {
-                Log.e("quiz", "qestions: " + error.toString());
+                Log.e("quiz", "qestions: " + (error.requestError!=null? error.requestError.toString() : error.toString()));
 
             }
         });
@@ -186,7 +248,7 @@ public class MainActivity extends Activity {
 
             @Override
             public void onError(HttpError error) {
-                Log.e("quiz", "recentPending: " + error.toString() );
+                Log.e("quiz", "recentPending: " + (error.requestError!=null? error.requestError.toString() : error.toString()) );
 
             }
         } );
@@ -201,7 +263,7 @@ public class MainActivity extends Activity {
 
                     @Override
                     public void onError(HttpError error) {
-                        Log.d("quiz", "answerQuestion: " + error.toString());
+                        Log.d("quiz", "answerQuestion: " + (error.requestError!=null? error.requestError.toString() : error.toString()));
                     }
                 });*/
 
@@ -213,7 +275,7 @@ public class MainActivity extends Activity {
 
             @Override
             public void onError(HttpError error) {
-                Log.d("quiz", "recentDone: " + error.toString());
+                Log.e("quiz", "recentDone: " + (error.requestError!=null? error.requestError.toString() : error.toString()));
             }
         });
 
@@ -226,7 +288,7 @@ public class MainActivity extends Activity {
 
             @Override
             public void onError(HttpError error) {
-                Log.d("quiz", "rank: " + error.toString());
+                Log.e("quiz", "rank: " + (error.requestError!=null? error.requestError.toString() : error.toString()));
 
             }
         });
@@ -243,7 +305,7 @@ public class MainActivity extends Activity {
 
             @Override
             public void onError(HttpError error) {
-                Log.d("Quest", "listInfo: " + error.toString());
+                Log.e("Quest", "listInfo: " + (error.requestError!=null? error.requestError.toString() : error.toString()));
             }
         });
 
@@ -255,7 +317,7 @@ public class MainActivity extends Activity {
 
             @Override
             public void onError(HttpError error) {
-                Log.d("Quest", "info: " + error.toString());
+                Log.e("Quest", "info: " + (error.requestError!=null? error.requestError.toString() : error.toString()));
             }
         });
 
@@ -267,7 +329,7 @@ public class MainActivity extends Activity {
 
             @Override
             public void onError(HttpError error) {
-                Log.d("Quest", "missionInfo: " + error.toString());
+                Log.e("Quest", "missionInfo: " + (error.requestError!=null? error.requestError.toString() : error.toString()));
             }
         });
 
@@ -279,7 +341,7 @@ public class MainActivity extends Activity {
 
             @Override
             public void onError(HttpError error) {
-                Log.d("Quest", "questsAvailable: " + error.toString());
+                Log.e("Quest", "questsAvailable: " + (error.requestError!=null? error.requestError.toString() : error.toString()));
             }
         });
 
@@ -291,7 +353,7 @@ public class MainActivity extends Activity {
 
             @Override
             public void onError(HttpError error) {
-                Log.d("Quest", "questsAvailable: " + error.toString());
+                Log.e("Quest", "questsAvailable: " + (error.requestError!=null? error.requestError.toString() : error.toString()));
             }
         });
 
@@ -307,13 +369,13 @@ public class MainActivity extends Activity {
 
                     @Override
                     public void onError(HttpError error) {
-
+                        Log.e("Quest", "cancel: " + (error.requestError!=null? error.requestError.toString() : error.toString()));
                     }
                 });
             }
             @Override
             public void onError(HttpError error) {
-
+                Log.e("Quest", "join: " + (error.requestError!=null? error.requestError.toString() : (error.requestError!=null? error.requestError.toString() : error.toString())));
             }
         } );
 
@@ -325,7 +387,7 @@ public class MainActivity extends Activity {
 
             @Override
             public void onError(HttpError error) {
-                Log.d("Quest", "questsAvailable: " + error.toString());
+                Log.e("Quest", "questsAvailable: " + (error.requestError!=null? error.requestError.toString() : error.toString()));
             }
         } );
 
@@ -338,7 +400,7 @@ public class MainActivity extends Activity {
 
             @Override
             public void onError(HttpError error) {
-                Log.d("GoodsApi", "listInfo: " + error.toString());
+                Log.e("GoodsApi", "listInfo: " + (error.requestError!=null? error.requestError.toString() : error.toString()));
             }
         });
 
@@ -350,7 +412,7 @@ public class MainActivity extends Activity {
 
             @Override
             public void onError(HttpError error) {
-                Log.d("GoodsApi", "info: " + error.toString());
+                Log.e("GoodsApi", "info: " + (error.requestError!=null? error.requestError.toString() : error.toString()));
             }
         });
 
@@ -362,7 +424,7 @@ public class MainActivity extends Activity {
 
             @Override
             public void onError(HttpError error) {
-                Log.d("GoodsApi", "groupAvailable: " + error.toString());
+                Log.e("GoodsApi", "groupAvailable: " + (error.requestError!=null? error.requestError.toString() : error.toString()));
             }
         });
         
@@ -374,7 +436,7 @@ public class MainActivity extends Activity {
 
             @Override
             public void onError(HttpError error) {
-                Log.d("RedeemApi", "goods: " + error.toString());
+                Log.d("RedeemApi", "goods: " + (error.requestError!=null? error.requestError.toString() : error.toString()));
             }
         } );
         
@@ -386,7 +448,7 @@ public class MainActivity extends Activity {
 
             @Override
             public void onError(HttpError error) {
-                Log.d("RedeemApi", "goodsGroup: " + error.toString());
+                Log.d("RedeemApi", "goodsGroup: " + (error.requestError!=null? error.requestError.toString() : error.toString()));
             }
         });*/
 
@@ -401,7 +463,7 @@ public class MainActivity extends Activity {
 
             @Override
             public void onError(HttpError error) {
-                Log.d("badges", error.toString());
+                Log.e("badges", (error.requestError!=null? error.requestError.toString() : error.toString()));
             }
         });
 
@@ -413,7 +475,7 @@ public class MainActivity extends Activity {
 
             @Override
             public void onError(HttpError error) {
-                Log.d("badge", error.toString());
+                Log.d("badge", (error.requestError!=null? error.requestError.toString() : error.toString()));
             }
         } );
         
@@ -426,7 +488,7 @@ public class MainActivity extends Activity {
 
                     @Override
                     public void onError(HttpError error) {
-                        Log.d("badge", error.toString());
+                        Log.d("badge", (error.requestError!=null? error.requestError.toString() : error.toString()));
                     }
                 });*/
 
@@ -438,7 +500,7 @@ public class MainActivity extends Activity {
 
             @Override
             public void onError(HttpError error) {
-                Log.d("rank", error.toString());
+                Log.e("rank", (error.requestError!=null? error.requestError.toString() : error.toString()));
             }
         } );
 
@@ -450,7 +512,7 @@ public class MainActivity extends Activity {
 
             @Override
             public void onError(HttpError error) {
-                Log.d("ranks", error.toString());
+                Log.e("ranks", (error.requestError!=null? error.requestError.toString() : error.toString()));
             }
         });
 
@@ -462,7 +524,7 @@ public class MainActivity extends Activity {
 
             @Override
             public void onError(HttpError error) {
-                Log.d("levels", error.toString());
+                Log.e("levels", (error.requestError!=null? error.requestError.toString() : error.toString()));
             }
         });
 
@@ -474,7 +536,7 @@ public class MainActivity extends Activity {
 
             @Override
             public void onError(HttpError error) {
-                Log.d("level", error.toString());
+                Log.e("level", (error.requestError!=null? error.requestError.toString() : error.toString()));
             }
         });
 
@@ -527,7 +589,7 @@ public class MainActivity extends Activity {
 
             @Override
             public void onError(HttpError error) {
-                Log.d("getPlayerInfo", error.toString());
+                Log.e("getPlayerInfo", (error.requestError!=null? error.requestError.toString() : error.toString()));
             }
         } );
 
@@ -539,7 +601,7 @@ public class MainActivity extends Activity {
 
             @Override
             public void onError(HttpError error) {
-                Log.d("getPlayerPrivateInfo", error.toString());
+                Log.e("getPlayerPrivateInfo", (error.requestError!=null? error.requestError.toString() : error.toString()));
             }
         });
 
@@ -551,7 +613,7 @@ public class MainActivity extends Activity {
 
             @Override
             public void onError(HttpError error) {
-                Log.d("getListPlayerInfo", error.toString());
+                Log.e("getListPlayerInfo", (error.requestError!=null? error.requestError.toString() : error.toString()));
             }
         });
 
@@ -563,7 +625,7 @@ public class MainActivity extends Activity {
 
             @Override
             public void onError(HttpError error) {
-                Log.d("getDetailedListInfo", error.toString());
+                Log.e("getDetailedListInfo", (error.requestError!=null? error.requestError.toString() : error.toString()));
             }
         });
 
@@ -575,7 +637,7 @@ public class MainActivity extends Activity {
 
             @Override
             public void onError(HttpError error) {
-                Log.d("etDetailedPlayerPrivate", error.toString());
+                Log.e("etDetailedPlayerPrivate", (error.requestError!=null? error.requestError.toString() : error.toString()));
             }
         });
 
@@ -588,7 +650,7 @@ public class MainActivity extends Activity {
 
             @Override
             public void onError(HttpError error) {
-                Log.d("badges", error.toString());
+                Log.e("badges", (error.requestError!=null? error.requestError.toString() : error.toString()));
             }
         });
 
@@ -601,7 +663,7 @@ public class MainActivity extends Activity {
 
             @Override
             public void onError(HttpError error) {
-                Log.d("quest", error.toString());
+                Log.e("quest", (error.requestError!=null? error.requestError.toString() : error.toString()));
             }
         } );
 
@@ -613,7 +675,7 @@ public class MainActivity extends Activity {
 
             @Override
             public void onError(HttpError error) {
-                Log.d("quests", error.toString());
+                Log.e("quests", (error.requestError!=null? error.requestError.toString() : error.toString()));
             }
         } );
 
@@ -625,7 +687,7 @@ public class MainActivity extends Activity {
 
             @Override
             public void onError(HttpError error) {
-                Log.d("questReward", error.toString());
+                Log.e("questReward", (error.requestError!=null? error.requestError.toString() : error.toString()));
             }
         });
 
@@ -637,7 +699,7 @@ public class MainActivity extends Activity {
 
             @Override
             public void onError(HttpError error) {
-                Log.d("points", error.toString());
+                Log.e("points", (error.requestError!=null? error.requestError.toString() : error.toString()));
             }
         });
 
@@ -649,7 +711,7 @@ public class MainActivity extends Activity {
 
             @Override
             public void onError(HttpError error) {
-                Log.d("point", error.toString());
+                Log.e("point", (error.requestError!=null? error.requestError.toString() : error.toString()));
             }
         });
 
@@ -661,7 +723,7 @@ public class MainActivity extends Activity {
 
             @Override
             public void onError(HttpError error) {
-                Log.d("pointHistory", error.toString());
+                Log.e("pointHistory", (error.requestError!=null? error.requestError.toString() : error.toString()));
             }
         } );
 
@@ -674,7 +736,7 @@ public class MainActivity extends Activity {
 
             @Override
             public void onError(HttpError error) {
-                Log.d("actionTime", error.toString());
+                Log.e("actionTime", (error.requestError!=null? error.requestError.toString() : error.toString()));
             }
         });
 
@@ -687,7 +749,7 @@ public class MainActivity extends Activity {
 
             @Override
             public void onError(HttpError error) {
-                Log.d("actionCount", error.toString());
+                Log.e("actionCount", (error.requestError!=null? error.requestError.toString() : error.toString()));
             }
         });
 
@@ -700,7 +762,7 @@ public class MainActivity extends Activity {
 
             @Override
             public void onError(HttpError error) {
-                Log.d("actionLast", error.toString());
+                Log.e("actionLast", (error.requestError!=null? error.requestError.toString() : error.toString()));
             }
         });
         
@@ -712,7 +774,7 @@ public class MainActivity extends Activity {
 
             @Override
             public void onError(HttpError error) {
-                Log.d("goods", error.toString());
+                Log.d("goods", (error.requestError!=null? error.requestError.toString() : error.toString()));
             }
         } );*/
 
@@ -724,7 +786,7 @@ public class MainActivity extends Activity {
 
             @Override
             public void onError(HttpError error) {
-                Log.d("goods", error.toString());
+                Log.e("goods", (error.requestError!=null? error.requestError.toString() : error.toString()));
             }
         });
 
@@ -736,7 +798,7 @@ public class MainActivity extends Activity {
 
             @Override
             public void onError(HttpError error) {
-                Log.d("actionConfig", error.toString());
+                Log.e("actionConfig", (error.requestError!=null? error.requestError.toString() : error.toString()));
             }
         });
 
@@ -748,7 +810,7 @@ public class MainActivity extends Activity {
 
             @Override
             public void onError(HttpError error) {
-                Log.d("recentPoint", error.toString());
+                Log.e("recentPoint", (error.requestError!=null? error.requestError.toString() : error.toString()));
             }
         }  );
         

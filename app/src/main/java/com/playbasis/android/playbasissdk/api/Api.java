@@ -90,6 +90,13 @@ public abstract class Api {
     protected static void JsonObjectPOST(final Playbasis playbasis, final String uri,
                                          final List<NameValuePair> httpParams,
                                          final OnResult<JSONObject> listener) {
+        JsonObjectPOST(playbasis,uri,null,httpParams,listener);
+    }
+    
+    public static void JsonObjectPOST(final Playbasis playbasis, final String uri,
+                                         final Long timestamp,
+                                         final List<NameValuePair> httpParams,
+                                         final OnResult<JSONObject> listener) {
         if (!playbasis.isNetworkAvailable()) {
             RequestStorage storage = new RequestStorage(playbasis.getContext());
             storage.save(playbasis, uri, httpParams);
@@ -113,7 +120,7 @@ public abstract class Api {
             @Override
             public void onErrorResponse(HttpError error) {
                 //Request a new token and resend the request if token is invalid.
-                if (error.requestError.errorCode == RequestError.ERROR_CODE.INVALID_TOKEN) {
+                if (error.requestError!=null && error.requestError.errorCode == RequestError.ERROR_CODE.INVALID_TOKEN) {
                     AuthAuthenticator authAuthenticator = new AuthAuthenticator(playbasis);
                     authAuthenticator.requestRenewAuthToken(new OnResult<AuthToken>() {
                         @Override
@@ -146,6 +153,16 @@ public abstract class Api {
                     }
                 }
                 return params;
+            }
+
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                HashMap<String, String> headers = new HashMap<String, String>();
+                if (timestamp != null)
+                    headers.put("Date", DateHelper.timestampToHTPPDate(timestamp));
+                else
+                    headers.put("Date", DateHelper.timestampToHTPPDate(DateHelper.currentTimetamp()));
+                return headers;
             }
         };
         // Adding request to request queue
@@ -228,7 +245,7 @@ public abstract class Api {
             @Override
             public void onErrorResponse(HttpError error) {
                 //Request a new token and resend the request if token is invalid.
-                if (error.requestError.errorCode == RequestError.ERROR_CODE.INVALID_TOKEN) {
+                if (error.requestError!=null && error.requestError.errorCode == RequestError.ERROR_CODE.INVALID_TOKEN) {
                     AuthAuthenticator authAuthenticator = new AuthAuthenticator(playbasis);
                     authAuthenticator.requestRenewAuthToken(new OnResult<AuthToken>() {
                         @Override
@@ -343,7 +360,7 @@ public abstract class Api {
 
         if (!playbasis.isNetworkAvailable()) {
             RequestStorage storage = new RequestStorage(playbasis.getContext());
-            storage.save(playbasis, endpoint, params);
+            storage.save(playbasis, endpoint, jsonObject);
             if (listener != null) listener.onError(new HttpError(RequestError.NoNetwork()));
             return;
         } else resendRequests(playbasis);
@@ -365,7 +382,8 @@ public abstract class Api {
                     @Override
                     public void onErrorResponse(HttpError error) {
                         //Request a new token and resend the request if token is invalid.
-                        if (error.requestError.errorCode == RequestError.ERROR_CODE.INVALID_TOKEN) {
+                        if (error.requestError!=null && error.requestError.errorCode == RequestError.ERROR_CODE
+                                .INVALID_TOKEN) {
                             AuthAuthenticator authAuthenticator = new AuthAuthenticator(playbasis);
                             authAuthenticator.requestRenewAuthToken(new OnResult<AuthToken>() {
                                 @Override
@@ -410,8 +428,12 @@ public abstract class Api {
                 List<StoredRequest> requests = storage.loadAll();
                 if (requests != null && requests.size() > 0) {
                     for (StoredRequest request : requests) {
-                        if (request != null) asyncPost(playbasis, request.getUrl(), request.getTimestamp(),
+/*                        if (request != null) asyncPost(playbasis, request.getUrl(), request.getTimestamp(),
                                 request.paramsToJson(),
+                                null);*/
+                        if (request !=null) JsonObjectPOST(playbasis, SDKUtil.SERVER_URL + request.getUrl(), 
+                                request.getTimestamp(),
+                                request.paramsToValuePair(), 
                                 null);
                     }
                 }

@@ -30,7 +30,11 @@ public class PrivatePreferences {
     public PrivatePreferences(Context context){
         mSecurePrefs = new SecurePreferences(context);
     }
-    
+
+    /**
+     * Get the Auth token object saved on the secure shared preferences.
+     * @return Authentication token object.
+     */
     public AuthToken getToken(){
         String sharedToken = mSecurePrefs.getString(PREF_TOKEN, null);
         Date sharedDate = new Date(mSecurePrefs.getLong(PREF_EXP_DATE, 0l));
@@ -41,7 +45,11 @@ public class PrivatePreferences {
             return new AuthToken(sharedToken, sharedDate);
         }
     }
-    
+
+    /**
+     *  Save the AuthToken object on the secure shared preferences.
+     * @param authToken AuthToken object
+     */
     public void saveToken(AuthToken authToken){
         if(authToken ==null)return;
         
@@ -54,7 +62,10 @@ public class PrivatePreferences {
                     .putLong(PREF_EXP_DATE, authToken.getDateExpire().getTime())
                     .commit();
     }
-    
+
+    /**
+     * Clean the secure shared preferences
+     */
     public void clearToken(){
         mSecurePrefs.edit().remove(PREF_TOKEN).commit();
         mSecurePrefs.edit().remove(PREF_EXP_DATE).commit();
