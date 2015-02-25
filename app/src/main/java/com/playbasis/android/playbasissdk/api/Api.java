@@ -40,15 +40,21 @@ public abstract class Api {
     private static Boolean isResendRunning = false;
 
 
-    protected static void JsonObjectGET(final Playbasis playbasis, String uri, List<NameValuePair> params,
-                                 final OnResult<JSONObject>
-            listener) {
+    /**
+     * JsonObject GET super method.
+     *
+     * @param playbasis Playbasic objecct.
+     * @param uri       URL of the request.
+     * @param params    Params of the request.
+     * @param listener  JSONObject Callback listener.
+     */
+    protected static void JsonObjectGET(final Playbasis playbasis, final String uri, List<NameValuePair> params,
+                                        final OnResult<JSONObject> listener) {
         resendRequests(playbasis);
-        
         HttpsTrustManager.allowAllSSL();
 
         //Add params to the request
-        if(params==null) params = new ArrayList<>();
+        if (params == null) params = new ArrayList<>();
         params.add(new BasicNameValuePair("api_key", playbasis.getKeyStore().getApiKey()));
 
         JSONObjectRequest jsonObjReq = new JSONObjectRequest(Request.Method.GET,
@@ -57,7 +63,7 @@ public abstract class Api {
 
                     @Override
                     public void onResponse(JSONObject response) {
-                        PlayBasisLog.v(TAG, response!=null? response.toString() : "Response is null");
+                        PlayBasisLog.v(TAG, response != null ? response.toString() : "Response is null");
                         if (listener != null) listener.onSuccess(response);
                     }
                 }, new Response.ErrorListener() {
@@ -73,14 +79,23 @@ public abstract class Api {
         playbasis.getHttpManager().addToRequestQueue(jsonObjReq);
     }
 
-    protected static void JsonObjectPOST(final Playbasis playbasis, String uri, final List<NameValuePair> httpParams,
-                                        final OnResult<JSONObject> listener) {
-        if (!playbasis.isNetworkAvailable()){
+    /**
+     * JsonObject POST super method.
+     *
+     * @param playbasis  Playbasic objecct.
+     * @param uri        URL of the request.
+     * @param httpParams Params of the request.
+     * @param listener   JSONObject Callback listener.
+     */
+    protected static void JsonObjectPOST(final Playbasis playbasis, final String uri,
+                                         final List<NameValuePair> httpParams,
+                                         final OnResult<JSONObject> listener) {
+        if (!playbasis.isNetworkAvailable()) {
             RequestStorage storage = new RequestStorage(playbasis.getContext());
             storage.save(playbasis, uri, httpParams);
-            if (listener!=null) listener.onError(new HttpError(RequestError.NoNetwork()));
+            if (listener != null) listener.onError(new HttpError(RequestError.NoNetwork()));
             return;
-        }else resendRequests(playbasis);
+        } else resendRequests(playbasis);
 
         HttpsTrustManager.allowAllSSL();
         final JSONObjectRequest jsonObjReq = new JSONObjectRequest(Request.Method.POST,
@@ -89,7 +104,7 @@ public abstract class Api {
 
                     @Override
                     public void onResponse(JSONObject response) {
-                        PlayBasisLog.v(TAG, response!=null? response.toString() : "Response is null");
+                        PlayBasisLog.v(TAG, response != null ? response.toString() : "Response is null");
                         if (listener != null) listener.onSuccess(response);
                     }
                 }, new Response.ErrorListener() {
@@ -97,18 +112,36 @@ public abstract class Api {
 
             @Override
             public void onErrorResponse(HttpError error) {
-                PlayBasisLog.e(TAG, "Error: " + error.getMessage());
-                if (listener != null) listener.onError(error);
+                //Request a new token and resend the request if token is invalid.
+                if (error.requestError.errorCode == RequestError.ERROR_CODE.INVALID_TOKEN) {
+                    AuthAuthenticator authAuthenticator = new AuthAuthenticator(playbasis);
+                    authAuthenticator.requestRenewAuthToken(new OnResult<AuthToken>() {
+                        @Override
+                        public void onSuccess(AuthToken result) {
+                            JsonObjectPOST(playbasis, uri, httpParams, listener);
+                        }
+
+                        @Override
+                        public void onError(HttpError error) {
+                            PlayBasisLog.e(TAG, "Error: " + error.getMessage());
+                            if (listener != null) listener.onError(error);
+                        }
+                    });
+                } else {
+                    PlayBasisLog.e(TAG, "Error: " + error.getMessage());
+                    if (listener != null) listener.onError(error);
+                }
+
             }
-        }){
+        }) {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
 
                 Map<String, String> params = new Hashtable<>();
                 params.put("api_key", playbasis.getKeyStore().getApiKey());
                 params.put("token", playbasis.getAuthenticator().getToken());
-                if(httpParams!=null){
-                    for (NameValuePair pair : httpParams){
+                if (httpParams != null) {
+                    for (NameValuePair pair : httpParams) {
                         params.put(pair.getName(), pair.getValue());
                     }
                 }
@@ -119,14 +152,22 @@ public abstract class Api {
         playbasis.getHttpManager().addToRequestQueue(jsonObjReq);
     }
 
+    /**
+     * JsonArray GET super method.
+     *
+     * @param playbasis Playbasic objecct.
+     * @param uri       URL of the request.
+     * @param params    Params of the request.
+     * @param listener  JSONArray Callback listener.
+     */
     protected static void JsonArrayGET(final Playbasis playbasis, String uri, List<NameValuePair> params,
-                                         final OnResult<JSONArray>
-                                                 listener) {
+                                       final OnResult<JSONArray>
+                                               listener) {
         resendRequests(playbasis);
         HttpsTrustManager.allowAllSSL();
 
         //Add params to the request
-        if(params==null) params = new ArrayList<>();
+        if (params == null) params = new ArrayList<>();
         params.add(new BasicNameValuePair("api_key", playbasis.getKeyStore().getApiKey()));
 
         final JSONArrayRequest jsonObjReq = new JSONArrayRequest(Request.Method.GET,
@@ -151,17 +192,26 @@ public abstract class Api {
         playbasis.getHttpManager().addToRequestQueue(jsonObjReq);
     }
 
-    protected static void JsonArrayPOST(final Playbasis playbasis, String uri, final List<NameValuePair> httpParams,
-                                         final OnResult<JSONArray>
-                                                 listener) {
+    /**
+     * JsonArray POST super method.
+     *
+     * @param playbasis  Playbasic objecct.
+     * @param uri        URL of the request.
+     * @param httpParams Params of the request.
+     * @param listener   JSONArray Callback listener.
+     */
+    protected static void JsonArrayPOST(final Playbasis playbasis, final String uri,
+                                        final List<NameValuePair> httpParams,
+                                        final OnResult<JSONArray>
+                                                listener) {
 
-        if (!playbasis.isNetworkAvailable()){
+        if (!playbasis.isNetworkAvailable()) {
             RequestStorage storage = new RequestStorage(playbasis.getContext());
             storage.save(playbasis, uri, httpParams);
-            if (listener!=null) listener.onError(new HttpError(RequestError.NoNetwork()));
+            if (listener != null) listener.onError(new HttpError(RequestError.NoNetwork()));
             return;
-        }else resendRequests(playbasis);
-        
+        } else resendRequests(playbasis);
+
         HttpsTrustManager.allowAllSSL();
         final JSONArrayRequest jsonArrReq = new JSONArrayRequest(Request.Method.POST,
                 uri, null,
@@ -169,7 +219,7 @@ public abstract class Api {
 
                     @Override
                     public void onResponse(JSONArray response) {
-                        PlayBasisLog.v(TAG, response!=null? response.toString() : "Response is null");
+                        PlayBasisLog.v(TAG, response != null ? response.toString() : "Response is null");
                         if (listener != null) listener.onSuccess(response);
                     }
                 }, new Response.ErrorListener() {
@@ -177,18 +227,35 @@ public abstract class Api {
 
             @Override
             public void onErrorResponse(HttpError error) {
-                PlayBasisLog.e(TAG, "Error: " + error.getMessage());
-                if (listener != null) listener.onError(error);
+                //Request a new token and resend the request if token is invalid.
+                if (error.requestError.errorCode == RequestError.ERROR_CODE.INVALID_TOKEN) {
+                    AuthAuthenticator authAuthenticator = new AuthAuthenticator(playbasis);
+                    authAuthenticator.requestRenewAuthToken(new OnResult<AuthToken>() {
+                        @Override
+                        public void onSuccess(AuthToken result) {
+                            JsonArrayPOST(playbasis, uri, httpParams, listener);
+                        }
+
+                        @Override
+                        public void onError(HttpError error) {
+                            PlayBasisLog.e(TAG, "Error: " + error.getMessage());
+                            if (listener != null) listener.onError(error);
+                        }
+                    });
+                } else {
+                    PlayBasisLog.e(TAG, "Error: " + error.getMessage());
+                    if (listener != null) listener.onError(error);
+                }
             }
-        }){
+        }) {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
 
                 Map<String, String> params = new Hashtable<>();
                 params.put("api_key", playbasis.getKeyStore().getApiKey());
                 params.put("token", playbasis.getAuthenticator().getToken());
-                if(httpParams!=null){
-                    for (NameValuePair pair : httpParams){
+                if (httpParams != null) {
+                    for (NameValuePair pair : httpParams) {
                         params.put(pair.getName(), pair.getValue());
                     }
                 }
@@ -199,24 +266,33 @@ public abstract class Api {
         playbasis.getHttpManager().addToRequestQueue(jsonArrReq);
     }
 
+
+    /**
+     * String GET super method.
+     *
+     * @param playbasis Playbasic objecct.
+     * @param uri       URL of the request.
+     * @param params    Params of the request.
+     * @param listener  String Callback listener.
+     */
     protected static void StringGET(final Playbasis playbasis, String uri, List<NameValuePair> params,
-                                        final OnResult<String>
-                                                listener) {
+                                    final OnResult<String>
+                                            listener) {
         resendRequests(playbasis);
         HttpsTrustManager.allowAllSSL();
         //Add params to the request
-        if(params==null) params = new ArrayList<>();
+        if (params == null) params = new ArrayList<>();
         params.add(new BasicNameValuePair("api_key", playbasis.getKeyStore().getApiKey()));
 
         StringRequest stringRequest = new StringRequest(Request.Method.GET,
                 ParamsHelper.addParams(uri, params), new Response.Listener<String>() {
 
-                    @Override
-                    public void onResponse(String response) {
-                        PlayBasisLog.v(TAG, response!=null? response : "Response is null");
-                        if (listener != null) listener.onSuccess(response);
-                    }
-                }, new Response.ErrorListener() {
+            @Override
+            public void onResponse(String response) {
+                PlayBasisLog.v(TAG, response != null ? response : "Response is null");
+                if (listener != null) listener.onSuccess(response);
+            }
+        }, new Response.ErrorListener() {
 
 
             @Override
@@ -229,12 +305,30 @@ public abstract class Api {
         playbasis.getHttpManager().addToRequestQueue(stringRequest);
     }
 
+    /**
+     * Async super method.
+     *
+     * @param playbasis  Playbasic objecct.
+     * @param endpoint   endpoint of the request.
+     * @param jsonObject Json data.
+     * @param listener   String Callback listener.
+     */
     protected static void asyncPost(final Playbasis playbasis, String endpoint,
                                     JSONObject jsonObject, final OnResult<String> listener) {
-        asyncPost(playbasis,endpoint,null,jsonObject,listener);
+        asyncPost(playbasis, endpoint, null, jsonObject, listener);
     }
-    protected static void asyncPost(final Playbasis playbasis, String endpoint, final Long timestamp,
-                                    JSONObject jsonObject, final OnResult<String> listener) {
+
+    /**
+     * Async super method.
+     *
+     * @param playbasis  Playbasic objecct.
+     * @param endpoint   endpoint of the request.
+     * @param timestamp  timestamp of the request.
+     * @param jsonObject Json data.
+     * @param listener   String Callback listener.
+     */
+    protected static void asyncPost(final Playbasis playbasis, final String endpoint, final Long timestamp,
+                                    final JSONObject jsonObject, final OnResult<String> listener) {
 
         JSONObject params = new JSONObject();
         try {
@@ -247,12 +341,12 @@ public abstract class Api {
         }
 
 
-        if (!playbasis.isNetworkAvailable()){
+        if (!playbasis.isNetworkAvailable()) {
             RequestStorage storage = new RequestStorage(playbasis.getContext());
-            storage.save(playbasis, endpoint , params);
-            if (listener!=null) listener.onError(new HttpError(RequestError.NoNetwork()));
+            storage.save(playbasis, endpoint, params);
+            if (listener != null) listener.onError(new HttpError(RequestError.NoNetwork()));
             return;
-        }else resendRequests(playbasis);
+        } else resendRequests(playbasis);
 
         HttpsTrustManager.allowAllSSL();
         StringJSONBodyRequest jsonBodyRequest = new StringJSONBodyRequest(Request.Method.POST,
@@ -270,9 +364,25 @@ public abstract class Api {
 
                     @Override
                     public void onErrorResponse(HttpError error) {
+                        //Request a new token and resend the request if token is invalid.
+                        if (error.requestError.errorCode == RequestError.ERROR_CODE.INVALID_TOKEN) {
+                            AuthAuthenticator authAuthenticator = new AuthAuthenticator(playbasis);
+                            authAuthenticator.requestRenewAuthToken(new OnResult<AuthToken>() {
+                                @Override
+                                public void onSuccess(AuthToken result) {
+                                    asyncPost(playbasis, endpoint, timestamp, jsonObject, listener);
+                                }
 
-                        PlayBasisLog.e(TAG, "Error: " + error.getMessage());
-                        if (listener != null) listener.onError(error);
+                                @Override
+                                public void onError(HttpError error) {
+                                    PlayBasisLog.e(TAG, "Error: " + error.getMessage());
+                                    if (listener != null) listener.onError(error);
+                                }
+                            });
+                        } else {
+                            PlayBasisLog.e(TAG, "Error: " + error.getMessage());
+                            if (listener != null) listener.onError(error);
+                        }
                     }
                 }) {
 
@@ -280,7 +390,7 @@ public abstract class Api {
             public Map<String, String> getHeaders() throws AuthFailureError {
                 HashMap<String, String> headers = new HashMap<String, String>();
                 headers.put("Content-Type", "application/json");
-                if(timestamp!=null) 
+                if (timestamp != null)
                     headers.put("Date", DateHelper.timestampToHTPPDate(timestamp));
                 return headers;
             }
@@ -289,23 +399,23 @@ public abstract class Api {
         playbasis.getHttpManager().addToRequestQueue(jsonBodyRequest);
     }
 
-    public static void resendRequests(final Playbasis playbasis){
+    public static void resendRequests(final Playbasis playbasis) {
         if (!playbasis.isNetworkAvailable() || isResendRunning) return;
 
         new Thread(new Runnable() {
             @Override
             public void run() {
-                isResendRunning=true;
+                isResendRunning = true;
                 RequestStorage storage = new RequestStorage(playbasis.getContext());
                 List<StoredRequest> requests = storage.loadAll();
-                if(requests!=null && requests.size() > 0){
+                if (requests != null && requests.size() > 0) {
                     for (StoredRequest request : requests) {
-                        if(request!=null) asyncPost(playbasis, request.getUrl(), request.getTimestamp(), 
-                                request.paramsToJson(), 
+                        if (request != null) asyncPost(playbasis, request.getUrl(), request.getTimestamp(),
+                                request.paramsToJson(),
                                 null);
                     }
                 }
-                isResendRunning=false;
+                isResendRunning = false;
             }
         }).start();
 

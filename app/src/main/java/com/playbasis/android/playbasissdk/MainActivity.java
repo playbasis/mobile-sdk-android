@@ -57,6 +57,7 @@ public class MainActivity extends Activity {
                 .setApiSecret("b1fa1529410702557a6fe2f3913768a0")
                 .build();
 
+        lowLevelTest(playbasis);
 
     }
     
@@ -109,7 +110,7 @@ public class MainActivity extends Activity {
     public void lowLevelTest(Playbasis playbasis){
 
 
-        playbasis.getAuthenticator().requestAuthToken(playbasis, new OnResult<AuthToken>() {
+        playbasis.getAuthenticator().requestAuthToken(new OnResult<AuthToken>() {
             @Override
             public void onSuccess(AuthToken result) {
                 Log.d("requestAuthToken", result.getToken());
@@ -138,7 +139,7 @@ public class MainActivity extends Activity {
         });
 
 
-        QuizApi.detail(playbasis, "54c09131be120bee348b52c9", null, new OnResult<QuizDetail>() {
+        QuizApi.detail(playbasis, "54ed874bbe120bc32a8b45b8", null, new OnResult<QuizDetail>() {
             @Override
             public void onSuccess(QuizDetail result) {
                 Log.d("quiz", "detail: " + result.toString());

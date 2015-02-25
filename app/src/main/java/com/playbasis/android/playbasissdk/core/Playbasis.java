@@ -10,6 +10,7 @@ import com.playbasis.android.playbasissdk.api.Api;
 import com.playbasis.android.playbasissdk.api.AuthAuthenticator;
 import com.playbasis.android.playbasissdk.api.EngineApi;
 import com.playbasis.android.playbasissdk.api.OnResult;
+import com.playbasis.android.playbasissdk.helper.DateHelper;
 import com.playbasis.android.playbasissdk.http.HttpManager;
 import com.playbasis.android.playbasissdk.http.toolbox.KeyStore;
 import com.playbasis.android.playbasissdk.model.Rule;
@@ -182,9 +183,7 @@ public class Playbasis {
         ConnectivityManager connectivityManager
                 = (ConnectivityManager) mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
-        //INFO: only for test
-        return networkAvailable;
-        // return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
     
     

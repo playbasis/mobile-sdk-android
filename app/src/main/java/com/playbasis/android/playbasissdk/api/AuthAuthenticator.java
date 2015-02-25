@@ -39,7 +39,7 @@ public class AuthAuthenticator {
      * init context and secure shared pref. 
      * @param context
      */
-    public AuthAuthenticator(Context context) {
+    private AuthAuthenticator(Context context) {
         this.mContext = context;
         this.mPrefs = new PrivatePreferences(mContext);
     }
@@ -48,6 +48,12 @@ public class AuthAuthenticator {
         this(context);
         this.playbasis = playbasis;
         
+    }
+
+    public AuthAuthenticator(Playbasis playbasis){
+        this(playbasis.getContext());
+        this.playbasis = playbasis;
+
     }
 
     /**
@@ -64,21 +70,20 @@ public class AuthAuthenticator {
      * Get the token from shared pref and memory.
      * @return token
      */
-    public AuthToken getAuthToken(){
+    private AuthToken getSavedAuthToken(){
         if(authToken ==null) { authToken = mPrefs.getToken(); }
         return authToken;
     }
 
     /**
      * Get auth token form local, and make the request if not available.
-     * @param playbasis
      * @param listener
      */
-    public void getAuthToken(Playbasis playbasis, final OnResult<AuthToken> listener){
-        if(getAuthToken()!=null){
+    public void getAuthToken(final OnResult<AuthToken> listener){
+        if(getSavedAuthToken()!=null){
             if(listener!=null)listener.onSuccess(authToken);
         }else{
-            requestAuthToken(playbasis, new OnResult<AuthToken>() {
+            requestAuthToken(new OnResult<AuthToken>() {
                 @Override
                 public void onSuccess(AuthToken result) {
                     if(listener!=null)listener.onSuccess(authToken);
@@ -89,19 +94,6 @@ public class AuthAuthenticator {
                     if(listener!=null) listener.onError(error);
                 }
             });
-        }
-    }
-
-    /**
-     * Get auth token form local, and make the request if not available.
-     * @param listener
-     */
-    public void getAuthToken(final OnResult<AuthToken> listener){
-        if(playbasis==null){
-            if(listener!=null) listener.onError(new HttpError(new NullPointerException("No reference to Playbasis " +
-                    "object")));
-        }else{
-            getAuthToken(playbasis, listener);
         }
     }
 
@@ -142,10 +134,9 @@ public class AuthAuthenticator {
 
     /**
      * Get the token and save it. 
-     * @param playbasis
      * @param listener
      */
-    public void requestAuthToken(final Playbasis playbasis, final OnResult<AuthToken> listener){
+    public void requestAuthToken(final OnResult<AuthToken> listener){
         AuthApi.auth(playbasis, new OnResult<AuthToken>() {
             @Override
             public void onSuccess(AuthToken result) {
@@ -162,10 +153,9 @@ public class AuthAuthenticator {
 
     /**
      * Renew the token and save it. 
-     * @param playbasis
      * @param listener
      */
-    public void requestRenewAuthToken(final Playbasis playbasis, final OnResult<AuthToken> listener){
+    public void requestRenewAuthToken(final OnResult<AuthToken> listener){
         AuthApi.authRenew(playbasis, new OnResult<AuthToken>() {
             @Override
             public void onSuccess(AuthToken result) {
