@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.playbasis.android.playbasissdk.api.Api;
 import com.playbasis.android.playbasissdk.api.AuthToken;
 import com.playbasis.android.playbasissdk.api.BadgeApi;
 import com.playbasis.android.playbasissdk.api.EngineApi;
@@ -56,20 +57,6 @@ public class MainActivity extends Activity {
                 .setApiSecret("b1fa1529410702557a6fe2f3913768a0")
                 .build();
 
-
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                for (int i=0 ; i<=11; i++){
-                    playbasis.Track("gregusertest", RuleAction.CLICK);
-                    try {
-                        Thread.sleep(5000,0);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        }).start();
 
     }
     

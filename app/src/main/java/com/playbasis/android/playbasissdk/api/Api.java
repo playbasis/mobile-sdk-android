@@ -2,6 +2,7 @@ package com.playbasis.android.playbasissdk.api;
 
 import com.playbasis.android.playbasissdk.core.Playbasis;
 import com.playbasis.android.playbasissdk.core.SDKUtil;
+import com.playbasis.android.playbasissdk.helper.DateHelper;
 import com.playbasis.android.playbasissdk.http.AuthFailureError;
 import com.playbasis.android.playbasissdk.http.HttpError;
 import com.playbasis.android.playbasissdk.http.HttpsTrustManager;
@@ -232,7 +233,7 @@ public abstract class Api {
                                     JSONObject jsonObject, final OnResult<String> listener) {
         asyncPost(playbasis,endpoint,null,jsonObject,listener);
     }
-    protected static void asyncPost(final Playbasis playbasis, String endpoint, Long timestamp,
+    protected static void asyncPost(final Playbasis playbasis, String endpoint, final Long timestamp,
                                     JSONObject jsonObject, final OnResult<String> listener) {
 
         JSONObject params = new JSONObject();
@@ -279,6 +280,8 @@ public abstract class Api {
             public Map<String, String> getHeaders() throws AuthFailureError {
                 HashMap<String, String> headers = new HashMap<String, String>();
                 headers.put("Content-Type", "application/json");
+                if(timestamp!=null) 
+                    headers.put("Date", DateHelper.timestampToHTPPDate(timestamp));
                 return headers;
             }
         };

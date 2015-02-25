@@ -33,6 +33,9 @@ public class Playbasis {
     private AuthAuthenticator authenticator;
     
     private String mChannel;
+    
+    //INFO: only for test
+    public Boolean networkAvailable = true;
 
     /**
      * This method return the Playbasis singleton. If call before the builder return null.
@@ -179,7 +182,9 @@ public class Playbasis {
         ConnectivityManager connectivityManager
                 = (ConnectivityManager) mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
-        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+        //INFO: only for test
+        return networkAvailable;
+        // return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
     
     

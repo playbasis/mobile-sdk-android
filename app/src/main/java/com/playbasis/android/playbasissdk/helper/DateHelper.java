@@ -6,6 +6,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+import java.util.TimeZone;
 
 /**
  * Created by gregoire barret on 2/16/15.
@@ -33,6 +34,17 @@ public class DateHelper {
         SimpleDateFormat  dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ", Locale.getDefault());
         try {
             return dateFormat.format(date);
+        } catch (NullPointerException ne){
+            ne.printStackTrace();
+            return null;
+        }
+    }
+    
+    @Nullable public static String timestampToHTPPDate(long timeStamp){
+        SimpleDateFormat dateFormat = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz", Locale.getDefault());
+   //     dateFormat.setTimeZone(TimeZone.getTimeZone("GMT+7"));
+        try {
+            return dateFormat.format(new Date(timeStamp));
         } catch (NullPointerException ne){
             ne.printStackTrace();
             return null;
