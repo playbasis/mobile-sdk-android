@@ -111,4 +111,13 @@ public class Reward {
         return this;
     }
 
+    @Override
+    public String toString() {
+        return "Reward{" +
+                "rewardValue='" + rewardValue + '\'' +
+                ", rewardType='" + rewardType + '\'' +
+                ", rewardId='" + rewardId + '\'' +
+                ", rewardData=" + rewardData +
+                '}';
+    }
 }

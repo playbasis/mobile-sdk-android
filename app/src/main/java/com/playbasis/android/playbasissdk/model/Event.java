@@ -24,36 +24,79 @@ public class Event {
     @Expose
     private String questId;
 
+    /**
+     *  
+     * @return the type
+     */
     public String getType() {
         return type;
     }
 
+    /**
+     *  
+     * @param type the type
+     */
     public void setType(String type) {
         this.type = type;
     }
 
+
+    /**
+     *  
+     * @return the message
+     */
     public String getMessage() {
         return message;
     }
 
+    /**
+     *  
+     * @param message the message
+     */
     public void setMessage(String message) {
         this.message = message;
     }
 
+    /**
+     *  
+     * @return the status
+     */
     public Boolean getStatus() {
         return status;
     }
 
+    /**
+     *  
+     * @param status the status
+     */
     public void setStatus(Boolean status) {
         this.status = status;
     }
 
+    /**
+     *  
+     * @return the quest Id
+     */
     public String getQuestId() {
         return questId;
     }
 
+    /**
+     *  
+     * @param questId the quest Id
+     */
     public void setQuestId(String questId) {
         this.questId = questId;
+    }
+
+    @Override
+    public String toString() {
+        return "Event{" +
+                "type='" + type + '\'' +
+                ", message='" + message + '\'' +
+                ", status=" + status +
+                ", questId='" + questId + '\'' +
+                '}';
     }
 }
 

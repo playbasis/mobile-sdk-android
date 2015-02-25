@@ -34,4 +34,10 @@ public class Grades extends AbstractGrade {
         this.rewards = rewards;
     }
 
+    @Override
+    public String toString() {
+        return "Grades{" +
+                "rewards=" + rewards +
+                '}';
+    }
 }

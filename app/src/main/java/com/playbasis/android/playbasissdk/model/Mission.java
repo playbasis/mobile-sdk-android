@@ -288,4 +288,20 @@ public class Mission {
         return this;
     }
 
+    @Override
+    public String toString() {
+        return "Mission{" +
+                "missionName='" + missionName + '\'' +
+                ", missionNumber='" + missionNumber + '\'' +
+                ", description='" + description + '\'' +
+                ", hint='" + hint + '\'' +
+                ", image='" + image + '\'' +
+                ", completion=" + completion +
+                ", rewards=" + rewards +
+                ", missionId='" + missionId + '\'' +
+                ", dateModified='" + dateModified + '\'' +
+                ", status='" + status + '\'' +
+                ", pending=" + pending +
+                '}';
+    }
 }

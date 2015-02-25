@@ -243,5 +243,19 @@ public class QuizDetail extends Quiz {
         this.dateJoin = dateJoin;
     }
 
-
+    @Override
+    public String toString() {
+        return "QuizDetail{" +
+                "dateStart='" + dateStart + '\'' +
+                ", dateExpire='" + dateExpire + '\'' +
+                ", status=" + status +
+                ", deleted=" + deleted +
+                ", grades=" + grades +
+                ", totalMaxScore=" + totalMaxScore +
+                ", totalQuestions=" + totalQuestions +
+                ", questions=" + questions +
+                ", totalScore=" + totalScore +
+                ", dateJoin='" + dateJoin + '\'' +
+                '}';
+    }
 }

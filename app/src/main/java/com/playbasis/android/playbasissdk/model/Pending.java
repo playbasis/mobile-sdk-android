@@ -83,4 +83,13 @@ public class Pending {
         return this;
     }
 
+
+    @Override
+    public String toString() {
+        return "Pending{" +
+                "eventType='" + eventType + '\'' +
+                ", message='" + message + '\'' +
+                ", incomplete=" + incomplete +
+                '}';
+    }
 }

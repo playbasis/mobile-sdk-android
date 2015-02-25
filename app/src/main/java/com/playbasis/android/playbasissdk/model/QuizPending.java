@@ -69,4 +69,15 @@ public class QuizPending {
     public void setGrade(Grades grade) {
         this.grade = grade;
     }
+
+    @Override
+    public String toString() {
+        return "QuizPending{" +
+                "value=" + value +
+                ", totalCompletedQuestions=" + totalCompletedQuestions +
+                ", totalPendingQuestions=" + totalPendingQuestions +
+                ", quizId='" + quizId + '\'' +
+                ", grade=" + grade +
+                '}';
+    }
 }

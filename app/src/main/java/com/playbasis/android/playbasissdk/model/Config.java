@@ -29,4 +29,11 @@ public class Config {
     public void setUrl(String url) {
         this.url = url;
     }
+
+    @Override
+    public String toString() {
+        return "Config{" +
+                "url='" + url + '\'' +
+                '}';
+    }
 }

@@ -15,18 +15,34 @@ public class Rewards {
     private Point point;
 
 
+    /**
+     *  
+     * @return Exp rewards
+     */
     public Exp getExp() {
         return exp;
     }
 
+    /**
+     *  
+     * @param exp Exp rewards
+     */
     public void setExp(Exp exp) {
         this.exp = exp;
     }
 
+    /**
+     *  
+     * @return Point rewards
+     */
     public Point getPoint() {
         return point;
     }
 
+    /**
+     *
+     * @param point Point rewards
+     */
     public void setPoint(Point point) {
         this.point = point;
     }
@@ -58,5 +74,13 @@ public class Rewards {
             this.value = value;
         }
 
+    }
+
+    @Override
+    public String toString() {
+        return "Rewards{" +
+                "exp=" + exp +
+                ", point=" + point +
+                '}';
     }
 }

@@ -137,4 +137,15 @@ public class Incomplete {
         return this;
     }
 
+
+    @Override
+    public String toString() {
+        return "Incomplete{" +
+                "incompletionId='" + incompletionId + '\'' +
+                ", incompletionType='" + incompletionType + '\'' +
+                ", incompletionValue=" + incompletionValue +
+                ", incompletionElementId='" + incompletionElementId + '\'' +
+                ", incompletionFilter='" + incompletionFilter + '\'' +
+                '}';
+    }
 }

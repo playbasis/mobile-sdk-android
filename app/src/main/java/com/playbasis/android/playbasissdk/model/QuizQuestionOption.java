@@ -19,27 +19,60 @@ public class QuizQuestionOption {
     @Expose
     private String OptionId;
 
+    /**
+     *  
+     * @return question option
+     */
     public String getOption() {
         return option;
     }
 
+    /**
+     *  
+     * @param option question option
+     */
     public void setOption(String option) {
         this.option = option;
     }
 
+    /**
+     *  
+     * @return question option image url
+     */
     public String getOptionImage() {
         return optionImage;
     }
 
+    /**
+     *  
+     * @param optionImage question option image url
+     */
     public void setOptionImage(String optionImage) {
         this.optionImage = optionImage;
     }
 
+    /**
+     *  
+     * @return option Id
+     */
     public String getOptionId() {
         return OptionId;
     }
 
+    /**
+     *  
+     * @param optionId option Id
+     */
     public void setOptionId(String optionId) {
         OptionId = optionId;
+    }
+
+    @Override
+    public String toString() {
+        return "QuizQuestionOption{" +
+                "option='" + option + '\'' +
+                ", optionImage='" + optionImage + '\'' +
+                ", OptionId='" + OptionId + '\'' +
+                '}';
     }
 }

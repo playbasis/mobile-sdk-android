@@ -46,4 +46,12 @@ public class KeyValue {
         this.value = value;
         return this;
     }
+
+    @Override
+    public String toString() {
+        return "KeyValue{" +
+                "key='" + key + '\'' +
+                ", value='" + value + '\'' +
+                '}';
+    }
 }

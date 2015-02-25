@@ -22,27 +22,60 @@ public class Rule {
     private List<Quest> quests;
 
 
+    /**
+     *  
+     * @return events list
+     */
     public List<Event> getEvents() {
         return events;
     }
 
+    /**
+     *  
+     * @param events event list
+     */
     public void setEvents(List<Event> events) {
         this.events = events;
     }
 
+    /**
+     * 
+     * @return missions list
+     */
     public List<Mission> getMissions() {
         return missions;
     }
 
+    /**
+     *  
+     * @param missions mission list
+     */
     public void setMissions(List<Mission> missions) {
         this.missions = missions;
     }
 
+    /**
+     *  
+     * @return quest list
+     */
     public List<Quest> getQuests() {
         return quests;
     }
 
+    /**
+     *
+     * @param quests quest list
+     */
     public void setQuests(List<Quest> quests) {
         this.quests = quests;
+    }
+
+    @Override
+    public String toString() {
+        return "Rule{" +
+                "events=" + events +
+                ", missions=" + missions +
+                ", quests=" + quests +
+                '}';
     }
 }

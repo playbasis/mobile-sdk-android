@@ -133,4 +133,15 @@ public class CompletionData {
         return this;
     }
 
+
+    @Override
+    public String toString() {
+        return "CompletionData{" +
+                "actionId='" + actionId + '\'' +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", icon='" + icon + '\'' +
+                ", color='" + color + '\'' +
+                '}';
+    }
 }

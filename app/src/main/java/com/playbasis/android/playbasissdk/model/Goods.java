@@ -401,6 +401,14 @@ public class Goods {
             this.badge = badge;
         }
 
+
+        @Override
+        public String toString() {
+            return "Redeem{" +
+                    "point=" + point +
+                    ", badge=" + badge +
+                    '}';
+        }
     }
 
     

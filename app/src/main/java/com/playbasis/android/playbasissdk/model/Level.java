@@ -140,4 +140,15 @@ public class Level {
         this.levelImage = levelImage;
         return this;
     }
+
+    @Override
+    public String toString() {
+        return "Level{" +
+                "levelTitle=" + levelTitle +
+                ", level=" + level +
+                ", minExp=" + minExp +
+                ", maxExp=" + maxExp +
+                ", levelImage=" + levelImage +
+                '}';
+    }
 }

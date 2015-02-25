@@ -189,4 +189,16 @@ public class Completion {
         return this;
     }
 
+    @Override
+    public String toString() {
+        return "Completion{" +
+                "completionFilter='" + completionFilter + '\'' +
+                ", completionValue='" + completionValue + '\'' +
+                ", completionId='" + completionId + '\'' +
+                ", completionElementId='" + completionElementId + '\'' +
+                ", completionType='" + completionType + '\'' +
+                ", completionTitle='" + completionTitle + '\'' +
+                ", completionData=" + completionData +
+                '}';
+    }
 }
