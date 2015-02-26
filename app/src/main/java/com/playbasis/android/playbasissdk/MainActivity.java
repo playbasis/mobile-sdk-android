@@ -42,6 +42,7 @@ import com.playbasis.android.playbasissdk.model.Ranks;
 import com.playbasis.android.playbasissdk.model.Reward;
 import com.playbasis.android.playbasissdk.model.RuleAction;
 import com.playbasis.android.playbasissdk.model.Rule;
+import com.playbasis.android.playbasissdk.model.UIEvent;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
@@ -65,6 +66,44 @@ public class MainActivity extends Activity {
                 .setApiKey("3416989394")
                 .setApiSecret("b1fa1529410702557a6fe2f3913768a0")
                 .build();
+
+        uieventTest(playbasis);
+
+
+/*        String uri = SDKUtil.SERVER_URL + SDKUtil._ENGINE_URL + "rule";
+
+        List<NameValuePair> params = new ArrayList<>();
+        params.add(new BasicNameValuePair("player_id", "gregusertest"));
+        params.add(new BasicNameValuePair("action", RuleAction.CLICK.toString()));
+
+        Api.JsonObjectPOST(playbasis, uri, DateHelper.currentTimetamp(), params, new OnResult<JSONObject>() {
+            @Override
+            public void onSuccess(JSONObject result) {
+                Rule rule = JsonHelper.FromJsonObject(result, Rule.class);
+            }
+
+            @Override
+            public void onError(HttpError error) {
+
+            }
+        });
+
+
+        params.add(new BasicNameValuePair("player_id", "gregusertest"));
+        params.add(new BasicNameValuePair("action", RuleAction.CLICK.toString()));
+
+        Api.JsonObjectPOST(playbasis, uri, DateHelper.currentTimetamp() - 1000000000, params,
+                new OnResult<JSONObject>() {
+            @Override
+            public void onSuccess(JSONObject result) {
+                Rule rule = JsonHelper.FromJsonObject(result, Rule.class);
+            }
+
+            @Override
+            public void onError(HttpError error) {
+
+            }
+        });*/
 
 
 
@@ -127,6 +166,20 @@ public class MainActivity extends Activity {
         return super.onOptionsItemSelected(item);
     }
 
+    
+    public void uieventTest(Playbasis playbasis){
+        playbasis.Track("gregusertest", UIEvent.CLICK);
+        playbasis.Track("gregusertest", UIEvent.LONG_CLICK);
+        playbasis.Track("gregusertest", UIEvent.FOCUS_CHANGE);
+        playbasis.Track("gregusertest", UIEvent.MENU_ITEM);
+        playbasis.Track("gregusertest", UIEvent.TOUCH);
+        playbasis.Track("gregusertest", UIEvent.KEY);
+        playbasis.Track("gregusertest", UIEvent.VIEW_CREATE);
+        playbasis.Track("gregusertest", UIEvent.VIEW_DISPLAY);
+        playbasis.Track("gregusertest", UIEvent.VIEW_REMOVE);
+        playbasis.Track("gregusertest", UIEvent.VIEW_DESTROY);
+        
+    }
 
     public void highLevelTest(Playbasis playbasis){
         
