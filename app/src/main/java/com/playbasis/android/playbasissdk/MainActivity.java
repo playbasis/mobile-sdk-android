@@ -2,12 +2,16 @@ package com.playbasis.android.playbasissdk;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.Toast;
 
 import com.playbasis.android.playbasissdk.api.Api;
-import com.playbasis.android.playbasissdk.api.AuthToken;
 import com.playbasis.android.playbasissdk.api.BadgeApi;
 import com.playbasis.android.playbasissdk.api.EngineApi;
 import com.playbasis.android.playbasissdk.api.GoodsApi;
@@ -18,8 +22,6 @@ import com.playbasis.android.playbasissdk.api.QuizApi;
 import com.playbasis.android.playbasissdk.api.ServiceApi;
 import com.playbasis.android.playbasissdk.core.Playbasis;
 import com.playbasis.android.playbasissdk.core.SDKUtil;
-import com.playbasis.android.playbasissdk.helper.DateHelper;
-import com.playbasis.android.playbasissdk.helper.JsonHelper;
 import com.playbasis.android.playbasissdk.http.HttpError;
 import com.playbasis.android.playbasissdk.model.Action;
 import com.playbasis.android.playbasissdk.model.ActionConfig;
@@ -42,7 +44,10 @@ import com.playbasis.android.playbasissdk.model.Ranks;
 import com.playbasis.android.playbasissdk.model.Reward;
 import com.playbasis.android.playbasissdk.model.RuleAction;
 import com.playbasis.android.playbasissdk.model.Rule;
+import com.playbasis.android.playbasissdk.model.StoredRequest;
 import com.playbasis.android.playbasissdk.model.UIEvent;
+import com.playbasis.android.playbasissdk.secure.RequestStorage;
+import com.playbasis.android.playbasissdk.widget.PlayerView;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
@@ -55,98 +60,83 @@ import java.util.List;
 import java.util.Map;
 
 
-public class MainActivity extends Activity {
+public class MainActivity extends FragmentActivity {
 
+
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
+        Button send = (Button) findViewById(R.id.button_send);
+        Button resend = (Button) findViewById(R.id.button_resend);
+
         final Playbasis playbasis = new Playbasis.Builder(this)
                 .setApiKey("3416989394")
                 .setApiSecret("b1fa1529410702557a6fe2f3913768a0")
                 .build();
-
-        uieventTest(playbasis);
-
-
-/*        String uri = SDKUtil.SERVER_URL + SDKUtil._ENGINE_URL + "rule";
-
-        List<NameValuePair> params = new ArrayList<>();
-        params.add(new BasicNameValuePair("player_id", "gregusertest"));
-        params.add(new BasicNameValuePair("action", RuleAction.CLICK.toString()));
-
-        Api.JsonObjectPOST(playbasis, uri, DateHelper.currentTimetamp(), params, new OnResult<JSONObject>() {
+        
+        send.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onSuccess(JSONObject result) {
-                Rule rule = JsonHelper.FromJsonObject(result, Rule.class);
+            public void onClick(View view) {
+                playbasis.Do("gregusertest", RuleAction.CLICK, new OnResult<Rule>() {
+                    @Override
+                    public void onSuccess(Rule result) {
+                        Toast.makeText(getApplicationContext(), result.toString(), Toast.LENGTH_LONG).show();
+                    }
+
+                    @Override
+                    public void onError(HttpError error) {
+                        Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_LONG).show();
+                    }
+                });
             }
-
+        });
+        
+        resend.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onError(HttpError error) {
+            public void onClick(View view) {
+                RequestStorage storage = new RequestStorage(playbasis.getContext());
+                List<StoredRequest> requests = storage.loadAll();
+                if (requests != null && requests.size() > 0) {
+                    for (StoredRequest request : requests) {
+/*                        if (request != null) asyncPost(playbasis, request.getUrl(), request.getTimestamp(),
+                                request.paramsToJson(),
+                                null);*/
+                        if (request !=null) Api.JsonObjectPOST(playbasis, SDKUtil.SERVER_URL + request.getUrl(),
+                                request.getTimestamp(),
+                                request.paramsToValuePair(),
+                                new OnResult<JSONObject>() {
+                                    @Override
+                                    public void onSuccess(JSONObject result) {
+                                        Toast.makeText(getApplicationContext(), result.toString(), Toast.LENGTH_LONG).show();
+                                    }
 
+                                    @Override
+                                    public void onError(HttpError error) {
+                                        Toast.makeText(getApplicationContext(), error.toString(),
+                                                Toast.LENGTH_LONG).show();
+                                    }
+                                });
+                    }
+                }
             }
         });
 
 
-        params.add(new BasicNameValuePair("player_id", "gregusertest"));
-        params.add(new BasicNameValuePair("action", RuleAction.CLICK.toString()));
-
-        Api.JsonObjectPOST(playbasis, uri, DateHelper.currentTimetamp() - 1000000000, params,
-                new OnResult<JSONObject>() {
+        PlayerApi.register(playbasis, false, new Player(null, "greg", "greg"), new OnResult<Boolean>() {
             @Override
-            public void onSuccess(JSONObject result) {
-                Rule rule = JsonHelper.FromJsonObject(result, Rule.class);
+            public void onSuccess(Boolean result) {
+                Log.d("quiz", "detail: " + result.toString());
             }
 
             @Override
             public void onError(HttpError error) {
-
+                Log.d("COMPARE", (error.requestError!=null? error.requestError.toString() : error.toString()));
             }
-        });*/
-
-
-
-//        new Thread(new Runnable() {
-//            @Override
-//            public void run() {
-//                for (int i = 0; i < 6 ; i++) {
-//                    playbasis.Track("gregusertest", RuleAction.CLICK);
-//
-//                    try {
-//                        Thread.sleep(100);
-//                    } catch (InterruptedException e) {
-//                        e.printStackTrace();
-//                    }
-//                }
-//                
-//                playbasis.networkavailable = false;
-//                for (int i = 0; i < 6 ; i++) {
-//                    playbasis.Track("gregusertest", RuleAction.CLICK);
-//
-//                    try {
-//                        Thread.sleep(100);
-//                    } catch (InterruptedException e) {
-//                        e.printStackTrace();
-//                    }
-//                }
-//
-//                try {
-//                    Thread.sleep(21000);
-//                } catch (InterruptedException e) {
-//                    e.printStackTrace();
-//                }
-//
-//                playbasis.networkavailable = true;
-//                
-//                Api.resendRequests(playbasis);
-//                Log.d("PLAYBASIS", "RESEND");
-//
-//
-//            }
-//        }).start();
-
-        
+        });
 
     }
     
@@ -168,7 +158,7 @@ public class MainActivity extends Activity {
 
     
     public void uieventTest(Playbasis playbasis){
-        playbasis.Track("gregusertest", UIEvent.CLICK);
+        playbasis.Track("gregusertest", "click");
         playbasis.Track("gregusertest", UIEvent.LONG_CLICK);
         playbasis.Track("gregusertest", UIEvent.FOCUS_CHANGE);
         playbasis.Track("gregusertest", UIEvent.MENU_ITEM);

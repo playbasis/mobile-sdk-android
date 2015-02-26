@@ -1,6 +1,8 @@
 package com.playbasis.android.playbasissdk.api;
 
 import android.support.annotation.NonNull;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 
 import com.playbasis.android.playbasissdk.core.Playbasis;
 import com.playbasis.android.playbasissdk.core.SDKUtil;
@@ -19,6 +21,7 @@ import com.playbasis.android.playbasissdk.model.Quest;
 import com.playbasis.android.playbasissdk.model.Rank;
 import com.playbasis.android.playbasissdk.model.Ranks;
 import com.playbasis.android.playbasissdk.model.Reward;
+import com.playbasis.android.playbasissdk.widget.PlayerView;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
@@ -207,14 +210,34 @@ public class PlayerApi extends Api{
      * @param player Id of the player.
      * @param listener Callback interface.
      */
-    public static void register(@NonNull Playbasis playbasis, boolean isAsync, @NonNull Player player,
+    public static void register(@NonNull final Playbasis playbasis, final boolean isAsync, @NonNull Player player,
                                 final OnResult<Boolean> listener){
 
         if (!player.isValid()) {
-            if (listener != null) listener.onError(new HttpError(
-                    new RequestError("player not valid", RequestError.ERROR_CODE.DEFAULT)));
-            return;
+            FragmentManager fm;
+            try {
+                fm = ((FragmentActivity) playbasis.getContext()).getSupportFragmentManager();
+            } catch (ClassCastException e) {
+                if (listener != null) listener.onError(new HttpError(
+                        new RequestError("player not valid", RequestError.ERROR_CODE.DEFAULT)));
+                return;
+            }
+            PlayerView playerView = new PlayerView();
+            playerView.setPlayer(player);
+            playerView.show(fm, "fragment_player_info");
+            playerView.setPlayerListener(new PlayerView.OnPlayer() {
+                @Override
+                public void onPlayer(Player player) {
+                    registerPlayer(playbasis, isAsync, player,listener);
+                }
+            });
+        }else{
+            registerPlayer(playbasis, isAsync, player,listener);
         }
+    }
+
+    private static void registerPlayer(@NonNull Playbasis playbasis, boolean isAsync, @NonNull Player player,
+                                final OnResult<Boolean> listener){
 
         String endpoint = SDKUtil._PLAYER_URL + player.getClPlayerId() + "/register";
 
@@ -279,8 +302,33 @@ public class PlayerApi extends Api{
      * @param player  Id of the player.
      * @param listener Callback interface.
      */ 
-    public static void update(@NonNull Playbasis playbasis, boolean isAsync, @NonNull Player player,
+    public static void update(@NonNull final Playbasis playbasis, final boolean isAsync, @NonNull Player player,
                                 final OnResult<Boolean> listener){
+        if (!player.isValid()) {
+            FragmentManager fm;
+            try {
+                fm = ((FragmentActivity) playbasis.getContext()).getSupportFragmentManager();
+            } catch (ClassCastException e) {
+                if (listener != null) listener.onError(new HttpError(
+                        new RequestError("player not valid", RequestError.ERROR_CODE.DEFAULT)));
+                return;
+            }
+            PlayerView playerView = new PlayerView();
+            playerView.setPlayer(player);
+            playerView.show(fm, "fragment_player_info");
+            playerView.setPlayerListener(new PlayerView.OnPlayer() {
+                @Override
+                public void onPlayer(Player player) {
+                    updatePlayer(playbasis, isAsync, player, listener);
+                }
+            });
+        }else{
+            updatePlayer(playbasis, isAsync, player, listener);
+        }
+    }
+
+    public static void updatePlayer(@NonNull Playbasis playbasis, boolean isAsync, @NonNull Player player,
+                              final OnResult<Boolean> listener){
         if(!player.isValid()){
             if(listener!=null)listener.onError(new HttpError(
                     new RequestError("player not valid", RequestError.ERROR_CODE.DEFAULT)));

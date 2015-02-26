@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+  Created by gregoire barret.
+ -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:paddingRight="16dp"
+              android:paddingLeft="16dp"
+              android:paddingTop="16dp"
+              android:paddingBottom="16dp"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content">
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/editText_player_id"
+        android:hint="@string/player_id"
+        android:layout_gravity="center_horizontal"/>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:hint="@string/player_name"
+        android:ems="10"
+        android:id="@+id/editText_player_name"
+        android:layout_gravity="center_horizontal"/>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textEmailAddress"
+        android:hint="@string/player_email"
+        android:ems="10"
+        android:id="@+id/editText_player_email"
+        android:layout_gravity="center_horizontal"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/button_submit"
+        android:id="@+id/button_submit"
+        android:layout_gravity="center_horizontal"/>
+</LinearLayout>
