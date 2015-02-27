@@ -36,4 +36,13 @@ public class Validator {
         return matcher.matches();
     }
 
+    public static Boolean isValidPhone(String phone){
+        if(!isValid(phone))return false;
+        Pattern pattern;
+        Matcher matcher;
+        final String EMAIL_PATTERN = "^[+]?[0-9]{10,13}$";
+        pattern = Pattern.compile(EMAIL_PATTERN);
+        matcher = pattern.matcher(phone);
+        return matcher.matches();
+    }
 }

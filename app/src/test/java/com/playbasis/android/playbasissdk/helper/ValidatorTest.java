@@ -52,4 +52,22 @@ public class ValidatorTest extends TestCase {
 
 
     }
+    
+    public void testIsValidPhone(String phone) throws Exception{
+
+        assertTrue(Validator.isValidPhone("0821457852"));
+        assertTrue(Validator.isValidPhone("08,2145,785,2"));
+        assertTrue(Validator.isValidPhone("082.145.7.852"));
+        assertTrue(Validator.isValidPhone("082-14-5785-2"));
+        assertTrue(Validator.isValidPhone("0 821 4 57 852"));
+        assertTrue(Validator.isValidPhone("0354785412542"));
+        assertTrue(Validator.isValidPhone("+61012458745"));
+        assertTrue(Validator.isValidPhone("+27894561234567"));
+        assertFalse(Validator.isValidPhone("012345678"));
+        assertFalse(Validator.isValidPhone("01234567891234"));
+        assertFalse(Validator.isValidPhone("+112222222222222"));
+        assertFalse(Validator.isValidPhone(""));
+        assertFalse(Validator.isValidPhone(null));
+    }
+    
 }

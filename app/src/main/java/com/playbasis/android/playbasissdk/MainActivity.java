@@ -23,6 +23,7 @@ import com.playbasis.android.playbasissdk.api.ServiceApi;
 import com.playbasis.android.playbasissdk.core.Playbasis;
 import com.playbasis.android.playbasissdk.core.SDKUtil;
 import com.playbasis.android.playbasissdk.http.HttpError;
+import com.playbasis.android.playbasissdk.http.RequestError;
 import com.playbasis.android.playbasissdk.model.Action;
 import com.playbasis.android.playbasissdk.model.ActionConfig;
 import com.playbasis.android.playbasissdk.model.Badge;
@@ -47,6 +48,8 @@ import com.playbasis.android.playbasissdk.model.Rule;
 import com.playbasis.android.playbasissdk.model.StoredRequest;
 import com.playbasis.android.playbasissdk.model.UIEvent;
 import com.playbasis.android.playbasissdk.secure.RequestStorage;
+import com.playbasis.android.playbasissdk.widget.PlayerEmailView;
+import com.playbasis.android.playbasissdk.widget.PlayerSmsView;
 import com.playbasis.android.playbasissdk.widget.PlayerView;
 
 import org.apache.http.NameValuePair;
@@ -126,7 +129,7 @@ public class MainActivity extends FragmentActivity {
         });
 
 
-        PlayerApi.register(playbasis, false, new Player(null, "greg", "greg"), new OnResult<Boolean>() {
+/*        PlayerApi.register(playbasis, false, new Player(null, "greg", "greg"), new OnResult<Boolean>() {
             @Override
             public void onSuccess(Boolean result) {
                 Log.d("quiz", "detail: " + result.toString());
@@ -135,6 +138,17 @@ public class MainActivity extends FragmentActivity {
             @Override
             public void onError(HttpError error) {
                 Log.d("COMPARE", (error.requestError!=null? error.requestError.toString() : error.toString()));
+            }
+        });*/
+
+
+        FragmentManager fm = getSupportFragmentManager();
+        PlayerSmsView playerView = new PlayerSmsView();
+        playerView.setPlayer(new Player(null, "greg", "greg"));
+        playerView.show(fm, "fragment_player_info");
+        playerView.setPlayerListener(new PlayerView.OnPlayer() {
+            @Override
+            public void onPlayer(Player player) {
             }
         });
 
