@@ -90,9 +90,9 @@ public class PlayerView extends AbstractPlayerView implements View.OnClickListen
         mEmailView.setError(null);
         mNameView.setError(null);
 
-        String id = mIdView.getText().toString();
-        String email = mEmailView.getText().toString();
-        String name = mNameView.getText().toString();
+        String id = mIdView.getText().toString().trim();
+        String email = mEmailView.getText().toString().trim();
+        String name = mNameView.getText().toString().trim();
 
         boolean cancel = false;
         View focusView = null;

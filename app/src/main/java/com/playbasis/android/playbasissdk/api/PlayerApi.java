@@ -236,7 +236,7 @@ public class PlayerApi extends Api{
         }
     }
 
-    private static void registerPlayer(@NonNull Playbasis playbasis, boolean isAsync, @NonNull Player player,
+    protected static void registerPlayer(@NonNull Playbasis playbasis, boolean isAsync, @NonNull Player player,
                                 final OnResult<Boolean> listener){
 
         String endpoint = SDKUtil._PLAYER_URL + player.getClPlayerId() + "/register";
@@ -365,9 +365,9 @@ public class PlayerApi extends Api{
 
             String uri = SDKUtil.SERVER_URL + endpoint;
 
-            JsonObjectPOST(playbasis, uri, player.toParams(), new OnResult<JSONObject>() {
+            JsonArrayPOST(playbasis, uri, player.toParams(), new OnResult<JSONArray>() {
                 @Override
-                public void onSuccess(JSONObject result) {
+                public void onSuccess(JSONArray result) {
                     if (listener != null) listener.onSuccess(true);
                 }
 

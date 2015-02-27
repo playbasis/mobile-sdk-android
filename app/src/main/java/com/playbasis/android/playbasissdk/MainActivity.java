@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import com.playbasis.android.playbasissdk.api.Api;
 import com.playbasis.android.playbasissdk.api.BadgeApi;
+import com.playbasis.android.playbasissdk.api.CommunicationApi;
 import com.playbasis.android.playbasissdk.api.EngineApi;
 import com.playbasis.android.playbasissdk.api.GoodsApi;
 import com.playbasis.android.playbasissdk.api.OnResult;
@@ -128,8 +129,9 @@ public class MainActivity extends FragmentActivity {
             }
         });
 
+        /*
 
-/*        PlayerApi.register(playbasis, false, new Player(null, "greg", "greg"), new OnResult<Boolean>() {
+      PlayerApi.register(playbasis, false, new Player(null, "greg", "greg"), new OnResult<Boolean>() {
             @Override
             public void onSuccess(Boolean result) {
                 Log.d("quiz", "detail: " + result.toString());
@@ -139,18 +141,24 @@ public class MainActivity extends FragmentActivity {
             public void onError(HttpError error) {
                 Log.d("COMPARE", (error.requestError!=null? error.requestError.toString() : error.toString()));
             }
-        });*/
-
-
-        FragmentManager fm = getSupportFragmentManager();
-        PlayerSmsView playerView = new PlayerSmsView();
-        playerView.setPlayer(new Player(null, "greg", "greg"));
-        playerView.show(fm, "fragment_player_info");
-        playerView.setPlayerListener(new PlayerView.OnPlayer() {
-            @Override
-            public void onPlayer(Player player) {
-            }
         });
+*/
+        
+        
+
+
+        CommunicationApi.sendSms(playbasis, "gregusertest", "salut", null, new OnResult<List<String>>() {
+            @Override
+            public void onSuccess(List<String> result) {
+                Log.d("quiz", "random: " + result.toString());
+            }
+
+            @Override
+            public void onError(HttpError error) {
+                Log.e("quiz", "detail: " + (error.requestError!=null? error.requestError.toString() : error.toString()) );
+            }
+        } );
+
 
     }
     

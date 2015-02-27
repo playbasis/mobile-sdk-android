@@ -32,17 +32,26 @@ public class Validator {
         Matcher matcher;
         final String EMAIL_PATTERN = "[_A-Za-z0-9-.]+@[A-Za-z0-9_-]+[.][A-Za-z0-9.]+";
         pattern = Pattern.compile(EMAIL_PATTERN);
-        matcher = pattern.matcher(email);
+        matcher = pattern.matcher(email.trim());
         return matcher.matches();
+    }
+    
+    public static Boolean isValidPlaybasisEmail(String email){
+        if(!isValidEmail(email))return false;
+        else if(email.toLowerCase().contains("noreply")) return false;
+        else if(email.toLowerCase().equals("pbapp_auto_user@playbasis.com")) return false;
+        else return true;
+        
     }
 
     public static Boolean isValidPhone(String phone){
         if(!isValid(phone))return false;
+        else if(phone.trim().equals("+66861234567"))return false;
         Pattern pattern;
         Matcher matcher;
-        final String EMAIL_PATTERN = "^[+]?[0-9]{10,13}$";
-        pattern = Pattern.compile(EMAIL_PATTERN);
-        matcher = pattern.matcher(phone);
+        final String PHONE_PATTERN = "[+][0-9]{10,13}$";
+        pattern = Pattern.compile(PHONE_PATTERN);
+        matcher = pattern.matcher(phone.trim());
         return matcher.matches();
     }
 }

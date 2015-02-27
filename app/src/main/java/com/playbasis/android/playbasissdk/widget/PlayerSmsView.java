@@ -61,7 +61,7 @@ public class PlayerSmsView extends AbstractPlayerView implements View.OnClickLis
 
         mPhoneView.setError(null);
 
-        String phone = mPhoneView.getText().toString();
+        String phone = mPhoneView.getText().toString().trim();
 
         boolean cancel = false;
         View focusView = null;

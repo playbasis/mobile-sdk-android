@@ -61,7 +61,7 @@ public class PlayerEmailView extends AbstractPlayerView implements View.OnClickL
 
         mEmailView.setError(null);
 
-        String email = mEmailView.getText().toString();
+        String email = mEmailView.getText().toString().trim();
 
         boolean cancel = false;
         View focusView = null;

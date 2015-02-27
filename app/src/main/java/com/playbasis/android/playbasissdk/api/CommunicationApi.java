@@ -49,9 +49,26 @@ public class CommunicationApi  extends Api{
      * @param templateId Template message (either message or template_id is required).
      * @param listener Callback interface.
      */
-    public static void sendEmail(@NonNull Playbasis playbasis, boolean isAsync,
-                             @NonNull String playerId, @NonNull String subject, String message, String templateId,
+    public static void sendEmail(@NonNull final Playbasis playbasis, final boolean isAsync,
+                             @NonNull final String playerId, @NonNull final String subject, final String message, final String templateId,
                              final OnResult<List<String>>listener ){
+        PlayerValidatorApi.emailValidation(playbasis,playerId,new OnResult<Boolean>() {
+            @Override
+            public void onSuccess(Boolean result) {
+                sendEmailToPlayer(playbasis, isAsync, playerId, subject, message, templateId, listener);
+            }
+
+            @Override
+            public void onError(HttpError error) {
+                if (listener != null) listener.onError(error);
+            }
+        });
+
+    }
+
+    private static void sendEmailToPlayer(@NonNull Playbasis playbasis, boolean isAsync,
+                                 @NonNull String playerId, @NonNull String subject, String message, String templateId,
+                                 final OnResult<List<String>>listener ){
 
         String endpoint = SDKUtil._EMAIL_API + "send";
 
@@ -106,6 +123,7 @@ public class CommunicationApi  extends Api{
             });
         }
     }
+    
 
     /**
      * Send coupon to a player via email.
@@ -135,11 +153,31 @@ public class CommunicationApi  extends Api{
      * @param templateId Template message (either message or template_id is required).
      * @param listener  Callback interface.
      */
-    public static void sendEmailCoupon(@NonNull Playbasis playbasis, boolean isAsync,
-                                 @NonNull String playerId, @NonNull String refId, @NonNull String subject,
-                                 String message, String templateId,
+    public static void sendEmailCoupon(@NonNull final Playbasis playbasis, final boolean isAsync,
+                                 @NonNull final String playerId, @NonNull final String refId, @NonNull final String subject,
+                                 final String message, final String templateId,
                                  final OnResult<List<String>>listener ){
 
+        PlayerValidatorApi.emailValidation(playbasis,playerId,new OnResult<Boolean>() {
+            @Override
+            public void onSuccess(Boolean result) {
+                sendEmailCouponToPlayer(playbasis, isAsync, playerId, refId, subject, message, templateId, listener);
+            }
+
+            @Override
+            public void onError(HttpError error) {
+                if (listener != null) listener.onError(error);
+            }
+        });
+        
+
+    }
+
+
+    private static void sendEmailCouponToPlayer(@NonNull Playbasis playbasis, boolean isAsync,
+                                       @NonNull String playerId, @NonNull String refId, @NonNull String subject,
+                                       String message, String templateId,
+                                       final OnResult<List<String>>listener ){
         String endpoint = SDKUtil._EMAIL_API + "goods";
 
         if(isAsync){
@@ -192,8 +230,6 @@ public class CommunicationApi  extends Api{
                 }
             });
         }
-        
-
     }
 
     /**
@@ -219,9 +255,27 @@ public class CommunicationApi  extends Api{
      * @param templateId Template message (either message or template_id is required).
      * @param listener  Callback interface.
      */
-    public static void sendSms(@NonNull Playbasis playbasis, boolean isAsync,
-                                 @NonNull String playerId, String message, String templateId,
+    public static void sendSms(@NonNull final Playbasis playbasis, final boolean isAsync,
+                                 @NonNull final String playerId, final String message, final String templateId,
                                  final OnResult<List<String>>listener ){
+
+        PlayerValidatorApi.smsValidation(playbasis, playerId, new OnResult<Boolean>() {
+            @Override
+            public void onSuccess(Boolean result) {
+                sendSmsToPlayer(playbasis, isAsync, playerId, message, templateId, listener);
+            }
+
+            @Override
+            public void onError(HttpError error) {
+                if (listener != null) listener.onError(error);
+            }
+        });
+    }
+
+
+    private static void sendSmsToPlayer(@NonNull Playbasis playbasis, boolean isAsync,
+                               @NonNull String playerId, String message, String templateId,
+                               final OnResult<List<String>>listener ){
         String endpoint = SDKUtil._SMS_API + "send";
 
         if(isAsync){
@@ -299,10 +353,30 @@ public class CommunicationApi  extends Api{
      * @param templateId Template message (either message or template_id is required).
      * @param listener  Callback interface.
      */
-    public static void sendSmsCoupon(@NonNull Playbasis playbasis, boolean isAsync,
-                                       @NonNull String playerId, @NonNull String refId,
-                                       String message, String templateId,
+    public static void sendSmsCoupon(@NonNull final Playbasis playbasis, final boolean isAsync,
+                                       @NonNull final String playerId, @NonNull String refId,
+                                       final String message, final String templateId,
                                        final OnResult<List<String>>listener ){
+
+        PlayerValidatorApi.smsValidation(playbasis,playerId,new OnResult<Boolean>() {
+            @Override
+            public void onSuccess(Boolean result) {
+                sendSmsToPlayer(playbasis, isAsync, playerId, message, templateId, listener);
+            }
+
+            @Override
+            public void onError(HttpError error) {
+                if (listener != null) listener.onError(error);
+            }
+        });
+        
+    }
+
+
+    private static void sendSmsCouponToPlayer(@NonNull Playbasis playbasis, boolean isAsync,
+                                     @NonNull String playerId, @NonNull String refId,
+                                     String message, String templateId,
+                                     final OnResult<List<String>>listener ){
         String endpoint = SDKUtil._SMS_API + "goods";
 
         if(isAsync){
