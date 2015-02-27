@@ -6,6 +6,7 @@ import com.playbasis.android.playbasissdk.core.Playbasis;
 import com.playbasis.android.playbasissdk.core.SDKUtil;
 import com.playbasis.android.playbasissdk.helper.JsonHelper;
 import com.playbasis.android.playbasissdk.http.HttpError;
+import com.playbasis.android.playbasissdk.http.RequestError;
 import com.playbasis.android.playbasissdk.model.RedeemEvent;
 
 import org.apache.http.NameValuePair;
@@ -55,7 +56,13 @@ public class CommunicationApi  extends Api{
         PlayerValidatorApi.emailValidation(playbasis,playerId,new OnResult<Boolean>() {
             @Override
             public void onSuccess(Boolean result) {
-                sendEmailToPlayer(playbasis, isAsync, playerId, subject, message, templateId, listener);
+                if(result){
+                    sendEmailToPlayer(playbasis, isAsync, playerId, subject, message, templateId, listener);
+                }else{
+                    if (listener != null) listener.onError(new HttpError(new RequestError( "update player fail",  
+                            RequestError.ERROR_CODE.DEFAULT)));
+                }
+
             }
 
             @Override
@@ -161,7 +168,13 @@ public class CommunicationApi  extends Api{
         PlayerValidatorApi.emailValidation(playbasis,playerId,new OnResult<Boolean>() {
             @Override
             public void onSuccess(Boolean result) {
-                sendEmailCouponToPlayer(playbasis, isAsync, playerId, refId, subject, message, templateId, listener);
+                if(result){
+                    sendEmailCouponToPlayer(playbasis, isAsync, playerId, refId, subject, message, templateId, listener);
+                }else{
+                    if (listener != null) listener.onError(new HttpError(new RequestError( "update player fail",
+                            RequestError.ERROR_CODE.DEFAULT)));
+                }
+                
             }
 
             @Override
@@ -262,7 +275,13 @@ public class CommunicationApi  extends Api{
         PlayerValidatorApi.smsValidation(playbasis, playerId, new OnResult<Boolean>() {
             @Override
             public void onSuccess(Boolean result) {
-                sendSmsToPlayer(playbasis, isAsync, playerId, message, templateId, listener);
+                if(result){
+                    sendSmsToPlayer(playbasis, isAsync, playerId, message, templateId, listener);
+                }else{
+                    if (listener != null) listener.onError(new HttpError(new RequestError( "update player fail",
+                            RequestError.ERROR_CODE.DEFAULT)));
+                }
+                
             }
 
             @Override
@@ -354,14 +373,20 @@ public class CommunicationApi  extends Api{
      * @param listener  Callback interface.
      */
     public static void sendSmsCoupon(@NonNull final Playbasis playbasis, final boolean isAsync,
-                                       @NonNull final String playerId, @NonNull String refId,
+                                       @NonNull final String playerId, @NonNull final String refId,
                                        final String message, final String templateId,
                                        final OnResult<List<String>>listener ){
 
         PlayerValidatorApi.smsValidation(playbasis,playerId,new OnResult<Boolean>() {
             @Override
             public void onSuccess(Boolean result) {
-                sendSmsToPlayer(playbasis, isAsync, playerId, message, templateId, listener);
+                if(result){
+                    sendSmsCouponToPlayer(playbasis, isAsync, playerId, refId, message, templateId, listener);
+                }else{
+                    if (listener != null) listener.onError(new HttpError(new RequestError( "update player fail",
+                            RequestError.ERROR_CODE.DEFAULT)));
+                }
+
             }
 
             @Override

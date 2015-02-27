@@ -1,7 +1,6 @@
 package com.playbasis.android.playbasissdk.widget;
 
 import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,7 +31,7 @@ public class PlayerEmailView extends AbstractPlayerView implements View.OnClickL
         Button mSubmitButton = (Button) view.findViewById(R.id.button_submit);
 
         mSubmitButton.setOnClickListener(this);
-        getDialog().setTitle(getString(R.string.player_info));
+        getDialog().setTitle(getString(R.string.player_info_email));
         if(player!=null){
             mEmailView.setText(player.getEmail());
         }

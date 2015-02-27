@@ -1,23 +1,16 @@
 package com.playbasis.android.playbasissdk.widget;
 
-import android.annotation.TargetApi;
 import android.app.Activity;
-import android.content.Context;
-import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
-import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 
 import com.playbasis.android.playbasissdk.R;
 import com.playbasis.android.playbasissdk.helper.Validator;
 import com.playbasis.android.playbasissdk.model.Player;
-import com.playbasis.android.playbasissdk.secure.PrivatePreferences;
 
 /**
  * Created by gregoire barret on 2/26/15.

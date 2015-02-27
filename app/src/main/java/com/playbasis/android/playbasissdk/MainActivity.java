@@ -1,9 +1,7 @@
 package com.playbasis.android.playbasissdk;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -24,7 +22,6 @@ import com.playbasis.android.playbasissdk.api.ServiceApi;
 import com.playbasis.android.playbasissdk.core.Playbasis;
 import com.playbasis.android.playbasissdk.core.SDKUtil;
 import com.playbasis.android.playbasissdk.http.HttpError;
-import com.playbasis.android.playbasissdk.http.RequestError;
 import com.playbasis.android.playbasissdk.model.Action;
 import com.playbasis.android.playbasissdk.model.ActionConfig;
 import com.playbasis.android.playbasissdk.model.Badge;
@@ -49,17 +46,10 @@ import com.playbasis.android.playbasissdk.model.Rule;
 import com.playbasis.android.playbasissdk.model.StoredRequest;
 import com.playbasis.android.playbasissdk.model.UIEvent;
 import com.playbasis.android.playbasissdk.secure.RequestStorage;
-import com.playbasis.android.playbasissdk.widget.PlayerEmailView;
-import com.playbasis.android.playbasissdk.widget.PlayerSmsView;
-import com.playbasis.android.playbasissdk.widget.PlayerView;
 
-import org.apache.http.NameValuePair;
-import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -129,7 +119,7 @@ public class MainActivity extends FragmentActivity {
             }
         });
 
-        /*
+
 
       PlayerApi.register(playbasis, false, new Player(null, "greg", "greg"), new OnResult<Boolean>() {
             @Override
@@ -142,12 +132,12 @@ public class MainActivity extends FragmentActivity {
                 Log.d("COMPARE", (error.requestError!=null? error.requestError.toString() : error.toString()));
             }
         });
-*/
+
         
         
 
 
-        CommunicationApi.sendSms(playbasis, "gregusertest", "salut", null, new OnResult<List<String>>() {
+/*        CommunicationApi.sendSms(playbasis, "gregusertest", "salut", null, new OnResult<List<String>>() {
             @Override
             public void onSuccess(List<String> result) {
                 Log.d("quiz", "random: " + result.toString());
@@ -155,9 +145,9 @@ public class MainActivity extends FragmentActivity {
 
             @Override
             public void onError(HttpError error) {
-                Log.e("quiz", "detail: " + (error.requestError!=null? error.requestError.toString() : error.toString()) );
+                Log.e("quiz", "detail: " + (error.requestError != null ? error.requestError.toString() : error.toString()));
             }
-        } );
+        });*/
 
 
     }
