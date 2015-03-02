@@ -11,6 +11,7 @@ import android.widget.Button;
 
 import com.playbasis.android.playbasissdk.api.OnResult;
 import com.playbasis.android.playbasissdk.api.PlayerApi;
+import com.playbasis.android.playbasissdk.api.QuestApi;
 import com.playbasis.android.playbasissdk.core.Playbasis;
 import com.playbasis.android.playbasissdk.http.HttpError;
 
@@ -33,8 +34,8 @@ public class MainActivity extends FragmentActivity {
             }
         });
         
-        Button playerSendEmail = (Button) findViewById(R.id.button_email);
-        playerSendEmail.setOnClickListener(new View.OnClickListener() {
+        Button sendEmailButton = (Button) findViewById(R.id.button_email);
+        sendEmailButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this, EmailActivity.class);
@@ -42,6 +43,14 @@ public class MainActivity extends FragmentActivity {
             }
         });
         
+        Button quizButton = (Button) findViewById(R.id.button_quiz);
+        quizButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, QuizActivity.class);
+                startActivity(intent);
+            }
+        });
 
 
 

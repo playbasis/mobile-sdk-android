@@ -43,6 +43,10 @@
             android:name=".EmailActivity"
             android:label="@string/title_activity_email" >
         </activity>
+        <activity
+            android:name=".QuizActivity"
+            android:label="@string/title_activity_quiz" >
+        </activity>
     </application>
 
 </manifest>
