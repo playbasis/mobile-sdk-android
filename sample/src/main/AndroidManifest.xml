@@ -20,7 +20,6 @@
         </activity>
     </application>
     -->
-
     <application
         android:name=".SampleApplication"
         android:allowBackup="true"
@@ -39,6 +38,10 @@
         <activity
             android:name=".PlayerActivity"
             android:label="@string/title_activity_player" >
+        </activity>
+        <activity
+            android:name=".EmailActivity"
+            android:label="@string/title_activity_email" >
         </activity>
     </application>
 
