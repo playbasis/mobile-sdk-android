@@ -10,6 +10,14 @@ import java.util.regex.Pattern;
 public class Validator {
     public static final String TAG = "Validator";
 
+    public static String validate(String s){
+        String validString = "";
+        if(isValid(s)){
+            validString = s;
+        }
+        return validString;
+    }
+
     /**
      * Check if it's a non null string i.e. a not null, not empty and not "null" string.
      * @param s String to test.

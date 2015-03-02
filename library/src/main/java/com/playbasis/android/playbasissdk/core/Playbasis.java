@@ -140,6 +140,11 @@ public class Playbasis {
         return mActivity;
     }
     
+    public void removeActivity(){
+        mActivity = null;
+        
+    }
+    
     
     /**
      * Builder for Playbasis singleton
