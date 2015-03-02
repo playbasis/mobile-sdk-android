@@ -15,6 +15,7 @@ import com.playbasis.android.playbasissdk.api.OnResult;
 import com.playbasis.android.playbasissdk.api.PlayerApi;
 import com.playbasis.android.playbasissdk.helper.Validator;
 import com.playbasis.android.playbasissdk.http.HttpError;
+import com.playbasis.android.playbasissdk.http.toolbox.NetworkImageView;
 import com.playbasis.android.playbasissdk.model.Player;
 
 
@@ -32,6 +33,7 @@ public class PlayerActivity extends FragmentActivity {
     TextView vRegestered;
     TextView vLastLogin;
     TextView vLastLogout;
+    NetworkImageView vImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +54,7 @@ public class PlayerActivity extends FragmentActivity {
         vRegestered = (TextView) findViewById(R.id.textView_player_registered);
         vLastLogin = (TextView) findViewById(R.id.textView_player_last_login);
         vLastLogout = (TextView) findViewById(R.id.textView_player_last_logout);
+        vImage = (NetworkImageView) findViewById(R.id.image_player);
 
         Button submitButton  = (Button) findViewById(R.id.button_submit);
         submitButton.setOnClickListener(new View.OnClickListener() {
@@ -86,6 +89,7 @@ public class PlayerActivity extends FragmentActivity {
                 String playerRegistered = result.getRegistered()!=null ? result.getRegistered() : "";
                 String playerLogin = result.getLastLogin()!=null ? result.getLastLogin() : "";
                 String playerLogout = result.getLastLogout()!=null ? result.getLastLogout() : "";
+                String imageUrl = result.getImage()!=null ? result.getImage() : "";
 
                 vID.setText(playerId);
                 vUsername.setText(playerName);
@@ -98,6 +102,7 @@ public class PlayerActivity extends FragmentActivity {
                 vRegestered.setText(playerRegistered);
                 vLastLogin.setText(playerLogin);
                 vLastLogout.setText(playerLogout);
+                vImage.setImageUrl(imageUrl, SampleApplication.playbasis.getHttpManager().getImageLoader());
             }
 
             @Override
