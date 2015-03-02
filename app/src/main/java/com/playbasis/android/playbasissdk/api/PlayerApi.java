@@ -21,6 +21,7 @@ import com.playbasis.android.playbasissdk.model.Quest;
 import com.playbasis.android.playbasissdk.model.Rank;
 import com.playbasis.android.playbasissdk.model.Ranks;
 import com.playbasis.android.playbasissdk.model.Reward;
+import com.playbasis.android.playbasissdk.widget.AbstractPlayerView;
 import com.playbasis.android.playbasissdk.widget.PlayerView;
 
 import org.apache.http.NameValuePair;
@@ -213,17 +214,22 @@ public class PlayerApi extends Api{
     public static void register(@NonNull final Playbasis playbasis, final boolean isAsync, @NonNull Player player,
                                 final OnResult<Boolean> listener){
 
-        if (!player.isValid()) {
+        if (player==null || !player.isValid()) {
             FragmentManager fm;
-            try {
-                fm = ((FragmentActivity) playbasis.getContext()).getSupportFragmentManager();
-            } catch (ClassCastException e) {
-                if (listener != null) listener.onError(new HttpError(
-                        new RequestError("player not valid", RequestError.ERROR_CODE.DEFAULT)));
-                return;
+            if(playbasis.getActivity() !=null){
+                fm = playbasis.getActivity().getSupportFragmentManager();
+            }else{
+                try {
+                    fm = ((FragmentActivity) playbasis.getContext()).getSupportFragmentManager();
+                } catch (ClassCastException e) {
+                    if (listener != null) listener.onError(new HttpError(
+                            new RequestError("player not valid", RequestError.ERROR_CODE.DEFAULT)));
+                    return;
+                }
             }
-            PlayerView playerView = new PlayerView();
-            playerView.setPlayer(player);
+
+            AbstractPlayerView playerView = playbasis.getPlayerView() == null ? new PlayerView() : playbasis.getPlayerView();
+            playerView.setPlayer(player==null? new Player() : player);
             playerView.show(fm, "fragment_player_info");
             playerView.setPlayerListener(new PlayerView.OnPlayer() {
                 @Override

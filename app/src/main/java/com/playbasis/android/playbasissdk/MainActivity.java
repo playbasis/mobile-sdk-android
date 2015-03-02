@@ -71,6 +71,7 @@ public class MainActivity extends FragmentActivity {
                 .setApiKey("3416989394")
                 .setApiSecret("b1fa1529410702557a6fe2f3913768a0")
                 .build();
+        playbasis.setActivity(this);
         
         send.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -121,7 +122,7 @@ public class MainActivity extends FragmentActivity {
 
 
 
-      PlayerApi.register(playbasis, false, new Player(null, "greg", "greg"), new OnResult<Boolean>() {
+      PlayerApi.register(playbasis, false, null, new OnResult<Boolean>() {
             @Override
             public void onSuccess(Boolean result) {
                 Log.d("quiz", "detail: " + result.toString());

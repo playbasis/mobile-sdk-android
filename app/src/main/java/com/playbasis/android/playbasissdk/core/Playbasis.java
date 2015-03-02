@@ -5,6 +5,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentActivity;
 import android.view.View;
 
 import com.playbasis.android.playbasissdk.api.Api;
@@ -17,6 +18,7 @@ import com.playbasis.android.playbasissdk.http.toolbox.KeyStore;
 import com.playbasis.android.playbasissdk.model.Rule;
 import com.playbasis.android.playbasissdk.model.RuleAction;
 import com.playbasis.android.playbasissdk.model.UIEvent;
+import com.playbasis.android.playbasissdk.widget.AbstractPlayerView;
 
 /**
  * Created by gregoire barret on 2/13/15.
@@ -28,6 +30,8 @@ public class Playbasis {
     private static Playbasis instance;
 
     private Context mContext;
+    
+    private FragmentActivity mActivity;
 
     private KeyStore mKeyStore;
 
@@ -36,6 +40,12 @@ public class Playbasis {
     private AuthAuthenticator authenticator;
     
     private String mChannel;
+    
+    private AbstractPlayerView mPlayerView;
+    
+    private AbstractPlayerView mPlayerEmailView;
+    
+    private AbstractPlayerView mPlayerSmsView;
 
     /**
      * This method return the Playbasis singleton. If call before the builder return null.
@@ -56,6 +66,9 @@ public class Playbasis {
         this.mChannel = playBasisContent.channel;
         this.mHttpManager = HttpManager.getInstance(mContext);
         this.authenticator = new AuthAuthenticator(mContext, this);
+        this.mPlayerView = playBasisContent.playerView;
+        this.mPlayerEmailView = playBasisContent.playerEmailView;
+        this.mPlayerSmsView = playBasisContent.playerSmsView;
     }
 
 
@@ -99,6 +112,35 @@ public class Playbasis {
         return mChannel;
     }
 
+    /**
+     * Get Player dialog fragment. 
+     * @return player view
+     */
+    public AbstractPlayerView getPlayerView(){
+        return mPlayerView;
+    }
+
+    /**
+     * Get Player Email view.
+     * @return player email dialog fragment 
+     */
+    public AbstractPlayerView getPlayerEmailView(){return mPlayerEmailView;}
+
+    /**
+     * Get player Sms view.
+     * @return player sms dialog fragment
+     */
+    public AbstractPlayerView getPlayerSmsView(){return mPlayerSmsView;}
+    
+    public void setActivity(FragmentActivity activity){
+        this.mActivity = activity;
+    }
+    
+    public FragmentActivity getActivity(){
+        return mActivity;
+    }
+    
+    
     /**
      * Builder for Playbasis singleton
      */
@@ -149,6 +191,38 @@ public class Playbasis {
         }
 
         /**
+         * Set dialog fragment display when missing data player. 
+         * @param playerView player dialog fragment
+         * @return builder
+         */
+        public Builder setPlayerView(AbstractPlayerView playerView){
+            this.mPlayBasisContent.playerView = playerView;
+            return this;
+        }
+
+        /**
+         * Set dialog fragment display when the player sms is missing on send sms message.
+         * @param playerView player sms dialog fragment
+         * @return builder
+         */
+        public Builder setPlayerSmsView(AbstractPlayerView playerView){
+            this.mPlayBasisContent.playerSmsView = playerView;
+            return this;
+        }
+
+        /**
+         * Set dialog fragment display when the player email is missing on send email message.
+         * @param playerView player email dialog fragment
+         * @return builder
+         */
+        public Builder setPlayerEmailView(AbstractPlayerView playerView){
+            this.mPlayBasisContent.playerEmailView= playerView;
+            return this;
+        }
+        
+        
+
+        /**
          * Create the Playbasis singleton
          * @return Playbasis singleton (can be access by Playbasis.getInstance())
          */
@@ -171,6 +245,11 @@ public class Playbasis {
         public Context context;
         public KeyStore keyStore = new KeyStore();
         public String channel;
+        public AbstractPlayerView playerView;
+
+        public AbstractPlayerView playerEmailView;
+
+        public AbstractPlayerView playerSmsView;
     }
 
 
