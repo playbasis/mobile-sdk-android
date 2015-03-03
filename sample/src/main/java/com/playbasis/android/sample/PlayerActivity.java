@@ -40,7 +40,6 @@ public class PlayerActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_player);
 
-        SampleApplication.playbasis.setActivity(this);
 
         vPlayerId = (EditText) findViewById(R.id.editText_player_id);
         vID = (TextView) findViewById(R.id.textView_player_id);
@@ -69,8 +68,14 @@ public class PlayerActivity extends FragmentActivity {
     }
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
+    protected void onResume() {
+        super.onResume();
+        SampleApplication.playbasis.setActivity(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
         SampleApplication.playbasis.removeActivity();
     }
 

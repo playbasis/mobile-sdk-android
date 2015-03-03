@@ -25,12 +25,25 @@ public class EmailActivity extends FragmentActivity {
     Button vSend;
     Button vClear;
 
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        SampleApplication.playbasis.setActivity(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        SampleApplication.playbasis.removeActivity();
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_email);
         
-        SampleApplication.playbasis.setActivity(this);
+        
         
         vPlayerid = (EditText) findViewById(R.id.editText_player_id);
         
@@ -106,11 +119,6 @@ public class EmailActivity extends FragmentActivity {
     }
 
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        SampleApplication.playbasis.removeActivity();
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

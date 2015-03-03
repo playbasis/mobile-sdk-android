@@ -22,15 +22,14 @@ import com.playbasis.android.playbasissdk.model.RuleAction;
 public class MainActivity extends FragmentActivity {
 
     @Override
-    protected void onStart() {
-        super.onStart();
+    protected void onResume() {
+        super.onResume();
         SampleApplication.playbasis.setActivity(this);
-
     }
 
     @Override
-    protected void onStop() {
-        super.onStop();
+    protected void onPause() {
+        super.onPause();
         SampleApplication.playbasis.removeActivity();
     }
     
@@ -39,7 +38,7 @@ public class MainActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         
-        SampleApplication.playbasis.Do("gregusertest", RuleAction.CLICK, new OnResult<Rule>() {
+        SampleApplication.playbasis.Do("gfdgsdfgsdfg", RuleAction.CLICK, new OnResult<Rule>() {
             @Override
             public void onSuccess(Rule result) {
                 Toast.makeText(MainActivity.this, result.toString(), Toast.LENGTH_SHORT).show();

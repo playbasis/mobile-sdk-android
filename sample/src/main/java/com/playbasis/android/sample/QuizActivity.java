@@ -41,20 +41,16 @@ public class QuizActivity extends FragmentActivity implements AdapterView.OnItem
     String questionId; // The question id
 
     @Override
-    protected void onStart() {
-        super.onStart();
-        //Register current view
+    protected void onResume() {
+        super.onResume();
         SampleApplication.playbasis.setActivity(this);
-
     }
 
     @Override
-    protected void onStop() {
-        super.onStop();
-        //remove current view
+    protected void onPause() {
+        super.onPause();
         SampleApplication.playbasis.removeActivity();
     }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
