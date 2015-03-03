@@ -18,8 +18,8 @@ public class SampleApplication extends Application {
         super.onCreate();
 
         playbasis = new Playbasis.Builder(this)
-                .setApiKey("3416989394")
-                .setApiSecret("b1fa1529410702557a6fe2f3913768a0")
+/*                .setApiKey("3416989394")
+                .setApiSecret("b1fa1529410702557a6fe2f3913768a0")*/
                 .build();
         playbasis.getAuthenticator().getAuthToken(null);
         

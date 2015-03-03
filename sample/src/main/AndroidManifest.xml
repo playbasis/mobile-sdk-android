@@ -47,6 +47,17 @@
             android:name=".QuizActivity"
             android:label="@string/title_activity_quiz" >
         </activity>
+
+        <meta-data
+            android:name="com.playbasis.android.playbasissdk.apikey"
+            android:value="\ 3416989394" />
+        
+        <meta-data
+            android:name="com.playbasis.android.playbasissdk.secret"
+            android:value="\ b1fa1529410702557a6fe2f3913768a0" />
     </application>
+
+
+
 
 </manifest>

@@ -1,11 +1,15 @@
 package com.playbasis.android.playbasissdk.core;
 
 import android.content.Context;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.view.View;
 
 import com.playbasis.android.playbasissdk.api.Api;
@@ -69,6 +73,8 @@ public class Playbasis {
         this.mPlayerView = playBasisContent.playerView;
         this.mPlayerEmailView = playBasisContent.playerEmailView;
         this.mPlayerSmsView = playBasisContent.playerSmsView;
+
+
     }
 
 
@@ -232,6 +238,7 @@ public class Playbasis {
          * @return Playbasis singleton (can be access by Playbasis.getInstance())
          */
         public Playbasis build(){
+            mPlayBasisContent.keyStore.generateKeyStore(mPlayBasisContent.context);
             if(instance==null){
                 instance = new Playbasis(mPlayBasisContent);
             }
