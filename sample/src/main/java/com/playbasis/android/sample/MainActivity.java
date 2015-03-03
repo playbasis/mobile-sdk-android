@@ -38,8 +38,8 @@ public class MainActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         
-/*
-        SampleApplication.playbasis.Do("gfdgsdfgsdfg", RuleAction.CLICK, new OnResult<Rule>() {
+
+/*        SampleApplication.playbasis.Do("gfdgsdfgsdfg", RuleAction.CLICK, new OnResult<Rule>() {
             @Override
             public void onSuccess(Rule result) {
                 Toast.makeText(MainActivity.this, result.toString(), Toast.LENGTH_SHORT).show();
@@ -47,10 +47,10 @@ public class MainActivity extends FragmentActivity {
 
             @Override
             public void onError(HttpError error) {
-                Toast.makeText(MainActivity.this, error.toString(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, error.requestError.message, Toast.LENGTH_SHORT).show();
             }
-        });
-*/
+        });*/
+
 
 
         Button playerButton = (Button) findViewById(R.id.button_player);
