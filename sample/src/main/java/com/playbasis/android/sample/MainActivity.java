@@ -8,20 +8,48 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.playbasis.android.playbasissdk.api.OnResult;
 import com.playbasis.android.playbasissdk.api.PlayerApi;
 import com.playbasis.android.playbasissdk.api.QuestApi;
 import com.playbasis.android.playbasissdk.core.Playbasis;
 import com.playbasis.android.playbasissdk.http.HttpError;
+import com.playbasis.android.playbasissdk.model.Rule;
+import com.playbasis.android.playbasissdk.model.RuleAction;
 
 
 public class MainActivity extends FragmentActivity {
 
     @Override
+    protected void onStart() {
+        super.onStart();
+        SampleApplication.playbasis.setActivity(this);
+
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        SampleApplication.playbasis.removeActivity();
+    }
+    
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        
+        SampleApplication.playbasis.Do("gregusertest", RuleAction.CLICK, new OnResult<Rule>() {
+            @Override
+            public void onSuccess(Rule result) {
+                Toast.makeText(MainActivity.this, result.toString(), Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onError(HttpError error) {
+                Toast.makeText(MainActivity.this, error.toString(), Toast.LENGTH_SHORT).show();
+            }
+        });
 
 
         Button playerButton = (Button) findViewById(R.id.button_player);
