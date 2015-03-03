@@ -7,4 +7,5 @@
     <string name="title_activity_player">PlayerActivity</string>
     <string name="title_activity_email">EmailActivity</string>
     <string name="title_activity_quiz">QuizActivity</string>
+    <string name="title_activity_badge">BadgeActivity</string>
 </resources>

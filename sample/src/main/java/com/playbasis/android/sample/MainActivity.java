@@ -38,6 +38,7 @@ public class MainActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         
+/*
         SampleApplication.playbasis.Do("gfdgsdfgsdfg", RuleAction.CLICK, new OnResult<Rule>() {
             @Override
             public void onSuccess(Rule result) {
@@ -49,6 +50,7 @@ public class MainActivity extends FragmentActivity {
                 Toast.makeText(MainActivity.this, error.toString(), Toast.LENGTH_SHORT).show();
             }
         });
+*/
 
 
         Button playerButton = (Button) findViewById(R.id.button_player);
@@ -75,6 +77,15 @@ public class MainActivity extends FragmentActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this, QuizActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        Button badgeButton = (Button) findViewById(R.id.button_badge);
+        badgeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, BadgeActivity.class);
                 startActivity(intent);
             }
         });
