@@ -26,15 +26,21 @@
         android:layout_alignParentEnd="true"/>
     
     
-    <LinearLayout
-        android:layout_width="match_parent"
+   <TextView
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+       android:id="@+id/textView_title"
+       android:textStyle="bold"
+       android:layout_marginBottom="8dp"
+       android:layout_marginTop="8dp"
+       android:layout_below="@+id/editText_player_id"/>
+
+    <ListView
+        android:layout_below="@+id/textView_title"
+        android:id="@+id/listView_quiz"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:id="@+id/layout_quiz"
-        >
-        
-        
-        </LinearLayout>
+        android:layout_width="match_parent">
+    </ListView>
     
 
 </RelativeLayout>

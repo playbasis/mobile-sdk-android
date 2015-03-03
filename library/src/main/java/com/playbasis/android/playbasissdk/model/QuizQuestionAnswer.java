@@ -97,4 +97,18 @@ public class QuizQuestionAnswer {
     public void setRewards(List<Reward> rewards) {
         this.rewards = rewards;
     }
+
+    @Override
+    public String toString() {
+        return "QuizQuestionAnswer{" +
+                "options=" + options +
+                ", score=" + score +
+                ", maxScore='" + maxScore + '\'' +
+                ", explanation='" + explanation + '\'' +
+                ", totalScore=" + totalScore +
+                ", totalMaxScore=" + totalMaxScore +
+                ", grade=" + grade +
+                ", rewards=" + rewards +
+                '}';
+    }
 }

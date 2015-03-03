@@ -1,33 +1,49 @@
 package com.playbasis.android.sample;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.playbasis.android.playbasissdk.api.OnResult;
 import com.playbasis.android.playbasissdk.api.QuizApi;
 import com.playbasis.android.playbasissdk.http.HttpError;
 import com.playbasis.android.playbasissdk.model.Quiz;
+import com.playbasis.android.playbasissdk.model.QuizQuestion;
+import com.playbasis.android.playbasissdk.model.QuizQuestionAnswer;
+import com.playbasis.android.playbasissdk.model.QuizQuestionOption;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
-public class QuizActivity extends FragmentActivity {
+public class QuizActivity extends FragmentActivity implements AdapterView.OnItemClickListener {
     
     EditText vPlayerId;
-    LinearLayout vLayout;
+    TextView vTitle;
+    ListView vListView;
+    ArrayAdapter<NameID> adapter;
+    List<NameID> adapterValues;
+    
+    // use for know if we have to request a quiz or a question 
+    int quizState = 0;
+    
+    String playerId; //The player id
+    String quizId; // The quiz id
+    String questionId; // The question id
 
     @Override
     protected void onStart() {
         super.onStart();
+        //Register current view
         SampleApplication.playbasis.setActivity(this);
 
     }
@@ -35,6 +51,7 @@ public class QuizActivity extends FragmentActivity {
     @Override
     protected void onStop() {
         super.onStop();
+        //remove current view
         SampleApplication.playbasis.removeActivity();
     }
 
@@ -43,23 +60,44 @@ public class QuizActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_quiz);
 
+        //Set views
         vPlayerId = (EditText) findViewById(R.id.editText_player_id);
-        vLayout = (LinearLayout) findViewById(R.id.layout_quiz);
-        
+        vTitle = (TextView) findViewById(R.id.textView_title);
+        vListView = (ListView) findViewById(R.id.listView_quiz);
+
+        //Create the adapter
+        adapterValues = new ArrayList<>();
+        adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, android.R.id.text1, adapterValues);
+        // Assign adapter to ListView
+        vListView.setAdapter(adapter);
+        vListView.setOnItemClickListener(this);
+
+        //get quiz button
         Button submitButton  = (Button) findViewById(R.id.button_submit);
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getQuiz(vPlayerId.getText().toString());
+                playerId = vPlayerId.getText().toString();
+                getQuiz();
             }
         });
     }
     
     
-    private void getQuiz(String playerId){
+    private void getQuiz(){
+        quizState = 1; //set quiz state to quiz
         QuizApi.activeList(SampleApplication.playbasis, playerId, new OnResult<List<Quiz>>() {
             @Override
             public void onSuccess(List<Quiz> result) {
+                vTitle.setText("Select a quiz:"); //Display a title
+                adapterValues.clear(); // Clean the list view
+                if(result!=null){
+                    // populate the list view with quiz available
+                    for (Quiz quiz : result) {
+                        adapterValues.add(new NameID(quiz.getQuizId() ,quiz.getName()));
+                    }
+                }
+                adapter.notifyDataSetChanged();
             }
 
             @Override
@@ -70,16 +108,81 @@ public class QuizActivity extends FragmentActivity {
         
     }
 
+    private void getQuestions(){
+        quizState = 2; // set quizSate on question state
+        
+        
+        QuizApi.questions(SampleApplication.playbasis,quizId,playerId, new OnResult<QuizQuestion>() {
+            @Override
+            public void onSuccess(final QuizQuestion result) {
+                
+                adapterValues.clear();// clear listView
+                if(result!=null && result.getQuestionId()!=null){ //test if question id is null
+                    vTitle.setText(result.getQuestion());
+                    questionId = result.getQuestionId(); // save the question id
+                    // populate the list view with options
+                    if(result.getOptions()!=null){
+                        for (QuizQuestionOption option : result.getOptions()) {
+                            adapterValues.add(new NameID(option.getOptionId() ,option.getOption()));
+                        }
+                    }
+                }else{
+                    //if questionId null, the quiz doesn't have other questions
+                    vTitle.setText("Quiz finish");
+                }
+                adapter.notifyDataSetChanged(); // update listView
+                
+            }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_quiz, menu);
-        return true;
+            @Override
+            public void onError(HttpError error) {
+                Toast.makeText(QuizActivity.this, error.toString(), Toast.LENGTH_SHORT).show();
+            }
+        } );
+        
+    }
+    
+    private void sendAnswer(String optionId){
+        QuizApi.answerQuestion(SampleApplication.playbasis, quizId, playerId, questionId, optionId, new OnResult<QuizQuestionAnswer>() {
+            @Override
+            public void onSuccess(QuizQuestionAnswer result) {
+                getQuestions();
+            }
+            @Override
+            public void onError(HttpError error) {
+                Toast.makeText(QuizActivity.this, error.toString(), Toast.LENGTH_SHORT).show();
+            }
+        });
+        
     }
 
+
+
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        return super.onOptionsItemSelected(item);
+    public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+        if(quizState ==1){ // if quiz sate
+            quizId = adapterValues.get(position).id; // save selected quiz id
+            getQuestions(); //get questions
+        }else if (quizState == 2){ // if question state
+            sendAnswer(adapterValues.get(position).id); // send answer
+        }
+
     }
+
+    //Class display on the list view
+    private class NameID{
+        public String id;
+        public String name;
+
+        private NameID(String id, String name) {
+            this.id = id;
+            this.name = name;
+        }
+
+        @Override
+        public String toString() {
+            return name;
+        }
+    }
+
 }

@@ -253,16 +253,21 @@ public class QuizApi extends Api {
         JsonObjectGET(playbasis, uri, params, new OnResult<JSONObject>() {
             @Override
             public void onSuccess(JSONObject result) {
-                try {
-                    QuizQuestion quizQuestion = new QuizQuestion();
-                    if (!result.isNull("result")) {
-                        quizQuestion = JsonHelper.FromJsonObject(result.getJSONObject("result"),
-                                QuizQuestion.class);
+                if(result==null){
+                    if (listener != null) listener.onSuccess(null);
+                }else{
+                    try {
+                        QuizQuestion quizQuestion = new QuizQuestion();
+                        if (!result.isNull("result")) {
+                            quizQuestion = JsonHelper.FromJsonObject(result.getJSONObject("result"),
+                                    QuizQuestion.class);
+                        }
+                        if (listener != null) listener.onSuccess(quizQuestion);
+                    } catch (JSONException e) {
+                        if (listener != null) listener.onError(new HttpError(e));
                     }
-                    if (listener != null) listener.onSuccess(quizQuestion);
-                } catch (JSONException e) {
-                    if (listener != null) listener.onError(new HttpError(e));
                 }
+
 
             }
 
@@ -273,7 +278,21 @@ public class QuizApi extends Api {
         });
     }
 
-
+    /**
+     * Submit a player's answer for a question for a given quiz.
+     *
+     * @param playbasis  Playbasis object.
+     * @param quizId     quiz id
+     * @param playerId   player id as used in client's website
+     * @param questionId question id
+     * @param optionId   option id
+     * @param listener   Callback interface.
+     */
+    public static void answerQuestion(@NonNull Playbasis playbasis,
+                                      @NonNull String quizId, @NonNull String playerId, @NonNull String questionId,
+                                      @NonNull String optionId, final OnResult<QuizQuestionAnswer> listener) {
+        answerQuestion(playbasis, false, quizId,playerId,questionId,optionId,listener);
+    }
     /**
      * Submit a player's answer for a question for a given quiz.
      *
