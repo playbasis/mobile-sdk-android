@@ -17,7 +17,7 @@ public class Reward {
     private String rewardId;
     @SerializedName("reward_data")
     @Expose
-    private RewardData rewardData;
+    private BadgeData rewardData;
 
     /**
      * 
@@ -93,7 +93,7 @@ public class Reward {
      * @return
      *     The rewardData
      */
-    public RewardData getRewardData() {
+    public BadgeData getRewardData() {
         return rewardData;
     }
 
@@ -102,11 +102,11 @@ public class Reward {
      * @param rewardData
      *     The reward_data
      */
-    public void setRewardData(RewardData rewardData) {
+    public void setRewardData(BadgeData rewardData) {
         this.rewardData = rewardData;
     }
 
-    public Reward withRewardData(RewardData rewardData) {
+    public Reward withRewardData(BadgeData rewardData) {
         this.rewardData = rewardData;
         return this;
     }

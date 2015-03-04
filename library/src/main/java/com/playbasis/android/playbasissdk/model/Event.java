@@ -24,6 +24,13 @@ public class Event {
     @Expose
     private String questId;
 
+    @SerializedName("reward_type")
+    @Expose
+    private String rewardType;
+    @SerializedName("reward_data")
+    @Expose
+    private BadgeData rewardData;
+
     /**
      *  
      * @return the type
@@ -87,6 +94,38 @@ public class Event {
      */
     public void setQuestId(String questId) {
         this.questId = questId;
+    }
+
+    /**
+     *
+     * @return the Reward type
+     */
+    public String getRewardType() {
+        return rewardType;
+    }
+
+    /**
+     *
+     * @param rewardType the reward type
+     */
+    public void setRewardType(String rewardType) {
+        this.rewardType = rewardType;
+    }
+
+    /**
+     *
+     * @return the reward data
+     */
+    public BadgeData getRewardData() {
+        return rewardData;
+    }
+
+    /**
+     *
+     * @param rewardData the reward data
+     */
+    public void setRewardData(BadgeData rewardData) {
+        this.rewardData = rewardData;
     }
 
     @Override

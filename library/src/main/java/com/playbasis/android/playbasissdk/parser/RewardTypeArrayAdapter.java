@@ -3,8 +3,8 @@ package com.playbasis.android.playbasissdk.parser;
 import com.google.gson.TypeAdapter;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
+import com.playbasis.android.playbasissdk.model.BadgeData;
 import com.playbasis.android.playbasissdk.model.Reward;
-import com.playbasis.android.playbasissdk.model.RewardData;
 
 import java.io.IOException;
 
@@ -41,7 +41,7 @@ public class RewardTypeArrayAdapter extends TypeAdapter<Reward> {
                     break;
                 case "reward_data":
                     in.beginObject();
-                    RewardData rewardData = new RewardData();
+                    BadgeData rewardData = new BadgeData();
                     while (in.hasNext()){
                         switch (in.nextName()){
                             case "badge_id":

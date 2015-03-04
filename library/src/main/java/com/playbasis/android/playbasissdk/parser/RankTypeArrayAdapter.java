@@ -5,8 +5,6 @@ import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 import com.playbasis.android.playbasissdk.model.PbPlayerId;
 import com.playbasis.android.playbasissdk.model.Rank;
-import com.playbasis.android.playbasissdk.model.Reward;
-import com.playbasis.android.playbasissdk.model.RewardData;
 
 import java.io.IOException;
 

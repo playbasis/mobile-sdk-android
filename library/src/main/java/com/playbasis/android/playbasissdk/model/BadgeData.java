@@ -4,7 +4,7 @@ package com.playbasis.android.playbasissdk.model;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class RewardData {
+public class BadgeData {
 
     @SerializedName("badge_id")
     @Expose
@@ -42,7 +42,7 @@ public class RewardData {
         this.badgeId = badgeId;
     }
 
-    public RewardData withBadgeId(String badgeId) {
+    public BadgeData withBadgeId(String badgeId) {
         this.badgeId = badgeId;
         return this;
     }
@@ -65,7 +65,7 @@ public class RewardData {
         this.image = image;
     }
 
-    public RewardData withImage(String image) {
+    public BadgeData withImage(String image) {
         this.image = image;
         return this;
     }
@@ -88,7 +88,7 @@ public class RewardData {
         this.name = name;
     }
 
-    public RewardData withName(String name) {
+    public BadgeData withName(String name) {
         this.name = name;
         return this;
     }
@@ -111,7 +111,7 @@ public class RewardData {
         this.description = description;
     }
 
-    public RewardData withDescription(String description) {
+    public BadgeData withDescription(String description) {
         this.description = description;
         return this;
     }
@@ -134,7 +134,7 @@ public class RewardData {
         this.hint = hint;
     }
 
-    public RewardData withHint(String hint) {
+    public BadgeData withHint(String hint) {
         this.hint = hint;
         return this;
     }
@@ -157,7 +157,7 @@ public class RewardData {
         this.sponsor = sponsor;
     }
 
-    public RewardData withSponsor(Boolean sponsor) {
+    public BadgeData withSponsor(Boolean sponsor) {
         this.sponsor = sponsor;
         return this;
     }
@@ -180,7 +180,7 @@ public class RewardData {
         this.claim = claim;
     }
 
-    public RewardData withClaim(Boolean claim) {
+    public BadgeData withClaim(Boolean claim) {
         this.claim = claim;
         return this;
     }
@@ -203,7 +203,7 @@ public class RewardData {
         this.redeem = redeem;
     }
 
-    public RewardData withRedeem(Boolean redeem) {
+    public BadgeData withRedeem(Boolean redeem) {
         this.redeem = redeem;
         return this;
     }
