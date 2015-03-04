@@ -99,6 +99,16 @@ public class MainActivity extends FragmentActivity {
             }
         });
 
+        Button questButton = (Button) findViewById(R.id.button_quest);
+        questButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, QuestActivity.class);
+                startActivity(intent);
+            }
+        });
+
+
 
 
 /*        final Playbasis playbasis = new Playbasis.Builder(this)

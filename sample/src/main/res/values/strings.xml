@@ -9,4 +9,5 @@
     <string name="title_activity_quiz">QuizActivity</string>
     <string name="title_activity_badge">BadgeActivity</string>
     <string name="title_activity_reward">RewardActivity</string>
+    <string name="title_activity_quest">QuestActivity</string>
 </resources>

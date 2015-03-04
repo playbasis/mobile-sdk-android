@@ -15,4 +15,5 @@
     <string name="player_info">PLAYER INFO</string>
     <string name="player_info_SMS">PLAYER SMS</string>
     <string name="player_info_email">PLAYER EMAIL</string>
+    <string name="title_activity_quest">QuestActivity</string>
 </resources>
