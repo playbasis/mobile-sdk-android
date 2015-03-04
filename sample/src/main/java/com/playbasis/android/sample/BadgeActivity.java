@@ -50,6 +50,8 @@ public class BadgeActivity extends FragmentActivity {
             }
         });
         showProgress(true);
+
+        
     }
 
 
