@@ -257,7 +257,7 @@ public class QuizApi extends Api {
                     if (listener != null) listener.onSuccess(null);
                 }else{
                     try {
-                        QuizQuestion quizQuestion = new QuizQuestion();
+                        QuizQuestion quizQuestion = null;
                         if (!result.isNull("result")) {
                             quizQuestion = JsonHelper.FromJsonObject(result.getJSONObject("result"),
                                     QuizQuestion.class);

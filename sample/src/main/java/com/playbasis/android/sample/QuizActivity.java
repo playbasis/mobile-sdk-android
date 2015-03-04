@@ -10,6 +10,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,16 +28,17 @@ import java.util.List;
 
 public class QuizActivity extends FragmentActivity implements AdapterView.OnItemClickListener {
     
-    EditText vPlayerId;
     TextView vTitle;
     ListView vListView;
+    ProgressBar progressBar;
+
     ArrayAdapter<NameID> adapter;
     List<NameID> adapterValues;
     
     // use for know if we have to request a quiz or a question 
     int quizState = 0;
     
-    String playerId; //The player id
+    String playerId = "exampleplayer"; //The player id
     String quizId; // The quiz id
     String questionId; // The question id
 
@@ -57,9 +59,9 @@ public class QuizActivity extends FragmentActivity implements AdapterView.OnItem
         setContentView(R.layout.activity_quiz);
 
         //Set views
-        vPlayerId = (EditText) findViewById(R.id.editText_player_id);
         vTitle = (TextView) findViewById(R.id.textView_title);
         vListView = (ListView) findViewById(R.id.listView_quiz);
+        progressBar = (ProgressBar) findViewById(R.id.progressBar);
 
         //Create the adapter
         adapterValues = new ArrayList<>();
@@ -68,20 +70,23 @@ public class QuizActivity extends FragmentActivity implements AdapterView.OnItem
         vListView.setAdapter(adapter);
         vListView.setOnItemClickListener(this);
 
-        //get quiz button
-        Button submitButton  = (Button) findViewById(R.id.button_submit);
-        submitButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                playerId = vPlayerId.getText().toString();
-                getQuiz();
-            }
-        });
+        getQuiz();
+    }
+
+    private void showProgress(Boolean show){
+        if(show){
+            progressBar.setVisibility(View.VISIBLE);
+            vListView.setVisibility(View.INVISIBLE);
+        }else{
+            progressBar.setVisibility(View.GONE);
+            vListView.setVisibility(View.VISIBLE);
+        }
     }
     
     
     private void getQuiz(){
         quizState = 1; //set quiz state to quiz
+        showProgress(true);
         QuizApi.activeList(SampleApplication.playbasis, playerId, new OnResult<List<Quiz>>() {
             @Override
             public void onSuccess(List<Quiz> result) {
@@ -94,11 +99,13 @@ public class QuizActivity extends FragmentActivity implements AdapterView.OnItem
                     }
                 }
                 adapter.notifyDataSetChanged();
+                showProgress(false);
             }
 
             @Override
             public void onError(HttpError error) {
                 Toast.makeText(QuizActivity.this, error.toString(), Toast.LENGTH_SHORT).show();
+                showProgress(false);
             }
         });
         

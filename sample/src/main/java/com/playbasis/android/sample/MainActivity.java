@@ -63,15 +63,6 @@ public class MainActivity extends FragmentActivity {
             }
         });
         
-        Button sendEmailButton = (Button) findViewById(R.id.button_email);
-        sendEmailButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, EmailActivity.class);
-                startActivity(intent);
-            }
-        });
-        
         Button quizButton = (Button) findViewById(R.id.button_quiz);
         quizButton.setOnClickListener(new View.OnClickListener() {
             @Override

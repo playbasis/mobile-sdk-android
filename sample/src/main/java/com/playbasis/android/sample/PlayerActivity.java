@@ -21,7 +21,6 @@ import com.playbasis.android.playbasissdk.model.Player;
 
 public class PlayerActivity extends FragmentActivity {
 
-    EditText vPlayerId;
     TextView vID;
     TextView vUsername;
     TextView vExp;
@@ -41,7 +40,6 @@ public class PlayerActivity extends FragmentActivity {
         setContentView(R.layout.activity_player);
 
 
-        vPlayerId = (EditText) findViewById(R.id.editText_player_id);
         vID = (TextView) findViewById(R.id.textView_player_id);
         vUsername = (TextView) findViewById(R.id.textView_player_username);
         vExp = (TextView) findViewById(R.id.textView_player_exp);
@@ -55,14 +53,8 @@ public class PlayerActivity extends FragmentActivity {
         vLastLogout = (TextView) findViewById(R.id.textView_player_last_logout);
         vImage = (NetworkImageView) findViewById(R.id.image_player);
 
-        Button submitButton  = (Button) findViewById(R.id.button_submit);
-        submitButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                getPlayerInfo(vPlayerId.getText().toString());
-            }
-        });
-        
+
+        getPlayerInfo("exampleplayer");
         
         
     }

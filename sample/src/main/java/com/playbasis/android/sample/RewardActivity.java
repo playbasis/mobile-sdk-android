@@ -104,8 +104,6 @@ public class RewardActivity extends FragmentActivity {
             progressBar.setVisibility(View.GONE);
             listView.setVisibility(View.VISIBLE);
         }
-
-
     }
 
     @Override
