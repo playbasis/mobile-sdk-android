@@ -1,6 +1,7 @@
 package com.playbasis.android.sample;
 
 import android.content.Context;
+import android.support.v4.app.FragmentActivity;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +16,8 @@ import com.playbasis.android.playbasissdk.http.HttpError;
 import com.playbasis.android.playbasissdk.http.toolbox.NetworkImageView;
 import com.playbasis.android.playbasissdk.model.Goods;
 import com.playbasis.android.playbasissdk.model.Mission;
+import com.playbasis.android.playbasissdk.model.RedeemGood;
+import com.playbasis.android.playbasissdk.model.Reward;
 import com.playbasis.android.playbasissdk.model.Rule;
 import com.playbasis.android.playbasissdk.model.RuleAction;
 
@@ -33,10 +36,12 @@ public class QuestAdapter  extends BaseAdapter {
     private List<Mission> missions;
     private OnMissionClick onMissionClick;
     private Context mContext;
+    private FragmentActivity mFragmentActivity;
 
-    public QuestAdapter(Context context) {
-        mContext = context;
-        mInflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+    public QuestAdapter(FragmentActivity fragmentActivity) {
+        mContext = fragmentActivity;
+        mFragmentActivity = fragmentActivity;
+        mInflater = (LayoutInflater)mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         missions = new ArrayList<>();
     }
 
@@ -90,7 +95,7 @@ public class QuestAdapter  extends BaseAdapter {
                         @Override
                         public void onSuccess(Rule result) {
                             holder.vClick.setEnabled(true);
-                            Toast.makeText(mContext, result.toString(), Toast.LENGTH_SHORT).show();
+                            displayResult(result);
                         }
 
                         @Override
@@ -104,7 +109,7 @@ public class QuestAdapter  extends BaseAdapter {
                         @Override
                         public void onSuccess(Rule result) {
                             holder.vClick.setEnabled(true);
-                            Toast.makeText(mContext, result.toString(), Toast.LENGTH_SHORT).show();
+                            displayResult(result);
                         }
 
                         @Override
@@ -119,6 +124,22 @@ public class QuestAdapter  extends BaseAdapter {
             }
         });
         return view;
+    }
+    
+    private void displayResult(Rule result){
+        RewardWidget rewardWidget = new RewardWidget();
+        
+         Mission mission = result.getMissions().get(0);
+
+        for (Reward reward : mission.getRewards()) {
+            if (reward.getRewardType().equals("point")) {
+                rewardWidget.setPoints(reward.getRewardValue());
+            } else if (reward.getRewardType().equals("badge")) {
+                rewardWidget.setBadge(reward.getRewardData());
+            }
+        }
+        rewardWidget.show(mFragmentActivity.getSupportFragmentManager(), "fragment_reward_widget");
+        
     }
 
     public static class ViewHolder {

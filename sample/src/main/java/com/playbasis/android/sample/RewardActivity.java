@@ -21,6 +21,7 @@ import com.playbasis.android.playbasissdk.http.HttpError;
 import com.playbasis.android.playbasissdk.model.Badge;
 import com.playbasis.android.playbasissdk.model.Goods;
 import com.playbasis.android.playbasissdk.model.RedeemGood;
+import com.playbasis.android.playbasissdk.model.Reward;
 
 import java.util.List;
 
@@ -65,7 +66,28 @@ public class RewardActivity extends FragmentActivity {
                     @Override
                     public void onSuccess(List<RedeemGood> result) {
 
-                        AlertDialog alertDialog = new AlertDialog.Builder(RewardActivity.this).create();
+                        RewardWidget rewardWidget = new RewardWidget();
+                        for (RedeemGood redeemGood : result) {
+                            if(result.size()>=0 || result.get(0) == null || result.get(0).getGoodsData() == null) {
+                                if (redeemGood.getEventType().equals("GOODS_RECEIVED")) {
+                                    if (redeemGood.getGoodsData().getRedeem().getPoint() != null) {
+                                        rewardWidget.setPoints(String.valueOf(String.valueOf(redeemGood.getGoodsData()
+                                                .getRedeem()
+                                                .getPoint()
+                                                .getValue())));
+                                    } else if (redeemGood.getGoodsData().getRedeem().getBadge() != null) {
+                                        rewardWidget.setBadge(redeemGood.getGoodsData().getRedeem().getBadge().get(0));
+                                    }
+                                }
+                                
+                                rewardWidget.setCoupon(result.get(0).getGoodsData().getCode());
+                            }else {
+                                rewardWidget.setCoupon("No goods available");
+                            }
+                        }
+                        rewardWidget.show(getSupportFragmentManager(), "fragment_reward_widget");
+
+/*                        AlertDialog alertDialog = new AlertDialog.Builder(RewardActivity.this).create();
                         alertDialog.setTitle("Coupon code");
                         if(result.size()>=0 || result.get(0) == null || result.get(0).getGoodsData() == null){
                             alertDialog.setMessage("No goods available");
@@ -80,7 +102,7 @@ public class RewardActivity extends FragmentActivity {
                                         dialog.dismiss();
                                     }
                                 });
-                        alertDialog.show();
+                        alertDialog.show();*/
                         showProgress(false);
                     }
 

@@ -21,6 +21,7 @@ import com.playbasis.android.playbasissdk.model.Quiz;
 import com.playbasis.android.playbasissdk.model.QuizQuestion;
 import com.playbasis.android.playbasissdk.model.QuizQuestionAnswer;
 import com.playbasis.android.playbasissdk.model.QuizQuestionOption;
+import com.playbasis.android.playbasissdk.model.Reward;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,6 +35,7 @@ public class QuizActivity extends FragmentActivity implements AdapterView.OnItem
 
     ArrayAdapter<NameID> adapter;
     List<NameID> adapterValues;
+    List<Reward> rewards;
     
     // use for know if we have to request a quiz or a question 
     int quizState = 0;
@@ -132,6 +134,21 @@ public class QuizActivity extends FragmentActivity implements AdapterView.OnItem
                 }else{
                     //if questionId null, the quiz doesn't have other questions
                     vTitle.setText("Quiz finish");
+
+                    if(rewards!=null){
+                        RewardWidget rewardWidget = new RewardWidget();
+                        for (Reward reward : rewards) {
+                            if(reward.getRewardType().equals("exp")){
+                                rewardWidget.setExp(reward.getRewardValue());
+                            }else if(reward.getRewardType().equals("point")){
+                                rewardWidget.setPoints(reward.getRewardValue());
+                            }else if(reward.getRewardType().equals("badge")){
+                                rewardWidget.setBadge(reward.getRewardData());
+                            }
+                        }
+                        rewardWidget.show(getSupportFragmentManager(), "fragment_reward_widget");
+                    }
+
                 }
                 adapter.notifyDataSetChanged(); // update listView
                 
@@ -149,6 +166,7 @@ public class QuizActivity extends FragmentActivity implements AdapterView.OnItem
         QuizApi.answerQuestion(SampleApplication.playbasis, quizId, playerId, questionId, optionId, new OnResult<QuizQuestionAnswer>() {
             @Override
             public void onSuccess(QuizQuestionAnswer result) {
+                rewards = result.getRewards();
                 getQuestions();
             }
             @Override

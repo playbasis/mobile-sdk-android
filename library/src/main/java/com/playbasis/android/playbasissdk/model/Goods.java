@@ -358,7 +358,7 @@ public class Goods {
         this.group = group;
     }
 
-    private class Redeem {
+    public class Redeem {
 
         @Expose
         private Point point;
