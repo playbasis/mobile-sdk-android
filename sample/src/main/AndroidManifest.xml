@@ -59,6 +59,10 @@
             android:name=".BadgeActivity"
             android:label="@string/title_activity_badge" >
         </activity>
+        <activity
+            android:name=".RewardActivity"
+            android:label="@string/title_activity_reward" >
+        </activity>
     </application>
 
 </manifest>

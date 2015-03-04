@@ -39,7 +39,7 @@ public class MainActivity extends FragmentActivity {
         setContentView(R.layout.activity_main);
         
 
-/*        SampleApplication.playbasis.Do("gfdgsdfgsdfg", RuleAction.CLICK, new OnResult<Rule>() {
+       /* SampleApplication.playbasis.Do("gfdgsdfgsdfg", RuleAction.CLICK, new OnResult<Rule>() {
             @Override
             public void onSuccess(Rule result) {
                 Toast.makeText(MainActivity.this, result.toString(), Toast.LENGTH_SHORT).show();
@@ -49,8 +49,8 @@ public class MainActivity extends FragmentActivity {
             public void onError(HttpError error) {
                 Toast.makeText(MainActivity.this, error.requestError.message, Toast.LENGTH_SHORT).show();
             }
-        });*/
-
+        });
+*/
 
 
         Button playerButton = (Button) findViewById(R.id.button_player);
@@ -86,6 +86,15 @@ public class MainActivity extends FragmentActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this, BadgeActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        Button rewardButton = (Button) findViewById(R.id.button_reward);
+        rewardButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, RewardActivity.class);
                 startActivity(intent);
             }
         });
