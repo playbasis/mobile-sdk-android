@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.playbasis.android.playbasissdk.helper.Validator;
 import com.playbasis.android.playbasissdk.http.toolbox.NetworkImageView;
 import com.playbasis.android.playbasissdk.model.BadgeData;
 
@@ -60,7 +61,7 @@ public class RewardWidget extends DialogFragment {
                 dismiss();
             }
         });
-        getDialog().setTitle(getString(com.playbasis.android.playbasissdk.R.string.player_info_email));
+        getDialog().setTitle("REWARD");
         if(badge!=null){
             lBadge.setVisibility(View.VISIBLE);
             vName.setText(badge.getName());
@@ -68,15 +69,15 @@ public class RewardWidget extends DialogFragment {
             vDescription.setText(badge.getDescription());
             imageView.setImageUrl(badge.getImage(), SampleApplication.playbasis.getHttpManager().getImageLoader());
         }
-        if (point!=null){
+        if (Validator.isValid( point)){
             lPoints.setVisibility(View.VISIBLE);
             vPoints.setText(point);
         }
-        if (exp!=null){
+        if (Validator.isValid( exp)){
             lExp.setVisibility(View.VISIBLE);
             vExp.setText(exp);
         }
-        if (coupon!=null){
+        if (Validator.isValid( coupon)){
             lCoupon.setVisibility(View.VISIBLE);
             vCoupon.setText(coupon);
         }

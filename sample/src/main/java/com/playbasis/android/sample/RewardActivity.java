@@ -68,7 +68,9 @@ public class RewardActivity extends FragmentActivity {
 
                         RewardWidget rewardWidget = new RewardWidget();
                         for (RedeemGood redeemGood : result) {
-                            if(result.size()>=0 || result.get(0) == null || result.get(0).getGoodsData() == null) {
+                            if(result.size()<=0 || result.get(0) == null || result.get(0).getGoodsData() == null) {
+                                rewardWidget.setCoupon("No goods available");
+                            }else {
                                 if (redeemGood.getEventType().equals("GOODS_RECEIVED")) {
                                     if (redeemGood.getGoodsData().getRedeem().getPoint() != null) {
                                         rewardWidget.setPoints(String.valueOf(String.valueOf(redeemGood.getGoodsData()
@@ -79,10 +81,8 @@ public class RewardActivity extends FragmentActivity {
                                         rewardWidget.setBadge(redeemGood.getGoodsData().getRedeem().getBadge().get(0));
                                     }
                                 }
-                                
+
                                 rewardWidget.setCoupon(result.get(0).getGoodsData().getCode());
-                            }else {
-                                rewardWidget.setCoupon("No goods available");
                             }
                         }
                         rewardWidget.show(getSupportFragmentManager(), "fragment_reward_widget");

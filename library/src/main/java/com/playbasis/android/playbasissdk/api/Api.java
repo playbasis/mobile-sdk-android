@@ -2,6 +2,7 @@ package com.playbasis.android.playbasissdk.api;
 
 import com.playbasis.android.playbasissdk.core.Playbasis;
 import com.playbasis.android.playbasissdk.core.SDKUtil;
+import com.playbasis.android.playbasissdk.helper.ApiHelper;
 import com.playbasis.android.playbasissdk.helper.DateHelper;
 import com.playbasis.android.playbasissdk.http.AuthFailureError;
 import com.playbasis.android.playbasissdk.http.HttpError;
@@ -74,7 +75,12 @@ public abstract class Api {
                 PlayBasisLog.e(TAG, "Error: " + error.getMessage());
                 if (listener != null) listener.onError(error);
             }
-        });
+        }){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                return ApiHelper.getHeaderMap(playbasis);
+            }
+        };
         // Adding request to request queue
         playbasis.getHttpManager().addToRequestQueue(jsonObjReq);
     }
@@ -157,7 +163,7 @@ public abstract class Api {
 
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
-                HashMap<String, String> headers = new HashMap<String, String>();
+                HashMap<String, String> headers = ApiHelper.getHeaderMap(playbasis);
                 if (timestamp != null)
                     headers.put("Date", DateHelper.timestampToHTPPDate(timestamp));
                 else
@@ -204,7 +210,12 @@ public abstract class Api {
                 PlayBasisLog.e(TAG, "Error: " + error.getMessage());
                 if (listener != null) listener.onError(error);
             }
-        });
+        }){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                return ApiHelper.getHeaderMap(playbasis);
+            }
+        };
         // Adding request to request queue
         playbasis.getHttpManager().addToRequestQueue(jsonObjReq);
     }
@@ -278,6 +289,12 @@ public abstract class Api {
                 }
                 return params;
             }
+
+                @Override
+                public Map<String, String> getHeaders() throws AuthFailureError {
+                return ApiHelper.getHeaderMap(playbasis);
+            }
+
         };
         // Adding request to request queue
         playbasis.getHttpManager().addToRequestQueue(jsonArrReq);
@@ -317,7 +334,12 @@ public abstract class Api {
                 PlayBasisLog.e(TAG, "Error: " + error.getMessage());
                 if (listener != null) listener.onError(error);
             }
-        });
+        }){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                return ApiHelper.getHeaderMap(playbasis);
+            }
+        };
         // Adding request to request queue
         playbasis.getHttpManager().addToRequestQueue(stringRequest);
     }
@@ -406,7 +428,7 @@ public abstract class Api {
 
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
-                HashMap<String, String> headers = new HashMap<String, String>();
+                HashMap<String, String> headers = ApiHelper.getHeaderMap(playbasis);
                 headers.put("Content-Type", "application/json");
                 if (timestamp != null)
                     headers.put("Date", DateHelper.timestampToHTPPDate(timestamp));

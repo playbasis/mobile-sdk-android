@@ -127,18 +127,22 @@ public class QuestAdapter  extends BaseAdapter {
     }
     
     private void displayResult(Rule result){
-        RewardWidget rewardWidget = new RewardWidget();
-        
-         Mission mission = result.getMissions().get(0);
 
-        for (Reward reward : mission.getRewards()) {
-            if (reward.getRewardType().equals("point")) {
-                rewardWidget.setPoints(reward.getRewardValue());
-            } else if (reward.getRewardType().equals("badge")) {
-                rewardWidget.setBadge(reward.getRewardData());
+        if(result.getMissions().size()>= 0){
+            RewardWidget rewardWidget = new RewardWidget();
+            Mission mission = result.getMissions().get(0);
+            for (Reward reward : mission.getRewards()) {
+                if (reward.getRewardType().equals("point")) {
+                    rewardWidget.setPoints(reward.getRewardValue());
+                } else if (reward.getRewardType().equals("badge")) {
+                    rewardWidget.setBadge(reward.getRewardData());
+                }
             }
+            rewardWidget.show(mFragmentActivity.getSupportFragmentManager(), "fragment_reward_widget");
+        }else {
+            Toast.makeText(mContext, "No rewards available", Toast.LENGTH_SHORT).show();
         }
-        rewardWidget.show(mFragmentActivity.getSupportFragmentManager(), "fragment_reward_widget");
+
         
     }
 

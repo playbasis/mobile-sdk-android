@@ -44,7 +44,7 @@ public class BadgeWidget extends DialogFragment {
                 dismiss();
             }
         });
-        getDialog().setTitle(getString(com.playbasis.android.playbasissdk.R.string.player_info_email));
+        getDialog().setTitle("BADGE");
         if(badge!=null){
             vName.setText(badge.getName());
             vHint.setText(badge.getHint());
