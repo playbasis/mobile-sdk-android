@@ -87,7 +87,8 @@ public class RewardActivity extends FragmentActivity {
                                                 .getValue()))); 
                                     }
                                     //If good have badge
-                                    else if (redeemGood.getGoodsData().getRedeem().getBadge() != null) {
+                                    if (redeemGood.getGoodsData().getRedeem().getBadge()!=null 
+                                    && redeemGood.getGoodsData().getRedeem().getBadge().size() > 0) {
                                         //Send the badge to the redeem dialogFragment
                                         rewardWidget.setBadge(redeemGood.getGoodsData().getRedeem().getBadge().get(0));
                                     }

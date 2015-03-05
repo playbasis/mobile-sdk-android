@@ -33,10 +33,10 @@ public class RewardWidget extends DialogFragment {
     private LinearLayout lExp;
     private LinearLayout lCoupon;
     
-    private BadgeData badge;
-    private String point;
-    private String exp;
-    private String coupon;
+    private BadgeData badge = null;
+    private String point = null;
+    private String exp = null;
+    private String coupon = null;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

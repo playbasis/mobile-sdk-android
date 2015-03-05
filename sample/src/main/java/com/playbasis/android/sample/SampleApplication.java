@@ -3,7 +3,6 @@ package com.playbasis.android.sample;
 import android.app.Application;
 
 import com.playbasis.android.playbasissdk.core.Playbasis;
-
 /**
  * Created by gregoire barret on 3/2/15.
  * For PlayBasisSdk project.

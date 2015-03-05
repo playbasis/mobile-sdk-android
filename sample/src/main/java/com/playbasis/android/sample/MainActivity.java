@@ -17,6 +17,7 @@ import com.playbasis.android.playbasissdk.core.Playbasis;
 import com.playbasis.android.playbasissdk.http.HttpError;
 import com.playbasis.android.playbasissdk.model.Rule;
 import com.playbasis.android.playbasissdk.model.RuleAction;
+import com.playbasis.android.playbasissdk.model.UIEvent;
 
 
 public class MainActivity extends FragmentActivity {
@@ -99,8 +100,7 @@ public class MainActivity extends FragmentActivity {
             }
         });
 
-
-
+     //   SampleApplication.playbasis.Track("testFakeUser", "click");
 
 /*        final Playbasis playbasis = new Playbasis.Builder(this)
                 .setApiKey("3416989394")
@@ -139,5 +139,19 @@ public class MainActivity extends FragmentActivity {
         int id = item.getItemId();
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public void uieventTest(Playbasis playbasis){
+        playbasis.Track("gregusertest", "click");
+        playbasis.Track("gregusertest", UIEvent.LONG_CLICK);
+        playbasis.Track("gregusertest", UIEvent.FOCUS_CHANGE);
+        playbasis.Track("gregusertest", UIEvent.MENU_ITEM);
+        playbasis.Track("gregusertest", UIEvent.TOUCH);
+        playbasis.Track("gregusertest", UIEvent.KEY);
+        playbasis.Track("gregusertest", UIEvent.VIEW_CREATE);
+        playbasis.Track("gregusertest", UIEvent.VIEW_DISPLAY);
+        playbasis.Track("gregusertest", UIEvent.VIEW_REMOVE);
+        playbasis.Track("gregusertest", UIEvent.VIEW_DESTROY);
+
     }
 }

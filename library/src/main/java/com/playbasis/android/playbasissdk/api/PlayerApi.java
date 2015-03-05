@@ -339,7 +339,7 @@ public class PlayerApi extends Api{
         }
     }
 
-    public static void updatePlayer(@NonNull Playbasis playbasis, boolean isAsync, @NonNull Player player,
+    protected static void updatePlayer(@NonNull Playbasis playbasis, boolean isAsync, @NonNull Player player,
                               final OnResult<Boolean> listener){
         if(!player.isValid()){
             if(listener!=null)listener.onError(new HttpError(
