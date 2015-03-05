@@ -8,6 +8,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -26,9 +27,8 @@ import java.util.List;
 
 public class BadgeActivity extends FragmentActivity {
     
-    ListView listView;
-    BadgeAdapter badgeAdapter;
     ProgressBar progressBar;
+    LinearLayout layout;
     Button redeemBadge;
     
     
@@ -37,50 +37,36 @@ public class BadgeActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_badge);
 
+        // Create the view
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
-        listView = (ListView) findViewById(R.id.listView_badge);
         redeemBadge = (Button) findViewById(R.id.button_redeem_badge);
+        layout = (LinearLayout) findViewById(R.id.linearLayout_badge);
         
-        
+        //Set
         redeemBadge.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                showProgress(true);
                 SampleApplication.playbasis.Do("gregtestuser", UIEvent.CLICK,  new OnResult<Rule>() {
                     @Override
                     public void onSuccess(Rule result) {
                         BadgeWidget badgeWidget = new BadgeWidget();
                         badgeWidget.setBadge(result.getEvents().get(0).getRewardData());
                         badgeWidget.show(getSupportFragmentManager(), "fragment_player_info");
+                        showProgress(false);
                     }
 
                     @Override
                     public void onError(HttpError error) {
-
+                        Toast.makeText(BadgeActivity.this, error.toString(), Toast.LENGTH_SHORT).show();
+                        showProgress(false);
                     }
                 });
             }
         });
         
-        
-        
-        badgeAdapter = new BadgeAdapter(this);
-        listView.setAdapter(badgeAdapter);
-        
-        
-        BadgeApi.badges(SampleApplication.playbasis, new OnResult<List<Badge>>() {
-            @Override
-            public void onSuccess(List<Badge> result) {
-                badgeAdapter.setBadges(result);
-                showProgress(false);
-            }
 
-            @Override
-            public void onError(HttpError error) {
-                Toast.makeText(BadgeActivity.this, error.toString(), Toast.LENGTH_SHORT).show();
-                showProgress(false);
-            }
-        });
-        showProgress(true);
+
 
         
     }
@@ -89,10 +75,10 @@ public class BadgeActivity extends FragmentActivity {
     private void showProgress(Boolean show){
         if(show){
             progressBar.setVisibility(View.VISIBLE);
-            listView.setVisibility(View.INVISIBLE);
+            layout.setVisibility(View.INVISIBLE);
         }else{
             progressBar.setVisibility(View.GONE);
-            listView.setVisibility(View.VISIBLE);
+            layout.setVisibility(View.VISIBLE);
         }
         
         
