@@ -31,21 +31,27 @@ public class BadgeWidget extends DialogFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        
+        //Create the view
         View view = inflater.inflate(R.layout.widget_badge, container);
         vName    = (TextView) view.findViewById(R.id.textView_widget_badge_name);
         vHint    = (TextView) view.findViewById(R.id.textView_widget_badge_hint);
         vDescription    = (TextView) view.findViewById(R.id.textView_widget_badge_description);
         imageView    = (NetworkImageView) view.findViewById(R.id.imageView_widget_badge);
         
+        //Dismiss the view when click on OK button
         Button mOkButton = (Button) view.findViewById(R.id.button_widget_ok);
-
         mOkButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 dismiss();
             }
-        });
+        }); 
+        
+        //Set dialog title
         getDialog().setTitle("BADGE");
+        
+        //Set badge informations
         if(badge!=null){
             vName.setText(badge.getName());
             vHint.setText(badge.getHint());
@@ -56,6 +62,7 @@ public class BadgeWidget extends DialogFragment {
         return view;
     }
     
+    //Set badge
     public void setBadge(BadgeData badge){
         this.badge = badge;
         

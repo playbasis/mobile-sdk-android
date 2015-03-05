@@ -39,7 +39,7 @@ public class PlayerActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_player);
 
-
+        //Create the view
         vID = (TextView) findViewById(R.id.textView_player_id);
         vUsername = (TextView) findViewById(R.id.textView_player_username);
         vExp = (TextView) findViewById(R.id.textView_player_exp);
@@ -75,6 +75,7 @@ public class PlayerActivity extends FragmentActivity {
         PlayerApi.getPlayerInfo(SampleApplication.playbasis, playerId, new OnResult<Player>() {
             @Override
             public void onSuccess(Player result) {
+                // Get player information into string
                 String playerId = result.getClPlayerId()!=null ? result.getClPlayerId() : "";
                 String playerName = result.getUsername()!=null ? result.getUsername() : "";
                 String playerExp = result.getExp()!=null ? String.valueOf(result.getExp()) : "";
@@ -88,6 +89,7 @@ public class PlayerActivity extends FragmentActivity {
                 String playerLogout = result.getLastLogout()!=null ? result.getLastLogout() : "";
                 String imageUrl = result.getImage()!=null ? result.getImage() : "";
 
+                // Set player information into view
                 vID.setText(playerId);
                 vUsername.setText(playerName);
                 vExp.setText(playerExp);
@@ -104,6 +106,7 @@ public class PlayerActivity extends FragmentActivity {
 
             @Override
             public void onError(HttpError error) {
+                // Show error toast
                 if(error.requestError!=null){
                     Toast.makeText(PlayerActivity.this, error.requestError.message, Toast.LENGTH_SHORT).show();
                 }else{
@@ -112,24 +115,5 @@ public class PlayerActivity extends FragmentActivity {
             }
         });
         
-    }
-
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_player, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-
-        return super.onOptionsItemSelected(item);
     }
 }

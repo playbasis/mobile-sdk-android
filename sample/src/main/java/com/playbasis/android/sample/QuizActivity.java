@@ -135,18 +135,19 @@ public class QuizActivity extends FragmentActivity implements AdapterView.OnItem
                     //if questionId null, the quiz doesn't have other questions
                     vTitle.setText("Quiz finish");
 
+                    // Get the previous question rewards
                     if(rewards!=null){
-                        RewardWidget rewardWidget = new RewardWidget();
+                        RewardWidget rewardWidget = new RewardWidget(); // Create reward dialogFragment
                         for (Reward reward : rewards) {
-                            if(reward.getRewardType().equals("exp")){
+                            if(reward.getRewardType().equals("exp")){ //Set Exp to reward dialogFragment
                                 rewardWidget.setExp(reward.getRewardValue());
-                            }else if(reward.getRewardType().equals("point")){
+                            }else if(reward.getRewardType().equals("point")){//Set point to reward dialogFragment
                                 rewardWidget.setPoints(reward.getRewardValue());
-                            }else if(reward.getRewardType().equals("badge")){
+                            }else if(reward.getRewardType().equals("badge")){//Set badge to reward dialogFragment
                                 rewardWidget.setBadge(reward.getRewardData());
                             }
                         }
-                        rewardWidget.show(getSupportFragmentManager(), "fragment_reward_widget");
+                        rewardWidget.show(getSupportFragmentManager(), "fragment_reward_widget"); // Show dialog
                     }
 
                 }
@@ -162,15 +163,17 @@ public class QuizActivity extends FragmentActivity implements AdapterView.OnItem
         
     }
     
+    //Send the question answer
     private void sendAnswer(String optionId){
         QuizApi.answerQuestion(SampleApplication.playbasis, quizId, playerId, questionId, optionId, new OnResult<QuizQuestionAnswer>() {
             @Override
             public void onSuccess(QuizQuestionAnswer result) {
-                rewards = result.getRewards();
-                getQuestions();
+                rewards = result.getRewards();// save rewards
+                getQuestions();//Get next question
             }
             @Override
             public void onError(HttpError error) {
+                //Show error
                 Toast.makeText(QuizActivity.this, error.toString(), Toast.LENGTH_SHORT).show();
             }
         });

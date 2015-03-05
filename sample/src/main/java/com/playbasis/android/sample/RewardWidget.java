@@ -41,6 +41,7 @@ public class RewardWidget extends DialogFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        //Create the widget view
         View view = inflater.inflate(R.layout.widget_reward, container);
         vName    = (TextView) view.findViewById(R.id.textView_rewardwidget_badge_name);
         vHint    = (TextView) view.findViewById(R.id.textView_rewardwidget_badge_hint);
@@ -63,6 +64,7 @@ public class RewardWidget extends DialogFragment {
             }
         });
         getDialog().setTitle("REWARD");
+        // If have badge, display the badge layout
         if(badge!=null){
             lBadge.setVisibility(View.VISIBLE);
             vName.setText(badge.getName());
@@ -70,14 +72,17 @@ public class RewardWidget extends DialogFragment {
             vDescription.setText(Html.fromHtml(badge.getDescription()));
             imageView.setImageUrl(badge.getImage(), SampleApplication.playbasis.getHttpManager().getImageLoader());
         }
+        // If have point, display the point layout
         if (Validator.isValid( point)){
             lPoints.setVisibility(View.VISIBLE);
             vPoints.setText(point);
         }
+        // If have exp, display the exp layout
         if (Validator.isValid( exp)){
             lExp.setVisibility(View.VISIBLE);
             vExp.setText(exp);
         }
+        // If have coupon, display the coupon layout
         if (Validator.isValid( coupon)){
             lCoupon.setVisibility(View.VISIBLE);
             vCoupon.setText(coupon);

@@ -43,6 +43,7 @@ public class QuestActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_quest);
 
+        //Create view
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
         listView = (ListView) findViewById(R.id.listView_quest);
         lQuestDetails = (LinearLayout) findViewById(R.id.linearLayout_quest_details);
@@ -53,25 +54,29 @@ public class QuestActivity extends FragmentActivity {
         questAdapter = new QuestAdapter(this);
         listView.setAdapter(questAdapter);
 
+        //Quet the quest
         QuestApi.info(SampleApplication.playbasis, "54eb1128be120bd03a8b4578", new OnResult<Quest>() {
             @Override
             public void onSuccess(Quest result) {
+                //Display quest information into view
                 vQuestName.setText(result.getQuestName());
                 vQuestDescription.setText(result.getDescription());
                 vQuestImage.setImageUrl(result.getImage(), SampleApplication.playbasis.getHttpManager().getImageLoader());
-                questAdapter.setMissions(result.getMissions());
-                showProgress(false);
+                questAdapter.setMissions(result.getMissions());//Send the missions to the mission adapter
+                showProgress(false); // dismiss progress dialog
             }
 
             @Override
             public void onError(HttpError error) {
+                //Display error toast
                 Toast.makeText(QuestActivity.this, error.toString(), Toast.LENGTH_SHORT).show();
-                showProgress(false);
+                showProgress(false);// dismiss progress dialog
             }
         });
+        showProgress(true);// show progress dialog
     }
 
-
+    //Show or hide progress dialog
     private void showProgress(Boolean show){
         if(show){
             progressBar.setVisibility(View.VISIBLE);

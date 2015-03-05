@@ -42,24 +42,26 @@ public class BadgeActivity extends FragmentActivity {
         redeemBadge = (Button) findViewById(R.id.button_redeem_badge);
         layout = (LinearLayout) findViewById(R.id.linearLayout_badge);
         
-        //Set
+        //Set onClick action
         redeemBadge.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showProgress(true);
+                showProgress(true); // Display the progress bar
                 SampleApplication.playbasis.Do("gregtestuser", UIEvent.CLICK,  new OnResult<Rule>() {
                     @Override
                     public void onSuccess(Rule result) {
+                        //Show the badge DialogFragment
                         BadgeWidget badgeWidget = new BadgeWidget();
                         badgeWidget.setBadge(result.getEvents().get(0).getRewardData());
                         badgeWidget.show(getSupportFragmentManager(), "fragment_player_info");
-                        showProgress(false);
+                        showProgress(false);// dismiss the progress bar
                     }
 
                     @Override
                     public void onError(HttpError error) {
+                        //Show a toast error
                         Toast.makeText(BadgeActivity.this, error.toString(), Toast.LENGTH_SHORT).show();
-                        showProgress(false);
+                        showProgress(false); // dismiss the progress bar
                     }
                 });
             }

@@ -59,7 +59,8 @@ public class RewardAdapter extends BaseAdapter {
     @Override
     public View getView(final int position, View view, ViewGroup viewGroup) {
         ViewHolder holder;
-
+        
+        //Create the recycle item
         if (view == null) {
             holder = new ViewHolder();
             view = mInflater.inflate(R.layout.adapter_reward, viewGroup, false);
@@ -74,6 +75,7 @@ public class RewardAdapter extends BaseAdapter {
         holder.vName.setText(goods.get(position).getName());
         holder.vDescription.setText(Html.fromHtml(goods.get(position).getDescription()));
         holder.imageView.setImageUrl(goods.get(position).getImage(), SampleApplication.playbasis.getHttpManager().getImageLoader());
+        // notify the listener a button has been clicked
         holder.vReward.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -83,6 +85,7 @@ public class RewardAdapter extends BaseAdapter {
         return view;
     }
 
+    // Recycle view holder
     public static class ViewHolder {
         public NetworkImageView imageView;
         public TextView vName;
@@ -90,6 +93,7 @@ public class RewardAdapter extends BaseAdapter {
         public Button  vReward;
     }
     
+    //Om button click listener
     public void setOnRewardClickListener(OnRewardClick onRewardClick){
         this.onRewardClick = onRewardClick;
     }

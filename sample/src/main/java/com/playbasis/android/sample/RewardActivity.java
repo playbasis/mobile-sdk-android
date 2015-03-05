@@ -36,80 +36,76 @@ public class RewardActivity extends FragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reward);
-
+        
+        //Create view
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
         listView = (ListView) findViewById(R.id.listView_reward);
         rewardAdapter = new RewardAdapter(this);
         listView.setAdapter(rewardAdapter);
 
-
+        //Get the list of goods
         GoodsApi.listInfo(SampleApplication.playbasis, new OnResult<List<Goods>>() {
             @Override
             public void onSuccess(List<Goods> result) {
-                rewardAdapter.setrewards(result);
-                showProgress(false);
+                rewardAdapter.setrewards(result); //Send the list of goods to the listView adapter
+                showProgress(false); // Dismiss progress bar
             }
 
             @Override
             public void onError(HttpError error) {
+                //Show error
                 Toast.makeText(RewardActivity.this, error.toString(), Toast.LENGTH_SHORT).show();
-                showProgress(false);
+                showProgress(false);// Dismiss progress bar
             }
         });
-        showProgress(true);
+        showProgress(true); // Show progress bar
         
+        //If a item redeem button on the listView has been click
         rewardAdapter.setOnRewardClickListener(new RewardAdapter.OnRewardClick() {
             @Override
             public void onRewardClick(String goodId) {
                 showProgress(true);
+                //Redeem the goods
                 RedeemApi.goods(SampleApplication.playbasis, goodId, "gregtestuser", 1, new OnResult<List<RedeemGood>>() {
                     @Override
                     public void onSuccess(List<RedeemGood> result) {
 
-                        RewardWidget rewardWidget = new RewardWidget();
-                        for (RedeemGood redeemGood : result) {
+                        RewardWidget rewardWidget = new RewardWidget(); // Create redeem dialogFragment
+                        for (RedeemGood redeemGood : result) { // Loop for every goods
+                            //Check if the good is empty
                             if(result.size()<=0 || result.get(0) == null || result.get(0).getGoodsData() == null) {
                                 rewardWidget.setCoupon("No goods available");
                             }else {
+                                //If good event is a "Goods_RECEIVED" event
                                 if (redeemGood.getEventType().equals("GOODS_RECEIVED")) {
+                                    // if good have points
                                     if (redeemGood.getGoodsData().getRedeem().getPoint() != null) {
+                                        //Send the number of points to the redeem dialogFragment
                                         rewardWidget.setPoints(String.valueOf(String.valueOf(redeemGood.getGoodsData()
                                                 .getRedeem()
                                                 .getPoint()
-                                                .getValue())));
-                                    } else if (redeemGood.getGoodsData().getRedeem().getBadge() != null) {
+                                                .getValue()))); 
+                                    }
+                                    //If good have badge
+                                    else if (redeemGood.getGoodsData().getRedeem().getBadge() != null) {
+                                        //Send the badge to the redeem dialogFragment
                                         rewardWidget.setBadge(redeemGood.getGoodsData().getRedeem().getBadge().get(0));
                                     }
                                 }
-
+                                // Send the coupon code to the redeem dialogFragment
                                 rewardWidget.setCoupon(result.get(0).getGoodsData().getCode());
                             }
                         }
                         rewardWidget.show(getSupportFragmentManager(), "fragment_reward_widget");
 
-/*                        AlertDialog alertDialog = new AlertDialog.Builder(RewardActivity.this).create();
-                        alertDialog.setTitle("Coupon code");
-                        if(result.size()>=0 || result.get(0) == null || result.get(0).getGoodsData() == null){
-                            alertDialog.setMessage("No goods available");
-
-                        }else{
-                            alertDialog.setMessage(result.get(0).getGoodsData().getCode());
-
-                        }
-                        alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
-                                new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        dialog.dismiss();
-                                    }
-                                });
-                        alertDialog.show();*/
-                        showProgress(false);
+                        showProgress(false); // Hide progress bar
                     }
 
                     @Override
                     public void onError(HttpError error) {
+                        // Show error
                         Toast.makeText(RewardActivity.this, error.toString(), Toast.LENGTH_SHORT).show();
-                        showProgress(false);
+                        showProgress(false); //Hide progress bar
                     }
                 } );
             }
@@ -118,6 +114,7 @@ public class RewardActivity extends FragmentActivity {
     }
 
 
+    //Show or hide the progress bar
     private void showProgress(Boolean show){
         if(show){
             progressBar.setVisibility(View.VISIBLE);

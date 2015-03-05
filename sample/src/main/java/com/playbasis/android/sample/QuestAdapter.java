@@ -34,10 +34,10 @@ public class QuestAdapter  extends BaseAdapter {
 
     private LayoutInflater mInflater;
     private List<Mission> missions;
-    private OnMissionClick onMissionClick;
     private Context mContext;
     private FragmentActivity mFragmentActivity;
 
+    //Constructor
     public QuestAdapter(FragmentActivity fragmentActivity) {
         mContext = fragmentActivity;
         mFragmentActivity = fragmentActivity;
@@ -45,10 +45,11 @@ public class QuestAdapter  extends BaseAdapter {
         missions = new ArrayList<>();
     }
 
+    //Get the missions
     public void setMissions(List<Mission> missions){
-        this.missions.clear();
-        this.missions.addAll(missions);
-        notifyDataSetChanged();
+        this.missions.clear(); // Clear previous data
+        this.missions.addAll(missions); // Add new missions
+        notifyDataSetChanged(); // Notify the adapter we have new datas
 
     }
 
@@ -71,6 +72,7 @@ public class QuestAdapter  extends BaseAdapter {
     public View getView(final int position, View view, ViewGroup viewGroup) {
         final ViewHolder holder;
 
+        //Set item recycler
         if (view == null) {
             holder = new ViewHolder();
             view = mInflater.inflate(R.layout.adapter_mission, viewGroup, false);
@@ -87,68 +89,88 @@ public class QuestAdapter  extends BaseAdapter {
         holder.vDescription.setText(Html.fromHtml(missions.get(position).getDescription()));
         holder.imageView.setImageUrl(missions.get(position).getImage(), SampleApplication.playbasis.getHttpManager().getImageLoader());
         holder.vClick.setText(missions.get(position).getHint());
+        
+        
+        // Button click event
         holder.vClick.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 holder.vClick.setEnabled(false);
+                
+                //If the button if "click" event
                 if(missions.get(position).getHint().equals("click")){
-                    SampleApplication.playbasis.Do("gregtestuser", RuleAction.CLICK, new OnResult<Rule>() {
+                    //Send a sync "click" event to the playbasis dashBoard
+                    SampleApplication.playbasis.Do("exampleplayer", RuleAction.CLICK, new OnResult<Rule>() {
                         @Override
                         public void onSuccess(Rule result) {
+                            // set the view to green
                             holder.view.setBackgroundColor(mContext.getResources().getColor(
                                     android.R.color.holo_green_light));
-                            displayResult(result);
+                            displayResult(result); // Display reward dialogFragment
                         }
 
                         @Override
                         public void onError(HttpError error) {
                             holder.vClick.setEnabled(true);
+                            //show error toast
                             Toast.makeText(mContext, error.toString(), Toast.LENGTH_SHORT).show();
                         }
                     });
+
+                //If the button if "like" event
                 }else{
-                    SampleApplication.playbasis.Do("gregtestuser", RuleAction.LIKE, new OnResult<Rule>() {
+                    //Send a sync "like" event to the playbasis dashBoard
+                    SampleApplication.playbasis.Do("exampleplayer", RuleAction.LIKE, new OnResult<Rule>() {
                         @Override
                         public void onSuccess(Rule result) {
+                            // set the view to green
                             holder.view.setBackgroundColor(mContext.getResources().getColor(
                                     android.R.color.holo_green_light));
-                            displayResult(result);
+                            displayResult(result);// Display reward dialogFragment
                         }
 
                         @Override
                         public void onError(HttpError error) {
                             holder.vClick.setEnabled(true);
+                            //show error toast
                             Toast.makeText(mContext, error.toString(), Toast.LENGTH_SHORT).show();
                         }
                     });
                 }
                 
-                if(onMissionClick!= null) onMissionClick.onMissionClick(missions.get(position).getMissionId());
             }
         });
         return view;
     }
     
+    // Show Reward dialog fragment
     private void displayResult(Rule result){
 
+        // Verify if this mission have rewards
         if(result.getMissions().size()> 0){
-            RewardWidget rewardWidget = new RewardWidget();
-            Mission mission = result.getMissions().get(0);
+            RewardWidget rewardWidget = new RewardWidget(); //Create Reward dialog fragment
+            
+            Mission mission = result.getMissions().get(0); // Get first mission
             for (Reward reward : mission.getRewards()) {
+                // set point on the rewardFragment if the reward have points
                 if (reward.getRewardType().equals("point")) {
                     rewardWidget.setPoints(reward.getRewardValue());
-                } else if (reward.getRewardType().equals("badge")) {
+                }
+                // set badge on the rewardFragment if the reward have badge
+                else if (reward.getRewardType().equals("badge")) {
                     rewardWidget.setBadge(reward.getRewardData());
                 }
             }
             rewardWidget.show(mFragmentActivity.getSupportFragmentManager(), "fragment_reward_widget");
         }else {
+            // Display error message, this mission doesn't have rewards
             Toast.makeText(mContext, "No rewards available", Toast.LENGTH_SHORT).show();
         }
 
         
     }
 
+    //View holder recycler
     public static class ViewHolder {
         public View view;
         public NetworkImageView imageView;
@@ -157,11 +179,4 @@ public class QuestAdapter  extends BaseAdapter {
         public Button  vClick;
     }
 
-    public void setOnMissionClickListener(OnMissionClick onMissionClick){
-        this.onMissionClick = onMissionClick;
-    }
-
-    public interface OnMissionClick {
-        public void onMissionClick(String missionId);
-    }
 }
