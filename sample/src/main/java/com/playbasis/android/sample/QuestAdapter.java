@@ -74,6 +74,7 @@ public class QuestAdapter  extends BaseAdapter {
         if (view == null) {
             holder = new ViewHolder();
             view = mInflater.inflate(R.layout.adapter_mission, viewGroup, false);
+            holder.view = view;
             holder.vName = (TextView)view.findViewById(R.id.textView_mission_name);
             holder.vDescription = (TextView)view.findViewById(R.id.textView_mission_description);
             holder.vClick = (Button) view.findViewById(R.id.button_click);
@@ -94,7 +95,8 @@ public class QuestAdapter  extends BaseAdapter {
                     SampleApplication.playbasis.Do("gregtestuser", RuleAction.CLICK, new OnResult<Rule>() {
                         @Override
                         public void onSuccess(Rule result) {
-                            holder.vClick.setEnabled(true);
+                            holder.view.setBackgroundColor(mContext.getResources().getColor(
+                                    android.R.color.holo_green_light));
                             displayResult(result);
                         }
 
@@ -108,7 +110,8 @@ public class QuestAdapter  extends BaseAdapter {
                     SampleApplication.playbasis.Do("gregtestuser", RuleAction.LIKE, new OnResult<Rule>() {
                         @Override
                         public void onSuccess(Rule result) {
-                            holder.vClick.setEnabled(true);
+                            holder.view.setBackgroundColor(mContext.getResources().getColor(
+                                    android.R.color.holo_green_light));
                             displayResult(result);
                         }
 
@@ -128,7 +131,7 @@ public class QuestAdapter  extends BaseAdapter {
     
     private void displayResult(Rule result){
 
-        if(result.getMissions().size()>= 0){
+        if(result.getMissions().size()> 0){
             RewardWidget rewardWidget = new RewardWidget();
             Mission mission = result.getMissions().get(0);
             for (Reward reward : mission.getRewards()) {
@@ -147,6 +150,7 @@ public class QuestAdapter  extends BaseAdapter {
     }
 
     public static class ViewHolder {
+        public View view;
         public NetworkImageView imageView;
         public TextView vName;
         public TextView vDescription;

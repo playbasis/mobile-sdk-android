@@ -3,6 +3,7 @@ package com.playbasis.android.sample;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -48,7 +49,7 @@ public class BadgeWidget extends DialogFragment {
         if(badge!=null){
             vName.setText(badge.getName());
             vHint.setText(badge.getHint());
-            vDescription.setText(badge.getDescription());
+            vDescription.setText(Html.fromHtml(badge.getDescription()));
             imageView.setImageUrl(badge.getImage(), SampleApplication.playbasis.getHttpManager().getImageLoader());
         }
 

@@ -6,7 +6,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:orientation="vertical"
               android:layout_width="match_parent"
-              android:layout_height="match_parent">
+              android:layout_height="match_parent"
+    android:id="@+id/layout_adapter_mission">
 
     <com.playbasis.android.playbasissdk.http.toolbox.NetworkImageView
         android:layout_width="80dp"
@@ -21,9 +22,9 @@
         android:id="@+id/linearLayout"
         android:layout_alignParentTop="true"
         android:layout_toLeftOf="@+id/button_click"
-        android:layout_toRightOf="@+id/imageView_reward"
-        android:layout_toEndOf="@+id/imageView_reward"
-        android:layout_alignBottom="@+id/imageView_mission">
+        android:layout_toEndOf="@+id/imageView_mission"
+        android:layout_alignBottom="@+id/imageView_mission"
+        android:layout_toRightOf="@+id/imageView_mission">
 
         <TextView
             android:layout_width="wrap_content"
