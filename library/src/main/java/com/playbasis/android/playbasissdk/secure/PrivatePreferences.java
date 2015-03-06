@@ -21,6 +21,11 @@ public class PrivatePreferences {
      * Key of the expiration date on the secure shared preference. 
      */
     private static final String PREF_EXP_DATE = "pref_exp_date";
+    
+    
+    private static final String ELAPSED = "elapsed";
+    
+    private static final String LASTED_DATE = "lasted_date";
 
     /**
      * Secure shared preference 
@@ -71,4 +76,35 @@ public class PrivatePreferences {
         mSecurePrefs.edit().remove(PREF_EXP_DATE).commit();
         
     }
+
+    public void clearDate(){
+        mSecurePrefs.edit().remove(LASTED_DATE).commit();
+        mSecurePrefs.edit().remove(ELAPSED).commit();
+
+    }
+    
+    
+    public long getLastedDate(){
+        return mSecurePrefs.getLong(LASTED_DATE, 0l);
+    }
+    
+    public void saveLastedDate(long date){
+        mSecurePrefs.edit()
+                .putLong(LASTED_DATE, date)
+                .commit();
+        
+    }
+    
+    public Long getElapse(){
+        return mSecurePrefs.getLong(ELAPSED, 0l);
+        
+    }
+    
+    public void saveElapse(long elapse){
+        mSecurePrefs.edit()
+                .putLong(ELAPSED, elapse)
+                .commit();
+
+    }
+    
 }

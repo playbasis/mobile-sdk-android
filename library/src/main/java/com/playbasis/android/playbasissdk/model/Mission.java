@@ -24,6 +24,8 @@ public class Mission {
     private List<Completion> completion = new ArrayList<Completion>();
     @Expose
     private List<Reward> rewards = new ArrayList<Reward>();
+    @Expose
+    private List<Event> events = new ArrayList<Event>();
     @SerializedName("mission_id")
     @Expose
     private String missionId;
@@ -53,10 +55,6 @@ public class Mission {
         this.missionName = missionName;
     }
 
-    public Mission withMissionName(String missionName) {
-        this.missionName = missionName;
-        return this;
-    }
 
     /**
      * 
@@ -76,10 +74,6 @@ public class Mission {
         this.missionNumber = missionNumber;
     }
 
-    public Mission withMissionNumber(String missionNumber) {
-        this.missionNumber = missionNumber;
-        return this;
-    }
 
     /**
      * 
@@ -99,10 +93,6 @@ public class Mission {
         this.description = description;
     }
 
-    public Mission withDescription(String description) {
-        this.description = description;
-        return this;
-    }
 
     /**
      * 
@@ -122,10 +112,6 @@ public class Mission {
         this.hint = hint;
     }
 
-    public Mission withHint(String hint) {
-        this.hint = hint;
-        return this;
-    }
 
     /**
      * 
@@ -145,10 +131,6 @@ public class Mission {
         this.image = image;
     }
 
-    public Mission withImage(String image) {
-        this.image = image;
-        return this;
-    }
 
     /**
      * 
@@ -168,10 +150,6 @@ public class Mission {
         this.completion = completion;
     }
 
-    public Mission withCompletion(List<Completion> completion) {
-        this.completion = completion;
-        return this;
-    }
 
     /**
      * 
@@ -191,10 +169,6 @@ public class Mission {
         this.rewards = rewards;
     }
 
-    public Mission withRewards(List<Reward> rewards) {
-        this.rewards = rewards;
-        return this;
-    }
 
     /**
      * 
@@ -212,11 +186,6 @@ public class Mission {
      */
     public void setMissionId(String missionId) {
         this.missionId = missionId;
-    }
-
-    public Mission withMissionId(String missionId) {
-        this.missionId = missionId;
-        return this;
     }
 
     /**
@@ -237,10 +206,6 @@ public class Mission {
         this.dateModified = dateModified;
     }
 
-    public Mission withDateModified(String dateModified) {
-        this.dateModified = dateModified;
-        return this;
-    }
 
     /**
      * 
@@ -260,10 +225,6 @@ public class Mission {
         this.status = status;
     }
 
-    public Mission withStatus(String status) {
-        this.status = status;
-        return this;
-    }
 
     /**
      * 
@@ -283,9 +244,21 @@ public class Mission {
         this.pending = pending;
     }
 
-    public Mission withPending(List<Pending> pending) {
-        this.pending = pending;
-        return this;
+
+    /**
+     *  
+     * @return the list of events
+     */
+    public List<Event> getEvents() {
+        return events;
+    }
+
+    /**
+     *
+     * @param events the list of events
+     */
+    public void setEvents(List<Event> events) {
+        this.events = events;
     }
 
     @Override

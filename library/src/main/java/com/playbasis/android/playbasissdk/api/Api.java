@@ -1,5 +1,9 @@
 package com.playbasis.android.playbasissdk.api;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+
 import com.playbasis.android.playbasissdk.core.Playbasis;
 import com.playbasis.android.playbasissdk.core.SDKUtil;
 import com.playbasis.android.playbasissdk.helper.ApiHelper;
@@ -39,6 +43,8 @@ import java.util.Objects;
 public abstract class Api {
     public static final String TAG = "Api";
     private static Boolean isResendRunning = false;
+    
+    private static int renewCount = 0;
 
 
     /**
@@ -53,6 +59,9 @@ public abstract class Api {
                                         final OnResult<JSONObject> listener) {
         resendRequests(playbasis);
         HttpsTrustManager.allowAllSSL();
+        
+        
+        
 
         //Add params to the request
         if (params == null) params = new ArrayList<>();
@@ -117,6 +126,7 @@ public abstract class Api {
 
                     @Override
                     public void onResponse(JSONObject response) {
+                        renewCount = 0;
                         PlayBasisLog.v(TAG, response != null ? response.toString() : "Response is null");
                         if (listener != null) listener.onSuccess(response);
                     }
@@ -126,21 +136,25 @@ public abstract class Api {
             @Override
             public void onErrorResponse(HttpError error) {
                 //Request a new token and resend the request if token is invalid.
-                if (error.requestError!=null && error.requestError.errorCode == RequestError.ERROR_CODE.INVALID_TOKEN) {
+                if (error.requestError!=null && error.requestError.errorCode == RequestError.ERROR_CODE.INVALID_TOKEN
+                 && renewCount < 3       ) {
                     AuthAuthenticator authAuthenticator = new AuthAuthenticator(playbasis);
                     authAuthenticator.requestRenewAuthToken(new OnResult<AuthToken>() {
                         @Override
                         public void onSuccess(AuthToken result) {
+                            renewCount++;
                             JsonObjectPOST(playbasis, uri, httpParams, listener);
                         }
 
                         @Override
                         public void onError(HttpError error) {
+                            renewCount = 0;
                             PlayBasisLog.e(TAG, "Error: " + error.getMessage());
                             if (listener != null) listener.onError(error);
                         }
                     });
                 } else {
+                    renewCount = 0;
                     PlayBasisLog.e(TAG, "Error: " + error.getMessage());
                     if (listener != null) listener.onError(error);
                 }
@@ -382,7 +396,7 @@ public abstract class Api {
 
         if (!playbasis.isNetworkAvailable()) {
             RequestStorage storage = new RequestStorage(playbasis.getContext());
-            storage.save(playbasis, endpoint, jsonObject);
+            storage.save(playbasis, endpoint, jsonObject, timestamp);
             if (listener != null) listener.onError(new HttpError(RequestError.NoNetwork()));
             return;
         } else resendRequests(playbasis);
@@ -394,6 +408,7 @@ public abstract class Api {
 
                     @Override
                     public void onResponse(String response) {
+                        renewCount = 0;
                         PlayBasisLog.v(TAG, response != null ? response : "Response is null");
                         if (listener != null) listener.onSuccess(response);
                     }
@@ -405,21 +420,24 @@ public abstract class Api {
                     public void onErrorResponse(HttpError error) {
                         //Request a new token and resend the request if token is invalid.
                         if (error.requestError!=null && error.requestError.errorCode == RequestError.ERROR_CODE
-                                .INVALID_TOKEN) {
+                                .INVALID_TOKEN && renewCount < 3) {
                             AuthAuthenticator authAuthenticator = new AuthAuthenticator(playbasis);
                             authAuthenticator.requestRenewAuthToken(new OnResult<AuthToken>() {
                                 @Override
                                 public void onSuccess(AuthToken result) {
+                                    renewCount++;
                                     asyncPost(playbasis, endpoint, timestamp, jsonObject, listener);
                                 }
 
                                 @Override
                                 public void onError(HttpError error) {
+                                    renewCount = 0;
                                     PlayBasisLog.e(TAG, "Error: " + error.getMessage());
                                     if (listener != null) listener.onError(error);
                                 }
                             });
                         } else {
+                            renewCount = 0;
                             PlayBasisLog.e(TAG, "Error: " + error.getMessage());
                             if (listener != null) listener.onError(error);
                         }
@@ -462,8 +480,9 @@ public abstract class Api {
                 isResendRunning = false;
             }
         }).start();
-
-
     }
+
+
+
 
 }

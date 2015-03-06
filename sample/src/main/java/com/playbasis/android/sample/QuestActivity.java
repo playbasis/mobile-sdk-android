@@ -55,7 +55,7 @@ public class QuestActivity extends FragmentActivity {
         listView.setAdapter(questAdapter);
 
         //Quet the quest
-        QuestApi.info(SampleApplication.playbasis, "54eb1128be120bd03a8b4578", new OnResult<Quest>() {
+        QuestApi.info(SampleApplication.playbasis, "54f92c69be120b97658b45d0", new OnResult<Quest>() {
             @Override
             public void onSuccess(Quest result) {
                 //Display quest information into view

@@ -69,13 +69,13 @@ public class RequestStorage {
      * @param params Json Param of the request.
      * @return save success.
      */
-    public Boolean save(Playbasis playbasis, String url, JSONObject params){
+    public Boolean save(Playbasis playbasis, String url, JSONObject params, Long timestamp){
         StoredRequest storedRequest = new StoredRequest()
                 .withUrl(url)
                 .withAsync(false)
                 .withKeyValueBody(keyValueParams(params))
                 .withKeyValueHeader(null)
-                .withTimestamp(DateHelper.currentTimetamp());
+                .withTimestamp(timestamp!=null? timestamp : DateHelper.currentTimetamp());
 
         return write(storedRequest);
 

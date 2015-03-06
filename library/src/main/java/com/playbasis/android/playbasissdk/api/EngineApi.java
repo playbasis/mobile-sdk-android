@@ -79,7 +79,19 @@ public class EngineApi extends Api {
                 @Override
                 public void onSuccess(Boolean result) {
                     if (result) {
-                        ruleRequest(playbasis, isAsync, action, playerId, url, reward, quantity, listener);
+                        NTPdate.GetNTPDate(playbasis, new NTPdate.OnDate() {
+                            @Override
+                            public void onDate(Long date) {
+                                ruleRequest(playbasis, isAsync, action, playerId, url, date, reward, quantity, 
+                                        listener);
+                            }
+
+                            @Override
+                            public void onError(RequestError error) {
+                                if (listener != null) listener.onError(new HttpError(error));
+                            }
+                        });
+                        
                     } else {
                         if (listener != null) listener.onError(new HttpError(new RequestError("update player fail",
                                 RequestError.ERROR_CODE.DEFAULT)));
@@ -93,12 +105,13 @@ public class EngineApi extends Api {
                 }
             });
         }else{
-            ruleRequest(playbasis, isAsync, action, playerId, url, reward, quantity, listener);
+            ruleRequest(playbasis, isAsync, action, playerId, url, NTPdate.GetLocalDate(playbasis), reward, quantity,
+                    listener);
         }
     }
 
     private static void ruleRequest(@NonNull Playbasis playbasis, boolean isAsync,
-                            @NonNull String action, @NonNull String playerId, String url, String reward,
+                            @NonNull String action, @NonNull String playerId, String url, Long dateTime, String reward,
                             String quantity,  final OnResult<Rule> listener){
 
         String endpoint = SDKUtil._ENGINE_URL + "rule";
@@ -117,7 +130,7 @@ public class EngineApi extends Api {
                 e.printStackTrace();
             }
 
-            asyncPost(playbasis, endpoint ,jsonObject , new OnResult<String>() {
+            asyncPost(playbasis, endpoint, dateTime ,jsonObject , new OnResult<String>() {
                 @Override
                 public void onSuccess(String result) {
                     if (listener != null) listener.onSuccess(null);
@@ -141,7 +154,7 @@ public class EngineApi extends Api {
             if (reward != null) params.add(new BasicNameValuePair("reward", reward));
             if (quantity != null) params.add(new BasicNameValuePair("quantity", quantity));
 
-            JsonObjectPOST(playbasis, uri, params, new OnResult<JSONObject>() {
+            JsonObjectPOST(playbasis, uri, dateTime, params, new OnResult<JSONObject>() {
                 @Override
                 public void onSuccess(JSONObject result) {
                     Rule rule = JsonHelper.FromJsonObject(result, Rule.class);

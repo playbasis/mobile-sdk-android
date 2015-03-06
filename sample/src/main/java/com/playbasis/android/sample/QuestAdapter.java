@@ -14,6 +14,7 @@ import android.widget.Toast;
 import com.playbasis.android.playbasissdk.api.OnResult;
 import com.playbasis.android.playbasissdk.http.HttpError;
 import com.playbasis.android.playbasissdk.http.toolbox.NetworkImageView;
+import com.playbasis.android.playbasissdk.model.Event;
 import com.playbasis.android.playbasissdk.model.Goods;
 import com.playbasis.android.playbasissdk.model.Mission;
 import com.playbasis.android.playbasissdk.model.RedeemGood;
@@ -151,14 +152,14 @@ public class QuestAdapter  extends BaseAdapter {
             RewardWidget rewardWidget = new RewardWidget(); //Create Reward dialog fragment
             
             Mission mission = result.getMissions().get(0); // Get first mission
-            for (Reward reward : mission.getRewards()) {
+            for (Event event : mission.getEvents()) {
                 // set point on the rewardFragment if the reward have points
-                if (reward.getRewardType().equals("point")) {
-                    rewardWidget.setPoints(reward.getRewardValue());
+                if (event.getRewardType().equals("point")) {
+                    rewardWidget.setPoints(event.getValue());
                 }
                 // set badge on the rewardFragment if the reward have badge
-                else if (reward.getRewardType().equals("badge")) {
-                    rewardWidget.setBadge(reward.getRewardData());
+                else if (event.getRewardType().equals("badge")) {
+                    rewardWidget.setBadge(event.getRewardData());
                 }
             }
             rewardWidget.show(mFragmentActivity.getSupportFragmentManager(), "fragment_reward_widget");

@@ -22,6 +22,7 @@ import com.playbasis.android.playbasissdk.http.toolbox.KeyStore;
 import com.playbasis.android.playbasissdk.model.Rule;
 import com.playbasis.android.playbasissdk.model.RuleAction;
 import com.playbasis.android.playbasissdk.model.UIEvent;
+import com.playbasis.android.playbasissdk.secure.PrivatePreferences;
 import com.playbasis.android.playbasissdk.widget.AbstractPlayerView;
 
 /**
@@ -247,6 +248,8 @@ public class Playbasis {
                 instance.mKeyStore = mPlayBasisContent.keyStore;
                 instance.mChannel = mPlayBasisContent.channel;
             }
+            PrivatePreferences preferences = new PrivatePreferences(mPlayBasisContent.context);
+            preferences.clearDate();
             //Send stored requests
             Api.resendRequests(instance);
             return instance;

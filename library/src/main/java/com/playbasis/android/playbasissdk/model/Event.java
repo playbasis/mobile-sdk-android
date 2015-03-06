@@ -30,6 +30,8 @@ public class Event {
     @SerializedName("reward_data")
     @Expose
     private BadgeData rewardData;
+    @Expose
+    private String value;
 
     /**
      *  
@@ -126,6 +128,22 @@ public class Event {
      */
     public void setRewardData(BadgeData rewardData) {
         this.rewardData = rewardData;
+    }
+
+    /**
+     *  
+     * @return the value
+     */
+    public String getValue() {
+        return value;
+    }
+
+    /**
+     *
+     * @param value the value
+     */
+    public void setValue(String value) {
+        this.value = value;
     }
 
     @Override
