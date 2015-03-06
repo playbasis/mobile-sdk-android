@@ -40,7 +40,7 @@ public class MainActivity extends FragmentActivity {
         setContentView(R.layout.activity_main);
 
         
-       /* SampleApplication.playbasis.Do("gfdgsdfgsdfg", RuleAction.CLICK, new OnResult<Rule>() {
+        SampleApplication.playbasis.Do("gfdgsdfgsdfg", RuleAction.CLICK, new OnResult<Rule>() {
             @Override
             public void onSuccess(Rule result) {
                 Toast.makeText(MainActivity.this, result.toString(), Toast.LENGTH_SHORT).show();
@@ -51,7 +51,7 @@ public class MainActivity extends FragmentActivity {
                 Toast.makeText(MainActivity.this, error.requestError.message, Toast.LENGTH_SHORT).show();
             }
         });
-*/
+
 
 
         Button playerButton = (Button) findViewById(R.id.button_player);

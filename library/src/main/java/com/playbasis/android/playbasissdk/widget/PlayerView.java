@@ -9,7 +9,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 
-import com.playbasis.android.playbasissdk.R;
 import com.playbasis.android.playbasissdk.helper.Validator;
 import com.playbasis.android.playbasissdk.model.Player;
 
@@ -17,7 +16,7 @@ import com.playbasis.android.playbasissdk.model.Player;
  * Created by gregoire barret on 2/26/15.
  * For PlayBasisSdk project.
  */
-public class PlayerView extends AbstractPlayerView implements View.OnClickListener {
+public class PlayerView extends AbstractPlayerView{
     public static final String TAG = "PlayerView";
 
     private EditText mIdView;
@@ -40,37 +39,54 @@ public class PlayerView extends AbstractPlayerView implements View.OnClickListen
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.player_view, container);
-        mIdView       = (EditText) view.findViewById(R.id.editText_player_id);
-        mEmailView    = (EditText) view.findViewById(R.id.editText_player_email);
-        mNameView     = (EditText) view.findViewById(R.id.editText_player_name);
-        Button mSubmitButton = (Button) view.findViewById(R.id.button_submit);
+//        View view = inflater.inflate(R.layout.player_view, container);
+//        mIdView       = (EditText) view.findViewById(R.id.editText_player_id);
+//        mEmailView    = (EditText) view.findViewById(R.id.editText_player_email);
+//        mNameView     = (EditText) view.findViewById(R.id.editText_player_name);
+//        Button mSubmitButton = (Button) view.findViewById(R.id.button_submit);
 
 
 
-/*
+
         LinearLayout rlmain = new LinearLayout(getActivity());
-        LinearLayout.LayoutParams llp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT,LinearLayout.LayoutParams.FILL_PARENT);
-
+        LinearLayout.LayoutParams llp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.MATCH_PARENT);
+        rlmain.setLayoutParams(llp);
+        rlmain.setOrientation(LinearLayout.VERTICAL);
+        rlmain.setPadding(16,16,16,16);
+        
         mIdView = new EditText(getActivity());
         mEmailView = new EditText(getActivity());
         mNameView = new EditText(getActivity());
-        LinearLayout .LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
+        Button mSubmitButton = new Button(getActivity());
+        LinearLayout .LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT);
 
         mIdView.setLayoutParams(lp);
         mEmailView.setLayoutParams(lp);
         mNameView.setLayoutParams(lp);
+        mSubmitButton.setLayoutParams(lp);
+        
+        mIdView.setHint("Player Id");
+        mEmailView.setHint("Email");
+        mNameView.setHint("Name");
+        mSubmitButton.setText("OK");
 
         rlmain.addView(mIdView);
         rlmain.addView(mEmailView);
         rlmain.addView(mNameView);
-*/
+        rlmain.addView(mSubmitButton);
+        
+
 
         
 
-        mSubmitButton.setOnClickListener(this);
-        getDialog().setTitle(getString(R.string.player_info));
+       mSubmitButton.setOnClickListener(new View.OnClickListener() {
+           @Override
+           public void onClick(View view) {
+               validate();
+           }
+       });
+        getDialog().setTitle("PLAYER INFO");
 
         if(player!=null){
             mIdView.setText(player.getClPlayerId());
@@ -78,17 +94,7 @@ public class PlayerView extends AbstractPlayerView implements View.OnClickListen
             mNameView.setText(player.getUsername());
         }
 
-        return view;
-    }
-
-
-    @Override
-    public void onClick(View view) {
-        if (view==null)return;
-/*        if (view.getId() == R.id.button_submit){
-            validate();
-        }*/
-        
+        return rlmain;
     }
     
     @Override
@@ -117,23 +123,23 @@ public class PlayerView extends AbstractPlayerView implements View.OnClickListen
         
         
         if(!Validator.isValid(id)){
-            mIdView.setError(getString(R.string.error_empty));
+            mIdView.setError("Can\'t be empty");
             focusView = mIdView;
             cancel = true;
         }
 
         if(!Validator.isValid(email)){
-            mEmailView.setError(getString(R.string.error_empty));
+            mEmailView.setError("Can\'t be empty");
             focusView = mEmailView;
             cancel = true;
         }else if(!Validator.isValidEmail(email)){
-            mEmailView.setError(getString(R.string.error_email_no_valid));
+            mEmailView.setError("Not a valid email");
             focusView = mEmailView;
             cancel = true;
         }
 
         if(!Validator.isValid(name)){
-            mNameView.setError(getString(R.string.error_empty));
+            mNameView.setError("Can\'t be empty");
             focusView = mNameView;
             cancel = true;
         }

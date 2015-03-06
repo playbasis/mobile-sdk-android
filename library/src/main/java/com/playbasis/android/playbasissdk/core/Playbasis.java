@@ -15,6 +15,7 @@ import android.view.View;
 import com.playbasis.android.playbasissdk.api.Api;
 import com.playbasis.android.playbasissdk.api.AuthAuthenticator;
 import com.playbasis.android.playbasissdk.api.EngineApi;
+import com.playbasis.android.playbasissdk.api.NTPdate;
 import com.playbasis.android.playbasissdk.api.OnResult;
 import com.playbasis.android.playbasissdk.helper.DateHelper;
 import com.playbasis.android.playbasissdk.http.HttpManager;
@@ -251,6 +252,7 @@ public class Playbasis {
             PrivatePreferences preferences = new PrivatePreferences(mPlayBasisContent.context);
             preferences.clearDate();
             //Send stored requests
+            NTPdate.GetNTPDate(instance, null);
             Api.resendRequests(instance);
             return instance;
         }

@@ -6,8 +6,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 
-import com.playbasis.android.playbasissdk.R;
 import com.playbasis.android.playbasissdk.helper.Validator;
 import com.playbasis.android.playbasissdk.model.Player;
 
@@ -15,7 +15,7 @@ import com.playbasis.android.playbasissdk.model.Player;
  * Created by gregoire barret on 2/27/15.
  * For PlayBasisSdk project.
  */
-public class PlayerSmsView extends AbstractPlayerView implements View.OnClickListener {
+public class PlayerSmsView extends AbstractPlayerView {
     public static final String TAG = "PlayerSmsView";
 
 
@@ -26,26 +26,46 @@ public class PlayerSmsView extends AbstractPlayerView implements View.OnClickLis
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.player_sms_view, container);
+/*        View view = inflater.inflate(R.layout.player_sms_view, container);
         mPhoneView    = (EditText) view.findViewById(R.id.editText_player_phone);
-        Button mSubmitButton = (Button) view.findViewById(R.id.button_submit);
+        Button mSubmitButton = (Button) view.findViewById(R.id.button_submit);*/
 
-        mSubmitButton.setOnClickListener(this);
-        getDialog().setTitle(getString(R.string.player_info_SMS));
+
+        LinearLayout rlmain = new LinearLayout(getActivity());
+        LinearLayout.LayoutParams llp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.MATCH_PARENT);
+        rlmain.setLayoutParams(llp);
+        rlmain.setOrientation(LinearLayout.VERTICAL);
+        rlmain.setPadding(16,16,16,16);
+
+        mPhoneView = new EditText(getActivity());
+        Button mSubmitButton = new Button(getActivity());
+        LinearLayout .LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT);
+
+        mPhoneView.setLayoutParams(lp);
+        mSubmitButton.setLayoutParams(lp);
+
+        mPhoneView.setHint("Phone number");
+        mSubmitButton.setText("OK");
+
+        rlmain.addView(mPhoneView);
+        rlmain.addView(mSubmitButton);
+
+
+        mSubmitButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                validate();
+            }
+        });
+        getDialog().setTitle("PLAYER SMS");
         if(player!=null){
             mPhoneView.setText(player.getEmail());
         }
 
-        return view;
+        return rlmain;
     }
 
-    @Override
-    public void onClick(View view) {
-        if (view==null)return;
-        if (view.getId() == R.id.button_submit){
-            validate();
-        }
-    }
 
     @Override
     public void setPlayer(Player player){
@@ -66,11 +86,11 @@ public class PlayerSmsView extends AbstractPlayerView implements View.OnClickLis
         View focusView = null;
 
         if(!Validator.isValid(phone)){
-            mPhoneView.setError(getString(R.string.error_empty));
+            mPhoneView.setError("Can\'t be empty");
             focusView = mPhoneView;
             cancel = true;
         }else if(!Validator.isValidPhone(phone)){
-            mPhoneView.setError(getString(R.string.error_phone_no_valid));
+            mPhoneView.setError("phone number format should be +[countrycode][number]");
             focusView = mPhoneView;
             cancel = true;
         }
