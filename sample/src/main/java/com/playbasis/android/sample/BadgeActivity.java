@@ -51,9 +51,15 @@ public class BadgeActivity extends FragmentActivity {
                     @Override
                     public void onSuccess(Rule result) {
                         //Show the badge DialogFragment
-                        BadgeWidget badgeWidget = new BadgeWidget();
-                        badgeWidget.setBadge(result.getEvents().get(0).getRewardData());
-                        badgeWidget.show(getSupportFragmentManager(), "fragment_player_info");
+                        
+                        if(result.getEvents().size() > 0){
+                            BadgeWidget badgeWidget = new BadgeWidget();
+                            badgeWidget.setBadge(result.getEvents().get(0).getRewardData());
+                            badgeWidget.show(getSupportFragmentManager(), "fragment_player_info");
+                        }else{
+                            Toast.makeText(BadgeActivity.this, "No badge receive", Toast.LENGTH_SHORT).show();
+                        }
+
                         showProgress(false);// dismiss the progress bar
                     }
 

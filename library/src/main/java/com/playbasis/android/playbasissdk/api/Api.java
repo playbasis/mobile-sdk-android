@@ -143,7 +143,7 @@ public abstract class Api {
                         @Override
                         public void onSuccess(AuthToken result) {
                             renewCount++;
-                            JsonObjectPOST(playbasis, uri, httpParams, listener);
+                            JsonObjectPOST(playbasis, uri, timestamp, httpParams, listener);
                         }
 
                         @Override
@@ -185,6 +185,8 @@ public abstract class Api {
                 return headers;
             }
         };
+        //Remove the cache
+        jsonObjReq.setShouldCache(false);
         // Adding request to request queue
         playbasis.getHttpManager().addToRequestQueue(jsonObjReq);
     }
@@ -354,6 +356,7 @@ public abstract class Api {
                 return ApiHelper.getHeaderMap(playbasis);
             }
         };
+
         // Adding request to request queue
         playbasis.getHttpManager().addToRequestQueue(stringRequest);
     }
@@ -453,6 +456,8 @@ public abstract class Api {
                 return headers;
             }
         };
+        //Remove the cache
+        jsonBodyRequest.setShouldCache(false);
         // Adding request to request queue
         playbasis.getHttpManager().addToRequestQueue(jsonBodyRequest);
     }

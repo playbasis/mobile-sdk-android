@@ -40,7 +40,7 @@ public class MainActivity extends FragmentActivity {
         setContentView(R.layout.activity_main);
 
         
-        SampleApplication.playbasis.Do("gfdgsdfgsdfg", RuleAction.CLICK, new OnResult<Rule>() {
+/*        SampleApplication.playbasis.Do("gfdgsdfgsdfg", RuleAction.CLICK, new OnResult<Rule>() {
             @Override
             public void onSuccess(Rule result) {
                 Toast.makeText(MainActivity.this, result.toString(), Toast.LENGTH_SHORT).show();
@@ -48,9 +48,11 @@ public class MainActivity extends FragmentActivity {
 
             @Override
             public void onError(HttpError error) {
-                Toast.makeText(MainActivity.this, error.requestError.message, Toast.LENGTH_SHORT).show();
+                if(error.requestError!=null && error.requestError.message != null)
+                    Toast.makeText(MainActivity.this, error.requestError.message, Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, error.toString(), Toast.LENGTH_SHORT).show();
             }
-        });
+        });*/
 
 
 
@@ -97,6 +99,35 @@ public class MainActivity extends FragmentActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this, QuestActivity.class);
                 startActivity(intent);
+            }
+        });
+
+        Button testButton = (Button) findViewById(R.id.button_test);
+        testButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                SampleApplication.playbasis.Do("exampleplayer", UIEvent.TOUCH, new OnResult<Rule>() {
+                    @Override
+                    public void onSuccess(final Rule result) {
+                        MainActivity.this.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(MainActivity.this, result.toString(), Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onError(final HttpError error) {
+                        MainActivity.this.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(MainActivity.this, error.toString(), Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                        
+                    }
+                });
             }
         });
 

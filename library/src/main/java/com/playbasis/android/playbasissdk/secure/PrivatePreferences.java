@@ -77,29 +77,48 @@ public class PrivatePreferences {
         
     }
 
+    /**
+     * Clear the Last NTP date 
+     */
     public void clearDate(){
         mSecurePrefs.edit().remove(LASTED_DATE).commit();
         mSecurePrefs.edit().remove(ELAPSED).commit();
 
     }
-    
-    
+
+
+    /**
+     * 
+     *  @return lasted saved NTP date
+     */
     public long getLastedDate(){
         return mSecurePrefs.getLong(LASTED_DATE, 0l);
     }
-    
+
+    /**
+     *  
+     * @param date Save NTP date
+     */
     public void saveLastedDate(long date){
         mSecurePrefs.edit()
                 .putLong(LASTED_DATE, date)
                 .commit();
         
     }
-    
+
+    /**
+     *  
+     * @return lasted elapse date
+     */
     public Long getElapse(){
         return mSecurePrefs.getLong(ELAPSED, 0l);
         
     }
-    
+
+    /**
+     *
+     * @param elapse elapse date
+     */
     public void saveElapse(long elapse){
         mSecurePrefs.edit()
                 .putLong(ELAPSED, elapse)
