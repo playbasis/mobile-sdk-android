@@ -476,7 +476,7 @@ public abstract class Api {
 /*                        if (request != null) asyncPost(playbasis, request.getUrl(), request.getTimestamp(),
                                 request.paramsToJson(),
                                 null);*/
-                        if (request !=null) JsonObjectPOST(playbasis, SDKUtil.SERVER_URL + request.getUrl(), 
+                        if (request !=null) JsonObjectPOST(playbasis, playbasis.getUrl() + request.getUrl(),
                                 request.getTimestamp(),
                                 request.paramsToValuePair(), 
                                 null);

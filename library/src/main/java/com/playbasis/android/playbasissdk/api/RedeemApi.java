@@ -80,7 +80,7 @@ public class RedeemApi extends Api {
 
         }else {
 
-            String uri = SDKUtil.SERVER_URL + endpoint;
+            String uri = playbasis.getUrl() + endpoint;
 
             List<NameValuePair> params = new ArrayList<>();
             params.add(new BasicNameValuePair("player_id", playerId));
@@ -161,7 +161,7 @@ public class RedeemApi extends Api {
 
         }else {
 
-            String uri = SDKUtil.SERVER_URL + endpoint;
+            String uri = playbasis.getUrl() + endpoint;
 
             List<NameValuePair> params = new ArrayList<>();
             params.add(new BasicNameValuePair("player_id", playerId));

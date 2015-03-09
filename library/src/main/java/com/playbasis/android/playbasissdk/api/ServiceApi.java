@@ -38,7 +38,7 @@ public class ServiceApi extends Api{
     public static void recentPoint(@NonNull Playbasis playbasis, String pointName,
                                    Integer offset, Integer limit, final OnResult<List<PointDetail>> listener) {
         
-        String uri = SDKUtil.SERVER_URL + SDKUtil._SERVICE_URL + "recent_point";
+        String uri = playbasis.getUrl() + SDKUtil._SERVICE_URL + "recent_point";
 
         List<NameValuePair> params = new ArrayList<>();
         if(pointName!=null)params.add(new BasicNameValuePair("point_name", pointName));
@@ -111,7 +111,7 @@ public class ServiceApi extends Api{
 
         }else {
 
-            String uri = SDKUtil.SERVER_URL + endpoint;
+            String uri = playbasis.getUrl() + endpoint;
 
             List<NameValuePair> params = new ArrayList<>();
             if (pointName != null) params.add(new BasicNameValuePair("point_name", pointName));

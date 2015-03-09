@@ -18,6 +18,7 @@ import com.playbasis.android.playbasissdk.api.EngineApi;
 import com.playbasis.android.playbasissdk.api.NTPdate;
 import com.playbasis.android.playbasissdk.api.OnResult;
 import com.playbasis.android.playbasissdk.helper.DateHelper;
+import com.playbasis.android.playbasissdk.helper.Validator;
 import com.playbasis.android.playbasissdk.http.HttpManager;
 import com.playbasis.android.playbasissdk.http.toolbox.KeyStore;
 import com.playbasis.android.playbasissdk.model.Rule;
@@ -52,6 +53,8 @@ public class Playbasis {
     private AbstractPlayerView mPlayerEmailView;
     
     private AbstractPlayerView mPlayerSmsView;
+    
+    private String mUrl;
 
     /**
      * This method return the Playbasis singleton. If call before the builder return null.
@@ -75,6 +78,7 @@ public class Playbasis {
         this.mPlayerView = playBasisContent.playerView;
         this.mPlayerEmailView = playBasisContent.playerEmailView;
         this.mPlayerSmsView = playBasisContent.playerSmsView;
+        this.mUrl = playBasisContent.url;
 
 
     }
@@ -139,17 +143,37 @@ public class Playbasis {
      * @return player sms dialog fragment
      */
     public AbstractPlayerView getPlayerSmsView(){return mPlayerSmsView;}
-    
+
+    /**
+     * register Fragment activity 
+     * @param activity fragment activity
+     */
     public void setActivity(FragmentActivity activity){
         this.mActivity = activity;
     }
-    
+
+    /**
+     * Get the registered fragment activity 
+     * @return fragment activity
+     */
     public FragmentActivity getActivity(){
         return mActivity;
     }
-    
+
+    /**
+     * Unregister the fragment activity. 
+     */
     public void removeActivity(){
         mActivity = null;
+        
+    }
+    
+    public String getUrl(){
+        if(Validator.isValid(mUrl)){
+            return mUrl;
+        }else {
+            return SDKUtil.SERVER_URL;
+        }
         
     }
     
@@ -232,7 +256,16 @@ public class Playbasis {
             this.mPlayBasisContent.playerEmailView= playerView;
             return this;
         }
-        
+
+        /**
+         * Set backend url (shouldn't be used on production)
+         * @param url backend url
+         * @return builder
+         */
+        public Builder setBackendUrl(String url){
+            this.mPlayBasisContent.url = url;
+            return this;
+        }
         
 
         /**
@@ -267,6 +300,8 @@ public class Playbasis {
         public AbstractPlayerView playerEmailView;
 
         public AbstractPlayerView playerSmsView;
+        
+        public String url;
     }
 
 

@@ -27,7 +27,7 @@ public class BadgeApi extends Api {
      * @param listener Callback interface.
      */
     public static void badges(@NonNull Playbasis playbasis, final OnResult<List<Badge>> listener){
-        String uri = SDKUtil.SERVER_URL + SDKUtil.BADGES_URL;
+        String uri = playbasis.getUrl() + SDKUtil.BADGES_URL;
 
         JsonObjectGET(playbasis, uri, null, new OnResult<JSONObject>() {
             @Override
@@ -55,7 +55,7 @@ public class BadgeApi extends Api {
      */
     public static void badge(@NonNull Playbasis playbasis, @NonNull String badgeId,
                              final OnResult<Badge> listener) {
-        String uri = SDKUtil.SERVER_URL + SDKUtil._BADGE_URL + badgeId;
+        String uri = playbasis.getUrl() + SDKUtil._BADGE_URL + badgeId;
 
         JsonObjectGET(playbasis, uri, null, new OnResult<JSONObject>() {
             @Override

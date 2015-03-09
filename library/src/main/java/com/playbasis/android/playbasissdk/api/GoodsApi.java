@@ -31,7 +31,7 @@ public class GoodsApi extends Api {
      * @param listener Callback interface.
      */
     public static void listInfo(@NonNull Playbasis playbasis, final OnResult<List<Goods>> listener){
-        String uri = SDKUtil.SERVER_URL + SDKUtil.GOODS_URL;
+        String uri = playbasis.getUrl() + SDKUtil.GOODS_URL;
 
         JsonObjectGET(playbasis, uri, null, new OnResult<JSONObject>() {
             @Override
@@ -59,7 +59,7 @@ public class GoodsApi extends Api {
      */
     public static void info(@NonNull Playbasis playbasis, @NonNull String goodsId,
                              final OnResult<Goods> listener) {
-        String uri = SDKUtil.SERVER_URL + SDKUtil._GOODS_URL + goodsId;
+        String uri = playbasis.getUrl() + SDKUtil._GOODS_URL + goodsId;
 
         JsonObjectGET(playbasis, uri, null, new OnResult<JSONObject>() {
             @Override
@@ -89,7 +89,7 @@ public class GoodsApi extends Api {
      */
     public static void groupAvailable(@NonNull Playbasis playbasis, @NonNull String playerId, @NonNull String group,
                             Integer amount, final OnResult<Integer> listener) {
-        String uri = SDKUtil.SERVER_URL + SDKUtil.GOOD_GROUP_URL;
+        String uri = playbasis.getUrl() + SDKUtil.GOOD_GROUP_URL;
         
         List<NameValuePair> params = new ArrayList<>();
         params.add(new BasicNameValuePair("player_id", playerId));

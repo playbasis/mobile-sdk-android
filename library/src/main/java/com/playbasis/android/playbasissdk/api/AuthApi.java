@@ -29,7 +29,7 @@ public class AuthApi extends Api {
      * @param listener OnResult listener.
      */
     public static void auth(final Playbasis playbasis, final OnResult<AuthToken> listener) {
-        String uri = SDKUtil.SERVER_URL+ "/Auth";
+        String uri = playbasis.getUrl()+ "/Auth";
         request(playbasis, uri, listener);
     }
 
@@ -40,7 +40,7 @@ public class AuthApi extends Api {
      * @param listener OnResult listener.
      */
     public static void authRenew(final Playbasis playbasis, final OnResult<AuthToken> listener){
-        String uri = SDKUtil.SERVER_URL+ "/Auth/renew";
+        String uri = playbasis.getUrl()+ "/Auth/renew";
         request(playbasis, uri, listener);
     }
     

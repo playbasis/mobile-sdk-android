@@ -88,7 +88,7 @@ public class QuizApi extends Api {
     public static void activeList(@NonNull Playbasis playbasis, String playerId,
                                   final OnResult<List<Quiz>> listener) {
 
-        String uri = SDKUtil.SERVER_URL + SDKUtil._QUIZ_URL + "list";
+        String uri = playbasis.getUrl() + SDKUtil._QUIZ_URL + "list";
 
         List<NameValuePair> params = new ArrayList<>();
         if (playerId != null) params.add(new BasicNameValuePair("player_id", playerId));
@@ -107,7 +107,7 @@ public class QuizApi extends Api {
     public static void detail(@NonNull Playbasis playbasis, @NonNull String quizId, String playerId,
                               final OnResult<QuizDetail> listener) {
 
-        String uri = SDKUtil.SERVER_URL + SDKUtil._QUIZ_URL + quizId + "/detail";
+        String uri = playbasis.getUrl() + SDKUtil._QUIZ_URL + quizId + "/detail";
 
         List<NameValuePair> params = new ArrayList<>();
         if (playerId != null) params.add(new BasicNameValuePair("player_id", playerId));
@@ -142,7 +142,7 @@ public class QuizApi extends Api {
     public static void random(@NonNull Playbasis playbasis, @NonNull String playerId,
                               final OnResult<Quiz> listener) {
 
-        String uri = SDKUtil.SERVER_URL + SDKUtil._QUIZ_URL + "random";
+        String uri = playbasis.getUrl() + SDKUtil._QUIZ_URL + "random";
 
         List<NameValuePair> params = new ArrayList<>();
         params.add(new BasicNameValuePair("player_id", playerId));
@@ -161,7 +161,7 @@ public class QuizApi extends Api {
     public static void recentDone(@NonNull Playbasis playbasis, @NonNull String playerId, Integer limit,
                                   final OnResult<List<Quiz>> listener) {
 
-        String uri = SDKUtil.SERVER_URL + SDKUtil._QUIZ_URL + "player/" + playerId + "/" + String.valueOf
+        String uri = playbasis.getUrl() + SDKUtil._QUIZ_URL + "player/" + playerId + "/" + String.valueOf
                 (limit == null ? 5 : limit);
 
 
@@ -179,7 +179,7 @@ public class QuizApi extends Api {
     public static void recentPending(@NonNull Playbasis playbasis, @NonNull String playerId, Integer limit,
                                      final OnResult<List<QuizPending>> listener) {
 
-        String uri = SDKUtil.SERVER_URL + SDKUtil._QUIZ_URL + "player/" + playerId + "/pending/" + String
+        String uri = playbasis.getUrl() + SDKUtil._QUIZ_URL + "player/" + playerId + "/pending/" + String
                 .valueOf(limit == null ? 5 : limit);
 
         JsonObjectGET(playbasis, uri, null, new OnResult<JSONObject>() {
@@ -212,7 +212,7 @@ public class QuizApi extends Api {
     public static void rank(@NonNull Playbasis playbasis, @NonNull String quizId, Integer limit,
                             final OnResult<List<QuizRank>> listener) {
 
-        String uri = SDKUtil.SERVER_URL + SDKUtil._QUIZ_URL + quizId + "/rank/" + String.valueOf(limit == null
+        String uri = playbasis.getUrl() + SDKUtil._QUIZ_URL + quizId + "/rank/" + String.valueOf(limit == null
                 ? 5 : limit);
 
         JsonObjectGET(playbasis, uri, null, new OnResult<JSONObject>() {
@@ -245,7 +245,7 @@ public class QuizApi extends Api {
     public static void questions(@NonNull Playbasis playbasis, @NonNull String quizId, @NonNull String playerId,
                                  final OnResult<QuizQuestion> listener) {
 
-        String uri = SDKUtil.SERVER_URL + SDKUtil._QUIZ_URL + quizId + "/question";
+        String uri = playbasis.getUrl() + SDKUtil._QUIZ_URL + quizId + "/question";
 
         List<NameValuePair> params = new ArrayList<>();
         params.add(new BasicNameValuePair("player_id", playerId));
@@ -335,7 +335,7 @@ public class QuizApi extends Api {
 
         } else {
 
-            String uri = SDKUtil.SERVER_URL + endpoint;
+            String uri = playbasis.getUrl() + endpoint;
 
             List<NameValuePair> params = new ArrayList<>();
             params.add(new BasicNameValuePair("player_id", playerId));

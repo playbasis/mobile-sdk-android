@@ -34,7 +34,7 @@ public class EngineApi extends Api {
      * @param listener Callback interface.
      */
     public static void actionConfig(@NonNull Playbasis playbasis, final OnResult<List<ActionConfig>> listener) {
-        String uri = SDKUtil.SERVER_URL + SDKUtil._ENGINE_URL + "actionConfig";
+        String uri = playbasis.getUrl() + SDKUtil._ENGINE_URL + "actionConfig";
 
         JsonObjectGET(playbasis, uri, null, new OnResult<JSONObject>() {
             @Override
@@ -145,7 +145,7 @@ public class EngineApi extends Api {
 
         }else {
 
-            String uri = SDKUtil.SERVER_URL + endpoint;
+            String uri = playbasis.getUrl() + endpoint;
 
             List<NameValuePair> params = new ArrayList<>();
             params.add(new BasicNameValuePair("player_id", playerId));

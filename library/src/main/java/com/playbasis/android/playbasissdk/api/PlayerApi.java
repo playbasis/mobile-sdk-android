@@ -112,7 +112,7 @@ public class PlayerApi extends Api{
      */
     public static void playerInfo(@NonNull Playbasis playbasis, @NonNull String playerId,
                                   final OnResult<Player> listener){
-        String uri = SDKUtil.SERVER_URL + SDKUtil._PLAYER_URL + playerId;
+        String uri = playbasis.getUrl() + SDKUtil._PLAYER_URL + playerId;
         getPlayer(playbasis, uri, listener);
     }
 
@@ -124,7 +124,7 @@ public class PlayerApi extends Api{
      */
     public static void detailedPlayerListInfo(@NonNull Playbasis playbasis, @NonNull String playerId,
                                               final OnResult<Player> listener){
-        String uri = SDKUtil.SERVER_URL + SDKUtil._PLAYER_URL + playerId + "/data/all";
+        String uri = playbasis.getUrl() + SDKUtil._PLAYER_URL + playerId + "/data/all";
         getPlayer(playbasis, uri, listener);
     }
 
@@ -136,7 +136,7 @@ public class PlayerApi extends Api{
      */
     public static void playerPrivateInfo(@NonNull Playbasis playbasis, @NonNull String playerId,
                                          final OnResult<Player> listener){
-        String uri = SDKUtil.SERVER_URL + SDKUtil._PLAYER_URL + playerId;
+        String uri = playbasis.getUrl() + SDKUtil._PLAYER_URL + playerId;
         getPlayerPrivate(playbasis,uri,listener);
     }
 
@@ -148,7 +148,7 @@ public class PlayerApi extends Api{
      */
     public static void detailedPlayerPrivateInfo(@NonNull Playbasis playbasis, @NonNull String playerId,
                                                  final OnResult<Player> listener){
-        String uri = SDKUtil.SERVER_URL + SDKUtil._PLAYER_URL + playerId + "/data/all";
+        String uri = playbasis.getUrl() + SDKUtil._PLAYER_URL + playerId + "/data/all";
         getPlayerPrivate(playbasis,uri,listener);
     }
 
@@ -160,7 +160,7 @@ public class PlayerApi extends Api{
      */
     public static void listPlayerInfo(@NonNull Playbasis playbasis, Collection<String> playersId,
                                       final OnResult<List<Player>> listener){
-        String uri = SDKUtil.SERVER_URL + SDKUtil._PLAYER_URL +"list";
+        String uri = playbasis.getUrl() + SDKUtil._PLAYER_URL +"list";
         
         //Prepare list of players id
         List<NameValuePair> params = new ArrayList<>();
@@ -273,7 +273,7 @@ public class PlayerApi extends Api{
         }else {
 
 
-            String uri = SDKUtil.SERVER_URL + endpoint;
+            String uri = playbasis.getUrl() + endpoint;
 
             JsonObjectPOST(playbasis, uri, player.toParams(), new OnResult<JSONObject>() {
                 @Override
@@ -375,7 +375,7 @@ public class PlayerApi extends Api{
         }else {
 
 
-            String uri = SDKUtil.SERVER_URL + endpoint;
+            String uri = playbasis.getUrl() + endpoint;
 
             JsonArrayPOST(playbasis, uri, player.toParams(), new OnResult<JSONArray>() {
                 @Override
@@ -438,7 +438,7 @@ public class PlayerApi extends Api{
 
         }else {
 
-            String uri = SDKUtil.SERVER_URL + endpoint;
+            String uri = playbasis.getUrl() + endpoint;
 
             JsonObjectPOST(playbasis, uri, null, new OnResult<JSONObject>() {
                 @Override
@@ -502,7 +502,7 @@ public class PlayerApi extends Api{
 
         }else {
 
-            String uri = SDKUtil.SERVER_URL + endpoint;
+            String uri = playbasis.getUrl() + endpoint;
 
             JsonObjectPOST(playbasis, uri, null, new OnResult<JSONObject>() {
                 @Override
@@ -566,7 +566,7 @@ public class PlayerApi extends Api{
 
         }else {
 
-            String uri = SDKUtil.SERVER_URL + endpoint;
+            String uri = playbasis.getUrl() + endpoint;
 
             JsonObjectPOST(playbasis, uri, null, new OnResult<JSONObject>() {
                 @Override
@@ -591,7 +591,7 @@ public class PlayerApi extends Api{
      */
     public static void points(@NonNull Playbasis playbasis, @NonNull String playerId,
                               final OnResult<List<Point>> listener){
-        String uri = SDKUtil.SERVER_URL + SDKUtil._PLAYER_URL + playerId + "/points";
+        String uri = playbasis.getUrl() + SDKUtil._PLAYER_URL + playerId + "/points";
 
         JsonObjectGET(playbasis, uri, null, new OnResult<JSONObject>() {
             @Override
@@ -622,7 +622,7 @@ public class PlayerApi extends Api{
      */
     public static void point(@NonNull Playbasis playbasis, @NonNull String playerId, @NonNull String pointName,
                               final OnResult<List<Point>> listener){
-        String uri = SDKUtil.SERVER_URL + SDKUtil._PLAYER_URL + playerId + "/point/" + pointName;
+        String uri = playbasis.getUrl() + SDKUtil._PLAYER_URL + playerId + "/point/" + pointName;
 
         JsonObjectGET(playbasis, uri, null, new OnResult<JSONObject>() {
             @Override
@@ -656,7 +656,7 @@ public class PlayerApi extends Api{
     public static void pointHistory(@NonNull Playbasis playbasis, @NonNull String playerId,
                                     String pointName, Integer offset, Integer limit,
                              final OnResult<List<PointDetail>> listener){
-        String uri = SDKUtil.SERVER_URL + SDKUtil._PLAYER_URL + playerId + "/point_history";
+        String uri = playbasis.getUrl() + SDKUtil._PLAYER_URL + playerId + "/point_history";
 
         List<NameValuePair> params = new ArrayList<>();
         if(pointName!=null)params.add(new BasicNameValuePair("point_name", pointName));
@@ -692,7 +692,7 @@ public class PlayerApi extends Api{
      */
     public static void actionTime(@NonNull Playbasis playbasis, @NonNull String playerId, @NonNull String actionName,
                                   final OnResult<Action> listener){
-        String uri = SDKUtil.SERVER_URL + SDKUtil._PLAYER_URL + playerId + "/action/"+
+        String uri = playbasis.getUrl() + SDKUtil._PLAYER_URL + playerId + "/action/"+
                 actionName + "/time";
         getAction(playbasis, uri, listener);
     }
@@ -705,7 +705,7 @@ public class PlayerApi extends Api{
      */
     public static void actionLast(@NonNull Playbasis playbasis, @NonNull String playerId,
                                   final OnResult<Action> listener){
-        String uri = SDKUtil.SERVER_URL + SDKUtil._PLAYER_URL + playerId + "/action/time";
+        String uri = playbasis.getUrl() + SDKUtil._PLAYER_URL + playerId + "/action/time";
         getAction(playbasis, uri, listener);
     }
 
@@ -718,7 +718,7 @@ public class PlayerApi extends Api{
      */
     public static void actionCount(@NonNull Playbasis playbasis,@NonNull String playerId, @NonNull String actionName,
                                    final OnResult<Action> listener){
-        String uri = SDKUtil.SERVER_URL + SDKUtil._PLAYER_URL + playerId + "/action/" + actionName + "/count";
+        String uri = playbasis.getUrl() + SDKUtil._PLAYER_URL + playerId + "/action/" + actionName + "/count";
         getAction(playbasis,uri,listener);
     }
 
@@ -730,7 +730,7 @@ public class PlayerApi extends Api{
      */
     public static void badges(@NonNull Playbasis playbasis,@NonNull String playerId,
                               final OnResult<List<Badge>> listener){
-        String uri = SDKUtil.SERVER_URL + SDKUtil._PLAYER_URL + playerId + "/badge";
+        String uri = playbasis.getUrl() + SDKUtil._PLAYER_URL + playerId + "/badge";
 
 
         JsonArrayGET(playbasis, uri, null, new OnResult<JSONArray>() {
@@ -755,7 +755,7 @@ public class PlayerApi extends Api{
      */
     public static void level(@NonNull Playbasis playbasis,@NonNull String levelNo,
                              final OnResult<Level> listener){
-        String uri = SDKUtil.SERVER_URL + SDKUtil._PLAYER_URL + "level/" + levelNo;
+        String uri = playbasis.getUrl() + SDKUtil._PLAYER_URL + "level/" + levelNo;
 
 
         JsonObjectGET(playbasis, uri, null, new OnResult<JSONObject>() {
@@ -778,7 +778,7 @@ public class PlayerApi extends Api{
      * @param listener Callback interface.
      */
     public static void levels(@NonNull Playbasis playbasis, final OnResult<List<Level>> listener){
-        String uri = SDKUtil.SERVER_URL + SDKUtil._PLAYER_URL + "levels";
+        String uri = playbasis.getUrl() + SDKUtil._PLAYER_URL + "levels";
 
 
         JsonArrayGET(playbasis, uri, null, new OnResult<JSONArray>() {
@@ -844,7 +844,7 @@ public class PlayerApi extends Api{
 
         }else {
 
-            String uri = SDKUtil.SERVER_URL + endpoint;
+            String uri = playbasis.getUrl() + endpoint;
             JsonObjectPOST(playbasis, uri, null, new OnResult<JSONObject>() {
                 @Override
                 public void onSuccess(JSONObject result) {
@@ -908,7 +908,7 @@ public class PlayerApi extends Api{
 
         }else {
 
-            String uri = SDKUtil.SERVER_URL + endpoint;
+            String uri = playbasis.getUrl() + endpoint;
 
             JsonObjectPOST(playbasis, uri, null, new OnResult<JSONObject>() {
                 @Override
@@ -934,7 +934,7 @@ public class PlayerApi extends Api{
      public static void rank(@NonNull Playbasis playbasis, @NonNull String rankBy, Integer limit,
                              final OnResult<List<Rank>> listener){
          if(limit == null) limit = 20;
-         String uri = SDKUtil.SERVER_URL + SDKUtil._PLAYER_URL + "rank/" + rankBy + "/" + limit;
+         String uri = playbasis.getUrl() + SDKUtil._PLAYER_URL + "rank/" + rankBy + "/" + limit;
 
 
          JsonArrayGET(playbasis, uri, null, new OnResult<JSONArray>() {
@@ -961,7 +961,7 @@ public class PlayerApi extends Api{
     public static void ranks(@NonNull Playbasis playbasis, Integer limit,  
                              final OnResult<Ranks> listener){
         if(limit == null) limit = 20;
-        String uri = SDKUtil.SERVER_URL + SDKUtil._PLAYER_URL + "ranks/" + limit;
+        String uri = playbasis.getUrl() + SDKUtil._PLAYER_URL + "ranks/" + limit;
 
 
         JsonObjectGET(playbasis, uri, null, new OnResult<JSONObject>() {
@@ -988,7 +988,7 @@ public class PlayerApi extends Api{
     public static void goods(@NonNull Playbasis playbasis, @NonNull String playerId, 
                              final OnResult<List<Goods>> listener ){
 
-        String uri = SDKUtil.SERVER_URL + SDKUtil._PLAYER_URL + playerId + "/goods";
+        String uri = playbasis.getUrl() + SDKUtil._PLAYER_URL + playerId + "/goods";
 
 
         JsonObjectGET(playbasis, uri, null, new OnResult<JSONObject>() {
@@ -1020,7 +1020,7 @@ public class PlayerApi extends Api{
      */
     public static void quest(@NonNull Playbasis playbasis, @NonNull String playerId, @NonNull String questId,
                              final OnResult<Quest> listener){
-        String uri = SDKUtil.SERVER_URL + SDKUtil._PLAYER_URL + "quest/" + questId;
+        String uri = playbasis.getUrl() + SDKUtil._PLAYER_URL + "quest/" + questId;
         
         List<NameValuePair> params = new ArrayList<>();
         params.add(new BasicNameValuePair("player_id", playerId));
@@ -1053,7 +1053,7 @@ public class PlayerApi extends Api{
      */
     public static void quests(@NonNull Playbasis playbasis, @NonNull String playerId,
                               final OnResult<List<Quest>> listener){
-        String uri = SDKUtil.SERVER_URL + SDKUtil._PLAYER_URL + "quest";
+        String uri = playbasis.getUrl() + SDKUtil._PLAYER_URL + "quest";
 
         List<NameValuePair> params = new ArrayList<>();
         params.add(new BasicNameValuePair("player_id", playerId));
@@ -1088,7 +1088,7 @@ public class PlayerApi extends Api{
      */
     public static void questReward(@NonNull Playbasis playbasis, @NonNull String playerId, Integer offset, 
                                    Integer limit, final OnResult<List<Reward>> listener) {
-        String uri = SDKUtil.SERVER_URL + SDKUtil._PLAYER_URL + playerId + "/quest_reward_history";
+        String uri = playbasis.getUrl() + SDKUtil._PLAYER_URL + playerId + "/quest_reward_history";
 
         List<NameValuePair> params = new ArrayList<>();
         params.add(new BasicNameValuePair("player_id", playerId));
@@ -1180,7 +1180,7 @@ public class PlayerApi extends Api{
 
         }else {
 
-            String uri = SDKUtil.SERVER_URL + endpoint;
+            String uri = playbasis.getUrl() + endpoint;
 
             List<NameValuePair> params = new ArrayList<>();
             params.add(new BasicNameValuePair("reward", rewardId));
