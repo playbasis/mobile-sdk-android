@@ -1,19 +1,12 @@
 package com.playbasis.android.sample;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.playbasis.android.playbasissdk.api.OnResult;
 import com.playbasis.android.playbasissdk.api.PlayerApi;
-import com.playbasis.android.playbasissdk.helper.Validator;
 import com.playbasis.android.playbasissdk.http.HttpError;
 import com.playbasis.android.playbasissdk.http.toolbox.NetworkImageView;
 import com.playbasis.android.playbasissdk.model.Player;
@@ -72,22 +65,22 @@ public class PlayerActivity extends FragmentActivity {
     }
 
     private void getPlayerInfo(String playerId){
-        PlayerApi.getPlayerInfo(SampleApplication.playbasis, playerId, new OnResult<Player>() {
+        PlayerApi.playerInfo(SampleApplication.playbasis, playerId, new OnResult<Player>() {
             @Override
             public void onSuccess(Player result) {
                 // Get player information into string
-                String playerId = result.getClPlayerId()!=null ? result.getClPlayerId() : "";
-                String playerName = result.getUsername()!=null ? result.getUsername() : "";
-                String playerExp = result.getExp()!=null ? String.valueOf(result.getExp()) : "";
-                String playerLevel = result.getLevel()!=null ? String.valueOf(result.getLevel()) : "";
-                String playerFirstName = result.getFirstName()!=null ? result.getFirstName() : "";
-                String playerLstName = result.getLastName()!=null ? result.getLastName() : "";
-                String playerGender = result.getGender()!=null ? result.getGender().toString() : "";
-                String playerBirthDate = result.getBirthDate()!=null ? result.getBirthDate() : "";
-                String playerRegistered = result.getRegistered()!=null ? result.getRegistered() : "";
-                String playerLogin = result.getLastLogin()!=null ? result.getLastLogin() : "";
-                String playerLogout = result.getLastLogout()!=null ? result.getLastLogout() : "";
-                String imageUrl = result.getImage()!=null ? result.getImage() : "";
+                String playerId = result.getClPlayerId() != null ? result.getClPlayerId() : "";
+                String playerName = result.getUsername() != null ? result.getUsername() : "";
+                String playerExp = result.getExp() != null ? String.valueOf(result.getExp()) : "";
+                String playerLevel = result.getLevel() != null ? String.valueOf(result.getLevel()) : "";
+                String playerFirstName = result.getFirstName() != null ? result.getFirstName() : "";
+                String playerLstName = result.getLastName() != null ? result.getLastName() : "";
+                String playerGender = result.getGender() != null ? result.getGender().toString() : "";
+                String playerBirthDate = result.getBirthDate() != null ? result.getBirthDate() : "";
+                String playerRegistered = result.getRegistered() != null ? result.getRegistered() : "";
+                String playerLogin = result.getLastLogin() != null ? result.getLastLogin() : "";
+                String playerLogout = result.getLastLogout() != null ? result.getLastLogout() : "";
+                String imageUrl = result.getImage() != null ? result.getImage() : "";
 
                 // Set player information into view
                 vID.setText(playerId);
@@ -107,9 +100,9 @@ public class PlayerActivity extends FragmentActivity {
             @Override
             public void onError(HttpError error) {
                 // Show error toast
-                if(error.requestError!=null){
+                if (error.requestError != null) {
                     Toast.makeText(PlayerActivity.this, error.requestError.message, Toast.LENGTH_SHORT).show();
-                }else{
+                } else {
                     Toast.makeText(PlayerActivity.this, error.toString(), Toast.LENGTH_SHORT).show();
                 }
             }

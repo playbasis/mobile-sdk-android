@@ -26,14 +26,30 @@ public class Validator {
     public static Boolean isValid(String s){
         return s != null && !s.trim().equals("") && !s.trim().equals("null");
     }
+
+    /**
+     * Return true of the object is not null. 
+     * @param o object to validate
+     * @return true if object is not null
+     */
     public static Boolean isValid(Object o){
         return o != null;
     }
 
+    /**
+     * Return true if the string contain only alpha numeric values. 
+     * @param s string to test
+     * @return true if string contain only [A-Za-z0-9_-]
+     */
     public static Boolean isValidAlphaNum(String s){
        return isValid(s) && s.matches("[A-Za-z0-9_-]+");
     }
-    
+
+    /**
+     * Return true if the String is a valid email 
+     * @param email string to validate
+     * @return true if the String is a valid email 
+     */
     public static Boolean isValidEmail(String email){
         if(!isValid(email))return false;
         Pattern pattern;
@@ -43,7 +59,12 @@ public class Validator {
         matcher = pattern.matcher(email.trim());
         return matcher.matches();
     }
-    
+
+    /**
+     * Return true if the String is a valid playbasis email
+     * @param email string to validate
+     * @return true if the String is a valid playbasis email
+     */
     public static Boolean isValidPlaybasisEmail(String email){
         if(!isValidEmail(email))return false;
         else if(email.toLowerCase().contains("noreply")) return false;
@@ -52,6 +73,11 @@ public class Validator {
         
     }
 
+    /**
+     * Return true if the String is a valid phone
+     * @param phone string to validate
+     * @return true if the String is a valid phone
+     */
     public static Boolean isValidPhone(String phone){
         if(!isValid(phone))return false;
         else if(phone.trim().equals("+66861234567"))return false;

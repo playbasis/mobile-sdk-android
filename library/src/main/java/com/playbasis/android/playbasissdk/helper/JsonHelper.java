@@ -31,6 +31,13 @@ import java.util.List;
 public class JsonHelper {
     public static final String TAG = "JsonHelper";
 
+    /**
+     * Parse a jsonArray into a list of java objects. 
+     * @param jsonArray jsonArray to parse
+     * @param klass object class
+     * @param <T> object type
+     * @return list of java object
+     */
     public static <T> List<T> FromJsonArray(JSONArray jsonArray, Class<T> klass) {
         final GsonBuilder gsonBuilder = new GsonBuilder();
         gsonBuilder.registerTypeAdapter(Reward.class, new RewardTypeArrayAdapter());
@@ -44,6 +51,13 @@ public class JsonHelper {
 
     }
 
+    /**
+     * Parse a jsonObject into a java objects.  
+     * @param jsonObject jsonObject to parse.
+     * @param type object class
+     * @param <T> object type
+     * @return java object
+     */
     public static <T> T FromJsonObject(JSONObject jsonObject, Class<T> type){
         final GsonBuilder gsonBuilder = new GsonBuilder();
         gsonBuilder.registerTypeAdapter(Reward.class, new RewardTypeArrayAdapter());
@@ -56,8 +70,14 @@ public class JsonHelper {
         T item = gson.fromJson(jsonObject.toString(), type);
         return item;
     }
-    
-    
+
+
+    /**
+     * Create a new JSONOgject initialize with the authentication token.
+     * @param authenticator Authenticator object contain on Playbasis class
+     * @return JSONObject
+     * @throws JSONException
+     */
     public static JSONObject newJsonWithToken(AuthAuthenticator authenticator) throws JSONException {
         JSONObject object = new JSONObject();
         object.put("token", authenticator.getToken());

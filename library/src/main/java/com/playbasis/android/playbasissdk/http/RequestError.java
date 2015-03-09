@@ -1,9 +1,7 @@
 package com.playbasis.android.playbasissdk.http;
 
 /**
- * Created by gregoire barret on 2/16/15.
- * For PlayBasisSdk project. <p>
- * Server response error 
+ * Playbasis backend response error 
  */
 @SuppressWarnings("serial")
 public class RequestError {
@@ -29,7 +27,11 @@ public class RequestError {
         this.errorCode = response.errorCode;
         
     }
-    
+
+    /**
+     * Create an error when not network are found.
+     * @return RequestError
+     */
     public static RequestError NoNetwork(){
         return new RequestError("No network available", ERROR_CODE.DEFAULT);
         

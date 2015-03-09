@@ -110,8 +110,8 @@ public class PlayerApi extends Api{
      * @param playerId Id of the player.
      * @param listener Callback interface.
      */
-    public static void getPlayerInfo(@NonNull Playbasis playbasis, @NonNull String playerId,
-                                     final OnResult<Player> listener){
+    public static void playerInfo(@NonNull Playbasis playbasis, @NonNull String playerId,
+                                  final OnResult<Player> listener){
         String uri = SDKUtil.SERVER_URL + SDKUtil._PLAYER_URL + playerId;
         getPlayer(playbasis, uri, listener);
     }
@@ -122,8 +122,8 @@ public class PlayerApi extends Api{
      * @param playerId Id of the player.
      * @param listener Callback interface.
      */
-    public static void getDetailedPlayerListInfo(@NonNull Playbasis playbasis, @NonNull String playerId,
-                                                 final OnResult<Player> listener){
+    public static void detailedPlayerListInfo(@NonNull Playbasis playbasis, @NonNull String playerId,
+                                              final OnResult<Player> listener){
         String uri = SDKUtil.SERVER_URL + SDKUtil._PLAYER_URL + playerId + "/data/all";
         getPlayer(playbasis, uri, listener);
     }
@@ -134,8 +134,8 @@ public class PlayerApi extends Api{
      * @param playerId Id of the player.
      * @param listener Callback interface.
      */
-    public static void getPlayerPrivateInfo(@NonNull Playbasis playbasis, @NonNull String playerId,
-                                      final OnResult<Player> listener){
+    public static void playerPrivateInfo(@NonNull Playbasis playbasis, @NonNull String playerId,
+                                         final OnResult<Player> listener){
         String uri = SDKUtil.SERVER_URL + SDKUtil._PLAYER_URL + playerId;
         getPlayerPrivate(playbasis,uri,listener);
     }
@@ -146,8 +146,8 @@ public class PlayerApi extends Api{
      * @param playerId Id of the player.
      * @param listener Callback interface.
      */
-    public static void getDetailedPlayerPrivateInfo(@NonNull Playbasis playbasis, @NonNull String playerId,
-                                            final OnResult<Player> listener){
+    public static void detailedPlayerPrivateInfo(@NonNull Playbasis playbasis, @NonNull String playerId,
+                                                 final OnResult<Player> listener){
         String uri = SDKUtil.SERVER_URL + SDKUtil._PLAYER_URL + playerId + "/data/all";
         getPlayerPrivate(playbasis,uri,listener);
     }
@@ -158,8 +158,8 @@ public class PlayerApi extends Api{
      * @param playersId List of players id.
      * @param listener Callback interface.
      */
-    public static void getListPlayerInfo(@NonNull Playbasis playbasis, Collection<String> playersId,
-                                            final OnResult<List<Player>> listener){
+    public static void listPlayerInfo(@NonNull Playbasis playbasis, Collection<String> playersId,
+                                      final OnResult<List<Player>> listener){
         String uri = SDKUtil.SERVER_URL + SDKUtil._PLAYER_URL +"list";
         
         //Prepare list of players id

@@ -53,7 +53,7 @@ public class RequestStorage {
      */
     public Boolean save(Playbasis playbasis, String url, List<NameValuePair> param){
         StoredRequest storedRequest = new StoredRequest()
-                .withUrl(StringHelper.removeFirstOccurence(SDKUtil.SERVER_URL, url))
+                .withUrl(StringHelper.removeFirstOccurrence(SDKUtil.SERVER_URL, url))
                 .withAsync(false)
                 .withKeyValueBody(keyValueParams(playbasis, param))
                 .withTimestamp(DateHelper.currentTimetamp())

@@ -17,8 +17,12 @@ import java.util.HashMap;
  */
 public class ApiHelper {
     public static final String TAG = "ApiHelper";
-    
-    
+
+    /**
+     *  Create an HashMap who contain the devices data needed by the header api.
+     * @param playbasis Playbasis object.
+     * @return HashMap header params
+     */
     public static HashMap<String, String> getHeaderMap(Playbasis playbasis){
         HashMap<String, String> headers = new HashMap<String, String>();
 

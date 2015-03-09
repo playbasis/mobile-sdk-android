@@ -24,7 +24,7 @@ public class PlayerValidatorApi extends PlayerApi {
     public static void playerValidation(@NonNull final Playbasis playbasis,
                                        @NonNull final String playerId, final OnResult<Boolean> listener) {
 
-        PlayerApi.getPlayerPrivateInfo(playbasis, playerId, new OnResult<Player>() {
+        PlayerApi.playerPrivateInfo(playbasis, playerId, new OnResult<Player>() {
 
             @Override
             public void onSuccess(Player player) {
@@ -37,9 +37,9 @@ public class PlayerValidatorApi extends PlayerApi {
 
             @Override
             public void onError(HttpError error) {
-                if(error!=null && error.requestError!=null && error.requestError.errorCode == RequestError.ERROR_CODE.USER_NOT_EXIST){
-                    displayPlayerView(playbasis, new Player(null, null , playerId), false, listener);
-                }else {
+                if (error != null && error.requestError != null && error.requestError.errorCode == RequestError.ERROR_CODE.USER_NOT_EXIST) {
+                    displayPlayerView(playbasis, new Player(null, null, playerId), false, listener);
+                } else {
                     if (listener != null) listener.onError(error);
                 }
 
@@ -110,7 +110,7 @@ public class PlayerValidatorApi extends PlayerApi {
     public static void emailValidation(@NonNull final Playbasis playbasis,
                                        @NonNull final String playerId, final OnResult<Boolean> listener) {
 
-        PlayerApi.getPlayerPrivateInfo(playbasis, playerId, new OnResult<Player>() {
+        PlayerApi.playerPrivateInfo(playbasis, playerId, new OnResult<Player>() {
 
             @Override
             public void onSuccess(Player player) {
@@ -168,7 +168,7 @@ public class PlayerValidatorApi extends PlayerApi {
     public static void smsValidation(@NonNull final Playbasis playbasis,
                                      @NonNull final String playerId, final OnResult<Boolean> listener) {
 
-        PlayerApi.getPlayerPrivateInfo(playbasis, playerId, new OnResult<Player>() {
+        PlayerApi.playerPrivateInfo(playbasis, playerId, new OnResult<Player>() {
 
             @Override
             public void onSuccess(Player player) {
