@@ -279,6 +279,46 @@ public class QuizApi extends Api {
     }
 
     /**
+     * USE ONLY FOR THE SAMPLE, DO NOT USE ON PRODUCTION 
+     */
+    public static void questions(@NonNull Playbasis playbasis, @NonNull String quizId, @NonNull String playerId, 
+                                 String questionId, final OnResult<QuizQuestion> listener) {
+
+        String uri = playbasis.getUrl() + SDKUtil._QUIZ_URL + quizId + "/question";
+
+        List<NameValuePair> params = new ArrayList<>();
+        params.add(new BasicNameValuePair("player_id", playerId));
+        params.add(new BasicNameValuePair("question_id", questionId));
+
+        JsonObjectGET(playbasis, uri, params, new OnResult<JSONObject>() {
+            @Override
+            public void onSuccess(JSONObject result) {
+                if(result==null){
+                    if (listener != null) listener.onSuccess(null);
+                }else{
+                    try {
+                        QuizQuestion quizQuestion = null;
+                        if (!result.isNull("result")) {
+                            quizQuestion = JsonHelper.FromJsonObject(result.getJSONObject("result"),
+                                    QuizQuestion.class);
+                        }
+                        if (listener != null) listener.onSuccess(quizQuestion);
+                    } catch (JSONException e) {
+                        if (listener != null) listener.onError(new HttpError(e));
+                    }
+                }
+
+
+            }
+
+            @Override
+            public void onError(HttpError error) {
+                if (listener != null) listener.onError(error);
+            }
+        });
+    }
+
+    /**
      * Submit a player's answer for a question for a given quiz.
      *
      * @param playbasis  Playbasis object.

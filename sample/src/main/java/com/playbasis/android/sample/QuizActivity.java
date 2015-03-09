@@ -43,6 +43,8 @@ public class QuizActivity extends FragmentActivity implements AdapterView.OnItem
     String playerId = "exampleplayer"; //The player id
     String quizId; // The quiz id
     String questionId; // The question id
+    int questionCount = 0;
+    String[] questionIds = {"2006735390fb144a5cc9f544", "2588556f1dfe6ca5bfd49497"};
 
     @Override
     protected void onResume() {
@@ -113,18 +115,18 @@ public class QuizActivity extends FragmentActivity implements AdapterView.OnItem
         
     }
 
-    private void getQuestions(){
+    private void getQuestions(String questionId){
         quizState = 2; // set quizSate on question state
         
         
-        QuizApi.questions(SampleApplication.playbasis,quizId,playerId, new OnResult<QuizQuestion>() {
+        QuizApi.questions(SampleApplication.playbasis,quizId,playerId, questionId, new OnResult<QuizQuestion>() {
             @Override
             public void onSuccess(final QuizQuestion result) {
                 
                 adapterValues.clear();// clear listView
                 if(result!=null && result.getQuestionId()!=null){ //test if question id is null
                     vTitle.setText(result.getQuestion());
-                    questionId = result.getQuestionId(); // save the question id
+                    QuizActivity.this.questionId = result.getQuestionId(); // save the question id
                     // populate the list view with options
                     if(result.getOptions()!=null){
                         for (QuizQuestionOption option : result.getOptions()) {
@@ -169,7 +171,8 @@ public class QuizActivity extends FragmentActivity implements AdapterView.OnItem
             @Override
             public void onSuccess(QuizQuestionAnswer result) {
                 rewards = result.getRewards();// save rewards
-                getQuestions();//Get next question
+                getQuestions(questionIds[questionCount]);//Get next question
+                questionCount++;
             }
             @Override
             public void onError(HttpError error) {
@@ -186,7 +189,7 @@ public class QuizActivity extends FragmentActivity implements AdapterView.OnItem
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
         if(quizState ==1){ // if quiz sate
             quizId = adapterValues.get(position).id; // save selected quiz id
-            getQuestions(); //get questions
+            getQuestions(null); //get questions
         }else if (quizState == 2){ // if question state
             sendAnswer(adapterValues.get(position).id); // send answer
         }
