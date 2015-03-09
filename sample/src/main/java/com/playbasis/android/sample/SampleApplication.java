@@ -2,7 +2,11 @@ package com.playbasis.android.sample;
 
 import android.app.Application;
 
+import com.playbasis.android.playbasissdk.api.AuthToken;
+import com.playbasis.android.playbasissdk.api.OnResult;
 import com.playbasis.android.playbasissdk.core.Playbasis;
+import com.playbasis.android.playbasissdk.http.HttpError;
+
 /**
  * Created by gregoire barret on 3/2/15.
  * For PlayBasisSdk project.
@@ -21,7 +25,17 @@ public class SampleApplication extends Application {
 /*                .setApiKey("3416989394")
                 .setApiSecret("b1fa1529410702557a6fe2f3913768a0")*/
                 .build();
-        playbasis.getAuthenticator().getAuthToken(null);
+        playbasis.getAuthenticator().getAuthToken(new OnResult<AuthToken>() {
+            @Override
+            public void onSuccess(AuthToken result) {
+
+            }
+
+            @Override
+            public void onError(HttpError error) {
+
+            }
+        });
         
     }
 }

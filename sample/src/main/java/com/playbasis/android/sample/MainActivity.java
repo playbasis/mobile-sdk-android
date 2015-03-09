@@ -151,6 +151,15 @@ public class MainActivity extends FragmentActivity {
             }
         });*/
 
+        SampleApplication.playbasis.Do("exampleplayer", RuleAction.CLICK, new OnResult<Rule>() {
+            @Override
+            public void onSuccess(Rule result) {
+            }
+
+            @Override
+            public void onError(HttpError error) {
+            }
+        });
 
     }
 

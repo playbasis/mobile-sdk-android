@@ -57,7 +57,7 @@ public class AuthAuthenticator {
     }
 
     /**
-     *  Synchronously get the saved token. If no token already init, return null.
+     *  Synchronously get the saved key token. If no token already init, return null.
      * @return AuthToken
      */
     @Nullable public String getToken() {
@@ -94,6 +94,15 @@ public class AuthAuthenticator {
                     if(listener!=null) listener.onError(error);
                 }
             });
+        }
+    }
+
+    /**
+     * Get auth token form local, and make the request if not available.
+     */
+    public void getAuthToken(){
+        if(getSavedAuthToken()==null){
+            requestAuthToken(null);
         }
     }
 

@@ -9,6 +9,8 @@ import com.playbasis.android.playbasissdk.http.Request;
 import com.playbasis.android.playbasissdk.http.Response;
 import com.playbasis.android.playbasissdk.http.ServerError;
 
+import org.apache.http.HttpStatus;
+import org.apache.http.params.HttpParams;
 import org.json.JSONException;
 import org.json.JSONObject;
 
