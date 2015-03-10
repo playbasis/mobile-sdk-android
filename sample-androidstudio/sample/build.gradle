@@ -25,7 +25,13 @@ android {
     }
 }
 
+repositories {
+    flatDir {
+        dirs 'libs'
+    }
+}
+
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile project(':library')
+    compile(name:'playbasis', ext:'aar')
 }
