@@ -192,6 +192,19 @@ public class QuestApi extends Api {
      * @param playerId Player id as used in client's website.
      * @param listener Callback interface.
      */
+    public static void join(@NonNull Playbasis playbasis, @NonNull String questId,
+                            @NonNull String playerId, final OnResult<Event>listener ){
+        join(playbasis,false,questId,playerId,listener);
+    }
+
+    /**
+     * Request access token from playbasis server.
+     * @param playbasis Playbasis object.
+     * @param isAsync Make the request async.
+     * @param questId Quest id as player need to join.
+     * @param playerId Player id as used in client's website.
+     * @param listener Callback interface.
+     */
     public static void join(@NonNull Playbasis playbasis, boolean isAsync, @NonNull String questId,
                             @NonNull String playerId, final OnResult<Event>listener ){
 
@@ -224,6 +237,16 @@ public class QuestApi extends Api {
         }
     }
 
+    /**
+     * Player join all available quests.
+     * @param playbasis Playbasis object.
+     * @param playerId Player id as used in client's website.
+     * @param listener Callback interface.
+     */
+    public static void joinAll(@NonNull Playbasis playbasis,
+                               @NonNull String playerId, final OnResult<Map<String, Object>>listener ){
+        joinAll(playbasis,false,playerId,listener);
+    }
     /**
      * Player join all available quests.
      * @param playbasis Playbasis object.

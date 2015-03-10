@@ -106,8 +106,6 @@ public class RequestStorage {
      */
     private List<KeyValue> keyValueParams(Playbasis playbasis, List<NameValuePair> httpParams){
         List<KeyValue> params = new ArrayList<>();
-      //  params.add(new KeyValue("api_key",playbasis.getKeyStore().getApiKey() ));
-     //   params.add(new KeyValue("token",playbasis.getAuthenticator().getToken() ));
         if(httpParams!=null){
             for (NameValuePair pair : httpParams){
                 params.add(new KeyValue(pair.getName(), pair.getValue()));
@@ -227,7 +225,7 @@ public class RequestStorage {
     }
 
     /**
-     * Read al request saved into the cache. 
+     * Read all requests saved into the cache.
      * @return Request list
      */
     private List<StoredRequest> readAll(){

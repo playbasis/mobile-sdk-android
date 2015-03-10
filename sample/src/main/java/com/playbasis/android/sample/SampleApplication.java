@@ -22,20 +22,9 @@ public class SampleApplication extends Application {
 
         playbasis = new Playbasis.Builder(this)
                 .setBackendUrl("https://api-sandbox.pbapp.net/")
-/*                .setApiKey("3416989394")
-                .setApiSecret("b1fa1529410702557a6fe2f3913768a0")*/
                 .build();
-        playbasis.getAuthenticator().getAuthToken(new OnResult<AuthToken>() {
-            @Override
-            public void onSuccess(AuthToken result) {
-
-            }
-
-            @Override
-            public void onError(HttpError error) {
-
-            }
-        });
+        
+        playbasis.getAuthenticator().getAuthToken();
         
     }
 }

@@ -15,9 +15,12 @@ import com.playbasis.android.playbasissdk.api.PlayerApi;
 import com.playbasis.android.playbasissdk.api.QuestApi;
 import com.playbasis.android.playbasissdk.core.Playbasis;
 import com.playbasis.android.playbasissdk.http.HttpError;
+import com.playbasis.android.playbasissdk.model.Quest;
 import com.playbasis.android.playbasissdk.model.Rule;
 import com.playbasis.android.playbasissdk.model.RuleAction;
 import com.playbasis.android.playbasissdk.model.UIEvent;
+
+import java.util.Map;
 
 
 public class MainActivity extends FragmentActivity {
@@ -26,6 +29,9 @@ public class MainActivity extends FragmentActivity {
     protected void onResume() {
         super.onResume();
         SampleApplication.playbasis.setActivity(this);
+
+
+        
     }
 
     @Override
@@ -38,23 +44,6 @@ public class MainActivity extends FragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        
-/*        SampleApplication.playbasis.Do("gfdgsdfgsdfg", RuleAction.CLICK, new OnResult<Rule>() {
-            @Override
-            public void onSuccess(Rule result) {
-                Toast.makeText(MainActivity.this, result.toString(), Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onError(HttpError error) {
-                if(error.requestError!=null && error.requestError.message != null)
-                    Toast.makeText(MainActivity.this, error.requestError.message, Toast.LENGTH_SHORT).show();
-                Toast.makeText(MainActivity.this, error.toString(), Toast.LENGTH_SHORT).show();
-            }
-        });*/
-
-
 
         Button playerButton = (Button) findViewById(R.id.button_player);
         playerButton.setOnClickListener(new View.OnClickListener() {
@@ -102,64 +91,7 @@ public class MainActivity extends FragmentActivity {
             }
         });
 
-        Button testButton = (Button) findViewById(R.id.button_test);
-        testButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                SampleApplication.playbasis.Do("exampleplayer", UIEvent.TOUCH, new OnResult<Rule>() {
-                    @Override
-                    public void onSuccess(final Rule result) {
-                        MainActivity.this.runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                Toast.makeText(MainActivity.this, result.toString(), Toast.LENGTH_SHORT).show();
-                            }
-                        });
-                    }
 
-                    @Override
-                    public void onError(final HttpError error) {
-                        MainActivity.this.runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                Toast.makeText(MainActivity.this, error.toString(), Toast.LENGTH_SHORT).show();
-                            }
-                        });
-                        
-                    }
-                });
-            }
-        });
-
-     //   SampleApplication.playbasis.Track("testFakeUser", "click");
-
-/*        final Playbasis playbasis = new Playbasis.Builder(this)
-                .setApiKey("3416989394")
-                .setApiSecret("b1fa1529410702557a6fe2f3913768a0")
-                .build();
-        playbasis.setActivity(this);
-
-        PlayerApi.register(playbasis, false, null, new OnResult<Boolean>() {
-            @Override
-            public void onSuccess(Boolean result) {
-                Log.d("quiz", "detail: " + result.toString());
-            }
-
-            @Override
-            public void onError(HttpError error) {
-                Log.d("COMPARE", (error.requestError != null ? error.requestError.toString() : error.toString()));
-            }
-        });*/
-
-        SampleApplication.playbasis.Do("exampleplayer", RuleAction.CLICK, new OnResult<Rule>() {
-            @Override
-            public void onSuccess(Rule result) {
-            }
-
-            @Override
-            public void onError(HttpError error) {
-            }
-        });
 
     }
 

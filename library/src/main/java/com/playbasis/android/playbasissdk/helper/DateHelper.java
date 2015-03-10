@@ -61,7 +61,6 @@ public class DateHelper {
     @Nullable public static String timestampToHTPPDate(long timeStamp){
         SimpleDateFormat dateFormat = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz", Locale.getDefault());
         dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
-   //     dateFormat.setTimeZone(TimeZone.getTimeZone("GMT+7"));
         try {
             return dateFormat.format(new Date(timeStamp));
         } catch (NullPointerException ne){

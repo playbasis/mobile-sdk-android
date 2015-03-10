@@ -48,7 +48,4 @@ public class SDKUtil {
 
     public static final String DEFAULT_IMAGE_URL = "https://www.pbapp.net/images/default_profile.jpg";
     
-    public static String getServerUrl(Boolean async){
-        return async ? SERVER_URL_ASYNC : SERVER_URL;
-    }
 }

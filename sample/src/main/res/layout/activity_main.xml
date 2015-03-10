@@ -45,13 +45,6 @@
         android:layout_height="wrap_content"
         android:text="Badge"/>
 
-    <Button
-        android:id="@+id/button_test"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="test"/>
-
-
 </LinearLayout>
 
 </ScrollView>

@@ -26,10 +26,6 @@ public class PlayerSmsView extends AbstractPlayerView {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-/*        View view = inflater.inflate(R.layout.player_sms_view, container);
-        mPhoneView    = (EditText) view.findViewById(R.id.editText_player_phone);
-        Button mSubmitButton = (Button) view.findViewById(R.id.button_submit);*/
-
 
         LinearLayout rlmain = new LinearLayout(getActivity());
         LinearLayout.LayoutParams llp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.MATCH_PARENT);

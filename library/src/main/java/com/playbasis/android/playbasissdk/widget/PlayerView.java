@@ -39,15 +39,6 @@ public class PlayerView extends AbstractPlayerView{
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-//        View view = inflater.inflate(R.layout.player_view, container);
-//        mIdView       = (EditText) view.findViewById(R.id.editText_player_id);
-//        mEmailView    = (EditText) view.findViewById(R.id.editText_player_email);
-//        mNameView     = (EditText) view.findViewById(R.id.editText_player_name);
-//        Button mSubmitButton = (Button) view.findViewById(R.id.button_submit);
-
-
-
-
         LinearLayout rlmain = new LinearLayout(getActivity());
         LinearLayout.LayoutParams llp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.MATCH_PARENT);
         rlmain.setLayoutParams(llp);
@@ -75,10 +66,6 @@ public class PlayerView extends AbstractPlayerView{
         rlmain.addView(mEmailView);
         rlmain.addView(mNameView);
         rlmain.addView(mSubmitButton);
-        
-
-
-        
 
        mSubmitButton.setOnClickListener(new View.OnClickListener() {
            @Override

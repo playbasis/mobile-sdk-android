@@ -26,9 +26,6 @@ public class PlayerEmailView extends AbstractPlayerView {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-/*        View view = inflater.inflate(R.layout.player_email_view, container);
-        mEmailView    = (EditText) view.findViewById(R.id.editText_player_email);
-        Button mSubmitButton = (Button) view.findViewById(R.id.button_submit);*/
 
         LinearLayout rlmain = new LinearLayout(getActivity());
         LinearLayout.LayoutParams llp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.MATCH_PARENT);
