@@ -141,12 +141,10 @@ public class QuizActivity extends FragmentActivity implements AdapterView.OnItem
                     if(rewards!=null){
                         RewardWidget rewardWidget = new RewardWidget(); // Create reward dialogFragment
                         for (Reward reward : rewards) {
-                            if(reward.getRewardType().equals("exp")){ //Set Exp to reward dialogFragment
-                                rewardWidget.setExp(reward.getRewardValue());
-                            }else if(reward.getRewardType().equals("point")){//Set point to reward dialogFragment
-                                rewardWidget.setPoints(reward.getRewardValue());
-                            }else if(reward.getRewardType().equals("badge")){//Set badge to reward dialogFragment
+                            if(reward.getRewardData()!=null){
                                 rewardWidget.setBadge(reward.getRewardData());
+                            }else{
+                                rewardWidget.setPoints(reward.getRewardValue());
                             }
                         }
                         rewardWidget.show(getSupportFragmentManager(), "fragment_reward_widget"); // Show dialog

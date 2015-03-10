@@ -110,4 +110,24 @@ public class RewardWidget extends DialogFragment {
         this.coupon = coupon;
 
     }
+
+    public BadgeData getBadge(){
+        return this.badge;
+
+    }
+
+    public String getPoints(){
+        return this.point;
+
+    }
+
+    public String getExp(){
+        return this.exp;
+
+    }
+
+    public String getCoupon(){
+        return this.coupon;
+
+    }
 }
