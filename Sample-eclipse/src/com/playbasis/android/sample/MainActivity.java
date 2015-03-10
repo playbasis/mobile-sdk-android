@@ -30,7 +30,6 @@ public class MainActivity extends FragmentActivity {
         super.onResume();
         SampleApplication.playbasis.setActivity(this);
 
-
         
     }
 
@@ -113,17 +112,4 @@ public class MainActivity extends FragmentActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void uieventTest(Playbasis playbasis){
-        playbasis.Track("gregusertest", "click");
-        playbasis.Track("gregusertest", UIEvent.LONG_CLICK);
-        playbasis.Track("gregusertest", UIEvent.FOCUS_CHANGE);
-        playbasis.Track("gregusertest", UIEvent.MENU_ITEM);
-        playbasis.Track("gregusertest", UIEvent.TOUCH);
-        playbasis.Track("gregusertest", UIEvent.KEY);
-        playbasis.Track("gregusertest", UIEvent.VIEW_CREATE);
-        playbasis.Track("gregusertest", UIEvent.VIEW_DISPLAY);
-        playbasis.Track("gregusertest", UIEvent.VIEW_REMOVE);
-        playbasis.Track("gregusertest", UIEvent.VIEW_DESTROY);
-
-    }
 }
