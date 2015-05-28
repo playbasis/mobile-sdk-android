@@ -34,7 +34,7 @@ import com.google.zxing.client.result.AddressBookParsedResult;
 import com.google.zxing.client.result.ParsedResult;
 import com.google.zxing.client.result.ResultParser;
 import com.google.zxing.common.BitMatrix;
-import com.playbasis.android.sample.R;
+import com.playbasis.android.playbasissdk.R;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -42,6 +42,8 @@ import java.io.InputStream;
 import java.util.Arrays;
 import java.util.EnumMap;
 import java.util.Map;
+
+//import com.playbasis.android.sample.R;
 
 //import com.github.gorbin.asnetutorial.R;
 
