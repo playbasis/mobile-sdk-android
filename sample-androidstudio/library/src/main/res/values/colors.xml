@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="grey_light">#FFCCCCCC</color>
+    <color name="dark">#4b4b4b</color>
+
+    <color name="facebook">#3b5998</color>
+    <color name="twitter">#55ACEE</color>
+    <color name="linkedin">#287bbc</color>
+    <color name="googleplus">#D34836</color>
+
+    <color name="orca_neue_nux_neutral">#ff7f7f7f</color>
+    <color name="orca_neue_primary">#ff0084ff</color>
+    <color name="orca_neue_login_password_text_color">#ff007aff</color>
+    <color name="orca_neue_login_text">#8c000000</color>
+    <color name="orca_neue_login_register_text">#54000000</color>
+    <color name="dark_orca_blue">#ff023c6e</color>
+    <color name="orca_neue_login_border">#2e000000</color>
+    <color name="pressed_example">#CC33B5E5</color>
+</resources>
