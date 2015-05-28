@@ -1,0 +1,50 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.playbasis.android.sample.MainActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin"
+        >
+
+
+        <Button
+            android:id="@+id/button_player"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Player"/>
+
+        <Button
+            android:id="@+id/button_reward"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Reward"/>
+
+        <Button
+            android:id="@+id/button_quest"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Quest"/>
+
+        <Button
+            android:id="@+id/button_quiz"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Quiz"/>
+
+        <Button
+            android:id="@+id/button_badge"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Badge"/>
+
+    </LinearLayout>
+
+</ScrollView>
