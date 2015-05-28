@@ -1,9 +1,5 @@
 package com.playbasis.android.playbasissdk.api;
 
-import android.content.Context;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
-
 import com.playbasis.android.playbasissdk.core.Playbasis;
 import com.playbasis.android.playbasissdk.core.SDKUtil;
 import com.playbasis.android.playbasissdk.helper.ApiHelper;
@@ -15,8 +11,8 @@ import com.playbasis.android.playbasissdk.http.PlayBasisLog;
 import com.playbasis.android.playbasissdk.http.Request;
 import com.playbasis.android.playbasissdk.http.RequestError;
 import com.playbasis.android.playbasissdk.http.Response;
-import com.playbasis.android.playbasissdk.http.toolbox.JSONArrayRequest;
-import com.playbasis.android.playbasissdk.http.toolbox.JSONObjectRequest;
+import com.playbasis.android.playbasissdk.http.toolbox.JSONArrayRequest2;
+import com.playbasis.android.playbasissdk.http.toolbox.JSONObjectRequest2;
 import com.playbasis.android.playbasissdk.http.toolbox.ParamsHelper;
 import com.playbasis.android.playbasissdk.http.toolbox.StringJSONBodyRequest;
 import com.playbasis.android.playbasissdk.http.toolbox.StringRequest;
@@ -34,7 +30,6 @@ import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 /**
  * Created by gregoire barret on 2/16/15.
@@ -67,7 +62,7 @@ public abstract class Api {
         if (params == null) params = new ArrayList<>();
         params.add(new BasicNameValuePair("api_key", playbasis.getKeyStore().getApiKey()));
 
-        JSONObjectRequest jsonObjReq = new JSONObjectRequest(Request.Method.GET,
+        JSONObjectRequest2 jsonObjReq = new JSONObjectRequest2(Request.Method.GET,
                 ParamsHelper.addParams(uri, params), null,
                 new Response.Listener<JSONObject>() {
 
@@ -120,7 +115,7 @@ public abstract class Api {
         } else resendRequests(playbasis);
 
         HttpsTrustManager.allowAllSSL();
-        final JSONObjectRequest jsonObjReq = new JSONObjectRequest(Request.Method.POST,
+        final JSONObjectRequest2 jsonObjReq = new JSONObjectRequest2(Request.Method.POST,
                 uri, null,
                 new Response.Listener<JSONObject>() {
 
@@ -209,7 +204,7 @@ public abstract class Api {
         if (params == null) params = new ArrayList<>();
         params.add(new BasicNameValuePair("api_key", playbasis.getKeyStore().getApiKey()));
 
-        final JSONArrayRequest jsonObjReq = new JSONArrayRequest(Request.Method.GET,
+        final JSONArrayRequest2 jsonObjReq = new JSONArrayRequest2(Request.Method.GET,
                 ParamsHelper.addParams(uri, params), null,
                 new Response.Listener<JSONArray>() {
 
@@ -257,7 +252,7 @@ public abstract class Api {
         } else resendRequests(playbasis);
 
         HttpsTrustManager.allowAllSSL();
-        final JSONArrayRequest jsonArrReq = new JSONArrayRequest(Request.Method.POST,
+        final JSONArrayRequest2 jsonArrReq = new JSONArrayRequest2(Request.Method.POST,
                 uri, null,
                 new Response.Listener<JSONArray>() {
 

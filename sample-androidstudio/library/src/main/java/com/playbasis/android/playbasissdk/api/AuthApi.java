@@ -1,14 +1,13 @@
 package com.playbasis.android.playbasissdk.api;
 
 import com.playbasis.android.playbasissdk.core.Playbasis;
-import com.playbasis.android.playbasissdk.core.SDKUtil;
 import com.playbasis.android.playbasissdk.http.AuthFailureError;
 import com.playbasis.android.playbasissdk.http.HttpError;
 import com.playbasis.android.playbasissdk.http.HttpsTrustManager;
 import com.playbasis.android.playbasissdk.http.PlayBasisLog;
 import com.playbasis.android.playbasissdk.http.Request;
 import com.playbasis.android.playbasissdk.http.Response;
-import com.playbasis.android.playbasissdk.http.toolbox.JSONObjectRequest;
+import com.playbasis.android.playbasissdk.http.toolbox.JSONObjectRequest2;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -46,7 +45,7 @@ public class AuthApi extends Api {
     
     private static void request(final Playbasis playbasis, final String uri, final OnResult<AuthToken> listener){
         HttpsTrustManager.allowAllSSL();
-        JSONObjectRequest jsonObjReq = new JSONObjectRequest(Request.Method.POST,
+        JSONObjectRequest2 jsonObjReq = new JSONObjectRequest2(Request.Method.POST,
                 uri, null,
                 new Response.Listener<JSONObject>() {
 
