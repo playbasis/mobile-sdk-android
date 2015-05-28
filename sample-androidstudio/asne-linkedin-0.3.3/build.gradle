@@ -1,0 +1,2 @@
+configurations.create("default")
+artifacts.add("default", file('asne-linkedin-0.3.3.aar'))
