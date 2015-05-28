@@ -13,10 +13,12 @@ import com.github.gorbin.asne.facebook.FacebookSocialNetwork;
 import com.github.gorbin.asne.googleplus.GooglePlusSocialNetwork;
 import com.github.gorbin.asne.linkedin.LinkedInSocialNetwork;
 import com.github.gorbin.asne.twitter.TwitterSocialNetwork;
-import com.playbasis.android.sample.R;
+import com.playbasis.android.playbasissdk.R;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+
+//import com.playbasis.android.sample.R;
 public class FriendsListAdapter extends BaseAdapter {
     private final Activity context;
     private ViewHolder holder;
@@ -87,7 +89,7 @@ public class FriendsListAdapter extends BaseAdapter {
                 break;
             case FacebookSocialNetwork.ID:
                 color = context.getResources().getColor(R.color.facebook);
-                image = R.drawable.com_facebook_profile_picture_blank_square;
+                image = R.drawable.linkedin_user;
                 break;
             case GooglePlusSocialNetwork.ID:
                 color = context.getResources().getColor(R.color.googleplus);

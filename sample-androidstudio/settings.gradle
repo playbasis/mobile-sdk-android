@@ -1,1 +1,1 @@
-include ':library', ':sample'
+include ':library', ':sample', ':asne-core-0.3.3', ':asne-facebook-0.3.3', ':asne-googleplus-0.3.3', ':asne-linkedin-0.3.3', ':asne-twitter-0.3.3'

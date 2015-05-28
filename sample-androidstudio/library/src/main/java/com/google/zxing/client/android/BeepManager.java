@@ -24,9 +24,11 @@ import android.media.MediaPlayer;
 import android.os.Vibrator;
 import android.util.Log;
 
-import com.playbasis.android.sample.R;
+import com.playbasis.android.playbasissdk.R;
 
 import java.io.IOException;
+
+//import com.playbasis.android.sample.R;
 
 //import com.playbasis.android.playbasissdk.R;
 

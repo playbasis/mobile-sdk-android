@@ -1,3 +1,32 @@
 <resources>
     <string name="app_name">PlayBasisSdk</string>
+
+
+    <string name="facebook_app_id">facebook_app_id</string>
+    <string name="twitter_consumer_key">twitter_consumer_key</string>
+    <string name="twitter_consumer_secret">twitter_consumer_secret</string>
+    <string name="linkedin_consumer_key">linkedin_consumer_key</string>
+    <string name="linkedin_consumer_secret">linkedin_consumer_secret</string>
+    <string name="title_activity_login">Login</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_login_detail">Login_detail</string>
+    <string name="title_activity_org_serch">ORG_serch</string>
+    <string name="title_activity_company_profile">Company_profile</string>
+    <string name="title_activity_setting">Setting</string>
+    <string name="title_activity_terms">Terms</string>
+    <string name="title_activity_fill_info_register">Fill_info_register</string>
+    <string name="title_activity_join__org">Join_ORG</string>
+
+
+    <string name="title_activity_main">MainActivity</string>
+    <string name="title_activity_player">PlayerActivity</string>
+    <string name="title_activity_email">EmailActivity</string>
+    <string name="title_activity_quiz">QuizActivity</string>
+    <string name="title_activity_badge">BadgeActivity</string>
+    <string name="title_activity_reward">RewardActivity</string>
+    <string name="title_activity_quest">QuestActivity</string>
+    <string name="title_activity_setting__alol">Setting_Alol</string>
+    <string name="title_activity_view_app__connext">ViewApp_Connext</string>
 </resources>

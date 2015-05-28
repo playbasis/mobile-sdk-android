@@ -24,8 +24,9 @@ import com.github.gorbin.asne.facebook.FacebookSocialNetwork;
 import com.github.gorbin.asne.googleplus.GooglePlusSocialNetwork;
 import com.github.gorbin.asne.linkedin.LinkedInSocialNetwork;
 import com.github.gorbin.asne.twitter.TwitterSocialNetwork;
+import com.playbasis.android.playbasissdk.R;
 import com.squareup.picasso.Picasso;
-import com.playbasis.android.sample.R;
+//import com.playbasis.android.sample.R;
 public class ProfileFragment extends Fragment implements OnRequestSocialPersonCompleteListener {
     private String message = "Need simple social networks integration? Check this lbrary:";
     private String link = "https://github.com/gorbin/ASNE";

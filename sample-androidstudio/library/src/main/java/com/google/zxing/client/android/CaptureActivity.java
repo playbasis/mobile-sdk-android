@@ -42,11 +42,13 @@ import com.google.zxing.ResultPoint;
 import com.google.zxing.client.android.camera.CameraManager;
 import com.google.zxing.client.result.ParsedResult;
 import com.google.zxing.client.result.ResultParser;
-import com.playbasis.android.sample.R;
+import com.playbasis.android.playbasissdk.R;
 
 import java.io.IOException;
 import java.util.Collection;
 import java.util.Map;
+
+//import com.playbasis.android.sample.R;
 
 //import com.github.gorbin.asnetutorial.R;
 

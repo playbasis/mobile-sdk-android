@@ -10,9 +10,11 @@ import android.support.v4.app.FragmentManager;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.playbasis.android.playbasissdk.R;
+
 //import android.support.v7.app.ActionBarActivity;
 
-import com.playbasis.android.sample.R;
+//import com.playbasis.android.sample.R;
 public class MainActivity extends FragmentActivity implements FragmentManager.OnBackStackChangedListener {
     public static final String SOCIAL_NETWORK_TAG = "SocialIntegrationMain.SOCIAL_NETWORK_TAG";
     private static ProgressDialog pd;

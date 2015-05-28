@@ -11,9 +11,10 @@ import android.widget.Toast;
 import com.github.gorbin.asne.core.SocialNetwork;
 import com.github.gorbin.asne.core.listener.OnRequestGetFriendsCompleteListener;
 import com.github.gorbin.asne.core.persons.SocialPerson;
+import com.playbasis.android.playbasissdk.R;
 
 import java.util.ArrayList;
-import com.playbasis.android.sample.R;
+//import com.playbasis.android.sample.R;
 public class FriendsFragment extends Fragment implements OnRequestGetFriendsCompleteListener {
 
     private static final String NETWORK_ID = "NETWORK_ID";
