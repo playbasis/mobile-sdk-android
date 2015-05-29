@@ -2,20 +2,16 @@ package com.playbasis.android.playbasissdk.http.toolbox;
 
 import com.playbasis.android.playbasissdk.http.AuthFailureError;
 import com.playbasis.android.playbasissdk.http.NetworkResponse;
-import com.playbasis.android.playbasissdk.http.PlayBasisLog;
 import com.playbasis.android.playbasissdk.http.Request;
 import com.playbasis.android.playbasissdk.http.Response;
 
-import org.json.JSONObject;
-
-import java.io.UnsupportedEncodingException;
 import java.util.Map;
 
 /**
  * Created by gregoire barret on 2/17/15.
  * For PlayBasisSdk project.
  * 
- * Same as {@link com.playbasis.android.playbasissdk.http.toolbox.JsonRequest} but get the params 
+ * Same as {@link HttpJsonRequest} but get the params
  */
 public abstract class JSONRequest<T> extends Request<T> {
     public static final String TAG = "JSONRequest";

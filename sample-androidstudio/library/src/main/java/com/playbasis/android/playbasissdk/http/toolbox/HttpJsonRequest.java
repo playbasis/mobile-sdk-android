@@ -31,7 +31,7 @@ import java.io.UnsupportedEncodingException;
  *
  * @param <T> JSON type of response expected
  */
-public abstract class JsonRequest<T> extends Request<T> {
+public abstract class HttpJsonRequest<T> extends Request<T> {
     /** Charset for request. */
     private static final String PROTOCOL_CHARSET = "utf-8";
 
@@ -46,15 +46,15 @@ public abstract class JsonRequest<T> extends Request<T> {
      * Deprecated constructor for a JsonRequest which defaults to GET unless {@link #getPostBody()}
      * or {@link #getPostParams()} is overridden (which defaults to POST).
      *
-     * @deprecated Use {@link #JsonRequest(int, String, String, Listener, ErrorListener)}.
+     * @deprecated Use {@link #HttpJsonRequest(int, String, String, Listener, ErrorListener)}.
      */
-    public JsonRequest(String url, String requestBody, Listener<T> listener,
-            ErrorListener errorListener) {
+    public HttpJsonRequest(String url, String requestBody, Listener<T> listener,
+                           ErrorListener errorListener) {
         this(Method.DEPRECATED_GET_OR_POST, url, requestBody, listener, errorListener);
     }
 
-    public JsonRequest(int method, String url, String requestBody, Listener<T> listener,
-            ErrorListener errorListener) {
+    public HttpJsonRequest(int method, String url, String requestBody, Listener<T> listener,
+                           ErrorListener errorListener) {
         super(method, url, errorListener);
         mListener = listener;
         mRequestBody = requestBody;

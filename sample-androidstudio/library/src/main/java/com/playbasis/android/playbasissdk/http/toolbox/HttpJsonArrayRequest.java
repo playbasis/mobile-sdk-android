@@ -30,7 +30,7 @@ import java.io.UnsupportedEncodingException;
 /**
  * A request for retrieving a {@link org.json.JSONArray} response body at a given URL.
  */
-public class JsonArrayRequest extends JsonRequest<JSONArray> {
+public class HttpJsonArrayRequest extends HttpJsonRequest<JSONArray> {
 
     /**
      * Creates a new request.
@@ -38,7 +38,7 @@ public class JsonArrayRequest extends JsonRequest<JSONArray> {
      * @param listener Listener to receive the JSON response
      * @param errorListener Error listener, or null to ignore errors.
      */
-    public JsonArrayRequest(String url, Listener<JSONArray> listener, ErrorListener errorListener) {
+    public HttpJsonArrayRequest(String url, Listener<JSONArray> listener, ErrorListener errorListener) {
         super(Method.GET, url, null, listener, errorListener);
     }
 

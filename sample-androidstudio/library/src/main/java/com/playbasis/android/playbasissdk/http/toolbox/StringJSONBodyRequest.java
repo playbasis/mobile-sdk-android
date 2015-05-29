@@ -3,11 +3,9 @@ package com.playbasis.android.playbasissdk.http.toolbox;
 import com.playbasis.android.playbasissdk.http.HttpError;
 import com.playbasis.android.playbasissdk.http.NetworkResponse;
 import com.playbasis.android.playbasissdk.http.ParseError;
-import com.playbasis.android.playbasissdk.http.Request;
 import com.playbasis.android.playbasissdk.http.RequestError;
 import com.playbasis.android.playbasissdk.http.Response;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
@@ -16,7 +14,7 @@ import java.io.UnsupportedEncodingException;
  * Created by gregoire barret on 2/19/15.
  * For PlayBasisSdk project.
  */
-public class StringJSONBodyRequest extends JsonRequest<String> {
+public class StringJSONBodyRequest extends HttpJsonRequest<String> {
     public static final String TAG = "StringJSONBodyRequest";
 
     /**

@@ -16,14 +16,11 @@
 
 package com.playbasis.android.playbasissdk.http.toolbox;
 
-import com.playbasis.android.playbasissdk.http.HttpError;
 import com.playbasis.android.playbasissdk.http.NetworkResponse;
 import com.playbasis.android.playbasissdk.http.ParseError;
-import com.playbasis.android.playbasissdk.http.PlaybasisResponse;
 import com.playbasis.android.playbasissdk.http.Response;
 import com.playbasis.android.playbasissdk.http.Response.ErrorListener;
 import com.playbasis.android.playbasissdk.http.Response.Listener;
-import com.playbasis.android.playbasissdk.http.ServerError;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -34,7 +31,7 @@ import java.io.UnsupportedEncodingException;
  * A request for retrieving a {@link org.json.JSONObject} response body at a given URL, allowing for an
  * optional {@link org.json.JSONObject} to be passed in as part of the request body.
  */
-public class JsonObjectRequest extends JsonRequest<JSONObject> {
+public class HttpJsonObjectRequest extends HttpJsonRequest<JSONObject> {
 
     /**
      * Creates a new request.
@@ -45,8 +42,8 @@ public class JsonObjectRequest extends JsonRequest<JSONObject> {
      * @param listener Listener to receive the JSON response
      * @param errorListener Error listener, or null to ignore errors.
      */
-    public JsonObjectRequest(int method, String url, JSONObject jsonRequest,
-            Listener<JSONObject> listener, ErrorListener errorListener) {
+    public HttpJsonObjectRequest(int method, String url, JSONObject jsonRequest,
+                                 Listener<JSONObject> listener, ErrorListener errorListener) {
         super(method, url, (jsonRequest == null) ? null : jsonRequest.toString(), listener,
                     errorListener);
     }
@@ -55,10 +52,10 @@ public class JsonObjectRequest extends JsonRequest<JSONObject> {
      * Constructor which defaults to <code>GET</code> if <code>jsonRequest</code> is
      * <code>null</code>, <code>POST</code> otherwise.
      *
-     * @see #JsonObjectRequest(int, String, org.json.JSONObject, Listener, ErrorListener)
+     * @see #HttpJsonObjectRequest(int, String, org.json.JSONObject, Listener, ErrorListener)
      */
-    public JsonObjectRequest(String url, JSONObject jsonRequest, Listener<JSONObject> listener,
-            ErrorListener errorListener) {
+    public HttpJsonObjectRequest(String url, JSONObject jsonRequest, Listener<JSONObject> listener,
+                                 ErrorListener errorListener) {
         this(jsonRequest == null ? Method.GET : Method.POST, url, jsonRequest,
                 listener, errorListener);
     }
