@@ -9,16 +9,20 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
+import java.util.List;
 
+import com.playbasis.android.playbasissdk.api.EngineApi;
 import com.playbasis.android.playbasissdk.api.OnResult;
 import com.playbasis.android.playbasissdk.api.PlayerApi;
 import com.playbasis.android.playbasissdk.api.QuestApi;
 import com.playbasis.android.playbasissdk.core.Playbasis;
 import com.playbasis.android.playbasissdk.http.HttpError;
+import com.playbasis.android.playbasissdk.model.Player;
 import com.playbasis.android.playbasissdk.model.Quest;
 import com.playbasis.android.playbasissdk.model.Rule;
 import com.playbasis.android.playbasissdk.model.RuleAction;
 import com.playbasis.android.playbasissdk.model.UIEvent;
+import com.playbasis.android.playbasissdk.model.Event;
 
 import java.util.Map;
 
@@ -91,7 +95,36 @@ public class MainActivity extends FragmentActivity {
             }
         });
 
+        Button engineButton = (Button) findViewById(R.id.button_engine);
+        engineButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d("Engine", "Hello World");
+                EngineApi.rule(SampleApplication.playbasis, false, "click", "TestPlayer001", null, null, null, new OnResult<Rule>() {
+                    @Override
+                    public void onSuccess(Rule result) {
+                        Log.d("Engine", "Success");
+                        System.out.println(result);
+                        List<Event> events = result.getEvents();
+                        for (Event event: events) {
+                            System.out.println(event.getRewardType());
+                            System.out.println(event.getValue());
+                            System.out.println(event.getIndex());
+                        }
+                    }
 
+                    @Override
+                    public void onError(HttpError error) {
+                        Log.d("Engine", "failed");
+                        if (error.requestError != null) {
+                            Log.d("Engine", error.requestError.message);
+                        } else {
+                            Log.d("Engine", error.toString());
+                        }
+                    }
+                });
+            }
+        });
     }
 
 

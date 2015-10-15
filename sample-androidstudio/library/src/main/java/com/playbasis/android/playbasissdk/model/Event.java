@@ -32,6 +32,8 @@ public class Event {
     private BadgeData rewardData;
     @Expose
     private String value;
+    @Expose
+    private  int index;
 
     /**
      *  
@@ -144,6 +146,22 @@ public class Event {
      */
     public void setValue(String value) {
         this.value = value;
+    }
+
+    /**
+     *
+     * @return the index
+     */
+    public int getIndex() {
+        return index;
+    }
+
+    /**
+     *
+     * @param index the index
+     */
+    public void setIndex(int index) {
+        this.index = index;
     }
 
     @Override

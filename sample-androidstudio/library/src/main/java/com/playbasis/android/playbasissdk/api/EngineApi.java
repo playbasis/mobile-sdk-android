@@ -115,7 +115,7 @@ public class EngineApi extends Api {
                             String quantity,  final OnResult<Rule> listener){
 
         String endpoint = SDKUtil._ENGINE_URL + "rule";
-
+        System.out.println("Rule request");
         if(isAsync){
 
             JSONObject jsonObject = null;
@@ -130,7 +130,7 @@ public class EngineApi extends Api {
                 e.printStackTrace();
             }
 
-            asyncPost(playbasis, endpoint, dateTime ,jsonObject , new OnResult<String>() {
+            asyncPost(playbasis, endpoint, dateTime, jsonObject, new OnResult<String>() {
                 @Override
                 public void onSuccess(String result) {
                     if (listener != null) listener.onSuccess(null);
@@ -170,4 +170,14 @@ public class EngineApi extends Api {
         }
     }
 
+    /**
+     *
+     *  @param playbasis Playbasus object
+     *  @param ruleId    rule ID
+     *
+     *  @param listener Callback interface.
+     */
+    public static void ruleDetail(@NonNull final Playbasis playbasis, final String ruleId, final OnResult<RuleDetail> listener) {
+
+    }
 }

@@ -3,6 +3,7 @@ package com.playbasis.android.playbasissdk.api;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
+import android.util.Log;
 
 import com.playbasis.android.playbasissdk.core.Playbasis;
 import com.playbasis.android.playbasissdk.core.SDKUtil;
@@ -113,6 +114,7 @@ public class PlayerApi extends Api{
     public static void playerInfo(@NonNull Playbasis playbasis, @NonNull String playerId,
                                   final OnResult<Player> listener){
         String uri = playbasis.getUrl() + SDKUtil._PLAYER_URL + playerId;
+        Log.d("Player", uri);
         getPlayer(playbasis, uri, listener);
     }
 
