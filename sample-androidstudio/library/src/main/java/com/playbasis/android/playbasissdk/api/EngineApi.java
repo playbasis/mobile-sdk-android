@@ -10,6 +10,7 @@ import com.playbasis.android.playbasissdk.http.RequestError;
 import com.playbasis.android.playbasissdk.model.ActionConfig;
 import com.playbasis.android.playbasissdk.model.Goods;
 import com.playbasis.android.playbasissdk.model.Rule;
+import com.playbasis.android.playbasissdk.model.RuleDetail;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
@@ -177,7 +178,44 @@ public class EngineApi extends Api {
      *
      *  @param listener Callback interface.
      */
-    public static void ruleDetail(@NonNull final Playbasis playbasis, final String ruleId, final OnResult<RuleDetail> listener) {
+    public static void ruleDetail(@NonNull final Playbasis playbasis,@NonNull final String ruleId, final OnResult<RuleDetail> listener) {
+        if(playbasis.isNetworkAvailable()) {
+            NTPdate.GetNTPDate(playbasis, new NTPdate.OnDate() {
+                @Override
+                public void onDate(Long date) {
+                    ruleDetailRequest(playbasis, ruleId, date, listener);
+                }
 
+                @Override
+                public void onError(RequestError error) {
+                    if (listener != null) listener.onError(new HttpError(error));
+                }
+            });
+        } else {
+            ruleDetailRequest(playbasis, ruleId, NTPdate.GetLocalDate(playbasis), listener);
+        }
+    }
+
+    private static void ruleDetailRequest(@NonNull final Playbasis playbasis,@NonNull final String ruleId, Long dateTime, final OnResult<RuleDetail> listener) {
+        String uri = playbasis.getUrl() + SDKUtil._ENGINE_URL + "rule/" + ruleId;
+
+        JsonObjectGET(playbasis, uri, null, new OnResult<JSONObject>() {
+            @Override
+            public void onSuccess(JSONObject result) {
+                try {
+                    //RuleDetail ruleDetail =JsonHelper.FromJsonObject(result, RuleDetail.class);
+                    RuleDetail ruleDetail = RuleDetail.parseEngineRuleDetail(result);
+                    if(listener != null) listener.onSuccess(ruleDetail);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    if(listener != null) listener.onError(new HttpError(e));
+                }
+            }
+
+            @Override
+            public void onError(HttpError error) {
+                if(listener != null) listener.onError(error);
+            }
+        });
     }
 }
