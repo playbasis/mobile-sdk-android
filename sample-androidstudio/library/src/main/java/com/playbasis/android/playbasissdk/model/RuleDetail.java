@@ -8,6 +8,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -29,7 +30,10 @@ public class RuleDetail {
     @Expose
     private Action action;
     @Expose
-    private Rewards rewards;
+    private RuleReward reward;
+
+    private List<Condition> conditions;
+    private List<RuleReward> rewards;
     /**
      *
      * @return name
@@ -114,33 +118,58 @@ public class RuleDetail {
         this.action = action;
     }
 
+    /**
+     *
+     * @return activeStatus
+     */
+    public boolean isActiveStatus() {
+        return activeStatus;
+    }
+
+    /**
+     *
+     * @return rewards
+     */
+    public List<RuleReward> getRewards() {
+        return rewards;
+    }
+
+    /**
+     *
+     * @param rewards
+     */
+    public void setRewards(List<RuleReward> rewards) {
+        this.rewards = rewards;
+    }
+
     public static RuleDetail parseEngineRuleDetail(JSONObject json) throws JSONException {
         RuleDetail ruleDetail = new RuleDetail();
-        /*Iterator<String> iterator = json.keys();
 
-        while (iterator.hasNext()) {
-            String jsonKey = iterator.next();
-
-            if (jsonKey == "jigsaw_set") {
-
-            }
-        }*/
         ruleDetail.setActiveStatus(json.getBoolean("active_status"));
         ruleDetail.setDescription(json.getString("description"));
         ruleDetail.setName(json.getString("name"));
         ruleDetail.setTags(json.getString("tags"));
 
-
         JSONArray jigsawSet = json.getJSONArray("jigsaw_set");
-        System.out.println("MARK");
+        List<Condition> ruleCondition = new ArrayList<>();
         for (int i = 0; i < jigsawSet.length(); i++) {
             String category = jigsawSet.getJSONObject(i).getString("category");
-            System.out.println(category);
-            System.out.println(jigsawSet.getJSONObject(i));
             if (category.equals("ACTION")) {
                 ruleDetail.setAction(JsonHelper.FromJsonObject(jigsawSet.getJSONObject(i).getJSONObject("config"), Action.class));
             } else if (category.equals("GROUP")) {
+                JSONArray rewardJSONArray = jigsawSet.getJSONObject(i).getJSONObject("config").getJSONArray("group_container");
+                List<RuleReward> rewardList = new ArrayList<>();
 
+                for (int j = 0; j < rewardJSONArray.length(); j++) {
+                    rewardList.add(JsonHelper.FromJsonObject(rewardJSONArray.getJSONObject(j), RuleReward.class));
+                }
+                ruleDetail.setRewards(rewardList);
+            } else if (category.equals("CONDITION")) {
+                String type = jigsawSet.getJSONObject(i).getString("name");
+                if (type.equals("redeem")) {
+                    RedeemConditionn redeemCondition = JsonHelper.FromJsonObject(jigsawSet.getJSONObject(i), RedeemConditionn.class);
+                    ruleCondition.add(redeemCondition);
+                }
             }
         }
 

@@ -203,7 +203,6 @@ public class EngineApi extends Api {
             @Override
             public void onSuccess(JSONObject result) {
                 try {
-                    //RuleDetail ruleDetail =JsonHelper.FromJsonObject(result, RuleDetail.class);
                     RuleDetail ruleDetail = RuleDetail.parseEngineRuleDetail(result);
                     if(listener != null) listener.onSuccess(ruleDetail);
                 } catch (JSONException e) {

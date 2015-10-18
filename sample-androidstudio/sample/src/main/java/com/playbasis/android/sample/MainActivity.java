@@ -23,6 +23,7 @@ import com.playbasis.android.playbasissdk.model.Quest;
 import com.playbasis.android.playbasissdk.model.Rule;
 import com.playbasis.android.playbasissdk.model.RuleAction;
 import com.playbasis.android.playbasissdk.model.RuleDetail;
+import com.playbasis.android.playbasissdk.model.RuleReward;
 import com.playbasis.android.playbasissdk.model.UIEvent;
 import com.playbasis.android.playbasissdk.model.Event;
 
@@ -129,17 +130,11 @@ public class MainActivity extends FragmentActivity {
                 EngineApi.ruleDetail(SampleApplication.playbasis, "56167df4be120b4e353701fa", new OnResult<RuleDetail>() {
                     @Override
                     public void onSuccess(RuleDetail result) {
-                        Log.d("Engine", "Rule Detail Success");
-                        System.out.println(result.getAction());
-                        System.out.println(result.getActiveStatus());
-                        System.out.println(result.getDescription());
-                        System.out.println(result.getName());
-                        System.out.println(result.getTags());
+
                     }
 
                     @Override
                     public void onError(HttpError error) {
-                        Log.d("Engine", "Rule Detail failed");
                         if (error.requestError != null) {
                             Log.d("Engine", error.requestError.message);
                         } else {
