@@ -22,7 +22,8 @@ public class RuleReward {
     @SerializedName("item_id")
     @Expose
     private String itemId;
-
+    @Expose
+    private double weight;
     private BadgeData badgeData;
     private Goods good;
 
@@ -74,6 +75,14 @@ public class RuleReward {
         this.good = good;
     }
 
+    public double getWeight() {
+        return weight;
+    }
+
+    public void setWeight(double weight) {
+        this.weight = weight;
+    }
+
     public static RuleReward parseRuleReward(JSONObject json) throws JSONException {
         RuleReward ruleReward = new RuleReward();
         String name = json.getString("reward_name");
@@ -82,11 +91,16 @@ public class RuleReward {
         ruleReward.setQuantity(json.getString("quantity"));
         ruleReward.setRewardId(json.getString("reward_id"));
 
-        JSONObject data = json.getJSONObject("data");
-        if (name.equals("goods")) {
-            ruleReward.setGood(JsonHelper.FromJsonObject(data, Goods.class));
-        } else if (name.equals("badge")) {
-            ruleReward.setBadgeData(JsonHelper.FromJsonObject(data, BadgeData.class));
+        if (json.has("weight")) {
+            ruleReward.setWeight(json.getDouble("weight"));
+        }
+        if (json.has("data")) {
+            JSONObject data = json.getJSONObject("data");
+            if (name.equals("goods")) {
+                ruleReward.setGood(JsonHelper.FromJsonObject(data, Goods.class));
+            } else if (name.equals("badge")) {
+                ruleReward.setBadgeData(JsonHelper.FromJsonObject(data, BadgeData.class));
+            }
         }
 
         return ruleReward;

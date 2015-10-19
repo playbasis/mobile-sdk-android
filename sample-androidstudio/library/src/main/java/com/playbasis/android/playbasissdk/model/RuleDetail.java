@@ -142,6 +142,22 @@ public class RuleDetail {
         this.rewards = rewards;
     }
 
+    /**
+     *
+     * @return conditions
+     */
+    public List<Condition> getConditions() {
+        return conditions;
+    }
+
+    /**
+     *
+     * @param conditions
+     */
+    public void setConditions(List<Condition> conditions) {
+        this.conditions = conditions;
+    }
+
     public static RuleDetail parseEngineRuleDetail(JSONObject json) throws JSONException {
         RuleDetail ruleDetail = new RuleDetail();
 
@@ -167,11 +183,11 @@ public class RuleDetail {
             } else if (category.equals("CONDITION")) {
                 String type = jigsawSet.getJSONObject(i).getString("name");
                 if (type.equals("redeem")) {
-                    RedeemConditionn redeemCondition = JsonHelper.FromJsonObject(jigsawSet.getJSONObject(i), RedeemConditionn.class);
-                    ruleCondition.add(redeemCondition);
+                    ruleCondition.add(RedeemCondition.parseRedeemCondition(jigsawSet.getJSONObject(i)));
                 }
             }
         }
+        ruleDetail.setConditions(ruleCondition);
 
         return ruleDetail;
     }

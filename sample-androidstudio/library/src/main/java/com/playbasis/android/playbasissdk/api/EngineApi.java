@@ -116,7 +116,6 @@ public class EngineApi extends Api {
                             String quantity,  final OnResult<Rule> listener){
 
         String endpoint = SDKUtil._ENGINE_URL + "rule";
-        System.out.println("Rule request");
         if(isAsync){
 
             JSONObject jsonObject = null;
