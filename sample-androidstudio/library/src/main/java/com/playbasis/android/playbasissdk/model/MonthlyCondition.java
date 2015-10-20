@@ -1,10 +1,9 @@
-package com.playbasis.android.sample;
+package com.playbasis.android.playbasissdk.model;
 
 import android.util.Log;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-import com.playbasis.android.playbasissdk.model.Condition;
 
 import org.json.JSONException;
 import org.json.JSONObject;
