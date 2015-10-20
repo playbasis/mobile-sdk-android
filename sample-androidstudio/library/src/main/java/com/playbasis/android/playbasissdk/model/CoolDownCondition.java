@@ -35,5 +35,4 @@ public class CoolDownCondition extends Condition {
 
         return coolDownCondition;
     }
-
 }
