@@ -9,7 +9,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -184,6 +183,16 @@ public class RuleDetail {
                 String type = jigsawSet.getJSONObject(i).getString("name");
                 if (type.equals("redeem")) {
                     ruleCondition.add(RedeemCondition.parseRedeemCondition(jigsawSet.getJSONObject(i)));
+                } else if (type.equals(("before"))) {
+                    ruleCondition.add(BeforeCondition.parseBeforeCondition(jigsawSet.getJSONObject(i)));
+                } else if (type.equals("after")) {
+                    ruleCondition.add(AfterCondition.parseAfterCondition(jigsawSet.getJSONObject(i)));
+                } else if (type.equals("between")) {
+                    ruleCondition.add(BetweenCondition.parseBetweenCondition(jigsawSet.getJSONObject(i)));
+                } else if (type.equals("cooldown")) {
+                    ruleCondition.add(CoolDownCondition.parseCoolDownCondition(jigsawSet.getJSONObject(i)));
+                } else if (type.equals("counter")) {
+                    ruleCondition.add(CounterCondition.parseCounterCondition(jigsawSet.getJSONObject(i)));
                 }
             }
         }
