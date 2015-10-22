@@ -176,7 +176,8 @@ public class RuleDetail {
                 List<RuleReward> rewardList = new ArrayList<>();
 
                 for (int j = 0; j < rewardJSONArray.length(); j++) {
-                    rewardList.add(JsonHelper.FromJsonObject(rewardJSONArray.getJSONObject(j), RuleReward.class));
+                    //rewardList.add(JsonHelper.FromJsonObject(rewardJSONArray.getJSONObject(j), RuleReward.class));
+                    rewardList.add(RuleReward.parseRuleReward(rewardJSONArray.getJSONObject(j)));
                 }
                 ruleDetail.setRewards(rewardList);
             } else if (category.equals("CONDITION")) {
