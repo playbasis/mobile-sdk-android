@@ -83,7 +83,7 @@ public class EngineApi extends Api {
                         NTPdate.GetNTPDate(playbasis, new NTPdate.OnDate() {
                             @Override
                             public void onDate(Long date) {
-                                ruleRequest(playbasis, isAsync, action, playerId, url, date, reward, quantity, 
+                                ruleRequest(playbasis, isAsync, action, playerId, url, date, reward, quantity,
                                         listener);
                             }
 
@@ -92,10 +92,11 @@ public class EngineApi extends Api {
                                 if (listener != null) listener.onError(new HttpError(error));
                             }
                         });
-                        
+
                     } else {
-                        if (listener != null) listener.onError(new HttpError(new RequestError("update player fail",
-                                RequestError.ERROR_CODE.DEFAULT)));
+                        if (listener != null)
+                            listener.onError(new HttpError(new RequestError("update player fail",
+                                    RequestError.ERROR_CODE.DEFAULT)));
                     }
 
                 }
@@ -157,8 +158,14 @@ public class EngineApi extends Api {
             JsonObjectPOST(playbasis, uri, dateTime, params, new OnResult<JSONObject>() {
                 @Override
                 public void onSuccess(JSONObject result) {
-                    Rule rule = JsonHelper.FromJsonObject(result, Rule.class);
-                    if (listener != null) listener.onSuccess(rule);
+                    try {
+                        Rule rule = Rule.parseRule(result); //JsonHelper.FromJsonObject(result, Rule.class);
+                        if (listener != null) listener.onSuccess(rule);
+                    }catch (JSONException e) {
+                        e.printStackTrace();
+                        if(listener != null) listener.onError(new HttpError(e));
+                    }
+
                 }
 
                 @Override

@@ -2,6 +2,10 @@ package com.playbasis.android.playbasissdk.model;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.playbasis.android.playbasissdk.helper.JsonHelper;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  * Created by gregoire barret on 2/19/15.
@@ -27,13 +31,12 @@ public class Event {
     @SerializedName("reward_type")
     @Expose
     private String rewardType;
-    @SerializedName("reward_data")
-    @Expose
-    private BadgeData rewardData;
     @Expose
     private String value;
     @Expose
     private  int index;
+    private BadgeData badgeData;
+    private Goods good;
 
     /**
      *  
@@ -117,22 +120,6 @@ public class Event {
     }
 
     /**
-     *
-     * @return the reward data
-     */
-    public BadgeData getRewardData() {
-        return rewardData;
-    }
-
-    /**
-     *
-     * @param rewardData the reward data
-     */
-    public void setRewardData(BadgeData rewardData) {
-        this.rewardData = rewardData;
-    }
-
-    /**
      *  
      * @return the value
      */
@@ -172,6 +159,57 @@ public class Event {
                 ", status=" + status +
                 ", questId='" + questId + '\'' +
                 '}';
+    }
+
+    public BadgeData getBadgeData() {
+        return badgeData;
+    }
+
+    public void setBadgeData(BadgeData badgeData) {
+        this.badgeData = badgeData;
+    }
+
+    public Goods getGood() {
+        return good;
+    }
+
+    public void setGood(Goods good) {
+        this.good = good;
+    }
+
+    public static Event parseEvent(JSONObject jsonObject) throws JSONException{
+        Event event = new Event();
+
+        if (jsonObject.has("event_type")) {
+            event.setType(jsonObject.getString("event_type"));
+        }
+
+        if (jsonObject.has("value")) {
+            event.setValue(jsonObject.getString("value"));
+        }
+
+        if (jsonObject.has("index")) {
+            event.setIndex(jsonObject.getInt("index"));
+        }
+
+        if (jsonObject.has("reward_type")) {
+            event.setRewardType(jsonObject.getString("reward_type"));
+        }
+
+        if (jsonObject.has("event_status")) {
+            event.setStatus(jsonObject.getBoolean("event_status"));
+        }
+
+        if (jsonObject.has("reward_data")) {
+            JSONObject data =  jsonObject.getJSONObject("reward_data");
+            if (jsonObject.getString("reward_type").equals("badge")) {
+                event.setBadgeData(JsonHelper.FromJsonObject(data, BadgeData.class));
+            }
+            if (jsonObject.getString("reward_type").equals("goods")) {
+                event.setGood(JsonHelper.FromJsonObject(data, Goods.class));
+            }
+        }
+        return event;
     }
 }
 

@@ -3,6 +3,11 @@ package com.playbasis.android.playbasissdk.model;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -77,5 +82,21 @@ public class Rule {
                 ", missions=" + missions +
                 ", quests=" + quests +
                 '}';
+    }
+
+    public static Rule parseRule(JSONObject json) throws JSONException {
+        Rule rule = new Rule();
+        JSONArray events = json.getJSONArray("events");
+        List<Event> myEvents = new ArrayList<Event>();
+        System.out.println("events");
+        System.out.println(events);
+        for (int i = 0; i < events.length(); i++) {
+            JSONObject eventJSON = (JSONObject) events.get(i);
+            System.out.println(eventJSON);
+            myEvents.add(Event.parseEvent(eventJSON));
+        }
+        rule.setEvents(myEvents);
+        // TODO setMissions and setQuest
+        return rule;
     }
 }
