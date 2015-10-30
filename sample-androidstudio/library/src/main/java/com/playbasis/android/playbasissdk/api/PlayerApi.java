@@ -21,6 +21,7 @@ import com.playbasis.android.playbasissdk.model.Quest;
 import com.playbasis.android.playbasissdk.model.Rank;
 import com.playbasis.android.playbasissdk.model.Ranks;
 import com.playbasis.android.playbasissdk.model.Reward;
+import com.playbasis.android.playbasissdk.model.ReferralCode;
 import com.playbasis.android.playbasissdk.widget.AbstractPlayerView;
 import com.playbasis.android.playbasissdk.widget.PlayerView;
 
@@ -137,7 +138,7 @@ public class PlayerApi extends Api{
     public static void playerPrivateInfo(@NonNull Playbasis playbasis, @NonNull String playerId,
                                          final OnResult<Player> listener){
         String uri = playbasis.getUrl() + SDKUtil._PLAYER_URL + playerId;
-        getPlayerPrivate(playbasis,uri,listener);
+        getPlayerPrivate(playbasis, uri, listener);
     }
 
     /**
@@ -180,15 +181,16 @@ public class PlayerApi extends Api{
             public void onSuccess(JSONObject result) {
                 try {
                     List<Player> players = JsonHelper.FromJsonArray(result.getJSONArray("player"), Player.class);
-                    if(listener!=null)listener.onSuccess(players);
+                    if (listener != null) listener.onSuccess(players);
                 } catch (JSONException e) {
                     e.printStackTrace();
-                    if(listener!=null)listener.onError(new HttpError(e));
+                    if (listener != null) listener.onError(new HttpError(e));
                 }
             }
+
             @Override
             public void onError(HttpError error) {
-                if(listener!=null)listener.onError(error);
+                if (listener != null) listener.onError(error);
             }
         });
     }
@@ -201,7 +203,7 @@ public class PlayerApi extends Api{
      */
     public static void register(@NonNull Playbasis playbasis, @NonNull Player player,
                                 final OnResult<Boolean> listener){
-        register(playbasis,false,player,listener);
+        register(playbasis, false, player, listener);
     }
 
     /**
@@ -257,7 +259,7 @@ public class PlayerApi extends Api{
                 e.printStackTrace();
             }
 
-            asyncPost(playbasis, endpoint ,jsonObject , new OnResult<String>() {
+            asyncPost(playbasis, endpoint, jsonObject, new OnResult<String>() {
                 @Override
                 public void onSuccess(String result) {
                     if (listener != null) listener.onSuccess(true);
@@ -359,7 +361,7 @@ public class PlayerApi extends Api{
                 e.printStackTrace();
             }
 
-            asyncPost(playbasis, endpoint ,jsonObject , new OnResult<String>() {
+            asyncPost(playbasis, endpoint, jsonObject, new OnResult<String>() {
                 @Override
                 public void onSuccess(String result) {
                     if (listener != null) listener.onSuccess(true);
@@ -736,8 +738,8 @@ public class PlayerApi extends Api{
         JsonArrayGET(playbasis, uri, null, new OnResult<JSONArray>() {
             @Override
             public void onSuccess(JSONArray result) {
-                    List<Badge> badges = JsonHelper.FromJsonArray(result, Badge.class);
-                    if (listener != null) listener.onSuccess(badges);
+                List<Badge> badges = JsonHelper.FromJsonArray(result, Badge.class);
+                if (listener != null) listener.onSuccess(badges);
             }
 
             @Override
@@ -804,7 +806,7 @@ public class PlayerApi extends Api{
      */
     public static void claimBadge(@NonNull Playbasis playbasis, @NonNull String playerId,
                                   @NonNull String badgeId, final OnResult<Boolean> listener){
-        claimBadge(playbasis, false, playerId,badgeId,listener);
+        claimBadge(playbasis, false, playerId, badgeId, listener);
     }
     
     /**
@@ -1203,5 +1205,35 @@ public class PlayerApi extends Api{
             });
         }
 
+    }
+    /**
+     * Get unique referral code of player.
+     * @param playbasis Playbasis object.
+     * @param uri String uri.
+     * @param listener Callback interface.
+     */
+    private static void getPlayerReferralCode(@NonNull Playbasis playbasis, String uri, final OnResult<ReferralCode> listener) {
+        JsonObjectGET(playbasis, uri, null, new OnResult<JSONObject>() {
+            @Override
+            public void onSuccess(JSONObject result) {
+                ReferralCode referralCode = JsonHelper.FromJsonObject(result, ReferralCode.class);
+                if (listener != null) listener.onSuccess(referralCode);
+            }
+            @Override
+            public void onError(HttpError error) {
+                if(listener!=null)listener.onError(error);
+            }
+        });
+    }
+    /**
+     * Get unique referral code of player.
+     * @param playbasis Playbasis object.
+     * @param playerId player id.
+     * @param listener Callback interface.
+     */
+    public static void referralCode(@NonNull Playbasis playbasis, @NonNull String playerId,
+                                              final OnResult<ReferralCode> listener){
+        String uri = playbasis.getUrl() + SDKUtil._PLAYER_URL + playerId + "/code";
+        getPlayerReferralCode(playbasis, uri, listener);
     }
 }

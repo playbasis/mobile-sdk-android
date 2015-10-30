@@ -10,6 +10,7 @@ import com.playbasis.android.playbasissdk.http.RequestError;
 import com.playbasis.android.playbasissdk.model.ActionConfig;
 import com.playbasis.android.playbasissdk.model.Goods;
 import com.playbasis.android.playbasissdk.model.Rule;
+import com.playbasis.android.playbasissdk.model.RuleDetail;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
@@ -82,7 +83,7 @@ public class EngineApi extends Api {
                         NTPdate.GetNTPDate(playbasis, new NTPdate.OnDate() {
                             @Override
                             public void onDate(Long date) {
-                                ruleRequest(playbasis, isAsync, action, playerId, url, date, reward, quantity, 
+                                ruleRequest(playbasis, isAsync, action, playerId, url, date, reward, quantity,
                                         listener);
                             }
 
@@ -91,10 +92,11 @@ public class EngineApi extends Api {
                                 if (listener != null) listener.onError(new HttpError(error));
                             }
                         });
-                        
+
                     } else {
-                        if (listener != null) listener.onError(new HttpError(new RequestError("update player fail",
-                                RequestError.ERROR_CODE.DEFAULT)));
+                        if (listener != null)
+                            listener.onError(new HttpError(new RequestError("update player fail",
+                                    RequestError.ERROR_CODE.DEFAULT)));
                     }
 
                 }
@@ -115,7 +117,6 @@ public class EngineApi extends Api {
                             String quantity,  final OnResult<Rule> listener){
 
         String endpoint = SDKUtil._ENGINE_URL + "rule";
-
         if(isAsync){
 
             JSONObject jsonObject = null;
@@ -130,7 +131,7 @@ public class EngineApi extends Api {
                 e.printStackTrace();
             }
 
-            asyncPost(playbasis, endpoint, dateTime ,jsonObject , new OnResult<String>() {
+            asyncPost(playbasis, endpoint, dateTime, jsonObject, new OnResult<String>() {
                 @Override
                 public void onSuccess(String result) {
                     if (listener != null) listener.onSuccess(null);
@@ -157,8 +158,14 @@ public class EngineApi extends Api {
             JsonObjectPOST(playbasis, uri, dateTime, params, new OnResult<JSONObject>() {
                 @Override
                 public void onSuccess(JSONObject result) {
-                    Rule rule = JsonHelper.FromJsonObject(result, Rule.class);
-                    if (listener != null) listener.onSuccess(rule);
+                    try {
+                        Rule rule = Rule.parseRule(result); //JsonHelper.FromJsonObject(result, Rule.class);
+                        if (listener != null) listener.onSuccess(rule);
+                    }catch (JSONException e) {
+                        e.printStackTrace();
+                        if(listener != null) listener.onError(new HttpError(e));
+                    }
+
                 }
 
                 @Override
@@ -170,4 +177,50 @@ public class EngineApi extends Api {
         }
     }
 
+    /**
+     *
+     *  @param playbasis Playbasus object
+     *  @param ruleId    rule ID
+     *
+     *  @param listener Callback interface.
+     */
+    public static void ruleDetail(@NonNull final Playbasis playbasis,@NonNull final String ruleId, final OnResult<RuleDetail> listener) {
+        if(playbasis.isNetworkAvailable()) {
+            NTPdate.GetNTPDate(playbasis, new NTPdate.OnDate() {
+                @Override
+                public void onDate(Long date) {
+                    ruleDetailRequest(playbasis, ruleId, date, listener);
+                }
+
+                @Override
+                public void onError(RequestError error) {
+                    if (listener != null) listener.onError(new HttpError(error));
+                }
+            });
+        } else {
+            ruleDetailRequest(playbasis, ruleId, NTPdate.GetLocalDate(playbasis), listener);
+        }
+    }
+
+    private static void ruleDetailRequest(@NonNull final Playbasis playbasis,@NonNull final String ruleId, Long dateTime, final OnResult<RuleDetail> listener) {
+        String uri = playbasis.getUrl() + SDKUtil._ENGINE_URL + "rule/" + ruleId;
+
+        JsonObjectGET(playbasis, uri, null, new OnResult<JSONObject>() {
+            @Override
+            public void onSuccess(JSONObject result) {
+                try {
+                    RuleDetail ruleDetail = RuleDetail.parseEngineRuleDetail(result);
+                    if(listener != null) listener.onSuccess(ruleDetail);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    if(listener != null) listener.onError(new HttpError(e));
+                }
+            }
+
+            @Override
+            public void onError(HttpError error) {
+                if(listener != null) listener.onError(error);
+            }
+        });
+    }
 }
