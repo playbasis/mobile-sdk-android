@@ -88,8 +88,6 @@ public class Rule {
         Rule rule = new Rule();
         JSONArray events = json.getJSONArray("events");
         List<Event> myEvents = new ArrayList<Event>();
-        System.out.println("events");
-        System.out.println(events);
         for (int i = 0; i < events.length(); i++) {
             JSONObject eventJSON = (JSONObject) events.get(i);
             System.out.println(eventJSON);

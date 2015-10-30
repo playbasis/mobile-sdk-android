@@ -110,12 +110,14 @@ public class MainActivity extends FragmentActivity {
                             System.out.println(event.getRewardType());
                             System.out.println(event.getValue());
                             System.out.println(event.getIndex());
+                            System.out.println(event.getGood());
+                            System.out.println(event.getBadgeData());
                         }
                     }
 
                     @Override
                     public void onError(HttpError error) {
-                        Log.d("Engine", "failed");
+                        Log.d("Engine","failed");
                         if (error.requestError != null) {
                             Log.d("Engine", error.requestError.message);
                         } else {
@@ -123,11 +125,14 @@ public class MainActivity extends FragmentActivity {
                         }
                     }
                 });
-
+/*
                 EngineApi.ruleDetail(SampleApplication.playbasis, "56167df4be120b4e353701fa", new OnResult<RuleDetail>() {
                     @Override
                     public void onSuccess(RuleDetail result) {
-
+                        List<RuleReward> rewards = result.getRewards();
+                        for(int i = 0; i < rewards.size(); i++) {
+                            System.out.println(rewards.get(i).getGood());
+                        }
                     }
 
                     @Override
@@ -138,7 +143,7 @@ public class MainActivity extends FragmentActivity {
                             Log.d("Engine", error.toString());
                         }
                     }
-                });
+                });*/
             }
         });
     }
