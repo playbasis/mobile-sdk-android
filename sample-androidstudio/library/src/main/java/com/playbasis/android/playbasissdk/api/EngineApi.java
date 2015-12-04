@@ -69,11 +69,13 @@ public class EngineApi extends Api {
      *                             that doesn't specify reward name.
      * @param quantity Amount of the point-based reward to give to player, if the action trigger custom-point reward
      *                                  that doesn't specify reward quantity.
+     * @param ruleId Rule Id
+     *
      * @param listener Callback interface.
      */
     public static void rule(@NonNull final Playbasis playbasis, final boolean isAsync,
                             @NonNull final String action, @NonNull final String playerId, final String url, final String reward,
-                            final String quantity,  final OnResult<Rule> listener){
+                            final String quantity, final String ruleId,  final OnResult<Rule> listener){
 
         if (playbasis.isNetworkAvailable()) {
             PlayerValidatorApi.playerValidation(playbasis, playerId, new OnResult<Boolean>() {
@@ -83,7 +85,7 @@ public class EngineApi extends Api {
                         NTPdate.GetNTPDate(playbasis, new NTPdate.OnDate() {
                             @Override
                             public void onDate(Long date) {
-                                ruleRequest(playbasis, isAsync, action, playerId, url, date, reward, quantity,
+                                ruleRequest(playbasis, isAsync, action, playerId, url, date, reward, quantity, ruleId,
                                         listener);
                             }
 
@@ -107,14 +109,14 @@ public class EngineApi extends Api {
                 }
             });
         }else{
-            ruleRequest(playbasis, isAsync, action, playerId, url, NTPdate.GetLocalDate(playbasis), reward, quantity,
+            ruleRequest(playbasis, isAsync, action, playerId, url, NTPdate.GetLocalDate(playbasis), reward, quantity, ruleId,
                     listener);
         }
     }
 
     private static void ruleRequest(@NonNull Playbasis playbasis, boolean isAsync,
                             @NonNull String action, @NonNull String playerId, String url, Long dateTime, String reward,
-                            String quantity,  final OnResult<Rule> listener){
+                            String quantity, String ruleId,  final OnResult<Rule> listener){
 
         String endpoint = SDKUtil._ENGINE_URL + "rule";
         if(isAsync){
@@ -127,6 +129,7 @@ public class EngineApi extends Api {
                 if(url!=null) jsonObject.put("url", url);
                 if(reward!=null) jsonObject.put("reward", reward);
                 if(quantity!=null) jsonObject.put("quantity", quantity);
+                if(ruleId!=null) jsonObject.put("rule_id", ruleId);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -154,6 +157,7 @@ public class EngineApi extends Api {
             if (url != null) params.add(new BasicNameValuePair("url", url));
             if (reward != null) params.add(new BasicNameValuePair("reward", reward));
             if (quantity != null) params.add(new BasicNameValuePair("quantity", quantity));
+            if (ruleId != null) params.add(new BasicNameValuePair("rule_id", ruleId));
 
             JsonObjectPOST(playbasis, uri, dateTime, params, new OnResult<JSONObject>() {
                 @Override
