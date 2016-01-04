@@ -327,7 +327,7 @@ public class Playbasis {
      * @param listener Callback interface.
      */
     public void Do(@NonNull String playerId, RuleAction action, OnResult<Rule> listener){
-        EngineApi.rule(this, false, action.toString(), playerId, null, null,null, listener );
+        EngineApi.rule(this, false, action.toString(), playerId, null, null,null, null, listener );
     }
 
     /**
@@ -337,7 +337,7 @@ public class Playbasis {
      * @param listener Callback interface.
      */
     public void Do(@NonNull String playerId, UIEvent action, OnResult<Rule> listener){
-        EngineApi.rule(this, false, action.toString(), playerId, null, null,null, listener );
+        EngineApi.rule(this, false, action.toString(), playerId, null, null,null, null, listener );
     }
 
     /**
@@ -348,7 +348,7 @@ public class Playbasis {
      * @param listener Callback interface.
      */
     public void Do(@NonNull String playerId, String action, OnResult<Rule> listener){
-        EngineApi.rule(this, false, action, playerId, null, null,null, listener );
+        EngineApi.rule(this, false, action, playerId, null, null,null, null, listener );
     }
 
     /**
@@ -362,7 +362,7 @@ public class Playbasis {
      * @param listener Callback interface.
      */
     public void Do(@NonNull String playerId, RuleAction action, String url, OnResult<Rule> listener){
-        EngineApi.rule(this, false, action.toString(), playerId, url, null,null, listener );
+        EngineApi.rule(this, false, action.toString(), playerId, url, null,null, null, listener );
     }
     /**
      *  {@link #Do(String, com.playbasis.android.playbasissdk.model.RuleAction,
@@ -375,7 +375,7 @@ public class Playbasis {
      * @param listener Callback interface.
      */
     public void Do(@NonNull String playerId, UIEvent action, String url, OnResult<Rule> listener){
-        EngineApi.rule(this, false, action.toString(), playerId, url, null,null, listener );
+        EngineApi.rule(this, false, action.toString(), playerId, url, null,null, null, listener );
     }
 
     /**
@@ -389,7 +389,7 @@ public class Playbasis {
      * @param listener Callback interface.
      */
     public void Do(@NonNull String playerId, String action, String url, OnResult<Rule> listener){
-        EngineApi.rule(this, false, action, playerId, url, null,null, listener );
+        EngineApi.rule(this, false, action, playerId, url, null,null, null, listener );
     }
 
 
@@ -406,7 +406,7 @@ public class Playbasis {
      * @param listener Callback interface.
      */
     public void Do(@NonNull String playerId, RuleAction action, String url, String reward, OnResult<Rule> listener){
-        EngineApi.rule(this, false, action.toString(), playerId, url, reward, null, listener );
+        EngineApi.rule(this, false, action.toString(), playerId, url, reward, null, null, listener );
     }
     /**
      *  {@link #Do(String, com.playbasis.android.playbasissdk.model.RuleAction,
@@ -421,7 +421,7 @@ public class Playbasis {
      * @param listener Callback interface.
      */
     public void Do(@NonNull String playerId, UIEvent action, String url, String reward, OnResult<Rule> listener){
-        EngineApi.rule(this, false, action.toString(), playerId, url, reward, null, listener );
+        EngineApi.rule(this, false, action.toString(), playerId, url, reward, null, null, listener );
     }
     
     /**
@@ -437,7 +437,7 @@ public class Playbasis {
      * @param listener Callback interface.
      */
     public void Do(@NonNull String playerId, String action, String url, String reward, OnResult<Rule> listener){
-        EngineApi.rule(this, false, action, playerId, url, reward, null, listener );
+        EngineApi.rule(this, false, action, playerId, url, reward, null, null, listener );
     }
 
     /**
@@ -456,7 +456,7 @@ public class Playbasis {
      */
     public void Do(@NonNull String playerId, RuleAction action, String url, String reward, String quantity, 
                    OnResult<Rule> listener){
-        EngineApi.rule(this, false, action.toString(), playerId, url, reward, quantity, listener );
+        EngineApi.rule(this, false, action.toString(), playerId, url, reward, quantity, null, listener );
     }
     /**
      *  {@link #Do(String, com.playbasis.android.playbasissdk.model.RuleAction,
@@ -474,7 +474,7 @@ public class Playbasis {
      */
     public void Do(@NonNull String playerId, UIEvent action, String url, String reward, String quantity,
                    OnResult<Rule> listener){
-        EngineApi.rule(this, false, action.toString(), playerId, url, reward, quantity, listener );
+        EngineApi.rule(this, false, action.toString(), playerId, url, reward, quantity, null, listener );
     }
 
 
@@ -494,7 +494,7 @@ public class Playbasis {
      */
     public void Do(@NonNull String playerId, String action, String url, String reward, String quantity,
                    OnResult<Rule> listener){
-        EngineApi.rule(this, false, action, playerId, url, reward, quantity, listener );
+        EngineApi.rule(this, false, action, playerId, url, reward, quantity, null, listener );
     }
     
     /**
@@ -503,7 +503,7 @@ public class Playbasis {
      * @param action Name of the action performed from ActionRule Enum.
      */
     public void Track(@NonNull String playerId, RuleAction action){
-        EngineApi.rule(this, true, action.toString(), playerId, null, null,null, null );
+        EngineApi.rule(this, true, action.toString(), playerId, null, null,null, null, null );
     }
     /**
      * High level function who make an async engine rule request to the backend.
@@ -511,7 +511,7 @@ public class Playbasis {
      * @param action Name of the action performed from UIEvent Enum.
      */
     public void Track(@NonNull String playerId, UIEvent action){
-        EngineApi.rule(this, true, action.toString(), playerId, null, null,null, null );
+        EngineApi.rule(this, true, action.toString(), playerId, null, null,null, null, null );
     }
 
     /**
@@ -520,7 +520,7 @@ public class Playbasis {
      * @param action Name of the action performed.
      */
     public void Track(@NonNull String playerId, String action){
-        EngineApi.rule(this, true, action, playerId, null, null,null, null );
+        EngineApi.rule(this, true, action, playerId, null, null,null, null, null );
     }
 
     /**
@@ -532,7 +532,7 @@ public class Playbasis {
      *              supplied
      */
     public void Track(@NonNull String playerId, RuleAction action, String url){
-        EngineApi.rule(this, true, action.toString(), playerId, url, null,null, null );
+        EngineApi.rule(this, true, action.toString(), playerId, url, null,null, null, null );
     }
     /**
      * {@link #Track(String, com.playbasis.android.playbasissdk.model.RuleAction)}
@@ -543,7 +543,7 @@ public class Playbasis {
      *              supplied
      */
     public void Track(@NonNull String playerId, UIEvent action, String url){
-        EngineApi.rule(this, true, action.toString(), playerId, url, null,null, null );
+        EngineApi.rule(this, true, action.toString(), playerId, url, null,null, null, null );
     }
 
     /**
@@ -555,7 +555,7 @@ public class Playbasis {
      *              supplied
      */
     public void Track(@NonNull String playerId, String action, String url){
-        EngineApi.rule(this, true, action, playerId, url, null,null, null );
+        EngineApi.rule(this, true, action, playerId, url, null,null, null, null );
     }
 
     /** 
@@ -569,7 +569,7 @@ public class Playbasis {
      *                  doesn't specify reward name
      */
     public void Track(@NonNull String playerId, RuleAction action, String url, String reward){
-        EngineApi.rule(this, true, action.toString(), playerId, url, reward,null, null );
+        EngineApi.rule(this, true, action.toString(), playerId, url, reward,null, null, null );
     }
     /**
      * {@link #Track(String, com.playbasis.android.playbasissdk.model.RuleAction)}
@@ -582,7 +582,7 @@ public class Playbasis {
      *                  doesn't specify reward name
      */
     public void Track(@NonNull String playerId, UIEvent action, String url, String reward){
-        EngineApi.rule(this, true, action.toString(), playerId, url, reward,null, null );
+        EngineApi.rule(this, true, action.toString(), playerId, url, reward,null, null, null );
     }
 
     /**
@@ -596,7 +596,7 @@ public class Playbasis {
      *                  doesn't specify reward name
      */
     public void Track(@NonNull String playerId, String action, String url, String reward){
-        EngineApi.rule(this, true, action, playerId, url, reward,null, null );
+        EngineApi.rule(this, true, action, playerId, url, reward,null, null, null );
     }
 
     /**
@@ -612,7 +612,7 @@ public class Playbasis {
      *                  that doesn't specify reward quantity
      */
     public void Track(@NonNull String playerId, RuleAction action, String url, String reward, String quantity) {
-        EngineApi.rule(this, true, action.toString(), playerId, url, reward, reward, null );
+        EngineApi.rule(this, true, action.toString(), playerId, url, reward, reward, null, null );
     }
 
     /**
@@ -628,7 +628,7 @@ public class Playbasis {
      *                  that doesn't specify reward quantity
      */
     public void Track(@NonNull String playerId, UIEvent action, String url, String reward, String quantity) {
-        EngineApi.rule(this, true, action.toString(), playerId, url, reward, reward, null );
+        EngineApi.rule(this, true, action.toString(), playerId, url, reward, reward, null, null );
     }
 
 
@@ -645,7 +645,7 @@ public class Playbasis {
      *                  that doesn't specify reward quantity
      */
     public void Track(@NonNull String playerId, String action, String url, String reward, String quantity) {
-        EngineApi.rule(this, true, action, playerId, url, reward, reward, null );
+        EngineApi.rule(this, true, action, playerId, url, reward, reward, null, null );
     }
     
 }
