@@ -102,7 +102,7 @@ public class MainActivity extends FragmentActivity {
         engineButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                EngineApi.rule(SampleApplication.playbasis, false, "click", "TestPlayer001", null, null, null, new OnResult<Rule>() {
+                EngineApi.rule(SampleApplication.playbasis, false, "click", "TestPlayer001", null, null, null, null, new OnResult<Rule>() {
                     @Override
                     public void onSuccess(Rule result) {
                         List<Event> events = result.getEvents();
