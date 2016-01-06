@@ -53,6 +53,7 @@ public class OrganizationApi extends Api {
 
                         organizations.add(organization);
                     }
+                    listener.onSuccess(organizations);
                 } catch (JSONException e) {
                     e.printStackTrace();
                     if(listener != null) listener.onError(new HttpError(e));
@@ -109,6 +110,7 @@ public class OrganizationApi extends Api {
 
                         nodes.add(node);
                     }
+                    listener.onSuccess(nodes);
                 } catch (JSONException e) {
                     e.printStackTrace();
                     if (listener != null) listener.onError(new HttpError(e));
