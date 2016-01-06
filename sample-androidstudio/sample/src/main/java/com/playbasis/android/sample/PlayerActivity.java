@@ -47,7 +47,7 @@ public class PlayerActivity extends FragmentActivity {
         vImage = (NetworkImageView) findViewById(R.id.image_player);
 
 
-        getPlayerInfo("exampleplayer");
+        getPlayerInfo("TestPlayer001");
         
         
     }

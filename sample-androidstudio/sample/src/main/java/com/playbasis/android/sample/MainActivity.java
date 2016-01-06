@@ -2,6 +2,7 @@ package com.playbasis.android.sample;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.service.wallpaper.WallpaperService;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -9,16 +10,22 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
+import java.util.List;
 
+import com.playbasis.android.playbasissdk.api.EngineApi;
 import com.playbasis.android.playbasissdk.api.OnResult;
 import com.playbasis.android.playbasissdk.api.PlayerApi;
 import com.playbasis.android.playbasissdk.api.QuestApi;
 import com.playbasis.android.playbasissdk.core.Playbasis;
 import com.playbasis.android.playbasissdk.http.HttpError;
+import com.playbasis.android.playbasissdk.model.Player;
 import com.playbasis.android.playbasissdk.model.Quest;
 import com.playbasis.android.playbasissdk.model.Rule;
 import com.playbasis.android.playbasissdk.model.RuleAction;
+import com.playbasis.android.playbasissdk.model.RuleDetail;
+import com.playbasis.android.playbasissdk.model.RuleReward;
 import com.playbasis.android.playbasissdk.model.UIEvent;
+import com.playbasis.android.playbasissdk.model.Event;
 
 import java.util.Map;
 
@@ -91,7 +98,54 @@ public class MainActivity extends FragmentActivity {
             }
         });
 
+        Button engineButton = (Button) findViewById(R.id.button_engine);
+        engineButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                EngineApi.rule(SampleApplication.playbasis, false, "click", "TestPlayer001", null, null, null, null, new OnResult<Rule>() {
+                    @Override
+                    public void onSuccess(Rule result) {
+                        List<Event> events = result.getEvents();
+                        for (Event event : events) {
+                            System.out.println(event.getRewardType());
+                            System.out.println(event.getValue());
+                            System.out.println(event.getIndex());
+                            System.out.println(event.getGood());
+                            System.out.println(event.getBadgeData());
+                        }
+                    }
 
+                    @Override
+                    public void onError(HttpError error) {
+                        Log.d("Engine","failed");
+                        if (error.requestError != null) {
+                            Log.d("Engine", error.requestError.message);
+                        } else {
+                            Log.d("Engine", error.toString());
+                        }
+                    }
+                });
+/*
+                EngineApi.ruleDetail(SampleApplication.playbasis, "56167df4be120b4e353701fa", new OnResult<RuleDetail>() {
+                    @Override
+                    public void onSuccess(RuleDetail result) {
+                        List<RuleReward> rewards = result.getRewards();
+                        for(int i = 0; i < rewards.size(); i++) {
+                            System.out.println(rewards.get(i).getGood());
+                        }
+                    }
+
+                    @Override
+                    public void onError(HttpError error) {
+                        if (error.requestError != null) {
+                            Log.d("Engine", error.requestError.message);
+                        } else {
+                            Log.d("Engine", error.toString());
+                        }
+                    }
+                });*/
+            }
+        });
     }
 
 

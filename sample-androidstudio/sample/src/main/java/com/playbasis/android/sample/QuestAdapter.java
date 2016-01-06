@@ -159,7 +159,7 @@ public class QuestAdapter  extends BaseAdapter {
                 }
                 // set badge on the rewardFragment if the reward have badge
                 else if (event.getRewardType().equals("badge")) {
-                    rewardWidget.setBadge(event.getRewardData());
+                    rewardWidget.setBadge(event.getBadgeData());
                 }
             }
             rewardWidget.show(mFragmentActivity.getSupportFragmentManager(), "fragment_reward_widget");
