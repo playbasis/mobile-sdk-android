@@ -21,11 +21,6 @@ public class AuthAuthenticator {
     private final Context mContext;
 
     /**
-     * Private preferences. 
-     */
-    private final PrivatePreferences mPrefs;
-
-    /**
      * Token of the current session.
      * */
     public AuthToken authToken;
@@ -41,7 +36,6 @@ public class AuthAuthenticator {
      */
     private AuthAuthenticator(Context context) {
         this.mContext = context;
-        this.mPrefs = new PrivatePreferences(mContext);
     }
     
     public AuthAuthenticator(Context context, Playbasis playbasis){
@@ -62,7 +56,6 @@ public class AuthAuthenticator {
      */
     @Nullable public String getToken() {
         //Try get token saved on shared preferences.
-        if(authToken ==null) { authToken = mPrefs.getToken(); }
         return authToken == null ? "" : authToken.getToken();
     }
 
@@ -71,7 +64,6 @@ public class AuthAuthenticator {
      * @return token
      */
     private AuthToken getSavedAuthToken(){
-        if(authToken ==null) { authToken = mPrefs.getToken(); }
         return authToken;
     }
 
@@ -112,7 +104,6 @@ public class AuthAuthenticator {
      */
     public void setAuthToken(AuthToken authToken){
         this.authToken = authToken;
-        mPrefs.saveToken(authToken);
     }
 
     /**
@@ -120,7 +111,6 @@ public class AuthAuthenticator {
      */
     public void invalidateAuthToken() {
         authToken = null;
-        mPrefs.clearToken();
     }
 
     /**
