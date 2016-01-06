@@ -14,7 +14,9 @@ import com.playbasis.android.playbasissdk.model.Action;
 import com.playbasis.android.playbasissdk.model.Badge;
 import com.playbasis.android.playbasissdk.model.Goods;
 import com.playbasis.android.playbasissdk.model.Level;
+import com.playbasis.android.playbasissdk.model.Node;
 import com.playbasis.android.playbasissdk.model.Player;
+import com.playbasis.android.playbasissdk.model.PlayerAuthStatus;
 import com.playbasis.android.playbasissdk.model.Point;
 import com.playbasis.android.playbasissdk.model.PointDetail;
 import com.playbasis.android.playbasissdk.model.Quest;
@@ -22,6 +24,7 @@ import com.playbasis.android.playbasissdk.model.Rank;
 import com.playbasis.android.playbasissdk.model.Ranks;
 import com.playbasis.android.playbasissdk.model.Reward;
 import com.playbasis.android.playbasissdk.model.ReferralCode;
+import com.playbasis.android.playbasissdk.model.SaleReport;
 import com.playbasis.android.playbasissdk.widget.AbstractPlayerView;
 import com.playbasis.android.playbasissdk.widget.PlayerView;
 
@@ -49,16 +52,16 @@ public class PlayerApi extends Api{
             public void onSuccess(JSONObject result) {
                 try {
                     Player player = JsonHelper.FromJsonObject(result.getJSONObject("player"), Player.class);
-                    if(listener!=null)listener.onSuccess(player);
+                    if (listener != null) listener.onSuccess(player);
                 } catch (JSONException e) {
                     e.printStackTrace();
-                    if(listener!=null)listener.onError(new HttpError(e));
+                    if (listener != null) listener.onError(new HttpError(e));
                 }
             }
 
             @Override
             public void onError(HttpError error) {
-                if(listener!=null)listener.onError(error);
+                if (listener != null) listener.onError(error);
             }
         });
     }
@@ -150,7 +153,7 @@ public class PlayerApi extends Api{
     public static void detailedPlayerPrivateInfo(@NonNull Playbasis playbasis, @NonNull String playerId,
                                                  final OnResult<Player> listener){
         String uri = playbasis.getUrl() + SDKUtil._PLAYER_URL + playerId + "/data/all";
-        getPlayerPrivate(playbasis,uri,listener);
+        getPlayerPrivate(playbasis, uri, listener);
     }
 
     /**
@@ -236,11 +239,11 @@ public class PlayerApi extends Api{
             playerView.setPlayerListener(new PlayerView.OnPlayer() {
                 @Override
                 public void onPlayer(Player player) {
-                    registerPlayer(playbasis, isAsync, player,listener);
+                    registerPlayer(playbasis, isAsync, player, listener);
                 }
             });
         }else{
-            registerPlayer(playbasis, isAsync, player,listener);
+            registerPlayer(playbasis, isAsync, player, listener);
         }
     }
 
@@ -465,7 +468,7 @@ public class PlayerApi extends Api{
      */
     public static void login(@NonNull Playbasis playbasis, @NonNull String playerId,
                              final OnResult<Boolean> listener){
-        login(playbasis,false,playerId,listener);
+        login(playbasis, false, playerId, listener);
     }
 
     /**
@@ -530,7 +533,7 @@ public class PlayerApi extends Api{
      */
     public static void logout(@NonNull Playbasis playbasis, @NonNull String playerId,
                               final OnResult<Boolean> listener){
-        logout(playbasis,false,playerId,listener);
+        logout(playbasis, false, playerId, listener);
     }
 
     /**
@@ -721,7 +724,7 @@ public class PlayerApi extends Api{
     public static void actionCount(@NonNull Playbasis playbasis,@NonNull String playerId, @NonNull String actionName,
                                    final OnResult<Action> listener){
         String uri = playbasis.getUrl() + SDKUtil._PLAYER_URL + playerId + "/action/" + actionName + "/count";
-        getAction(playbasis,uri,listener);
+        getAction(playbasis, uri, listener);
     }
 
     /**
@@ -998,10 +1001,10 @@ public class PlayerApi extends Api{
             public void onSuccess(JSONObject result) {
                 try {
                     List<Goods> goodses = JsonHelper.FromJsonArray(result.getJSONArray("goods"), Goods.class);
-                    if(listener!=null)listener.onSuccess(goodses);
+                    if (listener != null) listener.onSuccess(goodses);
                 } catch (JSONException e) {
                     e.printStackTrace();
-                    if(listener!=null)listener.onError(new HttpError(e));
+                    if (listener != null) listener.onError(new HttpError(e));
                 }
             }
 
@@ -1219,9 +1222,10 @@ public class PlayerApi extends Api{
                 ReferralCode referralCode = JsonHelper.FromJsonObject(result, ReferralCode.class);
                 if (listener != null) listener.onSuccess(referralCode);
             }
+
             @Override
             public void onError(HttpError error) {
-                if(listener!=null)listener.onError(error);
+                if (listener != null) listener.onError(error);
             }
         });
     }
@@ -1235,5 +1239,158 @@ public class PlayerApi extends Api{
                                               final OnResult<ReferralCode> listener){
         String uri = playbasis.getUrl() + SDKUtil._PLAYER_URL + playerId + "/code";
         getPlayerReferralCode(playbasis, uri, listener);
+    }
+
+    public static void auth(@NonNull Playbasis playbasis, String email, String username,
+                            @NonNull String password, String deviceId, final OnResult<Boolean> listener) {
+        auth(playbasis, false, email, username, password, deviceId, listener);
+    }
+
+
+    /**
+     *
+     * @param playbasis Playbasis object.
+     * @param isAsync Make the request async.
+     * @param email User's email.
+     * @param username User's username.
+     * @param password User's password.
+     * @param deviceId User's deviceId
+     * @param listener Callback Interface
+     */
+    private static void auth(@NonNull Playbasis playbasis, boolean isAsync, String email, String username,
+                            @NonNull String password, String deviceId, final OnResult<Boolean> listener) {
+
+        String endpoint =  SDKUtil._PLAYER_URL + "auth";
+        String uri = playbasis.getUrl() + endpoint;
+        List<NameValuePair> params = new ArrayList<>();
+        if (email != null) {
+            params.add(new BasicNameValuePair("email", email));
+        }
+        if (username != null) {
+            params.add(new BasicNameValuePair("username", username));
+        }
+        if (deviceId != null) {
+            params.add(new BasicNameValuePair("device_id", deviceId));
+        }
+        params.add(new BasicNameValuePair("password", password));
+
+        JsonObjectPOST(playbasis, uri, params, new OnResult<JSONObject>() {
+            @Override
+            public void onSuccess(JSONObject result) {
+                if (listener != null) listener.onSuccess(true);
+            }
+
+            @Override
+            public void onError(HttpError error) {
+                error.printStackTrace();
+                if (error.getMessage() != null) {
+                    System.out.println(error.getMessage());
+                }
+                if (listener != null) listener.onError(error);
+            }
+        });
+    }
+
+    public static void requestOtp(@NonNull Playbasis playbasis,@NonNull String playerId, final OnResult<String> listener) {
+        requestOtp(playbasis, false, playerId, listener);
+    }
+
+
+    private static void requestOtp(@NonNull Playbasis playbasis, boolean isAsync,@NonNull String playerId, final OnResult<String> listener) {
+
+        String endpoint =  SDKUtil._PLAYER_URL + "auth/" + playerId + "/requestOTPCode";
+        String uri = playbasis.getUrl() + endpoint;
+        JsonObjectPOST(playbasis, uri, null, new OnResult<JSONObject>() {
+            @Override
+            public void onSuccess(JSONObject result) {
+                if (listener != null) {
+                    String otp = null;
+                    try {
+                        otp = result.getString("code");
+                    } catch (JSONException ex) {
+                        ex.printStackTrace();
+                    } finally {
+                        listener.onSuccess(otp);
+                    }
+                }
+            }
+
+            @Override
+            public void onError(HttpError error) {
+                error.printStackTrace();
+                if (error.getMessage() != null) {
+                    System.out.println(error.getMessage());
+                }
+                if (listener != null) listener.onError(error);
+            }
+        });
+    }
+
+    public static void verifyOtp(@NonNull Playbasis playbasis,@NonNull String playerId,@NonNull String code, final OnResult<Boolean> listener) {
+        verifyOtp(playbasis, false, playerId, code, listener);
+    }
+
+
+    private static void verifyOtp(@NonNull Playbasis playbasis, boolean isAsync,@NonNull String playerId,@NonNull String code, final OnResult<Boolean> listener) {
+
+        String endpoint =  SDKUtil._PLAYER_URL + "auth/" + playerId + "/verifyOTPCode";
+        String uri = playbasis.getUrl() + endpoint;
+        JsonObjectPOST(playbasis, uri, null, new OnResult<JSONObject>() {
+            @Override
+            public void onSuccess(JSONObject result) {
+                if (listener != null) listener.onSuccess(true);
+            }
+
+            @Override
+            public void onError(HttpError error) {
+                error.printStackTrace();
+                if (error.getMessage() != null) {
+                    System.out.println(error.getMessage());
+                }
+                if (listener != null) listener.onError(error);
+            }
+        });
+    }
+
+    public static void associatedNode(@NonNull Playbasis playbasis, @NonNull String playerId, final OnResult<Node> listener) {
+
+        String endpoint =  SDKUtil._PLAYER_URL + playerId + "/getAssociatedNode";
+        String uri = playbasis.getUrl() + endpoint;
+        JsonObjectGET(playbasis, uri, null, new OnResult<JSONObject>() {
+            @Override
+            public void onSuccess(JSONObject result) {
+                Node node = JsonHelper.FromJsonObject(result, Node.class);
+                if (listener != null) listener.onSuccess(node);
+            }
+
+            @Override
+            public void onError(HttpError error) {
+                if (listener != null) listener.onError(error);
+            }
+        });
+    }
+
+    public static void saleReport(@NonNull Playbasis playbasis, @NonNull String playerId, Integer month, Integer year, String action, String parameter, final OnResult<SaleReport> listener) {
+        String endpoint =  SDKUtil._PLAYER_URL + playerId + "saleReport";
+        String uri = playbasis.getUrl() + endpoint;
+
+        List<NameValuePair> params = new ArrayList<>();
+        if(month!=null)params.add(new BasicNameValuePair("month", String.valueOf(month)));
+        if(year!=null)params.add(new BasicNameValuePair("year", String.valueOf(year)));
+        if(action!=null)params.add(new BasicNameValuePair("action", action));
+        if(parameter!=null)params.add(new BasicNameValuePair("parameter", parameter));
+
+        JsonObjectGET(playbasis, uri, null, new OnResult<JSONObject>() {
+            @Override
+            public void onSuccess(JSONObject result) {
+                SaleReport saleReport = JsonHelper.FromJsonObject(result, SaleReport.class);
+                if (listener != null) listener.onSuccess(saleReport);
+            }
+
+            @Override
+            public void onError(HttpError error) {
+                if (listener != null) listener.onError(error);
+            }
+        });
     }
 }
