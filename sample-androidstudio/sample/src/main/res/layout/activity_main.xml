@@ -52,6 +52,13 @@
         android:id="@+id/button_engine"
         android:layout_gravity="center_horizontal" />
 
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Test"
+        android:id="@+id/testButton"
+        android:layout_gravity="center_horizontal" />
+
 </LinearLayout>
 
 </ScrollView>
