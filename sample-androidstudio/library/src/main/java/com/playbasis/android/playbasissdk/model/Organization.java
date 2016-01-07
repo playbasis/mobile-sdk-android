@@ -3,10 +3,12 @@ package com.playbasis.android.playbasissdk.model;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.Date;
+
 /**
  * Created by TorIsHere on 1/6/2016 AD.
  */
-public class Node {
+public class Organization {
 
     @SerializedName("_id")
     @Expose
@@ -36,10 +38,7 @@ public class Node {
     String parentId;
     String parentName;
 
-    String organizeId;
-    String organizeName;
-
-    public Node() {
+    public Organization() {
         this.id = "";
         this.name = "";
         this.description = "";
@@ -49,8 +48,6 @@ public class Node {
         this.dateModified = "";
         this.parentId = "";
         this.parentName = "";
-        this.organizeId = "";
-        this.organizeName = "";
     }
 
     public String getId() {
@@ -124,21 +121,4 @@ public class Node {
     public void setParentName(String parentName) {
         this.parentName = parentName;
     }
-
-    public String getOrganizeId() {
-        return organizeId;
-    }
-
-    public void setOrganizeId(String organizeId) {
-        this.organizeId = organizeId;
-    }
-
-    public String getOrganizeName() {
-        return organizeName;
-    }
-
-    public void setOrganizeName(String organizeName) {
-        this.organizeName = organizeName;
-    }
-
 }

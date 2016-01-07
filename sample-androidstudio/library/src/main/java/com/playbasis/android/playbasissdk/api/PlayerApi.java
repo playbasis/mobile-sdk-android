@@ -1365,8 +1365,16 @@ public class PlayerApi extends Api{
         JsonObjectGET(playbasis, uri, null, new OnResult<JSONObject>() {
             @Override
             public void onSuccess(JSONObject result) {
-                Node node = JsonHelper.FromJsonObject(result, Node.class);
-                if (listener != null) listener.onSuccess(node);
+                Node node = new Node();
+                try {
+                    node.setId(result.getString("node_id"));
+                    node.setName(result.getString("name"));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                } finally {
+                    if (listener != null) listener.onSuccess(node);
+                }
+                JsonHelper.FromJsonObject(result, Node.class);
             }
 
             @Override
