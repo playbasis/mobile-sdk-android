@@ -1357,24 +1357,29 @@ public class PlayerApi extends Api{
         });
     }
 
-    public static void associatedNode(@NonNull Playbasis playbasis, @NonNull String playerId, final OnResult<Node> listener) {
+    public static void associatedNode(@NonNull Playbasis playbasis, @NonNull String playerId, final OnResult<ArrayList<Node>> listener) {
 
         String endpoint =  SDKUtil._PLAYER_URL + playerId + "/getAssociatedNode";
         String uri = playbasis.getUrl() + endpoint;
 
-        JsonObjectGET(playbasis, uri, null, new OnResult<JSONObject>() {
+        JsonArrayGET(playbasis, uri, null, new OnResult<JSONArray>() {
             @Override
-            public void onSuccess(JSONObject result) {
-                Node node = new Node();
+            public void onSuccess(JSONArray result) {
+                ArrayList<Node> nodes = new ArrayList<Node>();
                 try {
-                    node.setId(result.getString("node_id"));
-                    node.setName(result.getString("name"));
+                    for (int i = 0; i < result.length(); i++) {
+                        Node node = new Node();
+                        JSONObject jsonObject = result.getJSONObject(i);
+                        node.setId(jsonObject.getString("node_id"));
+                        node.setName(jsonObject.getString("name"));
+                        nodes.add(node);
+                        System.out.println(node);
+                    }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 } finally {
-                    if (listener != null) listener.onSuccess(node);
+                    if (listener != null) listener.onSuccess(nodes);
                 }
-
             }
 
             @Override
@@ -1385,14 +1390,10 @@ public class PlayerApi extends Api{
     }
 
     public static void getRole(@NonNull Playbasis playbasis, @NonNull String playerId, @NonNull String nodeId,final OnResult<ArrayList<Role>> listener) {
-        String endpoint =  SDKUtil._PLAYER_URL + playerId + "/getRole";
+        String endpoint =  SDKUtil._PLAYER_URL + playerId + "/getRole/" + nodeId + "/";
         String uri = playbasis.getUrl() + endpoint;
 
-        List<NameValuePair> params = new ArrayList<>();
-        params.add(new BasicNameValuePair("id", playerId));
-        params.add(new BasicNameValuePair("node_id", nodeId));
-
-        JsonObjectGET(playbasis, uri, params, new OnResult<JSONObject>() {
+        JsonObjectGET(playbasis, uri, null, new OnResult<JSONObject>() {
             @Override
             public void onSuccess(JSONObject result) {
                 ArrayList<Role> roles = new ArrayList<Role>();
@@ -1419,8 +1420,8 @@ public class PlayerApi extends Api{
         });
     }
 
-    public static void saleReport(@NonNull Playbasis playbasis, @NonNull String playerId, Integer month, Integer year, String action, String parameter, final OnResult<SaleReport> listener) {
-        String endpoint =  SDKUtil._PLAYER_URL + playerId + "/saleReport";
+    public static void saleReport(@NonNull Playbasis playbasis, @NonNull String playerId, Integer month, Integer year, String action, String parameter, final OnResult<ArrayList<SaleReport>> listener) {
+        String endpoint =  SDKUtil._PLAYER_URL + playerId + "/saleReport/";
         String uri = playbasis.getUrl() + endpoint;
 
         List<NameValuePair> params = new ArrayList<>();
@@ -1429,11 +1430,21 @@ public class PlayerApi extends Api{
         if(action!=null)params.add(new BasicNameValuePair("action", action));
         if(parameter!=null)params.add(new BasicNameValuePair("parameter", parameter));
 
-        JsonObjectGET(playbasis, uri, params, new OnResult<JSONObject>() {
+        JsonArrayGET(playbasis, uri, params, new OnResult<JSONArray>() {
             @Override
-            public void onSuccess(JSONObject result) {
-                SaleReport saleReport = JsonHelper.FromJsonObject(result, SaleReport.class);
-                if (listener != null) listener.onSuccess(saleReport);
+            public void onSuccess(JSONArray result) {
+                ArrayList<SaleReport> saleReports = new ArrayList<SaleReport>();
+                try {
+                    for (int i = 0; i < result.length(); i++) {
+                        JSONObject jsonObject = result.getJSONObject(i);
+                        SaleReport saleReport = JsonHelper.FromJsonObject(jsonObject, SaleReport.class);
+                        saleReports.add(saleReport);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                } finally {
+                    if (listener != null) listener.onSuccess(saleReports);
+                }
             }
 
             @Override
@@ -1445,7 +1456,7 @@ public class PlayerApi extends Api{
 
     public static void customRank(@NonNull Playbasis playbasis, @NonNull String action, final @NonNull String parameter,
                                   Integer limit, Integer month, Integer year, final OnResult< ArrayList<CustomRank>> listener) {
-        String endpoint =  SDKUtil._PLAYER_URL + "/rankParam";
+        String endpoint =  SDKUtil._PLAYER_URL + "/rankParam/";
         String uri = playbasis.getUrl() + endpoint;
 
         List<NameValuePair> params = new ArrayList<>();
