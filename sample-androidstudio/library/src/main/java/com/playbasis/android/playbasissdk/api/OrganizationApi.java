@@ -7,6 +7,7 @@ import com.playbasis.android.playbasissdk.core.Playbasis;
 import com.playbasis.android.playbasissdk.core.SDKUtil;
 import com.playbasis.android.playbasissdk.helper.JsonHelper;
 import com.playbasis.android.playbasissdk.http.HttpError;
+import com.playbasis.android.playbasissdk.model.MonthlySaleReport;
 import com.playbasis.android.playbasissdk.model.Node;
 import com.playbasis.android.playbasissdk.model.Organization;
 
@@ -162,5 +163,28 @@ public class OrganizationApi extends Api {
     public static void getNodesByOrgIdParentIdName(@NonNull Playbasis playbasis,@NonNull String orgId, @NonNull String parentId, @NonNull String searchName, String sort, String order,
                                               Integer offset, Integer limit, final OnResult<ArrayList<Node>> listener) {
         getNodes(playbasis, null, orgId, parentId, searchName, sort,  order, offset,  limit, listener);
+    }
+
+    public static void getSalesHistory(@NonNull Playbasis playbasis, @NonNull String nodeId, @NonNull Integer count,
+                                       Integer month, Integer year, String action, String parameter, final OnResult<ArrayList<MonthlySaleReport>> listener) {
+
+        String uri = playbasis.getUrl() + "/StoreOrg/nodes" + nodeId + "/saleHistory/" + count;
+        List<NameValuePair> params = new ArrayList<>();
+        if (month != null) params.add(new BasicNameValuePair("month", String.valueOf(month)));
+        if (year != null) params.add(new BasicNameValuePair("year",String.valueOf(year)));
+        if (action != null) params.add(new BasicNameValuePair("action",action));
+        if (parameter != null) params.add(new BasicNameValuePair("parameter",parameter));
+
+       JsonObjectGET(playbasis, uri, params, new OnResult<JSONObject>() {
+           @Override
+           public void onSuccess(JSONObject result) {
+
+           }
+
+           @Override
+           public void onError(HttpError error) {
+
+           }
+       });
     }
 }
