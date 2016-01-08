@@ -9,6 +9,7 @@ import com.playbasis.android.playbasissdk.model.CustomRankPeer;
 import com.playbasis.android.playbasissdk.model.Node;
 import com.playbasis.android.playbasissdk.model.Organization;
 import com.playbasis.android.playbasissdk.model.Sale;
+import com.playbasis.android.playbasissdk.model.SaleReport;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
@@ -42,14 +43,16 @@ public class OrganizationApi extends Api {
             public void onSuccess(JSONObject result) {
                 ArrayList<Organization> organizations = new ArrayList<Organization>();
                 try {
-                    JSONArray jsonArray = result.getJSONArray("result");
+                    JSONArray jsonArray = result.getJSONArray("results");
                     for(int i=0;i < jsonArray.length();i++){
                         JSONObject jsonObject = jsonArray.getJSONObject(i);
                         Organization organization = JsonHelper.FromJsonObject(jsonObject, Organization.class);
 
-                        JSONObject parentObject = jsonObject.getJSONObject("parent");
-                        organization.setParentId(parentObject.getString("id"));
-                        organization.setParentName(parentObject.getString("name"));
+                        if(jsonObject.has("parent")) {
+                            JSONObject parentObject = jsonObject.getJSONObject("parent");
+                            organization.setParentId(parentObject.getString("id"));
+                            organization.setParentName(parentObject.getString("name"));
+                        }
 
                         organizations.add(organization);
                     }
@@ -136,22 +139,22 @@ public class OrganizationApi extends Api {
 
     public static void getNodesByParentId(@NonNull Playbasis playbasis, @NonNull String parentId, String sort, String order,
                                        Integer offset, Integer limit, final OnResult<ArrayList<Node>> listener) {
-        getNodes(playbasis, null, null, parentId, null, sort,  order, offset,  limit, listener);
+        getNodes(playbasis, null, null, parentId, null, sort, order, offset, limit, listener);
     }
 
     public static void getNodesByName(@NonNull Playbasis playbasis, @NonNull String searchName, String sort, String order,
                                           Integer offset, Integer limit, final OnResult<ArrayList<Node>> listener) {
-        getNodes(playbasis, null, null, null, searchName, sort,  order, offset,  limit, listener);
+        getNodes(playbasis, null, null, null, searchName, sort, order, offset, limit, listener);
     }
 
     public static void getNodesByOrgIdParentId(@NonNull Playbasis playbasis, @NonNull String orgId, @NonNull String parentId, String sort, String order,
                                       Integer offset, Integer limit, final OnResult<ArrayList<Node>> listener) {
-        getNodes(playbasis, null, orgId, parentId, null, sort,  order, offset,  limit, listener);
+        getNodes(playbasis, null, orgId, parentId, null, sort, order, offset, limit, listener);
     }
 
     public static void getNodesByOrgIdName(@NonNull Playbasis playbasis, @NonNull String orgId, @NonNull String searchName, String sort, String order,
                                       Integer offset, Integer limit, final OnResult<ArrayList<Node>> listener) {
-        getNodes(playbasis, null, orgId, null, searchName, sort,  order, offset,  limit, listener);
+        getNodes(playbasis, null, orgId, null, searchName, sort, order, offset, limit, listener);
     }
 
     public static void getNodesByParentIdName(@NonNull Playbasis playbasis, @NonNull String parentId, @NonNull String searchName, String sort, String order,
@@ -321,4 +324,187 @@ public class OrganizationApi extends Api {
             }
         });
     }
+
+
+    /**
+     *  Find all child nodes under specific Node id.
+     * @param playbasis Playbasis object.
+     * @param nodeId node id to query player list.
+     * @param layer optional, Layer of nodes under specific node to find [default = 0 (for finding all layer)]
+     * @param listener Callback interface.
+     */
+    public static void getChildNodes(@NonNull Playbasis playbasis,@NonNull String nodeId, Integer layer, final OnResult<ArrayList<String>> listener) {
+        String uri = playbasis.getUrl() + "/StoreOrg/nodes/"+nodeId+"/getChildNode/"+layer+"/";
+        List<NameValuePair> params = new ArrayList<>();
+        if (nodeId != null) params.add(new BasicNameValuePair("node_id",nodeId));
+        if (layer != null) params.add(new BasicNameValuePair("layer",String.valueOf(layer)));
+
+
+        JsonArrayGET(playbasis, uri, params, new OnResult<JSONArray>() {
+            @Override
+            public void onSuccess(JSONArray result) {
+                ArrayList<String> Nodes = new ArrayList<String>();
+                try {
+                    for (int i = 0; i < result.length(); i++) {
+                        JSONObject jsonObject = result.getJSONObject(i);
+                        String nodeID = jsonObject.getString("$id");
+
+                        Nodes.add(nodeID);
+                    }
+                    listener.onSuccess(Nodes);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    if (listener != null) listener.onError(new HttpError(e));
+                }
+            }
+
+            @Override
+            public void onError(HttpError error) {
+                if (listener != null) listener.onError(error);
+            }
+
+        });
+    }
+
+    /**
+     *  Sale report of specific Node in a month.
+     * @param playbasis Playbasis object.
+     * @param nodeId node id to query player list.
+     * @param month optional, Select month to get sale report [default = current month]
+     * @param year optional, Select year to get sale report [default = current year]
+     * @param action optional, Action name to be query [default = sell]
+     * @param parameter optional, Parameter of action to be query [default = amount]
+     * @param listener Callback interface.
+     */
+    public static void saleReport(@NonNull Playbasis playbasis,@NonNull String nodeId, String month, String year, String action, String parameter, final OnResult<SaleReport> listener) {
+        String uri = playbasis.getUrl() + "/StoreOrg/nodes/"+nodeId+"/saleReport/";
+        List<NameValuePair> params = new ArrayList<>();
+        if (nodeId != null) params.add(new BasicNameValuePair("node_id",nodeId));
+        if (month != null) params.add(new BasicNameValuePair("month",month));
+        if (year != null) params.add(new BasicNameValuePair("year",year));
+        if (action != null) params.add(new BasicNameValuePair("action",action));
+        if (parameter != null) params.add(new BasicNameValuePair("parameter",parameter));
+
+        JsonObjectGET(playbasis, uri, params, new OnResult<JSONObject>() {
+            @Override
+            public void onSuccess(JSONObject result) {
+                SaleReport report = new SaleReport();
+                try {
+
+                    report.setAmount(result.getInt("amount"));
+                    report.setPreviousAmount(result.getInt("previous_amount"));
+                    report.setpercent_changed(result.getDouble("percent_changed"));
+
+                    listener.onSuccess(report);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    if (listener != null) listener.onError(new HttpError(e));
+                }
+            }
+
+            @Override
+            public void onError(HttpError error) {
+                if (listener != null) listener.onError(error);
+            }
+        });
+    }
+
+    /**
+     *  Add player to specific Node.
+     * @param playbasis Playbasis object.
+     * @param nodeId node id to query player list.
+     * @param playerId Player Id to add to Node.
+     * @param listener Callback interface.
+     */
+    public static void addPlayerToNode(@NonNull Playbasis playbasis, @NonNull String nodeId, @NonNull String playerId,
+                                       final OnResult<Boolean> listener){
+        String uri = playbasis.getUrl() + "/StoreOrg/nodes/"+nodeId+"/addPlayer/"+playerId+"/";
+        JsonObjectPOST(playbasis, uri, null, new OnResult<JSONObject>() {
+            @Override
+            public void onSuccess(JSONObject result) {
+                if (listener != null) listener.onSuccess(true);
+            }
+
+            @Override
+            public void onError(HttpError error) {
+                if (listener != null) listener.onError(error);
+            }
+        });
+    }
+
+    /**
+     *  Remove Player from specific Node
+     * @param playbasis Playbasis object.
+     * @param nodeId node id to query player list.
+     * @param playerId Player Id to add to Node.
+     * @param listener Callback interface.
+     */
+    public static void removePlayerFromNode(@NonNull Playbasis playbasis, @NonNull String nodeId, @NonNull String playerId,
+                                            final OnResult<Boolean> listener){
+        String uri = playbasis.getUrl() + "/StoreOrg/nodes/"+nodeId+"/removePlayer/"+playerId+"/";
+        JsonObjectPOST(playbasis, uri, null, new OnResult<JSONObject>() {
+            @Override
+            public void onSuccess(JSONObject result) {
+                if (listener != null) listener.onSuccess(true);
+            }
+
+            @Override
+            public void onError(HttpError error) {
+                if (listener != null) listener.onError(error);
+            }
+        });
+    }
+
+    /**
+     *  Set player's organization role to specific Node
+     * @param playbasis Playbasis object.
+     * @param nodeId node id to query player list.
+     * @param playerId Player Id to add to Node.
+     * @param role Role name to set player's role.
+     * @param listener Callback interface.
+     */
+    public static void setPlayerRole(@NonNull Playbasis playbasis, @NonNull String nodeId, @NonNull String playerId, @NonNull String role,
+                                     final OnResult<Boolean> listener){
+        String uri = playbasis.getUrl() + "/StoreOrg/nodes/"+nodeId+"/setPlayerRole/"+playerId+"/";
+        List<NameValuePair> params = new ArrayList<>();
+        params.add(new BasicNameValuePair("role",role));
+        JsonObjectPOST(playbasis, uri, params, new OnResult<JSONObject>() {
+            @Override
+            public void onSuccess(JSONObject result) {
+                if (listener != null) listener.onSuccess(true);
+            }
+
+            @Override
+            public void onError(HttpError error) {
+                if (listener != null) listener.onError(error);
+            }
+        });
+    }
+
+    /**
+     *  Unset player's organization role to specific Node
+     * @param playbasis Playbasis object.
+     * @param nodeId node id to query player list.
+     * @param playerId Player Id to add to Node.
+     * @param role Role name to set player's role.
+     * @param listener Callback interface.
+     */
+    public static void unsetPlayerRole(@NonNull Playbasis playbasis, @NonNull String nodeId, @NonNull String playerId, @NonNull String role,
+                                       final OnResult<Boolean> listener){
+        String uri = playbasis.getUrl() + "/StoreOrg/nodes/"+nodeId+"/unsetPlayerRole/"+playerId+"/";
+        List<NameValuePair> params = new ArrayList<>();
+        params.add(new BasicNameValuePair("role",role));
+        JsonObjectPOST(playbasis, uri, params, new OnResult<JSONObject>() {
+            @Override
+            public void onSuccess(JSONObject result) {
+                if (listener != null) listener.onSuccess(true);
+            }
+
+            @Override
+            public void onError(HttpError error) {
+                if (listener != null) listener.onError(error);
+            }
+        });
+    }
+
 }
