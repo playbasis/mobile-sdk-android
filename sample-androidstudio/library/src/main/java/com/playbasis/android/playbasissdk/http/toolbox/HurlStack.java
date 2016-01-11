@@ -99,7 +99,7 @@ public class HurlStack implements HttpStack {
             url = rewritten;
         }
         URL parsedUrl = new URL(url);
-        HttpsURLConnection connection =  (HttpsURLConnection)parsedUrl.openConnection();//openConnection(parsedUrl, request);
+        HttpURLConnection connection =  (HttpURLConnection)parsedUrl.openConnection();//openConnection(parsedUrl, request);
         for (String headerName : map.keySet()) {
             connection.addRequestProperty(headerName, map.get(headerName));
         }
@@ -122,7 +122,6 @@ public class HurlStack implements HttpStack {
                 response.addHeader(h);
             }
         }
-        connection.disconnect();
         return response;
     }
 
@@ -237,7 +236,6 @@ public class HurlStack implements HttpStack {
         byte[] body = request.getBody();
         if (body != null) {
             connection.setDoOutput(true);
-            connection.setInstanceFollowRedirects(false );
             connection.addRequestProperty(HEADER_CONTENT_TYPE, request.getBodyContentType());
             DataOutputStream out = new DataOutputStream(connection.getOutputStream());
             out.write(body);
