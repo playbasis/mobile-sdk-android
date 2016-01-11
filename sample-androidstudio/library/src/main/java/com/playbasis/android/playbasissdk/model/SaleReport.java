@@ -9,9 +9,20 @@ public class SaleReport {
 
     String nodeId;
     String nodeName;
+    String month;
+    String year;
+
+    @Expose
     Integer amount;
+
+    @SerializedName("previous_amount")
+    @Expose
     Integer previousAmount;
+
+    @SerializedName("percent_changed")
+    @Expose
     double percentChanged;
+
 
     public SaleReport() {
         this.nodeId = "";
@@ -19,6 +30,8 @@ public class SaleReport {
         this.amount = 0;
         this.previousAmount = 0;
         this.percentChanged = 0;
+        this.month = "";
+        this.year = "";
     }
 
     public String getNodeId() {
@@ -59,5 +72,21 @@ public class SaleReport {
 
     public void setPercentChanged(double percentChanged) {
         this.percentChanged = percentChanged;
+    }
+
+    public String getMonth() {
+        return month;
+    }
+
+    public void setMonth(String month) {
+        this.month = month;
+    }
+
+    public String getYear() {
+        return year;
+    }
+
+    public void setYear(String year) {
+        this.year = year;
     }
 }
