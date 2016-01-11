@@ -10,6 +10,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
+
+import java.util.ArrayList;
 import java.util.List;
 
 import com.playbasis.android.playbasissdk.api.EngineApi;
@@ -17,16 +19,20 @@ import com.playbasis.android.playbasissdk.api.AuthApi;
 import com.playbasis.android.playbasissdk.api.AuthToken;
 import com.playbasis.android.playbasissdk.api.EngineApi;
 import com.playbasis.android.playbasissdk.api.OnResult;
+import com.playbasis.android.playbasissdk.api.OrganizationApi;
 import com.playbasis.android.playbasissdk.api.PlayerApi;
 import com.playbasis.android.playbasissdk.api.QuestApi;
 import com.playbasis.android.playbasissdk.core.Playbasis;
 import com.playbasis.android.playbasissdk.http.HttpError;
+import com.playbasis.android.playbasissdk.model.MonthlySaleReport;
 import com.playbasis.android.playbasissdk.model.Player;
 import com.playbasis.android.playbasissdk.model.Quest;
+import com.playbasis.android.playbasissdk.model.Role;
 import com.playbasis.android.playbasissdk.model.Rule;
 import com.playbasis.android.playbasissdk.model.RuleAction;
 import com.playbasis.android.playbasissdk.model.RuleDetail;
 import com.playbasis.android.playbasissdk.model.RuleReward;
+import com.playbasis.android.playbasissdk.model.SaleReport;
 import com.playbasis.android.playbasissdk.model.UIEvent;
 import com.playbasis.android.playbasissdk.model.Event;
 
@@ -168,6 +174,32 @@ public class MainActivity extends FragmentActivity {
                     }
                 });
 
+                PlayerApi.saleReport(SampleApplication.playbasis, "sm1", null, null, null, null, new OnResult<ArrayList<SaleReport>>() {
+
+                    @Override
+                    public void onSuccess(ArrayList<SaleReport> result) {
+                        System.out.println(result);
+                    }
+
+                    @Override
+                    public void onError(HttpError error) {
+
+                    }
+                });
+                PlayerApi.getRole(SampleApplication.playbasis, "sm1", "567c069c5e232a194f8b57fe", new OnResult<ArrayList<Role>>() {
+
+                    @Override
+                    public void onSuccess(ArrayList<Role> result) {
+                        System.out.println("Role");
+                        System.out.println(result.size());
+                    }
+
+                    @Override
+                    public void onError(HttpError error) {
+
+                    }
+                });
+
                 PlayerApi.auth(SampleApplication.playbasis, null, "sm1", "12345678", null, new OnResult<Boolean>() {
                     @Override
                     public void onSuccess(Boolean result) {
@@ -181,6 +213,37 @@ public class MainActivity extends FragmentActivity {
                     }
                 });
 
+                OrganizationApi.getSalesHistory(SampleApplication.playbasis, "567c069c5e232a194f8b57fe", 6, null, null, null, null, new OnResult<ArrayList<MonthlySaleReport>>() {
+                    @Override
+                    public void onSuccess(ArrayList<MonthlySaleReport> result) {
+                        System.out.println("Success getSalesHistory");
+                        for (MonthlySaleReport monthlySaleReport : result) {
+                            System.out.println(monthlySaleReport.getMonth() + ":" + monthlySaleReport.getYear() + "   " + monthlySaleReport.getAmount() + "   " + monthlySaleReport.getPreviousAmount() + "   " + monthlySaleReport.getPercentChanged());
+                        }
+                    }
+
+                    @Override
+                    public void onError(HttpError error) {
+                        System.out.println("Error getSalesHistory");
+                    }
+                });
+
+                PlayerApi.getRole(SampleApplication.playbasis, "sm1", "567c069c5e232a194f8b57fe", new OnResult<ArrayList<Role>>() {
+                    @Override
+                    public void onSuccess(ArrayList<Role> roles) {
+                        Role currentRole = roles.get(0);
+                        final String roleName = currentRole.getRoleName();
+
+                        System.out.println("roleName" + roleName);
+
+                    }
+
+                    @Override
+                    public void onError(HttpError httpError) {
+
+                    }
+                });
+                // OrganizationApi.getSalesHistory(​SampleApplication.playbasis, "567c069c5e232a194f8b57fe", 6, null, null, null, null, new OnResult<>())
                 //PlayerApi
             }
         });

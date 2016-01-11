@@ -18,6 +18,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -165,26 +166,82 @@ public class OrganizationApi extends Api {
         getNodes(playbasis, null, orgId, parentId, searchName, sort,  order, offset,  limit, listener);
     }
 
-    public static void getSalesHistory(@NonNull Playbasis playbasis, @NonNull String nodeId, @NonNull Integer count,
+    public static void getSalesHistory(@NonNull Playbasis playbasis, @NonNull String nodeId, @NonNull final Integer count,
                                        Integer month, Integer year, String action, String parameter, final OnResult<ArrayList<MonthlySaleReport>> listener) {
 
-        String uri = playbasis.getUrl() + "/StoreOrg/nodes" + nodeId + "/saleHistory/" + count;
-        List<NameValuePair> params = new ArrayList<>();
+        String uri = playbasis.getUrl() + "/StoreOrg/nodes/" + nodeId + "/saleHistory/" + count;
+        final List<NameValuePair> params = new ArrayList<>();
         if (month != null) params.add(new BasicNameValuePair("month", String.valueOf(month)));
         if (year != null) params.add(new BasicNameValuePair("year",String.valueOf(year)));
         if (action != null) params.add(new BasicNameValuePair("action",action));
         if (parameter != null) params.add(new BasicNameValuePair("parameter",parameter));
 
-       JsonObjectGET(playbasis, uri, params, new OnResult<JSONObject>() {
+        // We add count param in params in order to deal with return JSON
+        params.add(new BasicNameValuePair("count", String.valueOf(count)));
+
+        JsonObjectGET(playbasis, uri, params, new OnResult<JSONObject>() {
            @Override
            public void onSuccess(JSONObject result) {
+               ArrayList<MonthlySaleReport> monthlySaleReports = new ArrayList<MonthlySaleReport>();
 
+               Integer month = null;
+               Integer year = null;
+               Integer count = null;
+               for (NameValuePair param : params) {
+                   if (param.getName() == "count") {
+                       count = Integer.parseInt(param.getValue());
+                   }
+                   if (param.getName() == "month") {
+                       month = Integer.parseInt(param.getValue());
+
+                   }
+                   if (param.getName() == "year") {
+                       year = Integer.parseInt(param.getValue());
+                   }
+               }
+
+               Calendar c = Calendar.getInstance();
+               if (month == null) {
+                   // Calendar.JANUARY == 0
+                   month = c.get(Calendar.MONTH) + 1;
+               }
+               if (year == null) {
+                   year = c.get(Calendar.YEAR);
+               }
+
+               try {
+
+                   for (int i = 0; i < count ; i++) {
+                       System.out.println("Year " + String.valueOf(year));
+                       JSONObject yearJsonObject = result.getJSONObject(String.valueOf(year));
+                       System.out.println(yearJsonObject);
+                       System.out.println("month " + String.format("%02d", month));
+                       JSONObject monthJsonObject = yearJsonObject.getJSONObject(String.format("%02d", month));
+                       System.out.println(yearJsonObject);
+
+                       MonthlySaleReport monthlySaleReport = JsonHelper.FromJsonObject(monthJsonObject, MonthlySaleReport.class);
+                       monthlySaleReport.setMonth(String.format("%02d", month));
+                       monthlySaleReport.setYear(String.valueOf(year));
+
+                       monthlySaleReports.add(monthlySaleReport);
+
+                       month = month - 1;
+                       if (month < 1) {
+                           month = 12;
+                           year = year - 1;
+                       }
+                   }
+               } catch (JSONException e) {
+                   e.printStackTrace();
+               } finally {
+                   if(listener != null) listener.onSuccess(monthlySaleReports);
+               }
            }
 
            @Override
            public void onError(HttpError error) {
-
+               if(listener != null) listener.onError(error);
            }
-       });
+        });
     }
 }
