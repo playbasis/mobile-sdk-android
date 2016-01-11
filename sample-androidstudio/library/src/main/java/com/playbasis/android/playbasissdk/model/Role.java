@@ -1,11 +1,16 @@
 package com.playbasis.android.playbasissdk.model;
-
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 /**
  * Created by TorIsHere on 1/7/2016 AD.
  */
 public class Role {
 
+    @SerializedName("role")
+    @Expose
     String roleName;
+    @SerializedName("join_date")
+    @Expose
     String dateJoined;
 
     public Role() {

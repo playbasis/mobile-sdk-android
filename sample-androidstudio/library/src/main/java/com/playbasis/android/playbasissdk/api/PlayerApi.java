@@ -69,7 +69,7 @@ public class PlayerApi extends Api{
     }
 
     private static void getPlayerPrivate(@NonNull Playbasis playbasis, @NonNull String uri,
-                                            final OnResult<Player> listener){
+                                            final OnResult<Player> listener) {
         JsonObjectPOST(playbasis, uri, null, new OnResult<JSONObject>() {
             @Override
             public void onSuccess(JSONObject result) {
@@ -179,8 +179,8 @@ public class PlayerApi extends Api{
             stringPlayersId = StringHelper.removeLastChar(stringPlayersId);
             params.add(new BasicNameValuePair("list_player_id", stringPlayersId));
         }else params = null;
-        
-        
+
+
         JsonObjectPOST(playbasis, uri, params, new OnResult<JSONObject>() {
             @Override
             public void onSuccess(JSONObject result) {
@@ -810,7 +810,7 @@ public class PlayerApi extends Api{
      * @param listener  Callback interface.
      */
     public static void claimBadge(@NonNull Playbasis playbasis, @NonNull String playerId,
-                                  @NonNull String badgeId, final OnResult<Boolean> listener){
+                                  @NonNull String badgeId, final OnResult<Boolean> listener) {
         claimBadge(playbasis, false, playerId, badgeId, listener);
     }
     
@@ -1137,7 +1137,7 @@ public class PlayerApi extends Api{
      */
     public static void deductReward(@NonNull Playbasis playbasis, @NonNull String playerId,
                                     @NonNull String rewardId, @NonNull Integer amount, Boolean force,
-                                    final OnResult<String> listener){
+                                    final OnResult<String> listener) {
         deductReward(playbasis, false, playerId, rewardId, amount, force, listener);
     }
 
@@ -1389,6 +1389,13 @@ public class PlayerApi extends Api{
         });
     }
 
+    /**
+     *  Returns roles of players for given node id
+     * @param playbasis Playbasis object.
+     * @param playerId player id to get the role
+     * @param nodeId node id to get role
+     * @param listener Callback interface.
+     */
     public static void getRole(@NonNull Playbasis playbasis, @NonNull String playerId, @NonNull String nodeId,final OnResult<ArrayList<Role>> listener) {
         String endpoint =  SDKUtil._PLAYER_URL + playerId + "/getRole/" + nodeId + "/";
         String uri = playbasis.getUrl() + endpoint;
@@ -1399,7 +1406,9 @@ public class PlayerApi extends Api{
                 ArrayList<Role> roles = new ArrayList<Role>();
                 try {
                     JSONArray jsonArray = result.getJSONArray("roles");
-                    for(int i = 0; i< jsonArray.length(); i++) {
+
+
+                    for (int i = 0; i < jsonArray.length(); i++) {
                         Role role = JsonHelper.FromJsonObject(jsonArray.getJSONObject(i), Role.class);
                         roles.add(role);
                     }
@@ -1410,7 +1419,6 @@ public class PlayerApi extends Api{
                         listener.onSuccess(roles);
                     }
                 }
-
             }
 
             @Override
@@ -1437,8 +1445,13 @@ public class PlayerApi extends Api{
                 try {
                     for (int i = 0; i < result.length(); i++) {
                         JSONObject jsonObject = result.getJSONObject(i);
-                        SaleReport saleReport = JsonHelper.FromJsonObject(jsonObject, SaleReport.class);
-                        saleReports.add(saleReport);
+                        SaleReport report = new SaleReport();
+                        report.setNodeId(jsonObject.getString("node_id"));
+                        report.setNodeName(jsonObject.getString("name"));
+                        report.setAmount(jsonObject.getInt("amount"));
+                        report.setPreviousAmount(jsonObject.getInt("previous_amount"));
+                        report.setPercentChanged(jsonObject.getDouble("percent_changed"));
+                        saleReports.add(report);
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -1454,18 +1467,25 @@ public class PlayerApi extends Api{
         });
     }
 
+    /**
+     *  Returns list of players sorted by the specified action type.
+     * @param playbasis Playbasis object.
+     * @param action name of action to rank players by.
+     * @param parameter name of parameter to rank player by
+     * @param limit Number of results to return.
+     * @param month month to return ranks.
+     * @param year year to return ranks.
+     * @param listener Callback interface.
+     */
     public static void customRank(@NonNull Playbasis playbasis, @NonNull String action, final @NonNull String parameter,
                                   Integer limit, Integer month, Integer year, final OnResult< ArrayList<CustomRank>> listener) {
-        String endpoint =  SDKUtil._PLAYER_URL + "/rankParam/";
+        String endpoint =  SDKUtil._PLAYER_URL + "/rankParam/" + action + "/" + parameter  + "/";
         String uri = playbasis.getUrl() + endpoint;
 
         List<NameValuePair> params = new ArrayList<>();
         if(month!=null)params.add(new BasicNameValuePair("month", String.valueOf(month)));
         if(year!=null)params.add(new BasicNameValuePair("year", String.valueOf(year)));
         if(limit!=null)params.add(new BasicNameValuePair("limit", String.valueOf(limit)));
-
-        params.add(new BasicNameValuePair("action", action));
-        params.add(new BasicNameValuePair("parameter", parameter));
 
         JsonArrayGET(playbasis, uri, params, new OnResult<JSONArray>() {
             @Override
@@ -1475,11 +1495,10 @@ public class PlayerApi extends Api{
                     for (int i = 0; i < result.length(); i++) {
                         JSONObject jsonObject = result.getJSONObject(i);
                         CustomRank customRank = JsonHelper.FromJsonObject(jsonObject, CustomRank.class);
-
                         customRank.setCustomRankName(parameter);
-
                         Integer value = jsonObject.getInt(parameter);
                         customRank.setCustomRankValue(value);
+                        ranks.add(customRank);
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -1491,7 +1510,6 @@ public class PlayerApi extends Api{
             @Override
             public void onError (HttpError error){
                 if (listener != null) listener.onError(error);
-
             }
         });
     }
