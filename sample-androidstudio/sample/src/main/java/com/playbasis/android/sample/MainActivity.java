@@ -13,6 +13,9 @@ import android.widget.Toast;
 import java.util.List;
 
 import com.playbasis.android.playbasissdk.api.EngineApi;
+import com.playbasis.android.playbasissdk.api.AuthApi;
+import com.playbasis.android.playbasissdk.api.AuthToken;
+import com.playbasis.android.playbasissdk.api.EngineApi;
 import com.playbasis.android.playbasissdk.api.OnResult;
 import com.playbasis.android.playbasissdk.api.PlayerApi;
 import com.playbasis.android.playbasissdk.api.QuestApi;
@@ -26,6 +29,8 @@ import com.playbasis.android.playbasissdk.model.RuleDetail;
 import com.playbasis.android.playbasissdk.model.RuleReward;
 import com.playbasis.android.playbasissdk.model.UIEvent;
 import com.playbasis.android.playbasissdk.model.Event;
+
+import org.json.JSONObject;
 
 import java.util.Map;
 
@@ -61,7 +66,7 @@ public class MainActivity extends FragmentActivity {
 
             }
         });
-        
+
         Button quizButton = (Button) findViewById(R.id.button_quiz);
         quizButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -144,6 +149,39 @@ public class MainActivity extends FragmentActivity {
                         }
                     }
                 });*/
+            }
+        });
+
+        Button testButton = (Button) findViewById(R.id.testButton);
+        testButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                PlayerApi.requestOtp(SampleApplication.playbasis, "sm1", new OnResult<String>() {
+                    @Override
+                    public void onSuccess(String result) {
+                        System.out.println(result);
+                    }
+
+                    @Override
+                    public void onError(HttpError error) {
+
+                    }
+                });
+
+                PlayerApi.auth(SampleApplication.playbasis, null, "sm1", "12345678", null, new OnResult<Boolean>() {
+                    @Override
+                    public void onSuccess(Boolean result) {
+                        System.out.println("Success!!!");
+                    }
+
+                    @Override
+                    public void onError(HttpError error) {
+                        error.printStackTrace();
+                        System.out.println("Error!!!");
+                    }
+                });
+
+                //PlayerApi
             }
         });
     }
