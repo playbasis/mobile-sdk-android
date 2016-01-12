@@ -6,19 +6,15 @@ import com.google.gson.annotations.SerializedName;
 import java.util.ArrayList;
 
 /**
- * Created by Nick-Playbasis on 1/8/2016.
+ * Created by Nick-Playbasis on 1/11/2016.
  */
-public class CustomRankPeer {
+public class RankPeer {
 
-    ArrayList<CustomLeaderboard> leaderboards;
+    ArrayList<Leaderboard> leaderboards;
 
     @SerializedName("player_id")
     @Expose
     String myRankPlayerId;
-
-    @SerializedName("node_name")
-    @Expose
-    String nodeName;
 
     int rank;
 
@@ -26,20 +22,19 @@ public class CustomRankPeer {
     @Expose
     String rankBy;
 
-    int rankedValue;    
-
-    public CustomRankPeer(){
+    int rankedValue;
+    public RankPeer(){
         leaderboards = new ArrayList<>();
         myRankPlayerId = "";
         rank = 1;
         rankBy = "";
         rankedValue = 0;
     }
-    public ArrayList<CustomLeaderboard> getLeaderboards() {
+    public ArrayList<Leaderboard> getLeaderboards() {
         return leaderboards;
     }
 
-    public void setLeaderboards(ArrayList<CustomLeaderboard> leaderboard) {
+    public void setLeaderboards(ArrayList<Leaderboard> leaderboard) {
         this.leaderboards = leaderboard;
     }
     public String getMyRankPlayerId() {
@@ -48,13 +43,6 @@ public class CustomRankPeer {
 
     public void setMyRankPlayerId(String playerID) {
         this.myRankPlayerId = playerID;
-    }
-    public String getNodeName() {
-        return nodeName;
-    }
-
-    public void setNodeName(String nodeName) {
-        this.nodeName = nodeName;
     }
     public int getRank() {
         return rank;
