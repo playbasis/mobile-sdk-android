@@ -1,5 +1,10 @@
 package com.playbasis.android.playbasissdk.api;
 
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.widget.TextView;
+
+import com.playbasis.android.playbasissdk.R;
 import com.playbasis.android.playbasissdk.core.Playbasis;
 import com.playbasis.android.playbasissdk.core.SDKUtil;
 import com.playbasis.android.playbasissdk.http.AuthFailureError;
@@ -77,6 +82,7 @@ public class AuthApi extends Api {
                 Map<String, String> params = new HashMap<String, String>();
                 params.put("api_key", playbasis.getKeyStore().getApiKey());
                 params.put("api_secret", playbasis.getKeyStore().getApiSecret());
+                params.put("pkg_name", playbasis.getContext().getPackageName());
                 return params;
             }
         };
