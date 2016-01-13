@@ -21,7 +21,7 @@ public class SampleApplication extends Application {
         super.onCreate();
 
         playbasis = new Playbasis.Builder(this)
-                .setBackendUrl("https://api-sandbox.pbapp.net/")
+                .setBackendUrl("https://api.pbapp.net/")
                 .build();
         
         playbasis.getAuthenticator().getAuthToken();
