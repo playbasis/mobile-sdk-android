@@ -357,25 +357,34 @@ public class OrganizationApi extends Api {
      * @param layer optional, Layer of nodes under specific node to find [default = 0 (for finding all layer)]
      * @param listener Callback interface.
      */
-    public static void getChildNodes(@NonNull Playbasis playbasis,@NonNull String nodeId, Integer layer, final OnResult<ArrayList<String>> listener) {
+    public static void getChildNodes(@NonNull Playbasis playbasis,@NonNull String nodeId, Integer layer, final OnResult<ArrayList<Node>> listener) {
         String uri = playbasis.getUrl() + "/StoreOrg/nodes/"+nodeId+"/getChildNode/"+layer+"/";
         List<NameValuePair> params = new ArrayList<>();
         if (nodeId != null) params.add(new BasicNameValuePair("node_id",nodeId));
         if (layer != null) params.add(new BasicNameValuePair("layer",String.valueOf(layer)));
 
 
-        JsonArrayGET(playbasis, uri, params, new OnResult<JSONArray>() {
+        JsonObjectGET(playbasis, uri, params, new OnResult<JSONObject>() {
             @Override
-            public void onSuccess(JSONArray result) {
-                ArrayList<String> Nodes = new ArrayList<String>();
+            public void onSuccess(JSONObject result) {
+                ArrayList<Node> nodes = new ArrayList<Node>();
                 try {
-                    for (int i = 0; i < result.length(); i++) {
-                        JSONObject jsonObject = result.getJSONObject(i);
-                        String nodeID = jsonObject.getString("$id");
+                    JSONArray jsonArray = result.getJSONArray("results");
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        JSONObject jsonObject = jsonArray.getJSONObject(i);
+                        Node node = JsonHelper.FromJsonObject(jsonObject, Node.class);
 
-                        Nodes.add(nodeID);
+                        JSONObject parentObject = jsonObject.getJSONObject("parent");
+                        node.setParentId(parentObject.getString("id"));
+                        node.setParentName(parentObject.getString("name"));
+
+                        JSONObject organizeObject = jsonObject.getJSONObject("organize");
+                        node.setOrganizeId(organizeObject.getString("id"));
+                        node.setOrganizeName(organizeObject.getString("name"));
+
+                        nodes.add(node);
                     }
-                    listener.onSuccess(Nodes);
+                    listener.onSuccess(nodes);
                 } catch (JSONException e) {
                     e.printStackTrace();
                     if (listener != null) listener.onError(new HttpError(e));
@@ -386,7 +395,6 @@ public class OrganizationApi extends Api {
             public void onError(HttpError error) {
                 if (listener != null) listener.onError(error);
             }
-
         });
     }
 
