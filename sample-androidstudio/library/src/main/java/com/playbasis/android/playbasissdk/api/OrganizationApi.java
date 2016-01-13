@@ -102,7 +102,7 @@ public class OrganizationApi extends Api {
             public void onSuccess(JSONObject result) {
                 ArrayList<Node> nodes = new ArrayList<Node>();
                 try {
-                    JSONArray jsonArray = result.getJSONArray("result");
+                    JSONArray jsonArray = result.getJSONArray("results");
                     for (int i = 0; i < jsonArray.length(); i++) {
                         JSONObject jsonObject = jsonArray.getJSONObject(i);
                         Node node = JsonHelper.FromJsonObject(jsonObject, Node.class);
