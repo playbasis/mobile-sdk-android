@@ -217,14 +217,19 @@ public class OrganizationApi extends Api {
      * @param year optional, Select year to get sale report [default = current year]
      * @param action optional, Action name to be query [default = sell]
      * @param parameter optional, Parameter of action to be query [default = amount]
+     * @param page Select page to be reported, page 1 is the first page [default = first page]
+     * @param limit limit per page to be reported [default = "20"]
      * @param listener Callback interface.
      */
-    public static void getSaleBoardByNodeId(@NonNull Playbasis playbasis, String nodeId, int layer, String month, String year, String action, String parameter, final OnResult<ArrayList<Sale>> listener) {
+    public static void getSaleBoardByNodeId(@NonNull Playbasis playbasis, String nodeId, int layer, String month, String year, String action, String parameter,
+                                            final Integer page, final Integer limit, final OnResult<ArrayList<Sale>> listener) {
         String uri = playbasis.getUrl() + "/StoreOrg/nodes/" + nodeId + "/saleBoard/" + layer + "/";
 
         List<NameValuePair> params = new ArrayList<>();
         if(month!=null)params.add(new BasicNameValuePair("month", String.valueOf(month)));
         if(year!=null)params.add(new BasicNameValuePair("year", String.valueOf(year)));
+        if(page!=null)params.add(new BasicNameValuePair("page", String.valueOf(page)));
+        if(limit!=null)params.add(new BasicNameValuePair("limit", String.valueOf(limit)));
         if(action!=null){
             params.add(new BasicNameValuePair("action", String.valueOf(action)));
         }
@@ -277,18 +282,21 @@ public class OrganizationApi extends Api {
      * @param nodeId organization id to be ranked
      * @param action  Action name to be query
      * @param parameter Parameter of action to be query
+     * @param page Select page to be reported, page 1 is the first page [default = first page]
      * @param limit number of rank in leaderboard to return
      * @param playerId player id to return his/her own rank
      * @param month optional, Select month to get sale report [default = current month]
      * @param year optional, Select year to get sale report [default = current year]
      * @param listener Callback interface.
      */
-    public static void getRankPeerActionByNodeId(@NonNull Playbasis playbasis, String nodeId,String action, final String parameter, Integer limit,String playerId, String month, String year,  final OnResult<CustomRankPeer> listener) {
+    public static void getRankPeerActionByNodeId(@NonNull Playbasis playbasis, String nodeId,String action, final String parameter, final Integer page,
+                                                 Integer limit,String playerId, String month, String year,  final OnResult<CustomRankPeer> listener) {
         String uri = playbasis.getUrl() + "/StoreOrg/rankPeerByAccAction/" + nodeId + "/" + action + "/" + parameter + "/";
 
         List<NameValuePair> params = new ArrayList<>();
         if(month!=null)params.add(new BasicNameValuePair("month", String.valueOf(month)));
         if(year!=null)params.add(new BasicNameValuePair("year", String.valueOf(year)));
+        if(page!=null)params.add(new BasicNameValuePair("page", String.valueOf(page)));
         if(limit!=null)params.add(new BasicNameValuePair("limit", String.valueOf(limit)));
         if(playerId!=null)params.add(new BasicNameValuePair("player_id", String.valueOf(playerId)));
 
@@ -603,6 +611,7 @@ public class OrganizationApi extends Api {
      * @param playbasis Playbasis object.
      * @param nodeId organization id to be ranked
      * @param rankBy name of point-based reward to rank players by
+     * @param page Select page to be reported, page 1 is the first page [default = first page]
      * @param limit number of rank in leaderboard to return
      * @param role role to be filtered in organization
      * @param playerId player id to return his/her own rank
@@ -610,13 +619,14 @@ public class OrganizationApi extends Api {
      * @param year Select year to get sale report [default = current year]
      * @param listener Callback interface.
      */
-    public static void getRankPeer(@NonNull Playbasis playbasis, @NonNull String nodeId, @NonNull final String rankBy,
+    public static void getRankPeer(@NonNull Playbasis playbasis, @NonNull String nodeId, @NonNull final String rankBy, final Integer page,
                                        final Integer limit, String role, String playerId, final Integer month,  final Integer year, final OnResult<RankPeer> listener) {
 
         String uri = playbasis.getUrl() + "/StoreOrg/rankPeer/" + nodeId + "/" + rankBy;
         final List<NameValuePair> params = new ArrayList<>();
         if (month != null) params.add(new BasicNameValuePair("month", String.valueOf(month)));
         if (year != null) params.add(new BasicNameValuePair("year",String.valueOf(year)));
+        if (page != null) params.add(new BasicNameValuePair("page",String.valueOf(page)));
         if (limit != null) params.add(new BasicNameValuePair("limit",String.valueOf(limit)));
         if (role != null) params.add(new BasicNameValuePair("role",role));
         if (playerId != null) params.add(new BasicNameValuePair("player_id",playerId));
