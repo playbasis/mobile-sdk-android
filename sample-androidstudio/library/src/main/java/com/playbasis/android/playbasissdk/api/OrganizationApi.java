@@ -5,9 +5,12 @@ import android.support.annotation.NonNull;
 import com.playbasis.android.playbasissdk.core.Playbasis;
 import com.playbasis.android.playbasissdk.helper.JsonHelper;
 import com.playbasis.android.playbasissdk.http.HttpError;
+import com.playbasis.android.playbasissdk.model.CustomLeaderboard;
 import com.playbasis.android.playbasissdk.model.CustomRankPeer;
+import com.playbasis.android.playbasissdk.model.Leaderboard;
 import com.playbasis.android.playbasissdk.model.Node;
 import com.playbasis.android.playbasissdk.model.Organization;
+import com.playbasis.android.playbasissdk.model.RankPeer;
 import com.playbasis.android.playbasissdk.model.Sale;
 import com.playbasis.android.playbasissdk.model.SaleReport;
 
@@ -214,14 +217,19 @@ public class OrganizationApi extends Api {
      * @param year optional, Select year to get sale report [default = current year]
      * @param action optional, Action name to be query [default = sell]
      * @param parameter optional, Parameter of action to be query [default = amount]
+     * @param page Select page to be reported, page 1 is the first page [default = first page]
+     * @param limit limit per page to be reported [default = "20"]
      * @param listener Callback interface.
      */
-    public static void getSaleBoardByNodeId(@NonNull Playbasis playbasis, String nodeId, int layer, String month, String year, String action, String parameter, final OnResult<ArrayList<Sale>> listener) {
+    public static void getSaleBoardByNodeId(@NonNull Playbasis playbasis, String nodeId, int layer, String month, String year, String action, String parameter,
+                                            final Integer page, final Integer limit, final OnResult<ArrayList<Sale>> listener) {
         String uri = playbasis.getUrl() + "/StoreOrg/nodes/" + nodeId + "/saleBoard/" + layer + "/";
 
         List<NameValuePair> params = new ArrayList<>();
         if(month!=null)params.add(new BasicNameValuePair("month", String.valueOf(month)));
         if(year!=null)params.add(new BasicNameValuePair("year", String.valueOf(year)));
+        if(page!=null)params.add(new BasicNameValuePair("page", String.valueOf(page)));
+        if(limit!=null)params.add(new BasicNameValuePair("limit", String.valueOf(limit)));
         if(action!=null){
             params.add(new BasicNameValuePair("action", String.valueOf(action)));
         }
@@ -271,51 +279,66 @@ public class OrganizationApi extends Api {
     /**
      *  Returns Rank Peer of players by action and parameter which associate with given node id.
      * @param playbasis Playbasis object.
-     * @param nodeId node id to query player list.
+     * @param nodeId organization id to be ranked
+     * @param action  Action name to be query
+     * @param parameter Parameter of action to be query
+     * @param page Select page to be reported, page 1 is the first page [default = first page]
+     * @param limit number of rank in leaderboard to return
+     * @param playerId player id to return his/her own rank
      * @param month optional, Select month to get sale report [default = current month]
      * @param year optional, Select year to get sale report [default = current year]
-     * @param action optional, Action name to be query [default = sell]
-     * @param parameter optional, Parameter of action to be query [default = amount]
      * @param listener Callback interface.
      */
-    public static void getRankPeerActionByNodeId(@NonNull Playbasis playbasis, String nodeId,String action, String parameter, Integer limit, String month, String year,  final OnResult<ArrayList<CustomRankPeer>> listener) {
+    public static void getRankPeerActionByNodeId(@NonNull Playbasis playbasis, String nodeId,String action, final String parameter, final Integer page,
+                                                 Integer limit,String playerId, String month, String year,  final OnResult<CustomRankPeer> listener) {
         String uri = playbasis.getUrl() + "/StoreOrg/rankPeerByAccAction/" + nodeId + "/" + action + "/" + parameter + "/";
 
         List<NameValuePair> params = new ArrayList<>();
         if(month!=null)params.add(new BasicNameValuePair("month", String.valueOf(month)));
         if(year!=null)params.add(new BasicNameValuePair("year", String.valueOf(year)));
+        if(page!=null)params.add(new BasicNameValuePair("page", String.valueOf(page)));
         if(limit!=null)params.add(new BasicNameValuePair("limit", String.valueOf(limit)));
+        if(playerId!=null)params.add(new BasicNameValuePair("player_id", String.valueOf(playerId)));
 
-
-        final String finalParameter = parameter;
-        JsonArrayGET(playbasis, uri, params, new OnResult<JSONArray>() {
+        JsonObjectGET(playbasis, uri, params, new OnResult<JSONObject>() {
             @Override
-            public void onSuccess(JSONArray result) {
-                ArrayList<CustomRankPeer> customRankPeers = new ArrayList<CustomRankPeer>();
+            public void onSuccess(JSONObject result) {
+                CustomRankPeer rankPeer = new CustomRankPeer();
+                ArrayList<CustomLeaderboard> leaderboards = new ArrayList<CustomLeaderboard>();
                 try {
-                    for (int i = 0; i < result.length(); i++) {
-                        JSONObject jsonObject = result.getJSONObject(i);
-                        CustomRankPeer customRankPeer = JsonHelper.FromJsonObject(jsonObject, CustomRankPeer.class);
 
-                        int currentValue = jsonObject.getInt(finalParameter);
-                        int previousValue = jsonObject.getInt("previous_" + finalParameter);
+                    JSONArray leaderboardObj = result.getJSONArray("leaderboard");
+                    JSONObject myrank = result.getJSONObject("my_rank");
+
+                    for (int i = 0; i < leaderboardObj.length(); i++) {
+                        JSONObject jsonObject = leaderboardObj.getJSONObject(i);
+                        CustomLeaderboard leaderboard = JsonHelper.FromJsonObject(jsonObject, CustomLeaderboard.class);
+
+                        int value = jsonObject.getInt(parameter);
+                        int prev_value = jsonObject.getInt("previous_" + parameter);
                         double percentChanged = jsonObject.getDouble("percent_changed");
 
-                        customRankPeer.setCustomRankName(finalParameter);
-                        customRankPeer.setCustomRankValue(currentValue);
-                        customRankPeer.setPreviousValue(previousValue);
-                        customRankPeer.setPercentChange(percentChanged);
+                        leaderboard.setPreviousValue(prev_value);
+                        leaderboard.setRankedName(parameter);
+                        leaderboard.setRankedValue(value);
+                        leaderboard.setPercentChange(percentChanged);
+                        leaderboards.add(leaderboard);
 
-                        customRankPeers.add(customRankPeer);
-                        System.out.println("name : " + customRankPeer.getNodeName());
-                        System.out.println(customRankPeer.getCustomRankName() + " : " + customRankPeer.getCustomRankValue());
-                        System.out.println("previous_" + customRankPeer.getCustomRankName() + " : " + customRankPeer.getPreviousValue());
-                        System.out.println("percent_changed : " + customRankPeer.getPercentChange());
                     }
-                    listener.onSuccess(customRankPeers);
+
+                    int rank = myrank.getInt("rank");
+                    int rankedValue = myrank.getInt("ranked_value");
+
+                    rankPeer = JsonHelper.FromJsonObject(myrank, CustomRankPeer.class);
+                    rankPeer.setLeaderboards(leaderboards);
+                    rankPeer.setRank(rank);
+                    rankPeer.setRankedValue(rankedValue);
+
+
                 } catch (JSONException e) {
                     e.printStackTrace();
-                    if (listener != null) listener.onError(new HttpError(e));
+                } finally {
+                    if (listener != null) listener.onSuccess(rankPeer);
                 }
             }
 
@@ -553,7 +576,7 @@ public class OrganizationApi extends Api {
 
                 try {
 
-                    for (int i = 0; i < count ; i++) {
+                    for (int i = 0; i < count; i++) {
                         JSONObject yearJsonObject = result.getJSONObject(String.valueOf(year));
                         JSONObject monthJsonObject = yearJsonObject.getJSONObject(String.format("%02d", month));
 
@@ -572,7 +595,80 @@ public class OrganizationApi extends Api {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 } finally {
-                    if(listener != null) listener.onSuccess(monthlySaleReports);
+                    if (listener != null) listener.onSuccess(monthlySaleReports);
+                }
+            }
+
+            @Override
+            public void onError(HttpError error) {
+                if (listener != null) listener.onError(error);
+            }
+        });
+    }
+
+    /**
+     *  Returns Rank Peer of players by action and parameter which associate with given node id.
+     * @param playbasis Playbasis object.
+     * @param nodeId organization id to be ranked
+     * @param rankBy name of point-based reward to rank players by
+     * @param page Select page to be reported, page 1 is the first page [default = first page]
+     * @param limit number of rank in leaderboard to return
+     * @param role role to be filtered in organization
+     * @param playerId player id to return his/her own rank
+     * @param month Select month to get sale report [default = current month]
+     * @param year Select year to get sale report [default = current year]
+     * @param listener Callback interface.
+     */
+    public static void getRankPeer(@NonNull Playbasis playbasis, @NonNull String nodeId, @NonNull final String rankBy, final Integer page,
+                                       final Integer limit, String role, String playerId, final Integer month,  final Integer year, final OnResult<RankPeer> listener) {
+
+        String uri = playbasis.getUrl() + "/StoreOrg/rankPeer/" + nodeId + "/" + rankBy;
+        final List<NameValuePair> params = new ArrayList<>();
+        if (month != null) params.add(new BasicNameValuePair("month", String.valueOf(month)));
+        if (year != null) params.add(new BasicNameValuePair("year",String.valueOf(year)));
+        if (page != null) params.add(new BasicNameValuePair("page",String.valueOf(page)));
+        if (limit != null) params.add(new BasicNameValuePair("limit",String.valueOf(limit)));
+        if (role != null) params.add(new BasicNameValuePair("role",role));
+        if (playerId != null) params.add(new BasicNameValuePair("player_id",playerId));
+
+        JsonObjectGET(playbasis, uri, params, new OnResult<JSONObject>() {
+            @Override
+            public void onSuccess(JSONObject result) {
+                RankPeer rankPeer = new RankPeer();
+                ArrayList<Leaderboard> leaderboards = new ArrayList<Leaderboard>();
+                try {
+
+                    JSONArray leaderboardObj = result.getJSONArray("leaderboard");
+                    JSONObject myrank = result.getJSONObject("my_rank");
+
+                    for (int i = 0 ; i < leaderboardObj.length(); i++){
+                        JSONObject jsonObject = leaderboardObj.getJSONObject(i);
+                        Leaderboard leaderboard = JsonHelper.FromJsonObject(jsonObject, Leaderboard.class);
+
+                        int value = jsonObject.getInt(rankBy);
+                        int prev_value = jsonObject.getInt("previous_"+rankBy);
+                        double percentChanged = jsonObject.getDouble("percent_changed");
+
+                        leaderboard.setPreviousValue(prev_value);
+                        leaderboard.setRankedName(rankBy);
+                        leaderboard.setRankedValue(value);
+                        leaderboard.setPercentChange(percentChanged);
+                        leaderboards.add(leaderboard);
+
+                    }
+
+                    int rank = myrank.getInt("rank");
+                    int rankedValue = myrank.getInt("ranked_value");
+
+                    rankPeer  = JsonHelper.FromJsonObject(myrank, RankPeer.class);
+                    rankPeer.setLeaderboards(leaderboards);
+                    rankPeer.setRank(rank);
+                    rankPeer.setRankedValue(rankedValue);
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                } finally {
+                    if(listener != null) listener.onSuccess(rankPeer);
                 }
             }
 
@@ -582,5 +678,6 @@ public class OrganizationApi extends Api {
             }
         });
     }
+
 
 }
