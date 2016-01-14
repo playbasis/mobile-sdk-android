@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 
+import com.google.gson.JsonArray;
 import com.playbasis.android.playbasissdk.core.Playbasis;
 import com.playbasis.android.playbasissdk.core.SDKUtil;
 import com.playbasis.android.playbasissdk.helper.JsonHelper;
@@ -1085,6 +1086,51 @@ public class PlayerApi extends Api{
 
     }
 
+    public static void questsAll(@NonNull Playbasis playbasis, @NonNull String playerId,
+                              final OnResult<List<Quest>> listener){
+        String uri = playbasis.getUrl() + SDKUtil._PLAYER_URL + "questAll/" + playerId;
+
+        JsonObjectGET(playbasis, uri, null, new OnResult<JSONObject>() {
+            @Override
+            public void onSuccess(JSONObject result) {
+                try {
+                    JSONArray questsJsonArray = result.getJSONArray("quests");
+                    List<Quest> quests = new ArrayList<Quest>() ;
+                    for (int i = 0; i < questsJsonArray.length(); i++) {
+                        JSONObject questJsonObject = questsJsonArray.getJSONObject(i);
+                        Quest quest = JsonHelper.FromJsonObject(questJsonObject, Quest.class);
+
+                        if (questJsonObject.optJSONArray("condition") != null){
+                            JSONArray conditions = questJsonObject.getJSONArray("condition");
+                            for(int j = 0; j < conditions.length(); j++) {
+                                JSONObject condition = conditions.getJSONObject(j);
+                                if (condition.getString("condition_type").equals("DATETIME_START")){
+                                    quest.setDateStart(condition.getString("condition_value"));
+                                }
+
+                                if (condition.getString("condition_type").equals("DATETIME_END")){
+                                    quest.setDateEnd(condition.getString("condition_value"));
+
+                                }
+                            }
+                        }
+                        quests.add(quest);
+                    }
+
+                    if (listener != null) listener.onSuccess(quests);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    if (listener != null) listener.onError(new HttpError(e));
+                }
+            }
+
+            @Override
+            public void onError(HttpError error) {
+                if (listener != null) listener.onError(error);
+            }
+        });
+
+    }
     /**
      *  
      * @param playbasis Playbasis object.

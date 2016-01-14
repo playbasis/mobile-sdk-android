@@ -45,6 +45,25 @@ public class Quest {
     @Expose
     private String questId;
 
+    private String dateStart;
+    private String dateEnd;
+
+    public String getDateStart() {
+        return dateStart;
+    }
+
+    public void setDateStart(String dateStart) {
+        this.dateStart = dateStart;
+    }
+
+    public String getDateEnd() {
+        return dateEnd;
+    }
+
+    public void setDateEnd(String dateEnd) {
+        this.dateEnd = dateEnd;
+    }
+
     /**
      * 
      * @return
@@ -384,6 +403,8 @@ public class Quest {
                 ", rewards=" + rewards +
                 ", dateModified='" + dateModified + '\'' +
                 ", questId='" + questId + '\'' +
+                ", dateStart='" + dateStart + '\'' +
+                ", dateEnd='" + dateEnd + '\'' +
                 '}';
     }
 }
