@@ -7,9 +7,23 @@ import com.google.gson.annotations.SerializedName;
  * Created by Nick-Playbasis on 1/11/2016.
  */
 public class Leaderboard {
-    @SerializedName("player_id")
+    @SerializedName("cl_player_id")
     @Expose
     String playerID;
+
+    @Expose
+    String image;
+
+    @Expose
+    String username;
+
+    @SerializedName("first_name")
+    @Expose
+    String firstName;
+
+    @SerializedName("last_name")
+    @Expose
+    String lastName;
 
     String rankedName;
     int rankedValue;
@@ -18,6 +32,10 @@ public class Leaderboard {
 
     public Leaderboard() {
         this.playerID = "";
+        this.image = "";
+        this.username = "";
+        this.firstName = "";
+        this.lastName = "";
         this.rankedName = "";
         this.rankedValue = 0;
         this.previousRankedValue = 0;
@@ -57,5 +75,37 @@ public class Leaderboard {
     }
     public void setPercentChange(double percentChange) {
         this.percentChange = percentChange;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 }

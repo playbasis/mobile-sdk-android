@@ -10,6 +10,7 @@ import com.playbasis.android.playbasissdk.model.CustomRankPeer;
 import com.playbasis.android.playbasissdk.model.Leaderboard;
 import com.playbasis.android.playbasissdk.model.Node;
 import com.playbasis.android.playbasissdk.model.Organization;
+import com.playbasis.android.playbasissdk.model.PlayerLeaderboard;
 import com.playbasis.android.playbasissdk.model.RankPeer;
 import com.playbasis.android.playbasissdk.model.Sale;
 import com.playbasis.android.playbasissdk.model.SaleReport;
@@ -284,16 +285,18 @@ public class OrganizationApi extends Api {
      * @param parameter Parameter of action to be query
      * @param page Select page to be reported, page 1 is the first page [default = first page]
      * @param limit number of rank in leaderboard to return
+     * @param role role to be filtered
      * @param playerId player id to return his/her own rank
      * @param month optional, Select month to get sale report [default = current month]
      * @param year optional, Select year to get sale report [default = current year]
      * @param listener Callback interface.
      */
     public static void getRankPeerActionByNodeId(@NonNull Playbasis playbasis, String nodeId,String action, final String parameter, final Integer page,
-                                                 Integer limit,String playerId, String month, String year,  final OnResult<CustomRankPeer> listener) {
+                                                 Integer limit,final String role,String playerId, String month, String year,  final OnResult<CustomRankPeer> listener) {
         String uri = playbasis.getUrl() + "/StoreOrg/rankPeerByAccAction/" + nodeId + "/" + action + "/" + parameter + "/";
 
         List<NameValuePair> params = new ArrayList<>();
+        if(role!=null)params.add(new BasicNameValuePair("role", String.valueOf(role)));
         if(month!=null)params.add(new BasicNameValuePair("month", String.valueOf(month)));
         if(year!=null)params.add(new BasicNameValuePair("year", String.valueOf(year)));
         if(page!=null)params.add(new BasicNameValuePair("page", String.valueOf(page)));
@@ -322,6 +325,11 @@ public class OrganizationApi extends Api {
                         leaderboard.setRankedName(parameter);
                         leaderboard.setRankedValue(value);
                         leaderboard.setPercentChange(percentChanged);
+                        JSONArray playerObj = jsonObject.getJSONArray("players");
+
+                        List<PlayerLeaderboard> players = JsonHelper.FromJsonArray(playerObj, PlayerLeaderboard.class);
+                        leaderboard.setPlayers(players);
+
                         leaderboards.add(leaderboard);
 
                     }
