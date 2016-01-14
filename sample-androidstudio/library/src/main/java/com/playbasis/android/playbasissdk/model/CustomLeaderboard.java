@@ -3,6 +3,9 @@ package com.playbasis.android.playbasissdk.model;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by Nick-Playbasis on 1/12/2016.
  */
@@ -16,12 +19,15 @@ public class CustomLeaderboard {
     int previousRankedValue;
     double percentChange;
 
+    List<PlayerLeaderboard> players;
+
     public CustomLeaderboard() {
         this.nodeName = "";
         this.rankedName = "";
         this.rankedValue = 0;
         this.previousRankedValue = 0;
         this.percentChange = 0;
+        this.players = new ArrayList<>();
     }
 
     public String getNodeName() {
@@ -57,5 +63,14 @@ public class CustomLeaderboard {
     }
     public void setPercentChange(double percentChange) {
         this.percentChange = percentChange;
+    }
+
+
+    public List<PlayerLeaderboard> getPlayers() {
+        return players;
+    }
+
+    public void setPlayers(List<PlayerLeaderboard> players) {
+        this.players = players;
     }
 }
