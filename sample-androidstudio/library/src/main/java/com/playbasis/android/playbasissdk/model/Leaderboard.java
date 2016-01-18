@@ -3,6 +3,9 @@ package com.playbasis.android.playbasissdk.model;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by Nick-Playbasis on 1/11/2016.
  */
@@ -25,6 +28,8 @@ public class Leaderboard {
     @Expose
     String lastName;
 
+    List<NodeLeaderboard> nodes;
+
     String rankedName;
     int rankedValue;
     int previousRankedValue;
@@ -40,6 +45,7 @@ public class Leaderboard {
         this.rankedValue = 0;
         this.previousRankedValue = 0;
         this.percentChange = 0;
+        this.nodes = new ArrayList<>();
     }
 
     public String getPlayerID() {
@@ -107,5 +113,13 @@ public class Leaderboard {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    public List<NodeLeaderboard> getNodes() {
+        return nodes;
+    }
+
+    public void setNodes(List<NodeLeaderboard> nodes) {
+        this.nodes = nodes;
     }
 }
