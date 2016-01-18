@@ -9,6 +9,7 @@ import com.playbasis.android.playbasissdk.model.CustomLeaderboard;
 import com.playbasis.android.playbasissdk.model.CustomRankPeer;
 import com.playbasis.android.playbasissdk.model.Leaderboard;
 import com.playbasis.android.playbasissdk.model.Node;
+import com.playbasis.android.playbasissdk.model.NodeLeaderboard;
 import com.playbasis.android.playbasissdk.model.Organization;
 import com.playbasis.android.playbasissdk.model.PlayerLeaderboard;
 import com.playbasis.android.playbasissdk.model.RankPeer;
@@ -669,6 +670,12 @@ public class OrganizationApi extends Api {
                         leaderboard.setRankedName(rankBy);
                         leaderboard.setRankedValue(value);
                         leaderboard.setPercentChange(percentChanged);
+
+                        JSONArray nodesArray = jsonObject.getJSONArray("nodes_info");
+
+                        List<NodeLeaderboard> nodes = JsonHelper.FromJsonArray(nodesArray, NodeLeaderboard.class);
+                        leaderboard.setNodes(nodes);
+
                         leaderboards.add(leaderboard);
 
                     }
