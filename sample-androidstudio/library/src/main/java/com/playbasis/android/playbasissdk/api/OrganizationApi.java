@@ -630,6 +630,7 @@ public class OrganizationApi extends Api {
      * @param rankBy name of point-based reward to rank players by
      * @param page Select page to be reported, page 1 is the first page [default = first page]
      * @param limit number of rank in leaderboard to return
+     * @param underOrg  true = return rank of organize under given node_id, false = return rank associate with given node_id
      * @param role role to be filtered in organization
      * @param playerId player id to return his/her own rank
      * @param month Select month to get sale report [default = current month]
@@ -637,7 +638,7 @@ public class OrganizationApi extends Api {
      * @param listener Callback interface.
      */
     public static void getRankPeer(@NonNull Playbasis playbasis, @NonNull String nodeId, @NonNull final String rankBy, final Integer page,
-                                       final Integer limit, String role, String playerId, final Integer month,  final Integer year, final OnResult<RankPeer> listener) {
+                                       final Integer limit, final Boolean underOrg, String role, String playerId, final Integer month,  final Integer year, final OnResult<RankPeer> listener) {
 
         String uri = playbasis.getUrl() + "/StoreOrg/rankPeer/" + nodeId + "/" + rankBy;
         final List<NameValuePair> params = new ArrayList<>();
@@ -647,6 +648,7 @@ public class OrganizationApi extends Api {
         if (limit != null) params.add(new BasicNameValuePair("limit",String.valueOf(limit)));
         if (role != null) params.add(new BasicNameValuePair("role",role));
         if (playerId != null) params.add(new BasicNameValuePair("player_id",playerId));
+        if (underOrg != null)params.add(new BasicNameValuePair("under_org", String.valueOf(underOrg)));
 
         JsonObjectGET(playbasis, uri, params, new OnResult<JSONObject>() {
             @Override
