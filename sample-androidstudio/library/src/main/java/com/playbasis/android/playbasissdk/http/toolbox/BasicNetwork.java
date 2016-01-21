@@ -38,12 +38,16 @@ import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.StatusLine;
 import org.apache.http.conn.ConnectTimeoutException;
+import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.cookie.DateUtils;
+import org.apache.http.util.EntityUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.SocketTimeoutException;
+import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -152,6 +156,13 @@ public class BasicNetwork implements Network {
                 }
                 PlayBasisLog.e("Unexpected response code %d for %s", statusCode, request.getUrl());
                 if (responseContents != null) {
+                    try {
+                        String s = new String(responseContents, "UTF-8");
+                        System.out.println(s);
+                    } catch (UnsupportedEncodingException dsds) {
+                        dsds.printStackTrace();
+                    }
+                    //System.out.print(new String(responseContents, StandardCharsets.UTF_8));
                     networkResponse = new NetworkResponse(statusCode, responseContents,
                             responseHeaders, false, SystemClock.elapsedRealtime() - requestStart);
                     if (statusCode == HttpStatus.SC_UNAUTHORIZED ||
@@ -160,6 +171,16 @@ public class BasicNetwork implements Network {
                                 request, new AuthFailureError(networkResponse));
                     } else {
                         // TODO: Only throw ServerError for 5xx status codes.
+                        try {
+                            String responseString = new BasicResponseHandler().handleResponse(httpResponse);
+                            System.out.println("Http response");
+                            System.out.println(responseString);
+
+                        } catch (IOException ex) {
+                            ex.printStackTrace();
+                        }
+
+                        System.out.println(networkResponse.getRestErrorMessage());
                         throw new ServerError(networkResponse);
                     }
                 } else {

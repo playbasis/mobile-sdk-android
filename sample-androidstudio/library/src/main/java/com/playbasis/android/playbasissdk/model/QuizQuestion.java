@@ -20,7 +20,7 @@ public class QuizQuestion {
     @Expose
     private List<QuizQuestionOption> options;
     @Expose
-    private Integer integer;
+    private Integer index;
     @Expose
     private Integer total;
     @SerializedName("question_id")
@@ -77,20 +77,12 @@ public class QuizQuestion {
         this.options = options;
     }
 
-    /**
-     *  
-     * @return the integer
-     */
-    public Integer getInteger() {
-        return integer;
+    public Integer getIndex() {
+        return index;
     }
 
-    /**
-     *  
-     * @param integer the integer
-     */
-    public void setInteger(Integer integer) {
-        this.integer = integer;
+    public void setIndex(Integer index) {
+        this.index = index;
     }
 
     /**
@@ -131,7 +123,7 @@ public class QuizQuestion {
                 "question='" + question + '\'' +
                 ", questionImage='" + questionImage + '\'' +
                 ", options=" + options +
-                ", integer=" + integer +
+                ", index=" + index +
                 ", total=" + total +
                 ", questionId='" + questionId + '\'' +
                 '}';

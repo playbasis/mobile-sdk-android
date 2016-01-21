@@ -2,20 +2,24 @@ package com.playbasis.android.playbasissdk.api;
 
 import android.support.annotation.NonNull;
 
+import com.google.gson.JsonObject;
 import com.playbasis.android.playbasissdk.core.Playbasis;
 import com.playbasis.android.playbasissdk.core.SDKUtil;
 import com.playbasis.android.playbasissdk.helper.JsonHelper;
 import com.playbasis.android.playbasissdk.helper.Validator;
 import com.playbasis.android.playbasissdk.http.HttpError;
+import com.playbasis.android.playbasissdk.model.BadgeData;
 import com.playbasis.android.playbasissdk.model.Quiz;
 import com.playbasis.android.playbasissdk.model.QuizDetail;
 import com.playbasis.android.playbasissdk.model.QuizPending;
 import com.playbasis.android.playbasissdk.model.QuizQuestion;
 import com.playbasis.android.playbasissdk.model.QuizQuestionAnswer;
 import com.playbasis.android.playbasissdk.model.QuizRank;
+import com.playbasis.android.playbasissdk.model.Reward;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 

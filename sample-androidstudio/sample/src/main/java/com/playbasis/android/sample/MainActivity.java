@@ -181,6 +181,35 @@ public class MainActivity extends FragmentActivity {
                     }
                 });
 
+                /*
+                PlayerApi.quests(SampleApplication.playbasis, "sm1", new OnResult<List<Quest>>() {
+                    @Override
+                    public void onSuccess(List<Quest> result) {
+                        for (Quest quest : result) {
+                            System.out.println(quest);
+                        }
+                    }
+
+                    @Override
+                    public void onError(HttpError error) {
+
+                    }
+                });*/
+
+                PlayerApi.questsAll(SampleApplication.playbasis, "sm1", new OnResult<List<Quest>>() {
+                    @Override
+                    public void onSuccess(List<Quest> result) {
+                        for (Quest quest : result) {
+                            System.out.println(quest);
+                        }
+                    }
+
+                    @Override
+                    public void onError(HttpError error) {
+
+                    }
+                });
+
                 //PlayerApi
             }
         });

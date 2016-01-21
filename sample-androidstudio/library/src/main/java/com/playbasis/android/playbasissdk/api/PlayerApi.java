@@ -279,13 +279,11 @@ public class PlayerApi extends Api{
 
 
         }else {
-
-
             String uri = playbasis.getUrl() + endpoint;
 
-            JsonObjectPOST(playbasis, uri, player.toParams(), new OnResult<JSONObject>() {
+            JsonArrayPOST(playbasis, uri, player.toParams(), new OnResult<JSONArray>() {
                 @Override
-                public void onSuccess(JSONObject result) {
+                public void onSuccess(JSONArray result) {
                     if (listener != null) listener.onSuccess(true);
                 }
 
