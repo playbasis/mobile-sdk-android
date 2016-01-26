@@ -8,12 +8,20 @@ import com.google.gson.annotations.SerializedName;
  */
 public class Content {
 
+    @Expose
     String detail;
+    @Expose
     String date_start;
+    @Expose
     String date_end;
+    @Expose
     String image;
+    @Expose
     String category;
-
+    @Expose
+    String title;
+    @Expose
+    String summary;
 
     public Content() {
         this.detail = "";
@@ -21,6 +29,8 @@ public class Content {
         this.date_end = "";
         this.image = "";
         this.category = "";
+        this.title = "";
+        this.summary = "";
     }
 
     public String getDetail() {
@@ -63,4 +73,19 @@ public class Content {
         this.category = category;
     }
 
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getSummary() {
+        return summary;
+    }
+
+    public void setSummary(String summary) {
+        this.summary = summary;
+    }
 }
