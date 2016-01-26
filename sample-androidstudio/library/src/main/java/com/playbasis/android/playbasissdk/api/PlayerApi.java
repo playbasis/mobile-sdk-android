@@ -1338,6 +1338,40 @@ public class PlayerApi extends Api{
         });
     }
 
+    public static void resetPasswordByEmail(@NonNull Playbasis playbasis, @NonNull String email, final OnResult<String> listener) {
+        String endpoint =  SDKUtil._PLAYER_URL + "/password/email";
+        String uri = playbasis.getUrl() + endpoint;
+
+        List<NameValuePair> params = new ArrayList<>();
+        params.add(new BasicNameValuePair("email", String.valueOf(email)));
+
+        JsonObjectPOST(playbasis, uri, params, new OnResult<JSONObject>() {
+            @Override
+            public void onSuccess(JSONObject result) {
+                if (listener != null) {
+                    String url = null;
+                    try {
+                        url = result.getString("url");
+                    } catch (JSONException ex) {
+                        System.out.println("JSONException");
+                        ex.printStackTrace();
+                    } finally {
+                        listener.onSuccess(url);
+                    }
+                }
+            }
+
+            @Override
+            public void onError(HttpError error) {
+                error.printStackTrace();
+                if (error.getMessage() != null) {
+                    System.out.println(error.getMessage());
+                }
+                if (listener != null) listener.onError(error);
+            }
+        });
+    }
+
     public static void requestOtp(@NonNull Playbasis playbasis,@NonNull String playerId, final OnResult<String> listener) {
         requestOtp(playbasis, false, playerId, listener);
     }
