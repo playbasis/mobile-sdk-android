@@ -29,7 +29,7 @@ public class ContentApi extends Api {
         List<NameValuePair> params = new ArrayList<>();
         if (id != null) params.add(new BasicNameValuePair("id",id));
         if (title != null) params.add(new BasicNameValuePair("title",title));
-        if (category != null) params.add(new BasicNameValuePair("parent_id",category));
+        if (category != null) params.add(new BasicNameValuePair("category",category));
         if (date_check != null) params.add(new BasicNameValuePair("search",date_check));
         if (sort != null) params.add(new BasicNameValuePair("sort",sort));
         if (order != null) params.add(new BasicNameValuePair("order",order));

@@ -224,12 +224,12 @@ public class EngineApi extends Api {
      *
      *  @param listener Callback interface.
      */
-    public static void ruleDetail(@NonNull final Playbasis playbasis,@NonNull final String ruleId, final OnResult<RuleDetail> listener) {
+    public static void ruleDetail(@NonNull final Playbasis playbasis,@NonNull final String ruleId, final String playerId, final OnResult<RuleDetail> listener) {
         if(playbasis.isNetworkAvailable()) {
             NTPdate.GetNTPDate(playbasis, new NTPdate.OnDate() {
                 @Override
                 public void onDate(Long date) {
-                    ruleDetailRequest(playbasis, ruleId, date, listener);
+                    ruleDetailRequest(playbasis, ruleId, playerId, date, listener);
                 }
 
                 @Override
@@ -238,14 +238,17 @@ public class EngineApi extends Api {
                 }
             });
         } else {
-            ruleDetailRequest(playbasis, ruleId, NTPdate.GetLocalDate(playbasis), listener);
+            ruleDetailRequest(playbasis, ruleId, playerId, NTPdate.GetLocalDate(playbasis), listener);
         }
     }
 
-    private static void ruleDetailRequest(@NonNull final Playbasis playbasis,@NonNull final String ruleId, Long dateTime, final OnResult<RuleDetail> listener) {
+    private static void ruleDetailRequest(@NonNull final Playbasis playbasis,@NonNull final String ruleId, String playerId, Long dateTime, final OnResult<RuleDetail> listener) {
         String uri = playbasis.getUrl() + SDKUtil._ENGINE_URL + "rule/" + ruleId;
 
-        JsonObjectGET(playbasis, uri, null, new OnResult<JSONObject>() {
+        List<NameValuePair> params = new ArrayList<>();
+        if (playerId != null) params.add(new BasicNameValuePair("player_id",playerId));
+
+        JsonObjectGET(playbasis, uri, params, new OnResult<JSONObject>() {
             @Override
             public void onSuccess(JSONObject result) {
                 try {

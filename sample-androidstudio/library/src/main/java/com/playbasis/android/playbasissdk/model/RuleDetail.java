@@ -31,8 +31,11 @@ public class RuleDetail {
     @Expose
     private RuleReward reward;
 
+    private RuleGroup ruleGroup;
     private List<Condition> conditions;
     private List<RuleReward> rewards;
+
+
     /**
      *
      * @return name
@@ -157,6 +160,14 @@ public class RuleDetail {
         this.conditions = conditions;
     }
 
+    public RuleGroup getRuleGroup() {
+        return ruleGroup;
+    }
+
+    public void setRuleGroup(RuleGroup ruleGroup) {
+        this.ruleGroup = ruleGroup;
+    }
+
     public static RuleDetail parseEngineRuleDetail(JSONObject json) throws JSONException {
         RuleDetail ruleDetail = new RuleDetail();
 
@@ -172,6 +183,8 @@ public class RuleDetail {
             if (category.equals("ACTION")) {
                 ruleDetail.setAction(JsonHelper.FromJsonObject(jigsawSet.getJSONObject(i).getJSONObject("config"), Action.class));
             } else if (category.equals("GROUP")) {
+                ruleDetail.setRuleGroup(JsonHelper.FromJsonObject(jigsawSet.getJSONObject(i), RuleGroup.class));
+
                 JSONArray rewardJSONArray = jigsawSet.getJSONObject(i).getJSONObject("config").getJSONArray("group_container");
                 List<RuleReward> rewardList = new ArrayList<>();
 

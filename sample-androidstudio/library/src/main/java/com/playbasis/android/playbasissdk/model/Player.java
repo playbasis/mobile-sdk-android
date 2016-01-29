@@ -85,6 +85,10 @@ public class Player implements HttpModel{
     protected String password;
 
 
+    @SerializedName("device_id")
+    @Expose
+    private String deviceId;
+
     public Player() {
     }
 
@@ -655,6 +659,14 @@ public class Player implements HttpModel{
         return this;
     }
 
+    public String getDeviceId() {
+        return deviceId;
+    }
+
+    public void setDeviceId(String deviceId) {
+        this.deviceId = deviceId;
+    }
+
     @Override
     public String toString() {
         return "Player{" +
@@ -677,6 +689,7 @@ public class Player implements HttpModel{
                 ", lastLogin='" + lastLogin + '\'' +
                 ", lastLogout='" + lastLogout + '\'' +
                 ", clPlayerId='" + clPlayerId + '\'' +
+                ", deviceId='" + deviceId + '\'' +
                 '}';
     }
 
@@ -700,6 +713,7 @@ public class Player implements HttpModel{
         if(Validator.isValid(lastName))     params.add(new BasicNameValuePair("last_name", lastName));
         if(Validator.isValid(gender))       params.add(new BasicNameValuePair("gender", String.valueOf(gender.getGender())));
         if(Validator.isValid(birthDate))    params.add(new BasicNameValuePair("birth_date", birthDate));
+        if(Validator.isValid(deviceId))    params.add(new BasicNameValuePair("device_id", deviceId));
         
         return params;
     }
