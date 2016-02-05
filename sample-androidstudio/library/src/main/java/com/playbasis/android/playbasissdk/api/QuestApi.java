@@ -2,6 +2,7 @@ package com.playbasis.android.playbasissdk.api;
 
 import android.support.annotation.NonNull;
 
+import com.google.gson.JsonArray;
 import com.playbasis.android.playbasissdk.core.Playbasis;
 import com.playbasis.android.playbasissdk.core.SDKUtil;
 import com.playbasis.android.playbasissdk.helper.JsonHelper;
@@ -12,11 +13,13 @@ import com.playbasis.android.playbasissdk.model.Quest;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -33,7 +36,28 @@ public class QuestApi extends Api {
             @Override
             public void onSuccess(JSONObject result) {
                 try {
-                    List<Quest> quests = JsonHelper.FromJsonArray(result.getJSONArray("quests"), Quest.class);
+                    //List<Quest> quests = JsonHelper.FromJsonArray(result.getJSONArray("quests"), Quest.class);
+                    List<Quest> quests = new ArrayList<Quest>();
+                    JSONArray questsJSON = result.getJSONArray("quests");
+                    for (int i = 0; i < questsJSON.length(); i++) {
+                        JSONObject questJSON = questsJSON.getJSONObject(i);
+                        Quest quest = JsonHelper.FromJsonObject(questJSON, Quest.class);
+
+                        JSONArray conditions = questJSON.getJSONArray("conditions");
+                        for(int j = 0; j < conditions.length(); j++) {
+                            JSONObject condition = conditions.getJSONObject(j);
+                            if (condition.getString("condition_type").equals("DATETIME_START")) {
+                                quest.setDateStart(condition.getString("condition_value"));
+                            }
+
+                            if (condition.getString("condition_type").equals("DATETIME_END")) {
+                                quest.setDateEnd(condition.getString("condition_value"));
+
+                            }
+                        }
+                        quests.add(quest);
+                    }
+
                     if (listener != null) listener.onSuccess(quests);
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -55,6 +79,18 @@ public class QuestApi extends Api {
             public void onSuccess(JSONObject result) {
                 try {
                     Quest quest = JsonHelper.FromJsonObject(result.getJSONObject("quest"), Quest.class);
+                    JSONArray conditions = result.getJSONObject("quest").getJSONArray("conditions");
+                    for(int j = 0; j < conditions.length(); j++) {
+                        JSONObject condition = conditions.getJSONObject(j);
+                        if (condition.getString("condition_type").equals("DATETIME_START")) {
+                            quest.setDateStart(condition.getString("condition_value"));
+                        }
+
+                        if (condition.getString("condition_type").equals("DATETIME_END")) {
+                            quest.setDateEnd(condition.getString("condition_value"));
+
+                        }
+                    }
                     if (listener != null) listener.onSuccess(quest);
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -186,8 +222,7 @@ public class QuestApi extends Api {
 
     /**
      * Request access token from playbasis server.
-     * @param playbasis Playbasis object.
-     * @param isAsync Make the request async.
+     * @param playbasis Playbasis object.dateStart
      * @param questId Quest id as player need to join.
      * @param playerId Player id as used in client's website.
      * @param listener Callback interface.

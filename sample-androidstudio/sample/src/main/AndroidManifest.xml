@@ -31,10 +31,10 @@
 
         <meta-data
             android:name="com.playbasis.android.playbasissdk.apikey"
-            android:value="\ 2271203996" />
+            android:value="\ 1256205324" />
         <meta-data
             android:name="com.playbasis.android.playbasissdk.secret"
-            android:value="\ 36cc0090a757c4355e6f6e0cfe62fb80" />
+            android:value="\ 4d4165ee50f41c7c1d7bd2afe0a2a203" />
 
 
         <activity

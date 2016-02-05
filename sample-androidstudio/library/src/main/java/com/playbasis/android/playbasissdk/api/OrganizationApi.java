@@ -590,7 +590,6 @@ public class OrganizationApi extends Api {
                 if (year == null) {
                     year = c.get(Calendar.YEAR);
                 }
-
                 try {
 
                     for (int i = 0; i < count; i++) {

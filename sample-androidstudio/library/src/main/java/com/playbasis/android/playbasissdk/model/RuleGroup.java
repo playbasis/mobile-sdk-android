@@ -41,6 +41,8 @@ public class RuleGroup {
     @Expose
     RuleConfig ruleConfig;
 
+    @SerializedName("state")
+    @Expose
     RuleState ruleState;
 
     public String getId() {

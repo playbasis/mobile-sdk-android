@@ -44,9 +44,20 @@ public class Quest {
     @SerializedName("quest_id")
     @Expose
     private String questId;
+    @SerializedName("player_status")
+    @Expose
+    private String playerStatus;
 
     private String dateStart;
     private String dateEnd;
+
+    public String getPlayerStatus() {
+        return playerStatus;
+    }
+
+    public void setPlayerStatus(String playerStatus) {
+        this.playerStatus = playerStatus;
+    }
 
     public String getDateStart() {
         return dateStart;

@@ -53,14 +53,15 @@ public class CommunicationApi  extends Api{
     public static void sendEmail(@NonNull final Playbasis playbasis, final boolean isAsync,
                              @NonNull final String playerId, @NonNull final String subject, final String message, final String templateId,
                              final OnResult<List<String>>listener ){
-        PlayerValidatorApi.emailValidation(playbasis,playerId,new OnResult<Boolean>() {
+        PlayerValidatorApi.emailValidation(playbasis, playerId, new OnResult<Boolean>() {
             @Override
             public void onSuccess(Boolean result) {
-                if(result){
+                if (result) {
                     sendEmailToPlayer(playbasis, isAsync, playerId, subject, message, templateId, listener);
-                }else{
-                    if (listener != null) listener.onError(new HttpError(new RequestError( "update player fail",  
-                            RequestError.ERROR_CODE.DEFAULT)));
+                } else {
+                    if (listener != null)
+                        listener.onError(new HttpError(new RequestError("update player fail",
+                                RequestError.ERROR_CODE.DEFAULT)));
                 }
 
             }
@@ -165,16 +166,17 @@ public class CommunicationApi  extends Api{
                                  final String message, final String templateId,
                                  final OnResult<List<String>>listener ){
 
-        PlayerValidatorApi.emailValidation(playbasis,playerId,new OnResult<Boolean>() {
+        PlayerValidatorApi.emailValidation(playbasis, playerId, new OnResult<Boolean>() {
             @Override
             public void onSuccess(Boolean result) {
-                if(result){
+                if (result) {
                     sendEmailCouponToPlayer(playbasis, isAsync, playerId, refId, subject, message, templateId, listener);
-                }else{
-                    if (listener != null) listener.onError(new HttpError(new RequestError( "update player fail",
-                            RequestError.ERROR_CODE.DEFAULT)));
+                } else {
+                    if (listener != null)
+                        listener.onError(new HttpError(new RequestError("update player fail",
+                                RequestError.ERROR_CODE.DEFAULT)));
                 }
-                
+
             }
 
             @Override
@@ -275,13 +277,14 @@ public class CommunicationApi  extends Api{
         PlayerValidatorApi.smsValidation(playbasis, playerId, new OnResult<Boolean>() {
             @Override
             public void onSuccess(Boolean result) {
-                if(result){
+                if (result) {
                     sendSmsToPlayer(playbasis, isAsync, playerId, message, templateId, listener);
-                }else{
-                    if (listener != null) listener.onError(new HttpError(new RequestError( "update player fail",
-                            RequestError.ERROR_CODE.DEFAULT)));
+                } else {
+                    if (listener != null)
+                        listener.onError(new HttpError(new RequestError("update player fail",
+                                RequestError.ERROR_CODE.DEFAULT)));
                 }
-                
+
             }
 
             @Override
@@ -377,14 +380,15 @@ public class CommunicationApi  extends Api{
                                        final String message, final String templateId,
                                        final OnResult<List<String>>listener ){
 
-        PlayerValidatorApi.smsValidation(playbasis,playerId,new OnResult<Boolean>() {
+        PlayerValidatorApi.smsValidation(playbasis, playerId, new OnResult<Boolean>() {
             @Override
             public void onSuccess(Boolean result) {
-                if(result){
+                if (result) {
                     sendSmsCouponToPlayer(playbasis, isAsync, playerId, refId, message, templateId, listener);
-                }else{
-                    if (listener != null) listener.onError(new HttpError(new RequestError( "update player fail",
-                            RequestError.ERROR_CODE.DEFAULT)));
+                } else {
+                    if (listener != null)
+                        listener.onError(new HttpError(new RequestError("update player fail",
+                                RequestError.ERROR_CODE.DEFAULT)));
                 }
 
             }
@@ -444,6 +448,66 @@ public class CommunicationApi  extends Api{
                 public void onSuccess(JSONArray result) {
                     List<String> events = JsonHelper.FromJsonArray(result, String.class);
                     if (listener != null) listener.onSuccess(events);
+                }
+
+                @Override
+                public void onError(HttpError error) {
+                    if (listener != null) listener.onError(error);
+                }
+            });
+        }
+    }
+    public static void deviceRegistration(@NonNull Playbasis playbasis, @NonNull String playerId, @NonNull String deviceToken,
+                                          @NonNull String deviceDescription, @NonNull String deviceName, @NonNull String osType, final OnResult<String>listener) {
+
+        deviceRegistration(playbasis, false, playerId, deviceToken, deviceDescription, deviceName, osType, listener);
+    }
+
+    public static void deviceRegistration(@NonNull Playbasis playbasis, boolean isAsync, @NonNull String playerId, @NonNull String deviceToken,
+                                          @NonNull String deviceDescription, @NonNull String deviceName, @NonNull String osType, final OnResult<String>listener) {
+
+        String endpoint = SDKUtil._PUSH_API + "deviceRegistration/";
+
+        if(isAsync){
+
+            JSONObject jsonObject = null;
+            try {
+                jsonObject = JsonHelper.newJsonWithToken(playbasis.getAuthenticator());
+                jsonObject.put("player_id", playerId);
+                jsonObject.put("device_token", deviceToken);
+                jsonObject.put("device_description", deviceDescription);
+                jsonObject.put("device_name", deviceName);
+                jsonObject.put("os_type", osType);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            asyncPost(playbasis, endpoint, jsonObject, new OnResult<String>() {
+                @Override
+                public void onSuccess(String result) {
+                    if (listener != null) listener.onSuccess(null);
+                }
+
+                @Override
+                public void onError(HttpError error) {
+
+                }
+            });
+
+
+        } else {
+            String uri = playbasis.getUrl() + endpoint;
+
+            List<NameValuePair> params = new ArrayList<>();
+            params.add(new BasicNameValuePair("player_id", playerId));
+            params.add(new BasicNameValuePair("device_token", deviceToken));
+            params.add(new BasicNameValuePair("device_description", deviceDescription));
+            params.add(new BasicNameValuePair("device_name", deviceName));
+            params.add(new BasicNameValuePair("os_type", osType));
+
+            JsonObjectPOST(playbasis, uri, params, new OnResult<JSONObject>() {
+                @Override
+                public void onSuccess(JSONObject result) {
+                    if (listener != null) listener.onSuccess("OK");
                 }
 
                 @Override

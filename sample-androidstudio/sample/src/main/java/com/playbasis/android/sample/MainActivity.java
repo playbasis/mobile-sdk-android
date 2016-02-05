@@ -1,38 +1,29 @@
 package com.playbasis.android.sample;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.service.wallpaper.WallpaperService;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
+
 import java.util.List;
 
 import com.playbasis.android.playbasissdk.api.EngineApi;
-import com.playbasis.android.playbasissdk.api.AuthApi;
-import com.playbasis.android.playbasissdk.api.AuthToken;
-import com.playbasis.android.playbasissdk.api.EngineApi;
+import com.playbasis.android.playbasissdk.api.FileApi;
 import com.playbasis.android.playbasissdk.api.OnResult;
-import com.playbasis.android.playbasissdk.api.PlayerApi;
-import com.playbasis.android.playbasissdk.api.QuestApi;
-import com.playbasis.android.playbasissdk.core.Playbasis;
 import com.playbasis.android.playbasissdk.http.HttpError;
-import com.playbasis.android.playbasissdk.model.Player;
-import com.playbasis.android.playbasissdk.model.Quest;
+import com.playbasis.android.playbasissdk.model.Image;
+import com.playbasis.android.playbasissdk.model.Input;
 import com.playbasis.android.playbasissdk.model.Rule;
-import com.playbasis.android.playbasissdk.model.RuleAction;
 import com.playbasis.android.playbasissdk.model.RuleDetail;
-import com.playbasis.android.playbasissdk.model.RuleReward;
-import com.playbasis.android.playbasissdk.model.UIEvent;
+import com.playbasis.android.playbasissdk.model.RuleGroup;
+import com.playbasis.android.playbasissdk.model.RuleState;
 import com.playbasis.android.playbasissdk.model.Event;
-
-import org.json.JSONObject;
-
-import java.util.Map;
 
 
 public class MainActivity extends FragmentActivity {
@@ -156,6 +147,62 @@ public class MainActivity extends FragmentActivity {
         testButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Bitmap bm = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher);
+                FileApi.uploadImage(SampleApplication.playbasis, "images", bm, new OnResult<Image>() {
+                    @Override
+                    public void onSuccess(Image result) {
+                        System.out.println("--------------------------------");
+                        System.out.println("--------------------------------");
+                        System.out.println(result.getThumbUrl());
+                        System.out.println(result.getUrl());
+                        System.out.println("--------------------------------");
+                        System.out.println("--------------------------------");
+                    }
+
+                    @Override
+                    public void onError(HttpError error) {
+
+                    }
+                });
+/*
+                EngineApi.ruleDetail(SampleApplication.playbasis, "5698af19472af270068b5caa", "1D", new OnResult<RuleDetail>() {
+                    @Override
+                    public void onSuccess(RuleDetail result) {
+                        System.out.println("Success");
+                        System.out.println(result.getRuleGroup());
+                        RuleGroup ruleGroup = result.getRuleGroup();
+
+                        System.out.println(ruleGroup.getCategory());
+                        System.out.println(ruleGroup.getName());
+                        RuleState ruleState = ruleGroup.getRuleState();
+                        if(ruleState != null) {
+                            System.out.println(ruleState.getInput());
+                            Input input = ruleState.getInput();
+                            System.out.println(input.getIndex());
+                        }
+                    }
+
+                    @Override
+                    public void onError(HttpError error) {
+
+                    }
+
+                });
+                /*PlayerApi.resetPasswordByEmail(SampleApplication.playbasis, "kittikorn.a@playbasis.com", new OnResult<String>() {
+                    @Override
+                    public void onSuccess(String result) {
+                        System.out.println(result);
+                    }
+
+                    @Override
+                    public void onError(HttpError error) {
+                        System.out.println("Error");
+                        System.out.println(error.requestError.message);
+                    }
+                });*/
+
+
+                /*
                 PlayerApi.requestOtp(SampleApplication.playbasis, "sm1", new OnResult<String>() {
                     @Override
                     public void onSuccess(String result) {
@@ -194,7 +241,7 @@ public class MainActivity extends FragmentActivity {
                     public void onError(HttpError error) {
 
                     }
-                });*/
+                });
 
                 PlayerApi.questsAll(SampleApplication.playbasis, "sm1", new OnResult<List<Quest>>() {
                     @Override
@@ -209,7 +256,7 @@ public class MainActivity extends FragmentActivity {
 
                     }
                 });
-
+*/
                 //PlayerApi
             }
         });

@@ -317,7 +317,7 @@ public class PlayerApi extends Api{
     public static void update(@NonNull final Playbasis playbasis, final boolean isAsync, @NonNull Player player,
                                 final OnResult<Boolean> listener){
         
-            if (!player.isValid()) {
+            if (!player.isValidForUpdate()) {
                 FragmentManager fm;
                 if (playbasis.getActivity() != null) {
                     fm = playbasis.getActivity().getSupportFragmentManager();
@@ -347,7 +347,7 @@ public class PlayerApi extends Api{
 
     protected static void updatePlayer(@NonNull Playbasis playbasis, boolean isAsync, @NonNull Player player,
                               final OnResult<Boolean> listener){
-        if(!player.isValid()){
+        if(!player.isValidForUpdate()){
             if(listener!=null)listener.onError(new HttpError(
                     new RequestError("player not valid", RequestError.ERROR_CODE.DEFAULT)));
             return;
@@ -383,7 +383,7 @@ public class PlayerApi extends Api{
 
             String uri = playbasis.getUrl() + endpoint;
 
-            JsonArrayPOST(playbasis, uri, player.toParams(), new OnResult<JSONArray>() {
+            JsonArrayPOST(playbasis, uri, player.toParamsForUpdate(), new OnResult<JSONArray>() {
                 @Override
                 public void onSuccess(JSONArray result) {
                     if (listener != null) listener.onSuccess(true);
@@ -1068,7 +1068,10 @@ public class PlayerApi extends Api{
             @Override
             public void onSuccess(JSONObject result) {
                 try {
-                    List<Quest> quests = JsonHelper.FromJsonArray(result.getJSONArray("quests"), Quest.class);
+                    List<Quest> quests = new ArrayList<Quest>();
+                    if(result.has("quests") && !result.isNull("quests")) {
+                        quests = JsonHelper.FromJsonArray(result.getJSONArray("quests"), Quest.class);
+                    }
                     if (listener != null) listener.onSuccess(quests);
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -1418,9 +1421,12 @@ public class PlayerApi extends Api{
         String endpoint =  SDKUtil._PLAYER_URL + "auth/" + playerId + "/verifyOTPCode";
         String uri = playbasis.getUrl() + endpoint;
 
-        JsonObjectPOST(playbasis, uri, null, new OnResult<JSONObject>() {
+        List<NameValuePair> params = new ArrayList<>();
+        params.add(new BasicNameValuePair("code", code));
+
+        JsonArrayPOST(playbasis, uri, params, new OnResult<JSONArray>() {
             @Override
-            public void onSuccess(JSONObject result) {
+            public void onSuccess(JSONArray result) {
                 if (listener != null) listener.onSuccess(true);
             }
 

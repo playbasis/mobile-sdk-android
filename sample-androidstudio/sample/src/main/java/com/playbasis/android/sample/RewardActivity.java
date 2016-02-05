@@ -44,7 +44,7 @@ public class RewardActivity extends FragmentActivity {
         listView.setAdapter(rewardAdapter);
 
         //Get the list of goods
-        GoodsApi.listInfo(SampleApplication.playbasis, new OnResult<List<Goods>>() {
+        GoodsApi.listInfo(SampleApplication.playbasis, "TestPlayer001",new OnResult<List<Goods>>() {
             @Override
             public void onSuccess(List<Goods> result) {
                 rewardAdapter.setrewards(result); //Send the list of goods to the listView adapter
