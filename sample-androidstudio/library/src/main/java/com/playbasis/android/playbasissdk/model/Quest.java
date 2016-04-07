@@ -51,6 +51,17 @@ public class Quest {
     private String dateStart;
     private String dateEnd;
 
+    @SerializedName("num_missions")
+    private NumMissions numMissions;
+
+    public NumMissions getNumMissions() {
+        return numMissions;
+    }
+
+    public void setNumMissions(NumMissions numMissions) {
+        this.numMissions = numMissions;
+    }
+
     public String getPlayerStatus() {
         return playerStatus;
     }
