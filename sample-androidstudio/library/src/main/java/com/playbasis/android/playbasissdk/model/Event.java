@@ -158,6 +158,8 @@ public class Event {
                 ", message='" + message + '\'' +
                 ", status=" + status +
                 ", questId='" + questId + '\'' +
+                ", value='" + value + '\'' +
+                ", index='" + index + '\'' +
                 '}';
     }
 
