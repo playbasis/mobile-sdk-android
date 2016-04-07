@@ -243,7 +243,7 @@ public class EngineApi extends Api {
     }
 
     private static void ruleDetailRequest(@NonNull final Playbasis playbasis,@NonNull final String ruleId, String playerId, Long dateTime, final OnResult<RuleDetail> listener) {
-        String uri = playbasis.getUrl() + SDKUtil._ENGINE_URL + "rule/" + ruleId;
+        String uri = playbasis.getUrl() + SDKUtil._ENGINE_URL + "/rule/" + ruleId;
 
         List<NameValuePair> params = new ArrayList<>();
         if (playerId != null) params.add(new BasicNameValuePair("player_id",playerId));
