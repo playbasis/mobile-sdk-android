@@ -207,6 +207,8 @@ public class RuleDetail {
                     ruleCondition.add(CoolDownCondition.parseCoolDownCondition(jigsawSet.getJSONObject(i)));
                 } else if (type.equals("counter")) {
                     ruleCondition.add(CounterCondition.parseCounterCondition(jigsawSet.getJSONObject(i)));
+                } else if (type.equals("weekly")) {
+                    ruleCondition.add(WeeklyCondition.parseWeeklyCondition(jigsawSet.getJSONObject(i)));
                 }
             }
         }
