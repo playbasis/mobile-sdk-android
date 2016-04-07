@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.playbasis.android.playbasissdk.helper.JsonHelper;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -25,6 +26,17 @@ public class WeeklyCondition extends Condition {
 
     @Expose
     @SerializedName("day_of_week")
+
+    private StateWeeklyCondition stateWeeklyCondition;
+
+    public StateWeeklyCondition getStateWeeklyCondition() {
+        return stateWeeklyCondition;
+    }
+
+    public void setStateWeeklyCondition(StateWeeklyCondition stateWeeklyCondition) {
+        this.stateWeeklyCondition = stateWeeklyCondition;
+    }
+
     private String dayOfWeek;
 
     public Date getTimeOfDay() {
@@ -51,6 +63,10 @@ public class WeeklyCondition extends Condition {
         weeklyCondition.setDescription(conditionJSON.getString("description"));
         weeklyCondition.setId(conditionJSON.getString("id"));
         weeklyCondition.setSortOrder(conditionJSON.getInt("sort_order"));
+        if (!conditionJSON.isNull("state")) {
+            StateWeeklyCondition stateWeeklyCondition  = JsonHelper.FromJsonObject(conditionJSON.getJSONObject("state").getJSONObject("input"), StateWeeklyCondition.class);
+            weeklyCondition.setStateWeeklyCondition(stateWeeklyCondition);
+        }
 
         try {
             String dateTime = conditionJSON.getJSONObject("config").getString("time_of_day");
@@ -60,7 +76,7 @@ public class WeeklyCondition extends Condition {
         } catch (ParseException e) {
             Log.d("Engine Rule Condition", e.getMessage());
         }
-        weeklyCondition.setDayOfWeek(conditionJSON.getJSONObject("config").getString("day_of_month"));
+        weeklyCondition.setDayOfWeek(conditionJSON.getJSONObject("config").getString("day_of_week"));
 
         return weeklyCondition;
     }
