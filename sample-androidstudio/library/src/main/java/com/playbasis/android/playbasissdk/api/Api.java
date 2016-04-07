@@ -1,9 +1,5 @@
 package com.playbasis.android.playbasissdk.api;
 
-import android.content.Context;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
-
 import com.playbasis.android.playbasissdk.core.Playbasis;
 import com.playbasis.android.playbasissdk.core.SDKUtil;
 import com.playbasis.android.playbasissdk.helper.ApiHelper;
@@ -34,7 +30,6 @@ import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 /**
  * Created by gregoire barret on 2/16/15.
@@ -105,7 +100,7 @@ public abstract class Api {
     protected static void JsonObjectPOST(final Playbasis playbasis, final String uri,
                                          final List<NameValuePair> httpParams,
                                          final OnResult<JSONObject> listener) {
-        JsonObjectPOST(playbasis,uri,null,httpParams,listener);
+        JsonObjectPOST(playbasis, uri, null, httpParams, listener);
     }
     
     public static void JsonObjectPOST(final Playbasis playbasis, final String uri,
@@ -136,7 +131,7 @@ public abstract class Api {
             @Override
             public void onErrorResponse(HttpError error) {
                 //Request a new token and resend the request if token is invalid.
-                if (error.requestError!=null && error.requestError.errorCode == RequestError.ERROR_CODE.INVALID_TOKEN
+                if (error.requestError!=null && (error.requestError.errorCode == RequestError.ERROR_CODE.INVALID_TOKEN || error.requestError.errorCode == RequestError.ERROR_CODE.TOKEN_REQUIRED)
                  && renewCount < 3       ) {
                     AuthAuthenticator authAuthenticator = new AuthAuthenticator(playbasis);
                     authAuthenticator.requestRenewAuthToken(new OnResult<AuthToken>() {
@@ -405,8 +400,17 @@ public abstract class Api {
         } else resendRequests(playbasis);
 
         HttpsTrustManager.allowAllSSL();
+
+        String url = "";
+        if(playbasis.getUrl() != null) {
+            url = url + playbasis.getUrl();
+        } else {
+            url = url + SDKUtil.SERVER_URL;
+        }
+        url = url + SDKUtil.SERVER_URL_ASYNC;
+
         StringJSONBodyRequest jsonBodyRequest = new StringJSONBodyRequest(Request.Method.POST,
-                SDKUtil.SERVER_URL_ASYNC, params,
+                url, params,
                 new Response.Listener<String>() {
 
                     @Override
