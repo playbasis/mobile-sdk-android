@@ -10,7 +10,7 @@ public class SDKUtil {
     public static final String SDK_VERSION = "1.0";
     
     public static final String SERVER_URL = "https://api.pbapp.net";
-    public static final String SERVER_URL_ASYNC = SERVER_URL + "/async/call";
+    public static final String SERVER_URL_ASYNC = "/async/call";
 
     public static final String PLAYER_URL = "/Player";
     public static final String _PLAYER_URL = PLAYER_URL + "/";

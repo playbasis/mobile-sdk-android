@@ -44,6 +44,47 @@ public class Quest {
     @SerializedName("quest_id")
     @Expose
     private String questId;
+    @SerializedName("player_status")
+    @Expose
+    private String playerStatus;
+
+    private String dateStart;
+    private String dateEnd;
+
+    @SerializedName("num_missions")
+    private NumMissions numMissions;
+
+    public NumMissions getNumMissions() {
+        return numMissions;
+    }
+
+    public void setNumMissions(NumMissions numMissions) {
+        this.numMissions = numMissions;
+    }
+
+    public String getPlayerStatus() {
+        return playerStatus;
+    }
+
+    public void setPlayerStatus(String playerStatus) {
+        this.playerStatus = playerStatus;
+    }
+
+    public String getDateStart() {
+        return dateStart;
+    }
+
+    public void setDateStart(String dateStart) {
+        this.dateStart = dateStart;
+    }
+
+    public String getDateEnd() {
+        return dateEnd;
+    }
+
+    public void setDateEnd(String dateEnd) {
+        this.dateEnd = dateEnd;
+    }
 
     /**
      * 
@@ -384,6 +425,8 @@ public class Quest {
                 ", rewards=" + rewards +
                 ", dateModified='" + dateModified + '\'' +
                 ", questId='" + questId + '\'' +
+                ", dateStart='" + dateStart + '\'' +
+                ", dateEnd='" + dateEnd + '\'' +
                 '}';
     }
 }

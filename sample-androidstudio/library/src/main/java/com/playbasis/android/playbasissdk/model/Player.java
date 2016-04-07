@@ -85,6 +85,33 @@ public class Player implements HttpModel{
     protected String password;
 
 
+    @SerializedName("device_id")
+    @Expose
+    private String deviceId;
+    @SerializedName("approve_status")
+    @Expose
+    private String approveStatus;
+
+    @SerializedName("organization")
+    @Expose
+    private List<PlayerOrganization> playerOrganizations;
+
+    public List<PlayerOrganization> getPlayerOrganizations() {
+        return playerOrganizations;
+    }
+
+    public void setPlayerOrganizations(List<PlayerOrganization> playerOrganizations) {
+        this.playerOrganizations = playerOrganizations;
+    }
+
+    public String getApproveStatus() {
+        return approveStatus;
+    }
+
+    public void setApproveStatus(String approveStatus) {
+        this.approveStatus = approveStatus;
+    }
+
     public Player() {
     }
 
@@ -655,6 +682,14 @@ public class Player implements HttpModel{
         return this;
     }
 
+    public String getDeviceId() {
+        return deviceId;
+    }
+
+    public void setDeviceId(String deviceId) {
+        this.deviceId = deviceId;
+    }
+
     @Override
     public String toString() {
         return "Player{" +
@@ -677,12 +712,18 @@ public class Player implements HttpModel{
                 ", lastLogin='" + lastLogin + '\'' +
                 ", lastLogout='" + lastLogout + '\'' +
                 ", clPlayerId='" + clPlayerId + '\'' +
+                ", deviceId='" + deviceId + '\'' +
+                ", approve_status='" + approveStatus + '\'' +
                 '}';
     }
 
     @Override
     public Boolean isValid(){
         return Validator.isValidAlphaNum(clPlayerId) && Validator.isValid(username) &&  Validator.isValidEmail(email);
+    }
+
+    public boolean isValidForUpdate() {
+        return Validator.isValidAlphaNum(clPlayerId);
     }
 
     @Override
@@ -700,10 +741,31 @@ public class Player implements HttpModel{
         if(Validator.isValid(lastName))     params.add(new BasicNameValuePair("last_name", lastName));
         if(Validator.isValid(gender))       params.add(new BasicNameValuePair("gender", String.valueOf(gender.getGender())));
         if(Validator.isValid(birthDate))    params.add(new BasicNameValuePair("birth_date", birthDate));
-        
+        if(Validator.isValid(deviceId))    params.add(new BasicNameValuePair("device_id", deviceId));
+        if(Validator.isValid(approveStatus))    params.add(new BasicNameValuePair("approve_status", approveStatus));
+
         return params;
     }
-    
+
+    public List<NameValuePair> toParamsForUpdate() {
+        List<NameValuePair> params = new ArrayList<>();
+        params.add(new BasicNameValuePair("id", clPlayerId));
+        if(Validator.isValid(username)) params.add(new BasicNameValuePair("username", username));
+        if(Validator.isValid(email)) params.add(new BasicNameValuePair("email", email));
+        if(Validator.isValid(image)) params.add(new BasicNameValuePair("image", image));
+        if(Validator.isValid(phoneNumber))  params.add(new BasicNameValuePair("phone_number", phoneNumber));
+        if(Validator.isValid(facebookId))   params.add(new BasicNameValuePair("facebook_id", facebookId));
+        if(Validator.isValid(twitterId))    params.add(new BasicNameValuePair("twitter_id", twitterId));
+        if(Validator.isValid(password))     params.add(new BasicNameValuePair("password", password));
+        if(Validator.isValid(firstName))    params.add(new BasicNameValuePair("first_name", firstName));
+        if(Validator.isValid(lastName))     params.add(new BasicNameValuePair("last_name", lastName));
+        if(Validator.isValid(gender))       params.add(new BasicNameValuePair("gender", String.valueOf(gender.getGender())));
+        if(Validator.isValid(birthDate))    params.add(new BasicNameValuePair("birth_date", birthDate));
+        if(Validator.isValid(deviceId))    params.add(new BasicNameValuePair("device_id", deviceId));
+        if(Validator.isValid(approveStatus))    params.add(new BasicNameValuePair("approve_status", approveStatus));
+
+        return params;
+    }
     public JSONObject toJson() throws JSONException {
         Gson gson = new GsonBuilder().create();
         String s = gson.toJson(this);

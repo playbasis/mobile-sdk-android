@@ -364,7 +364,17 @@ public class Goods {
         private Point point;
         @Expose
         private List<Badge> badge = new ArrayList<Badge>();
+        @SerializedName("custom")
+        @Expose
+        private List<CustomPoint> customPoints;
 
+        public List<CustomPoint> getCustomPoints() {
+            return customPoints;
+        }
+
+        public void setCustomPoints(List<CustomPoint> customPoints) {
+            this.customPoints = customPoints;
+        }
         /**
          *
          * @return
@@ -407,6 +417,7 @@ public class Goods {
             return "Redeem{" +
                     "point=" + point +
                     ", badge=" + badge +
+                    ", Custom=" + customPoints +
                     '}';
         }
     }

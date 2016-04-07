@@ -1,6 +1,7 @@
 package com.playbasis.android.playbasissdk.api;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import com.playbasis.android.playbasissdk.core.Playbasis;
 import com.playbasis.android.playbasissdk.core.SDKUtil;
@@ -30,10 +31,14 @@ public class GoodsApi extends Api {
      * @param playbasis Playbasis object.
      * @param listener Callback interface.
      */
-    public static void listInfo(@NonNull Playbasis playbasis, final OnResult<List<Goods>> listener){
+    public static void listInfo(@NonNull Playbasis playbasis,@Nullable String playerId, final OnResult<List<Goods>> listener){
         String uri = playbasis.getUrl() + SDKUtil.GOODS_URL;
 
-        JsonObjectGET(playbasis, uri, null, new OnResult<JSONObject>() {
+        List<NameValuePair> params = new ArrayList<>();
+        if (playerId != null) {
+            params.add(new BasicNameValuePair("player_id", playerId));
+        }
+        JsonObjectGET(playbasis, uri, params, new OnResult<JSONObject>() {
             @Override
             public void onSuccess(JSONObject result) {
                 try {
@@ -57,11 +62,15 @@ public class GoodsApi extends Api {
      * @param goodsId Goods id.
      * @param listener Callback interface.
      */
-    public static void info(@NonNull Playbasis playbasis, @NonNull String goodsId,
+    public static void info(@NonNull Playbasis playbasis, @NonNull String goodsId,@Nullable String playerId,
                              final OnResult<Goods> listener) {
         String uri = playbasis.getUrl() + SDKUtil._GOODS_URL + goodsId;
 
-        JsonObjectGET(playbasis, uri, null, new OnResult<JSONObject>() {
+        List<NameValuePair> params = new ArrayList<>();
+        if (playerId != null) {
+            params.add(new BasicNameValuePair("player_id", playerId));
+        }
+        JsonObjectGET(playbasis, uri, params, new OnResult<JSONObject>() {
             @Override
             public void onSuccess(JSONObject result) {
                 try {
