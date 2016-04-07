@@ -19,7 +19,7 @@ Next, more documentation and resources can be found below:
   - Developers may need to add [Native Binaries] in to the project path library/src/main/libs
 
 ### Version
-1.0.0
+1.1.0
 
 License
 ----
