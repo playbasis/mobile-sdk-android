@@ -1,6 +1,7 @@
 package com.playbasis.android.playbasissdk.api;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import com.playbasis.android.playbasissdk.core.Playbasis;
 import com.playbasis.android.playbasissdk.helper.JsonHelper;
@@ -24,7 +25,7 @@ public class ContentApi extends Api {
     public static final String TAG = "ContentApi";
 
     public static void retrieveContent(@NonNull Playbasis playbasis, String id, String title, String category, String date_check, String sort, String order,
-                                 Integer offset, Integer limit, final OnResult<ArrayList<Content>> listener) {
+                                 Integer offset, Integer limit, @Nullable Boolean fullHtml,final OnResult<ArrayList<Content>> listener) {
         String uri = playbasis.getUrl() + "/Content";
         List<NameValuePair> params = new ArrayList<>();
         if (id != null) params.add(new BasicNameValuePair("id",id));
@@ -35,6 +36,7 @@ public class ContentApi extends Api {
         if (order != null) params.add(new BasicNameValuePair("order",order));
         if (offset != null) params.add(new BasicNameValuePair("offset", String.valueOf(offset)));
         if (limit != null) params.add(new BasicNameValuePair("limit",String.valueOf(limit)));
+        if (fullHtml != null) params.add(new BasicNameValuePair("full_html",String.valueOf(fullHtml)));
 
         JsonObjectGET(playbasis, uri, params, new OnResult<JSONObject>() {
             @Override
