@@ -92,6 +92,18 @@ public class Player implements HttpModel{
     @Expose
     private String approveStatus;
 
+    @SerializedName("organization")
+    @Expose
+    private List<PlayerOrganization> playerOrganizations;
+
+    public List<PlayerOrganization> getPlayerOrganizations() {
+        return playerOrganizations;
+    }
+
+    public void setPlayerOrganizations(List<PlayerOrganization> playerOrganizations) {
+        this.playerOrganizations = playerOrganizations;
+    }
+
     public String getApproveStatus() {
         return approveStatus;
     }
@@ -740,7 +752,7 @@ public class Player implements HttpModel{
         params.add(new BasicNameValuePair("id", clPlayerId));
         if(Validator.isValid(username)) params.add(new BasicNameValuePair("username", username));
         if(Validator.isValid(email)) params.add(new BasicNameValuePair("email", email));
-        if(getImage() != null ) params.add(new BasicNameValuePair("image", getImage()));
+        if(Validator.isValid(image)) params.add(new BasicNameValuePair("image", image));
         if(Validator.isValid(phoneNumber))  params.add(new BasicNameValuePair("phone_number", phoneNumber));
         if(Validator.isValid(facebookId))   params.add(new BasicNameValuePair("facebook_id", facebookId));
         if(Validator.isValid(twitterId))    params.add(new BasicNameValuePair("twitter_id", twitterId));
