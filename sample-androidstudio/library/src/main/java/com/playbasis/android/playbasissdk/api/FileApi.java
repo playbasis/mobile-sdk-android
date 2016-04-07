@@ -3,6 +3,7 @@ package com.playbasis.android.playbasissdk.api;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.playbasis.android.playbasissdk.R;
@@ -66,11 +67,15 @@ public class FileApi {
      * @param listener OnResult listener.
      */
     public static void uploadImage(final Playbasis playbasis, String fileName, Bitmap bitmap, final OnResult<Image> listener) {
+        uploadImage(playbasis, fileName, null, bitmap, listener);
+    }
+
+    public static void uploadImage(final Playbasis playbasis, String fileName, String playerID, Bitmap bitmap, final OnResult<Image> listener) {
         String uri = playbasis.getUrl() + "/File/upload";
         final String token = playbasis.getAuthenticator().getToken();
 
         AsyncHttpPost asyncHttpPost = new AsyncHttpPost(bitmap, listener);
-        asyncHttpPost.execute(uri, token, fileName);
+        asyncHttpPost.execute(uri, token, fileName, playerID);
     }
 
     private static class AsyncHttpPost extends AsyncTask<String, String, JSONObject> {
@@ -93,6 +98,8 @@ public class FileApi {
             String uri = params[0];
             String token = params[1];
             String fileName = params[2];
+            String playerID = params[3];
+
             String response = null;
             HttpsURLConnection httpsURLConnection = null;
             if (isRunning) {
@@ -119,16 +126,22 @@ public class FileApi {
 
                 // sending token
                 request.writeBytes(twoHyphens + boundary + crlf);
-                request.writeBytes("Content-Disposition: form-data; name=\"token\""
-                        + crlf);
+                request.writeBytes("Content-Disposition: form-data; name=\"token\"" + crlf);
                 request.writeBytes(crlf);
                 request.writeBytes(token);
                 request.writeBytes(crlf);
 
+                // sending PlayerId
+                if (playerID != null) {
+                    request.writeBytes(twoHyphens + boundary + crlf);
+                    request.writeBytes("Content-Disposition: form-data; name=\"player_id\"" + crlf);
+                    request.writeBytes(crlf);
+                    request.writeBytes(playerID);
+                    request.writeBytes(crlf);
+                }
+
                 request.writeBytes(twoHyphens + boundary + crlf);
-                request.writeBytes("Content-Disposition: form-data; name=\"" +
-                        fileName + "\";filename=\"" +
-                        fileName + ".png" + "\"" + crlf);
+                request.writeBytes("Content-Disposition: form-data; name=\"" + fileName + "\";filename=\"" + fileName + ".png" + "\"" + crlf);
                 request.writeBytes("Content-Type: application/octet-stream" + crlf);
 
                 request.writeBytes(crlf);
