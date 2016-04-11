@@ -16,9 +16,10 @@ Next, more documentation and resources can be found below:
   - Next, one can try out our [API Explorer]
   - Download the [SDK]
   - [Documentation] is also available
+  - Developers may need to add [Native Binaries] in to the project path library/src/main/libs
 
 ### Version
-1.0.0
+1.1.0
 
 License
 ----
@@ -29,3 +30,4 @@ MIT
 [API Explorer]:http://doc.playbasis.com/pbapp
 [SDK]:http://playbasis.com/sdk
 [Documentation]:http://dev.playbasis.com
+[Native Binaries]:https://raw.github.com/facebook/conceal/gh-pages/downloads/libs.zip

@@ -173,7 +173,7 @@ public class RequestStorage {
      * @param content String to write.
      * @return write success.                
      */
-    private Boolean write(String content){
+    synchronized private Boolean write(String content){
         if(content==null){
             Log.e("CONTREAL", "Write::String null");
             return false;
@@ -197,7 +197,7 @@ public class RequestStorage {
      * Read the string encrypt file.
      * @return String file content.
      */
-    private String read(){
+    synchronized private String read(){
         String content = "";
         try {
             content = ConcealHelper.decryptFile(mContext, mFile, mEntity);
@@ -228,7 +228,7 @@ public class RequestStorage {
      * Read all requests saved into the cache.
      * @return Request list
      */
-    private List<StoredRequest> readAll(){
+    synchronized private List<StoredRequest> readAll(){
         List<StoredRequest> storedRequests = new ArrayList<>();
 
         try {
