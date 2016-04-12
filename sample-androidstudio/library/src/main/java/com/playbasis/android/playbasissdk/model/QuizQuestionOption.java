@@ -19,6 +19,28 @@ public class QuizQuestionOption {
     @Expose
     private String OptionId;
 
+    @Expose
+    private String score;
+
+    @Expose
+    private String explanation;
+
+    public String getScore() {
+        return score;
+    }
+
+    public void setScore(String score) {
+        this.score = score;
+    }
+
+    public String getExplanation() {
+        return explanation;
+    }
+
+    public void setExplanation(String explanation) {
+        this.explanation = explanation;
+    }
+
     /**
      *  
      * @return question option
