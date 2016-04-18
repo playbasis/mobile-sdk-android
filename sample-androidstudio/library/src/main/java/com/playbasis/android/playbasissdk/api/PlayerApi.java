@@ -1403,7 +1403,7 @@ public class PlayerApi extends Api{
         });
     }
 
-    public static void resetPasswordByEmail(@NonNull Playbasis playbasis, @NonNull String email, final OnResult<String> listener) {
+    public static void resetPasswordByEmail(@NonNull Playbasis playbasis, @NonNull String email, final OnResult<Boolean> listener) {
         String endpoint =  SDKUtil._PLAYER_URL + "/password/email";
         String uri = playbasis.getUrl() + endpoint;
 
@@ -1414,15 +1414,7 @@ public class PlayerApi extends Api{
             @Override
             public void onSuccess(JSONObject result) {
                 if (listener != null) {
-                    String url = null;
-                    try {
-                        url = result.getString("url");
-                    } catch (JSONException ex) {
-                        System.out.println("JSONException");
-                        ex.printStackTrace();
-                    } finally {
-                        listener.onSuccess(url);
-                    }
+                    listener.onSuccess(true);
                 }
             }
 
