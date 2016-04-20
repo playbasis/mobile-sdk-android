@@ -54,9 +54,6 @@ public abstract class Api {
                                         final OnResult<JSONObject> listener) {
         resendRequests(playbasis);
         HttpsTrustManager.allowAllSSL();
-        
-        
-        
 
         //Add params to the request
         if (params == null) params = new ArrayList<>();
