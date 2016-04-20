@@ -2,6 +2,7 @@ package com.playbasis.android.playbasissdk.model;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.playbasis.android.playbasissdk.api.ApiConst;
 import com.playbasis.android.playbasissdk.helper.JsonHelper;
 
 import org.json.JSONArray;
@@ -173,13 +174,13 @@ public class RuleDetail {
 
         ruleDetail.setActiveStatus(json.getBoolean("active_status"));
         ruleDetail.setDescription(json.getString("description"));
-        ruleDetail.setName(json.getString("name"));
+        ruleDetail.setName(json.getString(ApiConst.NAME));
         ruleDetail.setTags(json.getString("tags"));
 
         JSONArray jigsawSet = json.getJSONArray("jigsaw_set");
         List<Condition> ruleCondition = new ArrayList<>();
         for (int i = 0; i < jigsawSet.length(); i++) {
-            String category = jigsawSet.getJSONObject(i).getString("category");
+            String category = jigsawSet.getJSONObject(i).getString(ApiConst.CATEGORY);
             if (category.equals("ACTION")) {
                 ruleDetail.setAction(JsonHelper.FromJsonObject(jigsawSet.getJSONObject(i).getJSONObject("config"), Action.class));
             } else if (category.equals("GROUP")) {
@@ -194,8 +195,8 @@ public class RuleDetail {
                 }
                 ruleDetail.setRewards(rewardList);
             } else if (category.equals("CONDITION")) {
-                String type = jigsawSet.getJSONObject(i).getString("name");
-                if (type.equals("redeem")) {
+                String type = jigsawSet.getJSONObject(i).getString(ApiConst.NAME);
+                if (type.equals(ApiConst.REDEEM)) {
                     ruleCondition.add(RedeemCondition.parseRedeemCondition(jigsawSet.getJSONObject(i)));
                 } else if (type.equals(("before"))) {
                     ruleCondition.add(BeforeCondition.parseBeforeCondition(jigsawSet.getJSONObject(i)));

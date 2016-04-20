@@ -3,16 +3,15 @@ package com.playbasis.android.playbasissdk.model;
 import android.util.Log;
 
 import com.google.gson.annotations.Expose;
+import com.playbasis.android.playbasissdk.api.ApiConst;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
-import java.util.List;
 import java.text.DateFormat;
 /**
  * Created by TorIsHere on 10/19/2015 AD.
@@ -33,10 +32,10 @@ public class AfterCondition extends Condition {
     public static AfterCondition parseAfterCondition(JSONObject conditionJSON) throws JSONException {
         AfterCondition afterCondition = new AfterCondition();
 
-        afterCondition.setName(conditionJSON.getString("name"));
-        afterCondition.setCategory(conditionJSON.getString("category"));
+        afterCondition.setName(conditionJSON.getString(ApiConst.NAME));
+        afterCondition.setCategory(conditionJSON.getString(ApiConst.CATEGORY));
         afterCondition.setDescription(conditionJSON.getString("description"));
-        afterCondition.setId(conditionJSON.getString("id"));
+        afterCondition.setId(conditionJSON.getString(ApiConst.ID));
         afterCondition.setSortOrder(conditionJSON.getInt("sort_order"));
 
         try {

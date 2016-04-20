@@ -2,6 +2,7 @@ package com.playbasis.android.playbasissdk.model;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.playbasis.android.playbasissdk.api.ApiConst;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -86,7 +87,7 @@ public class Rule {
 
     public static Rule parseRule(JSONObject json) throws JSONException {
         Rule rule = new Rule();
-        JSONArray events = json.getJSONArray("events");
+        JSONArray events = json.getJSONArray(ApiConst.EVENTS);
         List<Event> myEvents = new ArrayList<Event>();
         for (int i = 0; i < events.length(); i++) {
             JSONObject eventJSON = (JSONObject) events.get(i);

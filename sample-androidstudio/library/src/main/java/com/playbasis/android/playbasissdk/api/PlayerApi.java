@@ -5,7 +5,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 
-import com.google.gson.JsonArray;
 import com.playbasis.android.playbasissdk.core.Playbasis;
 import com.playbasis.android.playbasissdk.core.SDKUtil;
 import com.playbasis.android.playbasissdk.helper.JsonHelper;
@@ -19,7 +18,6 @@ import com.playbasis.android.playbasissdk.model.Goods;
 import com.playbasis.android.playbasissdk.model.Level;
 import com.playbasis.android.playbasissdk.model.Node;
 import com.playbasis.android.playbasissdk.model.Player;
-import com.playbasis.android.playbasissdk.model.PlayerAuthStatus;
 import com.playbasis.android.playbasissdk.model.Point;
 import com.playbasis.android.playbasissdk.model.PointDetail;
 import com.playbasis.android.playbasissdk.model.Quest;
@@ -48,14 +46,14 @@ import java.util.List;
  */
 public class PlayerApi extends Api{
     public static final String TAG = "PlayerApi";
-    
-    
+    protected static final String LIST_PLAYER_ID = "list_player_id";
+
     private static void getPlayer(@NonNull Playbasis playbasis, String uri, final OnResult<Player> listener) {
         JsonObjectGET(playbasis, uri, null, new OnResult<JSONObject>() {
             @Override
             public void onSuccess(JSONObject result) {
                 try {
-                    Player player = JsonHelper.FromJsonObject(result.getJSONObject("player"), Player.class);
+                    Player player = JsonHelper.FromJsonObject(result.getJSONObject(ApiConst.PLAYER), Player.class);
                     if (listener != null) listener.onSuccess(player);
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -76,7 +74,7 @@ public class PlayerApi extends Api{
             @Override
             public void onSuccess(JSONObject result) {
                 try {
-                    Player player = JsonHelper.FromJsonObject(result.getJSONObject("player"), Player.class);
+                    Player player = JsonHelper.FromJsonObject(result.getJSONObject(ApiConst.PLAYER), Player.class);
                     if (listener != null) listener.onSuccess(player);
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -96,7 +94,7 @@ public class PlayerApi extends Api{
             @Override
             public void onSuccess(JSONObject result) {
                 try {
-                    Action action = JsonHelper.FromJsonObject(result.getJSONObject("action"), Action.class);
+                    Action action = JsonHelper.FromJsonObject(result.getJSONObject(ApiConst.ACTION), Action.class);
                     if (listener != null) listener.onSuccess(action);
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -132,7 +130,7 @@ public class PlayerApi extends Api{
      */
     public static void detailedPlayerListInfo(@NonNull Playbasis playbasis, @NonNull String playerId,
                                               final OnResult<Player> listener){
-        String uri = playbasis.getUrl() + SDKUtil._PLAYER_URL + playerId + "/data/all";
+        String uri = playbasis.getUrl() + SDKUtil._PLAYER_URL + playerId +"/"+"data/all";
         getPlayer(playbasis, uri, listener);
     }
 
@@ -156,7 +154,7 @@ public class PlayerApi extends Api{
      */
     public static void detailedPlayerPrivateInfo(@NonNull Playbasis playbasis, @NonNull String playerId,
                                                  final OnResult<Player> listener){
-        String uri = playbasis.getUrl() + SDKUtil._PLAYER_URL + playerId + "/data/all";
+        String uri = playbasis.getUrl() + SDKUtil._PLAYER_URL + playerId +"/"+"data/all";
         getPlayerPrivate(playbasis, uri, listener);
     }
 
@@ -179,7 +177,7 @@ public class PlayerApi extends Api{
                 stringPlayersId+= ",";
             }
             stringPlayersId = StringHelper.removeLastChar(stringPlayersId);
-            params.add(new BasicNameValuePair("list_player_id", stringPlayersId));
+            params.add(new BasicNameValuePair(LIST_PLAYER_ID, stringPlayersId));
         }else params = null;
 
 
@@ -187,7 +185,7 @@ public class PlayerApi extends Api{
             @Override
             public void onSuccess(JSONObject result) {
                 try {
-                    List<Player> players = JsonHelper.FromJsonArray(result.getJSONArray("player"), Player.class);
+                    List<Player> players = JsonHelper.FromJsonArray(result.getJSONArray(ApiConst.PLAYER), Player.class);
                     if (listener != null) listener.onSuccess(players);
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -232,14 +230,15 @@ public class PlayerApi extends Api{
                     fm = ((FragmentActivity) playbasis.getContext()).getSupportFragmentManager();
                 } catch (ClassCastException e) {
                     if (listener != null) listener.onError(new HttpError(
-                            new RequestError("player not valid", RequestError.ERROR_CODE.DEFAULT)));
+                            new RequestError(ApiConst.PLAYER_NOT_VALID, RequestError.ERROR_CODE.DEFAULT)));
+                   
                     return;
                 }
             }
 
             AbstractPlayerView playerView = playbasis.getPlayerView() == null ? new PlayerView() : playbasis.getPlayerView();
             playerView.setPlayer(player==null? new Player() : player);
-            playerView.show(fm, "fragment_player_info");
+            playerView.show(fm, ApiConst.FRAGMENT_PLAYER_INFO);
             playerView.setPlayerListener(new PlayerView.OnPlayer() {
                 @Override
                 public void onPlayer(Player player) {
@@ -251,22 +250,75 @@ public class PlayerApi extends Api{
         }
     }
 
-    protected static void registerPlayer(@NonNull Playbasis playbasis, boolean isAsync, @NonNull Player player,
-                                final OnResult<Boolean> listener){
 
-        String endpoint = SDKUtil._PLAYER_URL + player.getClPlayerId() + "/register";
+    protected static boolean verifyEmail(@NonNull Playbasis playbasis, boolean isAsync, @NonNull Player player,
+                                         final OnResult<Boolean> listener) {
+        //todo dkp-119
+        String verifyEmail = SDKUtil._PLAYER_URL + player.getClPlayerId() +"/";
+        final String[] verifyEmailResult = new String[1];//=null;
 
-        if(isAsync){
 
-            JSONObject jsonObject = null;
+        if (isAsync) {
+
+            JSONObject jsonObjectPlayer = null;
             try {
-                jsonObject = JsonHelper.newJsonWithToken(playbasis.getAuthenticator());
-                jsonObject = player.toJson();
+                jsonObjectPlayer = JsonHelper.newJsonWithToken(playbasis.getAuthenticator());
+                jsonObjectPlayer = player.toJson();
             } catch (JSONException e) {
                 e.printStackTrace();
             }
 
-            asyncPost(playbasis, endpoint, jsonObject, new OnResult<String>() {
+            //todo dkp-119
+            asyncPost(playbasis, verifyEmail, jsonObjectPlayer, new OnResult<String>() {
+                @Override
+                public void onSuccess(String result) {
+                    if (listener != null) listener.onSuccess(true);
+                    verifyEmailResult[0] = result;
+             //   ....
+                }
+
+                @Override
+                public void onError(HttpError error) {
+                    if (listener != null) listener.onError(error);
+                }
+            });
+        } else {
+            String uri = playbasis.getUrl() + verifyEmail;
+            JsonArrayPOST(playbasis, uri, player.toParams(), new OnResult<JSONArray>() {
+                @Override
+                public void onSuccess(JSONArray result) {
+                    if (listener != null) listener.onSuccess(true);
+                }
+
+                @Override
+                public void onError(HttpError error) {
+                    if (listener != null) listener.onError(error);
+                }
+            });
+
+        }
+        return false;
+        }
+
+
+    protected static void registerPlayer(@NonNull Playbasis playbasis, boolean isAsync, @NonNull Player player,
+                                final OnResult<Boolean> listener){
+
+        String endpoint = SDKUtil._PLAYER_URL + player.getClPlayerId() +"/"+ ApiConst.REGISTER;
+
+        if(isAsync){
+
+            JSONObject jsonObjectPlayer = null;
+            try {
+                jsonObjectPlayer = JsonHelper.newJsonWithToken(playbasis.getAuthenticator());
+                jsonObjectPlayer = player.toJson();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+
+
+            asyncPost(playbasis, endpoint, jsonObjectPlayer, new OnResult<String>() {
                 @Override
                 public void onSuccess(String result) {
                     if (listener != null) listener.onSuccess(true);
@@ -277,11 +329,8 @@ public class PlayerApi extends Api{
                     if (listener != null) listener.onError(error);
                 }
             });
-
-
         }else {
             String uri = playbasis.getUrl() + endpoint;
-
             JsonArrayPOST(playbasis, uri, player.toParams(), new OnResult<JSONArray>() {
                 @Override
                 public void onSuccess(JSONArray result) {
@@ -327,14 +376,14 @@ public class PlayerApi extends Api{
                         fm = ((FragmentActivity) playbasis.getContext()).getSupportFragmentManager();
                     } catch (ClassCastException e) {
                         if (listener != null) listener.onError(new HttpError(
-                                new RequestError("player not valid", RequestError.ERROR_CODE.DEFAULT)));
+                                new RequestError(ApiConst.PLAYER_NOT_VALID, RequestError.ERROR_CODE.DEFAULT)));
                         return;
                     }
                 }
             
             PlayerView playerView = new PlayerView();
             playerView.setPlayer(player);
-            playerView.show(fm, "fragment_player_info");
+            playerView.show(fm, ApiConst.FRAGMENT_PLAYER_INFO);
             playerView.setPlayerListener(new PlayerView.OnPlayer() {
                 @Override
                 public void onPlayer(Player player) {
@@ -350,11 +399,11 @@ public class PlayerApi extends Api{
                               final OnResult<Boolean> listener){
         if(!player.isValidForUpdate()){
             if(listener!=null)listener.onError(new HttpError(
-                    new RequestError("player not valid", RequestError.ERROR_CODE.DEFAULT)));
+                    new RequestError(ApiConst.PLAYER_NOT_VALID, RequestError.ERROR_CODE.DEFAULT)));
             return;
         }
 
-        String endpoint = SDKUtil._PLAYER_URL + player.getClPlayerId() + "/update";
+        String endpoint = SDKUtil._PLAYER_URL + player.getClPlayerId() +"/"+ ApiConst.UPDATE;
 
         if(isAsync){
 
@@ -420,7 +469,8 @@ public class PlayerApi extends Api{
     public static void delete(@NonNull Playbasis playbasis, boolean isAsync, @NonNull String playerId,
                               final OnResult<Boolean> listener){
 
-        String endpoint =  SDKUtil._PLAYER_URL + playerId + "/delete";
+        String endpoint =  SDKUtil._PLAYER_URL + playerId +"/"+ ApiConst.DELETE;
+
         if(isAsync){
 
             JSONObject jsonObject = null;
@@ -487,11 +537,12 @@ public class PlayerApi extends Api{
      */
     public static void login(@NonNull Playbasis playbasis, boolean isAsync, @NonNull String playerId, @Nullable String sessionId,
                              @Nullable Integer sessionExpiresIn, final OnResult<Boolean> listener){
-        String endpoint =  SDKUtil._PLAYER_URL + playerId + "/login";
+
+        String endpoint =  SDKUtil._PLAYER_URL + playerId +"/"+ ApiConst.LOGIN;
 
         List<NameValuePair> params = new ArrayList<>();
-        if(sessionId!=null)params.add(new BasicNameValuePair("session_id", sessionId));
-        if(sessionExpiresIn!=null)params.add(new BasicNameValuePair("session_expires_in", String.valueOf(sessionExpiresIn)));
+        if(sessionId!=null)params.add(new BasicNameValuePair(ApiConst.SESSION_ID, sessionId));
+        if(sessionExpiresIn!=null)params.add(new BasicNameValuePair(ApiConst.SESSION_EXPIRES_IN, String.valueOf(sessionExpiresIn)));
 
         if(isAsync){
 
@@ -557,7 +608,7 @@ public class PlayerApi extends Api{
     public static void logout(@NonNull Playbasis playbasis, boolean isAsync, @NonNull String playerId,
                               final OnResult<Boolean> listener){
 
-        String endpoint =  SDKUtil._PLAYER_URL + playerId + "/logout";
+        String endpoint =  SDKUtil._PLAYER_URL + playerId +"/"+ ApiConst.LOGOUT;
         if(isAsync){
 
             JSONObject jsonObject = null;
@@ -607,13 +658,13 @@ public class PlayerApi extends Api{
      */
     public static void points(@NonNull Playbasis playbasis, @NonNull String playerId,
                               final OnResult<List<Point>> listener){
-        String uri = playbasis.getUrl() + SDKUtil._PLAYER_URL + playerId + "/points";
+        String uri = playbasis.getUrl() + SDKUtil._PLAYER_URL + playerId +"/"+ ApiConst.POINTS;
 
         JsonObjectGET(playbasis, uri, null, new OnResult<JSONObject>() {
             @Override
             public void onSuccess(JSONObject result) {
                 try {
-                    List<Point> points = JsonHelper.FromJsonArray(result.getJSONArray("points"), Point.class);
+                    List<Point> points = JsonHelper.FromJsonArray(result.getJSONArray(ApiConst.POINTS), Point.class);
                     if (listener != null) listener.onSuccess(points);
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -638,13 +689,13 @@ public class PlayerApi extends Api{
      */
     public static void point(@NonNull Playbasis playbasis, @NonNull String playerId, @NonNull String pointName,
                               final OnResult<List<Point>> listener){
-        String uri = playbasis.getUrl() + SDKUtil._PLAYER_URL + playerId + "/point/" + pointName;
+        String uri = playbasis.getUrl() + SDKUtil._PLAYER_URL + playerId +"/"+ ApiConst.POINT +"/" + pointName;
 
         JsonObjectGET(playbasis, uri, null, new OnResult<JSONObject>() {
             @Override
             public void onSuccess(JSONObject result) {
                 try {
-                    List<Point> points = JsonHelper.FromJsonArray(result.getJSONArray("point"), Point.class);
+                    List<Point> points = JsonHelper.FromJsonArray(result.getJSONArray(ApiConst.POINT), Point.class);
                     if (listener != null) listener.onSuccess(points);
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -672,18 +723,18 @@ public class PlayerApi extends Api{
     public static void pointHistory(@NonNull Playbasis playbasis, @NonNull String playerId,
                                     String pointName, Integer offset, Integer limit,
                              final OnResult<List<PointDetail>> listener){
-        String uri = playbasis.getUrl() + SDKUtil._PLAYER_URL + playerId + "/point_history";
+        String uri = playbasis.getUrl() + SDKUtil._PLAYER_URL + playerId +"/"+ ApiConst.POINT_HISTORY;
 
         List<NameValuePair> params = new ArrayList<>();
-        if(pointName!=null)params.add(new BasicNameValuePair("point_name", pointName));
-        if(offset!=null)params.add(new BasicNameValuePair("offset", String.valueOf(offset)));
-        if(offset!=null)params.add(new BasicNameValuePair("limit", String.valueOf(limit)));
+        if(pointName!=null)params.add(new BasicNameValuePair(ApiConst.POINT_NAME, pointName));
+        if(offset!=null)params.add(new BasicNameValuePair(ApiConst.OFFSET, String.valueOf(offset)));
+        if(offset!=null)params.add(new BasicNameValuePair(ApiConst.LIMIT, String.valueOf(limit)));
 
         JsonObjectGET(playbasis, uri, params, new OnResult<JSONObject>() {
             @Override
             public void onSuccess(JSONObject result) {
                 try {
-                    List<PointDetail> points = JsonHelper.FromJsonArray(result.getJSONArray("points"), PointDetail.class);
+                    List<PointDetail> points = JsonHelper.FromJsonArray(result.getJSONArray(ApiConst.POINTS), PointDetail.class);
                     if (listener != null) listener.onSuccess(points);
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -708,8 +759,8 @@ public class PlayerApi extends Api{
      */
     public static void actionTime(@NonNull Playbasis playbasis, @NonNull String playerId, @NonNull String actionName,
                                   final OnResult<Action> listener){
-        String uri = playbasis.getUrl() + SDKUtil._PLAYER_URL + playerId + "/action/"+
-                actionName + "/time";
+        String uri = playbasis.getUrl() + SDKUtil._PLAYER_URL + playerId +"/"+ ApiConst.ACTION +"/"+
+                actionName +"/"+ ApiConst.TIME;
         getAction(playbasis, uri, listener);
     }
 
@@ -721,7 +772,7 @@ public class PlayerApi extends Api{
      */
     public static void actionLast(@NonNull Playbasis playbasis, @NonNull String playerId,
                                   final OnResult<Action> listener){
-        String uri = playbasis.getUrl() + SDKUtil._PLAYER_URL + playerId + "/action/time";
+        String uri = playbasis.getUrl() + SDKUtil._PLAYER_URL + playerId +"/"+"action/time";
         getAction(playbasis, uri, listener);
     }
 
@@ -734,7 +785,7 @@ public class PlayerApi extends Api{
      */
     public static void actionCount(@NonNull Playbasis playbasis,@NonNull String playerId, @NonNull String actionName,
                                    final OnResult<Action> listener){
-        String uri = playbasis.getUrl() + SDKUtil._PLAYER_URL + playerId + "/action/" + actionName + "/count";
+        String uri = playbasis.getUrl() + SDKUtil._PLAYER_URL + playerId +"/"+ ApiConst.ACTION +"/" + actionName +"/"+ ApiConst.COUNT;
         getAction(playbasis, uri, listener);
     }
 
@@ -746,7 +797,7 @@ public class PlayerApi extends Api{
      */
     public static void badges(@NonNull Playbasis playbasis,@NonNull String playerId,
                               final OnResult<List<Badge>> listener){
-        String uri = playbasis.getUrl() + SDKUtil._PLAYER_URL + playerId + "/badge";
+        String uri = playbasis.getUrl() + SDKUtil._PLAYER_URL + playerId +"/"+ ApiConst.BADGE;
 
 
         JsonArrayGET(playbasis, uri, null, new OnResult<JSONArray>() {
@@ -771,7 +822,7 @@ public class PlayerApi extends Api{
      */
     public static void level(@NonNull Playbasis playbasis,@NonNull String levelNo,
                              final OnResult<Level> listener){
-        String uri = playbasis.getUrl() + SDKUtil._PLAYER_URL + "level/" + levelNo;
+        String uri = playbasis.getUrl() + SDKUtil._PLAYER_URL + ApiConst.LEVEL +"/" + levelNo;
 
 
         JsonObjectGET(playbasis, uri, null, new OnResult<JSONObject>() {
@@ -794,7 +845,7 @@ public class PlayerApi extends Api{
      * @param listener Callback interface.
      */
     public static void levels(@NonNull Playbasis playbasis, final OnResult<List<Level>> listener){
-        String uri = playbasis.getUrl() + SDKUtil._PLAYER_URL + "levels";
+        String uri = playbasis.getUrl() + SDKUtil._PLAYER_URL + ApiConst.LEVELS;
 
 
         JsonArrayGET(playbasis, uri, null, new OnResult<JSONArray>() {
@@ -835,7 +886,7 @@ public class PlayerApi extends Api{
                                  @NonNull String badgeId, final OnResult<Boolean> listener){
         
 
-        String endpoint =  SDKUtil._PLAYER_URL + playerId + "/badge/" + badgeId + "/claim";
+        String endpoint =  SDKUtil._PLAYER_URL + playerId +"/"+ ApiConst.BADGE +"/" + badgeId +"/"+ ApiConst.CLAIM;
         if(isAsync){
 
             JSONObject jsonObject = null;
@@ -899,7 +950,7 @@ public class PlayerApi extends Api{
     public static void redeemBadge(@NonNull Playbasis playbasis, boolean isAsync, @NonNull String playerId,
                                    @NonNull String badgeId, final OnResult<Boolean> listener){
 
-        String endpoint =   SDKUtil._PLAYER_URL + playerId + "/badge/" + badgeId + "/redeem";
+        String endpoint =   SDKUtil._PLAYER_URL + playerId +"/"+ ApiConst.BADGE+"/" + badgeId +"/"+ ApiConst.REDEEM;
         if(isAsync){
 
             JSONObject jsonObject = null;
@@ -950,7 +1001,7 @@ public class PlayerApi extends Api{
      public static void rank(@NonNull Playbasis playbasis, @NonNull String rankBy, Integer limit,
                              final OnResult<List<Rank>> listener){
          if(limit == null) limit = 20;
-         String uri = playbasis.getUrl() + SDKUtil._PLAYER_URL + "rank/" + rankBy + "/" + limit;
+         String uri = playbasis.getUrl() + SDKUtil._PLAYER_URL + ApiConst.RANK +"/" + rankBy +"/" + limit;
 
 
          JsonArrayGET(playbasis, uri, null, new OnResult<JSONArray>() {
@@ -977,7 +1028,7 @@ public class PlayerApi extends Api{
     public static void ranks(@NonNull Playbasis playbasis, Integer limit,  
                              final OnResult<Ranks> listener){
         if(limit == null) limit = 20;
-        String uri = playbasis.getUrl() + SDKUtil._PLAYER_URL + "ranks/" + limit;
+        String uri = playbasis.getUrl() + SDKUtil._PLAYER_URL + ApiConst.RANKS +"/" + limit;
 
 
         JsonObjectGET(playbasis, uri, null, new OnResult<JSONObject>() {
@@ -1004,14 +1055,14 @@ public class PlayerApi extends Api{
     public static void goods(@NonNull Playbasis playbasis, @NonNull String playerId, 
                              final OnResult<List<Goods>> listener ){
 
-        String uri = playbasis.getUrl() + SDKUtil._PLAYER_URL + playerId + "/goods";
+        String uri = playbasis.getUrl() + SDKUtil._PLAYER_URL + playerId +"/"+ ApiConst.GOODS;
 
 
         JsonObjectGET(playbasis, uri, null, new OnResult<JSONObject>() {
             @Override
             public void onSuccess(JSONObject result) {
                 try {
-                    List<Goods> goodses = JsonHelper.FromJsonArray(result.getJSONArray("goods"), Goods.class);
+                    List<Goods> goodses = JsonHelper.FromJsonArray(result.getJSONArray(ApiConst.GOODS), Goods.class);
                     if (listener != null) listener.onSuccess(goodses);
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -1036,28 +1087,28 @@ public class PlayerApi extends Api{
      */
     public static void quest(@NonNull Playbasis playbasis, @NonNull String playerId, @NonNull String questId,
                              final OnResult<Quest> listener){
-        String uri = playbasis.getUrl() + SDKUtil._PLAYER_URL + "quest/" + questId;
+        String uri = playbasis.getUrl() + SDKUtil._PLAYER_URL + ApiConst.QUEST +"/" + questId;
         
         List<NameValuePair> params = new ArrayList<>();
-        params.add(new BasicNameValuePair("player_id", playerId));
+        params.add(new BasicNameValuePair(ApiConst.PLAYER_ID, playerId));
 
         JsonObjectGET(playbasis, uri, params, new OnResult<JSONObject>() {
             @Override
             public void onSuccess(JSONObject result) {
                 try {
-                    Quest quest = JsonHelper.FromJsonObject(result.getJSONObject("quest"), Quest.class);
+                    Quest quest = JsonHelper.FromJsonObject(result.getJSONObject(ApiConst.QUEST), Quest.class);
 
-                    JSONObject questJsonObject = result.getJSONObject("quest");
-                    if (questJsonObject.optJSONArray("condition") != null){
-                        JSONArray conditions = questJsonObject.getJSONArray("condition");
+                    JSONObject questJsonObject = result.getJSONObject(ApiConst.QUEST);
+                    if (questJsonObject.optJSONArray(ApiConst.CONDITION) != null){
+                        JSONArray conditions = questJsonObject.getJSONArray(ApiConst.CONDITION);
                         for(int j = 0; j < conditions.length(); j++) {
                             JSONObject condition = conditions.getJSONObject(j);
-                            if (condition.getString("condition_type").equals("DATETIME_START")){
-                                quest.setDateStart(condition.getString("condition_value"));
+                            if (condition.getString(ApiConst.CONDITION_TYPE).equals(ApiConst.DATETIME_START)){
+                                quest.setDateStart(condition.getString(ApiConst.CONDITION_VALUE));
                             }
 
-                            if (condition.getString("condition_type").equals("DATETIME_END")){
-                                quest.setDateEnd(condition.getString("condition_value"));
+                            if (condition.getString(ApiConst.CONDITION_TYPE).equals(ApiConst.DATETIME_END)){
+                                quest.setDateEnd(condition.getString(ApiConst.CONDITION_VALUE));
 
                             }
                         }
@@ -1086,7 +1137,7 @@ public class PlayerApi extends Api{
      */
     public static void quests(@NonNull Playbasis playbasis, @NonNull String playerId,
                               @Nullable List<String> filters, final OnResult<List<Quest>> listener){
-        String uri = playbasis.getUrl() + SDKUtil._PLAYER_URL + "quest";
+        String uri = playbasis.getUrl() + SDKUtil._PLAYER_URL + ApiConst.QUEST;
         String filterString = "";
         if(filters != null) {
             for (int i = 0; i < filters.size(); i++) {
@@ -1098,30 +1149,30 @@ public class PlayerApi extends Api{
         }
 
         List<NameValuePair> params = new ArrayList<>();
-        params.add(new BasicNameValuePair("player_id", playerId));
+        params.add(new BasicNameValuePair(ApiConst.PLAYER_ID, playerId));
         if (filters != null) {
-            params.add(new BasicNameValuePair("filter", filterString));
+            params.add(new BasicNameValuePair(ApiConst.FILTER, filterString));
         }
 
         JsonObjectGET(playbasis, uri, params, new OnResult<JSONObject>() {
             @Override
             public void onSuccess(JSONObject result) {
                 try {
-                    JSONArray questsJsonArray = result.getJSONArray("quests");
+                    JSONArray questsJsonArray = result.getJSONArray(ApiConst.QUESTS);
                     List<Quest> quests = new ArrayList<Quest>();
                     for (int i = 0; i < questsJsonArray.length(); i++) {
                         JSONObject questJsonObject = questsJsonArray.getJSONObject(i);
                         Quest quest = JsonHelper.FromJsonObject(questJsonObject, Quest.class);
-                        if (questJsonObject.optJSONArray("condition") != null){
-                            JSONArray conditions = questJsonObject.getJSONArray("condition");
+                        if (questJsonObject.optJSONArray(ApiConst.CONDITION) != null){
+                            JSONArray conditions = questJsonObject.getJSONArray(ApiConst.CONDITION);
                             for(int j = 0; j < conditions.length(); j++) {
                                 JSONObject condition = conditions.getJSONObject(j);
-                                if (condition.getString("condition_type").equals("DATETIME_START")){
-                                    quest.setDateStart(condition.getString("condition_value"));
+                                if (condition.getString(ApiConst.CONDITION_TYPE).equals(ApiConst.DATETIME_START)){
+                                    quest.setDateStart(condition.getString(ApiConst.CONDITION_VALUE));
                                 }
 
-                                if (condition.getString("condition_type").equals("DATETIME_END")){
-                                    quest.setDateEnd(condition.getString("condition_value"));
+                                if (condition.getString(ApiConst.CONDITION_TYPE).equals(ApiConst.DATETIME_END)){
+                                    quest.setDateEnd(condition.getString(ApiConst.CONDITION_VALUE));
 
                                 }
                             }
@@ -1145,27 +1196,27 @@ public class PlayerApi extends Api{
 
     public static void questsAll(@NonNull Playbasis playbasis, @NonNull String playerId,
                               final OnResult<List<Quest>> listener){
-        String uri = playbasis.getUrl() + SDKUtil._PLAYER_URL + "questAll/" + playerId;
+        String uri = playbasis.getUrl() + SDKUtil._PLAYER_URL + ApiConst.QUEST_ALL +"/" + playerId;
 
         JsonObjectGET(playbasis, uri, null, new OnResult<JSONObject>() {
             @Override
             public void onSuccess(JSONObject result) {
                 try {
-                    JSONArray questsJsonArray = result.getJSONArray("quests");
+                    JSONArray questsJsonArray = result.getJSONArray(ApiConst.QUESTS);
                     List<Quest> quests = new ArrayList<Quest>() ;
                     for (int i = 0; i < questsJsonArray.length(); i++) {
                         JSONObject questJsonObject = questsJsonArray.getJSONObject(i);
                         Quest quest = JsonHelper.FromJsonObject(questJsonObject, Quest.class);
-                        if (questJsonObject.optJSONArray("condition") != null){
-                            JSONArray conditions = questJsonObject.getJSONArray("condition");
+                        if (questJsonObject.optJSONArray(ApiConst.CONDITION) != null){
+                            JSONArray conditions = questJsonObject.getJSONArray(ApiConst.CONDITION);
                             for(int j = 0; j < conditions.length(); j++) {
                                 JSONObject condition = conditions.getJSONObject(j);
-                                if (condition.getString("condition_type").equals("DATETIME_START")){
-                                    quest.setDateStart(condition.getString("condition_value"));
+                                if (condition.getString(ApiConst.CONDITION_TYPE).equals(ApiConst.DATETIME_START)){
+                                    quest.setDateStart(condition.getString(ApiConst.CONDITION_VALUE));
                                 }
 
-                                if (condition.getString("condition_type").equals("DATETIME_END")){
-                                    quest.setDateEnd(condition.getString("condition_value"));
+                                if (condition.getString(ApiConst.CONDITION_TYPE).equals(ApiConst.DATETIME_END)){
+                                    quest.setDateEnd(condition.getString(ApiConst.CONDITION_VALUE));
 
                                 }
                             }
@@ -1197,18 +1248,18 @@ public class PlayerApi extends Api{
      */
     public static void questReward(@NonNull Playbasis playbasis, @NonNull String playerId, Integer offset, 
                                    Integer limit, final OnResult<List<Reward>> listener) {
-        String uri = playbasis.getUrl() + SDKUtil._PLAYER_URL + playerId + "/quest_reward_history";
+        String uri = playbasis.getUrl() + SDKUtil._PLAYER_URL + playerId +"/"+ ApiConst.QUEST_REWARD_HISTORY;
 
         List<NameValuePair> params = new ArrayList<>();
-        params.add(new BasicNameValuePair("player_id", playerId));
-        params.add(new BasicNameValuePair("offset", String.valueOf(offset==null ? 0 : offset)));
-        params.add(new BasicNameValuePair("limit", String.valueOf(limit==null ? 50 : limit)));
+        params.add(new BasicNameValuePair(ApiConst.PLAYER_ID, playerId));
+        params.add(new BasicNameValuePair(ApiConst.OFFSET, String.valueOf(offset==null ? 0 : offset)));
+        params.add(new BasicNameValuePair(ApiConst.LIMIT, String.valueOf(limit==null ? 50 : limit)));
 
         JsonObjectGET(playbasis, uri, params, new OnResult<JSONObject>() {
             @Override
             public void onSuccess(JSONObject result) {
                 try {
-                    List<Reward> rewards = JsonHelper.FromJsonArray(result.getJSONArray("rewards"), Reward.class);
+                    List<Reward> rewards = JsonHelper.FromJsonArray(result.getJSONArray(ApiConst.REWARDS), Reward.class);
                     if (listener != null) listener.onSuccess(rewards);
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -1261,15 +1312,15 @@ public class PlayerApi extends Api{
                                     final OnResult<String> listener){
 
 
-        String endpoint =    SDKUtil._PLAYER_URL + playerId + "/deduct_reward";
+        String endpoint =    SDKUtil._PLAYER_URL + playerId +"/"+ ApiConst.DEDUCT_REWARD;
         if(isAsync){
 
             JSONObject jsonObject = null;
             try {
                 jsonObject = JsonHelper.newJsonWithToken(playbasis.getAuthenticator());
-                jsonObject.put("reward", rewardId);
-                jsonObject.put("amount", String.valueOf(amount));
-                jsonObject.put("force", String.valueOf(force == null ? 0 : force ? 1 : 0));
+                jsonObject.put(ApiConst.REWARD, rewardId);
+                jsonObject.put(ApiConst.AMOUNT, String.valueOf(amount));
+                jsonObject.put(ApiConst.FORCE, String.valueOf(force == null ? 0 : force ? 1 : 0));
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -1292,9 +1343,9 @@ public class PlayerApi extends Api{
             String uri = playbasis.getUrl() + endpoint;
 
             List<NameValuePair> params = new ArrayList<>();
-            params.add(new BasicNameValuePair("reward", rewardId));
-            params.add(new BasicNameValuePair("amount", String.valueOf(amount)));
-            params.add(new BasicNameValuePair("force", String.valueOf(force == null ? 0 : force ? 1 : 0)));
+            params.add(new BasicNameValuePair(ApiConst.REWARD, rewardId));
+            params.add(new BasicNameValuePair(ApiConst.AMOUNT, String.valueOf(amount)));
+            params.add(new BasicNameValuePair(ApiConst.FORCE, String.valueOf(force == null ? 0 : force ? 1 : 0)));
 
 
             JsonObjectPOST(playbasis, uri, params, new OnResult<JSONObject>() {
@@ -1341,7 +1392,7 @@ public class PlayerApi extends Api{
      */
     public static void referralCode(@NonNull Playbasis playbasis, @NonNull String playerId,
                                               final OnResult<ReferralCode> listener){
-        String uri = playbasis.getUrl() + SDKUtil._PLAYER_URL + playerId + "/code";
+        String uri = playbasis.getUrl() + SDKUtil._PLAYER_URL + playerId +"/"+ ApiConst.CODE;
         getPlayerReferralCode(playbasis, uri, listener);
     }
 
@@ -1364,27 +1415,27 @@ public class PlayerApi extends Api{
     private static void auth(@NonNull Playbasis playbasis, boolean isAsync, String email, String username,
                             @NonNull String password, String deviceId, final OnResult<String> listener) {
 
-        String endpoint =  SDKUtil._PLAYER_URL + "auth";
+        String endpoint =  SDKUtil._PLAYER_URL + ApiConst.AUTH;
         String uri = playbasis.getUrl() + endpoint;
 
         List<NameValuePair> params = new ArrayList<>();
         if (email != null) {
-            params.add(new BasicNameValuePair("email", email));
+            params.add(new BasicNameValuePair(ApiConst.EMAIL, email));
         }
         if (username != null) {
-            params.add(new BasicNameValuePair("username", username));
+            params.add(new BasicNameValuePair(ApiConst.USERNAME, username));
         }
         if (deviceId != null) {
-            params.add(new BasicNameValuePair("device_id", deviceId));
+            params.add(new BasicNameValuePair(ApiConst.DEVICE_ID, deviceId));
         }
-        params.add(new BasicNameValuePair("password", password));
+        params.add(new BasicNameValuePair(ApiConst.PASSWORD, password));
 
         JsonObjectPOST(playbasis, uri, params, new OnResult<JSONObject>() {
             @Override
             public void onSuccess(JSONObject result) {
                 if (listener != null) {
                     try {
-                        String sessionId = result.getString("session_id");
+                        String sessionId = result.getString(ApiConst.SESSION_ID);
                         listener.onSuccess(sessionId);
                     } catch (JSONException ex) {
                         ex.printStackTrace();
@@ -1404,11 +1455,11 @@ public class PlayerApi extends Api{
     }
 
     public static void resetPasswordByEmail(@NonNull Playbasis playbasis, @NonNull String email, final OnResult<Boolean> listener) {
-        String endpoint =  SDKUtil._PLAYER_URL + "/password/email";
+        String endpoint =  SDKUtil._PLAYER_URL +"/"+ ApiConst.PASSWORD+"/"+"+"+ ApiConst.EMAIL;
         String uri = playbasis.getUrl() + endpoint;
 
         List<NameValuePair> params = new ArrayList<>();
-        params.add(new BasicNameValuePair("email", String.valueOf(email)));
+        params.add(new BasicNameValuePair(ApiConst.EMAIL, String.valueOf(email)));
 
         JsonObjectPOST(playbasis, uri, params, new OnResult<JSONObject>() {
             @Override
@@ -1436,7 +1487,7 @@ public class PlayerApi extends Api{
 
     private static void requestOtp(@NonNull Playbasis playbasis, boolean isAsync,@NonNull String playerId, final OnResult<String> listener) {
 
-        String endpoint =  SDKUtil._PLAYER_URL + "auth/" + playerId + "/requestOTPCode";
+        String endpoint =  SDKUtil._PLAYER_URL + ApiConst.AUTH+"/" + playerId +"/"+ ApiConst.REQUEST_OTPCODE;
         String uri = playbasis.getUrl() + endpoint;
 
         JsonObjectPOST(playbasis, uri, null, new OnResult<JSONObject>() {
@@ -1445,7 +1496,7 @@ public class PlayerApi extends Api{
                 if (listener != null) {
                     String otp = null;
                     try {
-                        otp = result.getString("code");
+                        otp = result.getString(ApiConst.CODE);
                     } catch (JSONException ex) {
                         ex.printStackTrace();
                     } finally {
@@ -1472,11 +1523,11 @@ public class PlayerApi extends Api{
 
     private static void verifyOtp(@NonNull Playbasis playbasis, boolean isAsync,@NonNull String playerId,@NonNull String code, final OnResult<Boolean> listener) {
 
-        String endpoint =  SDKUtil._PLAYER_URL + "auth/" + playerId + "/verifyOTPCode";
+        String endpoint =  SDKUtil._PLAYER_URL + ApiConst.AUTH+"/" + playerId +"/"+ ApiConst.VERIFY_OTPCODE;
         String uri = playbasis.getUrl() + endpoint;
 
         List<NameValuePair> params = new ArrayList<>();
-        params.add(new BasicNameValuePair("code", code));
+        params.add(new BasicNameValuePair(ApiConst.CODE, code));
 
         JsonArrayPOST(playbasis, uri, params, new OnResult<JSONArray>() {
             @Override
@@ -1497,7 +1548,7 @@ public class PlayerApi extends Api{
 
     public static void associatedNode(@NonNull Playbasis playbasis, @NonNull String playerId, final OnResult<ArrayList<Node>> listener) {
 
-        String endpoint =  SDKUtil._PLAYER_URL + playerId + "/getAssociatedNode";
+        String endpoint =  SDKUtil._PLAYER_URL + playerId +"/"+ ApiConst.GET_ASSOCIATED_NODE;
         String uri = playbasis.getUrl() + endpoint;
 
         JsonArrayGET(playbasis, uri, null, new OnResult<JSONArray>() {
@@ -1508,8 +1559,8 @@ public class PlayerApi extends Api{
                     for (int i = 0; i < result.length(); i++) {
                         Node node = new Node();
                         JSONObject jsonObject = result.getJSONObject(i);
-                        node.setId(jsonObject.getString("node_id"));
-                        node.setName(jsonObject.getString("name"));
+                        node.setId(jsonObject.getString(ApiConst.NODE_ID));
+                        node.setName(jsonObject.getString(ApiConst.NAME));
                         nodes.add(node);
                         System.out.println(node);
                     }
@@ -1535,7 +1586,7 @@ public class PlayerApi extends Api{
      * @param listener Callback interface.
      */
     public static void getRole(@NonNull Playbasis playbasis, @NonNull String playerId, @NonNull String nodeId,final OnResult<ArrayList<Role>> listener) {
-        String endpoint =  SDKUtil._PLAYER_URL + playerId + "/getRole/" + nodeId + "/";
+        String endpoint =  SDKUtil._PLAYER_URL + playerId +"/"+ ApiConst.GET_ROLE +"/" + nodeId +"/";
         String uri = playbasis.getUrl() + endpoint;
 
         JsonObjectGET(playbasis, uri, null, new OnResult<JSONObject>() {
@@ -1543,7 +1594,7 @@ public class PlayerApi extends Api{
             public void onSuccess(JSONObject result) {
                 ArrayList<Role> roles = new ArrayList<Role>();
                 try {
-                    JSONArray jsonArray = result.getJSONArray("roles");
+                    JSONArray jsonArray = result.getJSONArray(ApiConst.ROLES);
 
 
                     for (int i = 0; i < jsonArray.length(); i++) {
@@ -1567,14 +1618,14 @@ public class PlayerApi extends Api{
     }
 
     public static void saleReport(@NonNull Playbasis playbasis, @NonNull String playerId, Integer month, Integer year, String action, String parameter, final OnResult<ArrayList<SaleReport>> listener) {
-        String endpoint =  SDKUtil._PLAYER_URL + playerId + "/saleReport/";
+        String endpoint =  SDKUtil._PLAYER_URL + playerId +"/"+ ApiConst.SALE_REPORT +"/";
         String uri = playbasis.getUrl() + endpoint;
 
         List<NameValuePair> params = new ArrayList<>();
-        if(month!=null)params.add(new BasicNameValuePair("month", String.valueOf(month)));
-        if(year!=null)params.add(new BasicNameValuePair("year", String.valueOf(year)));
-        if(action!=null)params.add(new BasicNameValuePair("action", action));
-        if(parameter!=null)params.add(new BasicNameValuePair("parameter", parameter));
+        if(month!=null)params.add(new BasicNameValuePair(ApiConst.MONTH, String.valueOf(month)));
+        if(year!=null)params.add(new BasicNameValuePair(ApiConst.YEAR, String.valueOf(year)));
+        if(action!=null)params.add(new BasicNameValuePair(ApiConst.ACTION, action));
+        if(parameter!=null)params.add(new BasicNameValuePair(ApiConst.PARAMETER, parameter));
 
         JsonArrayGET(playbasis, uri, params, new OnResult<JSONArray>() {
             @Override
@@ -1584,11 +1635,11 @@ public class PlayerApi extends Api{
                     for (int i = 0; i < result.length(); i++) {
                         JSONObject jsonObject = result.getJSONObject(i);
                         SaleReport report = new SaleReport();
-                        report.setNodeId(jsonObject.getString("node_id"));
-                        report.setNodeName(jsonObject.getString("name"));
-                        report.setAmount(jsonObject.getInt("amount"));
-                        report.setPreviousAmount(jsonObject.getInt("previous_amount"));
-                        report.setPercentChanged(jsonObject.getDouble("percent_changed"));
+                        report.setNodeId(jsonObject.getString(ApiConst.NODE_ID));
+                        report.setNodeName(jsonObject.getString(ApiConst.NAME));
+                        report.setAmount(jsonObject.getInt(ApiConst.AMOUNT));
+                        report.setPreviousAmount(jsonObject.getInt(ApiConst.PREVIOUS_AMOUNT));
+                        report.setPercentChanged(jsonObject.getDouble(ApiConst.PERCENT_CHANGED));
                         saleReports.add(report);
                     }
                 } catch (JSONException e) {
@@ -1617,13 +1668,13 @@ public class PlayerApi extends Api{
      */
     public static void customRank(@NonNull Playbasis playbasis, @NonNull String action, final @NonNull String parameter,
                                   Integer limit, Integer month, Integer year, final OnResult< ArrayList<CustomRank>> listener) {
-        String endpoint =  SDKUtil._PLAYER_URL + "/rankParam/" + action + "/" + parameter  + "/";
+        String endpoint =  SDKUtil._PLAYER_URL +"/"+ ApiConst.RANK_PARAM +"/" + action +"/" + parameter  +"/";
         String uri = playbasis.getUrl() + endpoint;
 
         List<NameValuePair> params = new ArrayList<>();
-        if(month!=null)params.add(new BasicNameValuePair("month", String.valueOf(month)));
-        if(year!=null)params.add(new BasicNameValuePair("year", String.valueOf(year)));
-        if(limit!=null)params.add(new BasicNameValuePair("limit", String.valueOf(limit)));
+        if(month!=null)params.add(new BasicNameValuePair(ApiConst.MONTH, String.valueOf(month)));
+        if(year!=null)params.add(new BasicNameValuePair(ApiConst.YEAR, String.valueOf(year)));
+        if(limit!=null)params.add(new BasicNameValuePair(ApiConst.LIMIT, String.valueOf(limit)));
 
         JsonArrayGET(playbasis, uri, params, new OnResult<JSONArray>() {
             @Override
@@ -1653,7 +1704,7 @@ public class PlayerApi extends Api{
     }
 
     public static void getPlayerBysessionId(@NonNull Playbasis playbasis, @NonNull String sessionId, final  OnResult<Player> listener) {
-        String endpoint =  SDKUtil._PLAYER_URL + "/session/" + sessionId;
+        String endpoint =  SDKUtil._PLAYER_URL +"/"+ ApiConst.SESSION +"/" + sessionId;
         String uri = playbasis.getUrl() + endpoint;
 
         JsonObjectGET(playbasis, uri, null, new OnResult<JSONObject>() {

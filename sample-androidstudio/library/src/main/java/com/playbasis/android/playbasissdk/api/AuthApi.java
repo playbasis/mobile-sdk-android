@@ -34,7 +34,7 @@ public class AuthApi extends Api {
      * @param listener OnResult listener.
      */
     public static void auth(final Playbasis playbasis, final OnResult<AuthToken> listener) {
-        String uri = playbasis.getUrl()+ "/Auth";
+        String uri = playbasis.getUrl()+"/"+"Auth";
         request(playbasis, uri, listener);
     }
 
@@ -45,7 +45,7 @@ public class AuthApi extends Api {
      * @param listener OnResult listener.
      */
     public static void authRenew(final Playbasis playbasis, final OnResult<AuthToken> listener){
-        String uri = playbasis.getUrl()+ "/Auth/renew";
+        String uri = playbasis.getUrl()+"/"+"Auth/renew";
         request(playbasis, uri, listener);
     }
     
@@ -80,7 +80,7 @@ public class AuthApi extends Api {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<String, String>();
-                params.put("api_key", playbasis.getKeyStore().getApiKey());
+                params.put(Api.API_KEY, playbasis.getKeyStore().getApiKey());
                 params.put("api_secret", playbasis.getKeyStore().getApiSecret());
                 params.put("pkg_name", playbasis.getContext().getPackageName());
                 return params;

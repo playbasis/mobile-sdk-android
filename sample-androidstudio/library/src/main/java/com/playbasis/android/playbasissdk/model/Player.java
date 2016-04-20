@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.playbasis.android.playbasissdk.api.ApiConst;
 import com.playbasis.android.playbasissdk.core.SDKUtil;
 import com.playbasis.android.playbasissdk.helper.DateHelper;
 import com.playbasis.android.playbasissdk.helper.Validator;
@@ -85,7 +86,7 @@ public class Player implements HttpModel{
     protected String password;
 
 
-    @SerializedName("device_id")
+    @SerializedName(ApiConst.DEVICE_ID)
     @Expose
     private String deviceId;
     @SerializedName("approve_status")
@@ -729,19 +730,19 @@ public class Player implements HttpModel{
     @Override
     public List<NameValuePair> toParams() {
         List<NameValuePair> params = new ArrayList<>();
-        params.add(new BasicNameValuePair("id", clPlayerId));
-        params.add(new BasicNameValuePair("username", username));
-        params.add(new BasicNameValuePair("email", email));
+        params.add(new BasicNameValuePair(ApiConst.ID, clPlayerId));
+        params.add(new BasicNameValuePair(ApiConst.USERNAME, username));
+        params.add(new BasicNameValuePair(ApiConst.EMAIL, email));
         params.add(new BasicNameValuePair("image", getImage()));
         if(Validator.isValid(phoneNumber))  params.add(new BasicNameValuePair("phone_number", phoneNumber));
         if(Validator.isValid(facebookId))   params.add(new BasicNameValuePair("facebook_id", facebookId));
         if(Validator.isValid(twitterId))    params.add(new BasicNameValuePair("twitter_id", twitterId));
-        if(Validator.isValid(password))     params.add(new BasicNameValuePair("password", password));
+        if(Validator.isValid(password))     params.add(new BasicNameValuePair(ApiConst.PASSWORD, password));
         if(Validator.isValid(firstName))    params.add(new BasicNameValuePair("first_name", firstName));
         if(Validator.isValid(lastName))     params.add(new BasicNameValuePair("last_name", lastName));
         if(Validator.isValid(gender))       params.add(new BasicNameValuePair("gender", String.valueOf(gender.getGender())));
         if(Validator.isValid(birthDate))    params.add(new BasicNameValuePair("birth_date", birthDate));
-        if(Validator.isValid(deviceId))    params.add(new BasicNameValuePair("device_id", deviceId));
+        if(Validator.isValid(deviceId))    params.add(new BasicNameValuePair(ApiConst.DEVICE_ID, deviceId));
         if(Validator.isValid(approveStatus))    params.add(new BasicNameValuePair("approve_status", approveStatus));
 
         return params;
@@ -749,19 +750,19 @@ public class Player implements HttpModel{
 
     public List<NameValuePair> toParamsForUpdate() {
         List<NameValuePair> params = new ArrayList<>();
-        params.add(new BasicNameValuePair("id", clPlayerId));
-        if(Validator.isValid(username)) params.add(new BasicNameValuePair("username", username));
-        if(Validator.isValid(email)) params.add(new BasicNameValuePair("email", email));
+        params.add(new BasicNameValuePair(ApiConst.ID, clPlayerId));
+        if(Validator.isValid(username)) params.add(new BasicNameValuePair(ApiConst.USERNAME, username));
+        if(Validator.isValid(email)) params.add(new BasicNameValuePair(ApiConst.EMAIL, email));
         if(Validator.isValid(image)) params.add(new BasicNameValuePair("image", image));
         if(Validator.isValid(phoneNumber))  params.add(new BasicNameValuePair("phone_number", phoneNumber));
         if(Validator.isValid(facebookId))   params.add(new BasicNameValuePair("facebook_id", facebookId));
         if(Validator.isValid(twitterId))    params.add(new BasicNameValuePair("twitter_id", twitterId));
-        if(Validator.isValid(password))     params.add(new BasicNameValuePair("password", password));
+        if(Validator.isValid(password))     params.add(new BasicNameValuePair(ApiConst.PASSWORD, password));
         if(Validator.isValid(firstName))    params.add(new BasicNameValuePair("first_name", firstName));
         if(Validator.isValid(lastName))     params.add(new BasicNameValuePair("last_name", lastName));
         if(Validator.isValid(gender))       params.add(new BasicNameValuePair("gender", String.valueOf(gender.getGender())));
         if(Validator.isValid(birthDate))    params.add(new BasicNameValuePair("birth_date", birthDate));
-        if(Validator.isValid(deviceId))    params.add(new BasicNameValuePair("device_id", deviceId));
+        if(Validator.isValid(deviceId))    params.add(new BasicNameValuePair(ApiConst.DEVICE_ID, deviceId));
         if(Validator.isValid(approveStatus))    params.add(new BasicNameValuePair("approve_status", approveStatus));
 
         return params;

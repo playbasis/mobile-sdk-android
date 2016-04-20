@@ -71,7 +71,7 @@ public class FileApi {
     }
 
     public static void uploadImage(final Playbasis playbasis, String fileName, String playerID, Bitmap bitmap, final OnResult<Image> listener) {
-        String uri = playbasis.getUrl() + "/File/upload";
+        String uri = playbasis.getUrl() +"/"+"File/upload";
         final String token = playbasis.getAuthenticator().getToken();
 
         AsyncHttpPost asyncHttpPost = new AsyncHttpPost(bitmap, listener);

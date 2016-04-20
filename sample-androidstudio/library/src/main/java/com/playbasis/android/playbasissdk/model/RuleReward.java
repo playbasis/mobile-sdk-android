@@ -2,6 +2,7 @@ package com.playbasis.android.playbasissdk.model;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.playbasis.android.playbasissdk.api.ApiConst;
 import com.playbasis.android.playbasissdk.helper.JsonHelper;
 
 import org.json.JSONException;
@@ -88,7 +89,7 @@ public class RuleReward {
         String name = json.getString("reward_name");
         ruleReward.setName(name);
         ruleReward.setItemId(json.getString("item_id"));
-        ruleReward.setQuantity(json.getString("quantity"));
+        ruleReward.setQuantity(json.getString(ApiConst.QUANTITY));
         ruleReward.setRewardId(json.getString("reward_id"));
 
         if (json.has("weight")) {
@@ -96,9 +97,9 @@ public class RuleReward {
         }
         if (json.has("data")) {
             JSONObject data = json.getJSONObject("data");
-            if (name.equals("goods")) {
+            if (name.equals(ApiConst.GOODS)) {
                 ruleReward.setGood(JsonHelper.FromJsonObject(data, Goods.class));
-            } else if (name.equals("badge")) {
+            } else if (name.equals(ApiConst.BADGE)) {
                 ruleReward.setBadgeData(JsonHelper.FromJsonObject(data, BadgeData.class));
             }
         }

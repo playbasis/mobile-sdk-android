@@ -3,6 +3,7 @@ package com.playbasis.android.playbasissdk.parser;
 import com.google.gson.TypeAdapter;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
+import com.playbasis.android.playbasissdk.api.ApiConst;
 import com.playbasis.android.playbasissdk.model.BadgeData;
 import com.playbasis.android.playbasissdk.model.Reward;
 
@@ -53,7 +54,7 @@ public class RewardTypeArrayAdapter extends TypeAdapter<Reward> {
                             case "image":
                                 rewardData.setImage(in.nextString());
                                 break;
-                            case "name":
+                            case ApiConst.NAME:
                                 rewardData.setName(in.nextString());
                                 break;
                             case "description":
@@ -65,10 +66,10 @@ public class RewardTypeArrayAdapter extends TypeAdapter<Reward> {
                             case "sponsor":
                                 rewardData.setSponsor(in.nextBoolean());
                                 break;
-                            case "claim":
+                            case ApiConst.CLAIM:
                                 rewardData.setClaim(in.nextBoolean());
                                 break;
-                            case "redeem":
+                            case ApiConst.REDEEM:
                                 rewardData.setRedeem(in.nextBoolean());
                                 break;
                             

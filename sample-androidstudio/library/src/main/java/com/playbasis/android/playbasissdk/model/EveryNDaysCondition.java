@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.playbasis.android.playbasissdk.api.ApiConst;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -46,10 +47,10 @@ public class EveryNDaysCondition extends Condition {
     public static EveryNDaysCondition parseEveryNDays(JSONObject conditionJSON) throws JSONException {
         EveryNDaysCondition everyNDaysCondition = new EveryNDaysCondition();
 
-        everyNDaysCondition.setName(conditionJSON.getString("name"));
-        everyNDaysCondition.setCategory(conditionJSON.getString("category"));
+        everyNDaysCondition.setName(conditionJSON.getString(ApiConst.NAME));
+        everyNDaysCondition.setCategory(conditionJSON.getString(ApiConst.CATEGORY));
         everyNDaysCondition.setDescription(conditionJSON.getString("description"));
-        everyNDaysCondition.setId(conditionJSON.getString("id"));
+        everyNDaysCondition.setId(conditionJSON.getString(ApiConst.ID));
         everyNDaysCondition.setSortOrder(conditionJSON.getInt("sort_order"));
 
         try {

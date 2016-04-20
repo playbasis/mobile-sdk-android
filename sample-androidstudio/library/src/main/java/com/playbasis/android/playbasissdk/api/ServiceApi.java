@@ -25,6 +25,8 @@ import java.util.List;
  */
 public class ServiceApi extends Api{
     public static final String TAG = "ServiceApi";
+    public static final String RECENT_POINT = "recent_point";
+    public static final String RESET_POINT = "reset_point";
 
 
     /**
@@ -38,18 +40,18 @@ public class ServiceApi extends Api{
     public static void recentPoint(@NonNull Playbasis playbasis, String pointName,
                                    Integer offset, Integer limit, final OnResult<List<PointDetail>> listener) {
         
-        String uri = playbasis.getUrl() + SDKUtil._SERVICE_URL + "recent_point";
+        String uri = playbasis.getUrl() + SDKUtil._SERVICE_URL + RECENT_POINT;
 
         List<NameValuePair> params = new ArrayList<>();
-        if(pointName!=null)params.add(new BasicNameValuePair("point_name", pointName));
-        if(offset!=null)params.add(new BasicNameValuePair("offset", String.valueOf(offset)));
-        if(limit!=null)params.add(new BasicNameValuePair("limit", String.valueOf(limit)));
+        if(pointName!=null)params.add(new BasicNameValuePair(ApiConst.POINT_NAME, pointName));
+        if(offset!=null)params.add(new BasicNameValuePair(ApiConst.OFFSET, String.valueOf(offset)));
+        if(limit!=null)params.add(new BasicNameValuePair(ApiConst.LIMIT, String.valueOf(limit)));
 
         JsonObjectGET(playbasis, uri, params, new OnResult<JSONObject>() {
             @Override
             public void onSuccess(JSONObject result) {
                 try {
-                    List<PointDetail> points = JsonHelper.FromJsonArray(result.getJSONArray("points"), PointDetail.class);
+                    List<PointDetail> points = JsonHelper.FromJsonArray(result.getJSONArray(ApiConst.POINTS), PointDetail.class);
                     if (listener != null) listener.onSuccess(points);
                 } catch (JSONException e) {
                     if (listener != null) listener.onError(new HttpError(e));
@@ -84,14 +86,14 @@ public class ServiceApi extends Api{
     public static void resetPoint(@NonNull Playbasis playbasis, boolean isAsync,
                              String pointName, final OnResult<String> listener){
 
-        String endpoint = SDKUtil._SERVICE_URL + "reset_point";
+        String endpoint = SDKUtil._SERVICE_URL + RESET_POINT;
 
         if(isAsync){
 
             JSONObject jsonObject = null;
             try {
                 jsonObject = JsonHelper.newJsonWithToken(playbasis.getAuthenticator());
-                if(pointName!=null) jsonObject.put("point_name", pointName);
+                if(pointName!=null) jsonObject.put(ApiConst.POINT_NAME, pointName);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -114,7 +116,7 @@ public class ServiceApi extends Api{
             String uri = playbasis.getUrl() + endpoint;
 
             List<NameValuePair> params = new ArrayList<>();
-            if (pointName != null) params.add(new BasicNameValuePair("point_name", pointName));
+            if (pointName != null) params.add(new BasicNameValuePair(ApiConst.POINT_NAME, pointName));
 
             JsonObjectPOST(playbasis, uri, params, new OnResult<JSONObject>() {
                 @Override

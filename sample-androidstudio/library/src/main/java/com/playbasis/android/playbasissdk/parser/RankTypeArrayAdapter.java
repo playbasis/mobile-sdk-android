@@ -3,6 +3,7 @@ package com.playbasis.android.playbasissdk.parser;
 import com.google.gson.TypeAdapter;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
+import com.playbasis.android.playbasissdk.api.ApiConst;
 import com.playbasis.android.playbasissdk.model.PbPlayerId;
 import com.playbasis.android.playbasissdk.model.Rank;
 
@@ -27,11 +28,11 @@ public class RankTypeArrayAdapter extends TypeAdapter<Rank> {
         while (in.hasNext()) {
             String jsonTag = in.nextName();
             switch (jsonTag){
-                case "player_id":
+                case ApiConst.PLAYER_ID:
                     rankInstance.setPlayerId(in.nextString());
                     break;
                 case "exp":
-                case "point":
+                case ApiConst.POINT:
                     rankInstance.setValue(in.nextInt());
                     break;
                 case "pb_player_id":

@@ -15,9 +15,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by gregoire barret on 2/19/15.
@@ -52,16 +50,16 @@ public class RedeemApi extends Api {
     public static void goods(@NonNull Playbasis playbasis, boolean isAsync,
                                        @NonNull String goodId, @NonNull String playerId, Integer amount,
                                        final OnResult<List<RedeemGood>>listener ){
-        String endpoint = SDKUtil._REDEEM_API + "goods";
+        String endpoint = SDKUtil._REDEEM_API + ApiConst.GOODS;
 
         if(isAsync){
 
             JSONObject jsonObject = null;
             try {
                 jsonObject = JsonHelper.newJsonWithToken(playbasis.getAuthenticator());
-                jsonObject.put("player_id", playerId);
+                jsonObject.put(ApiConst.PLAYER_ID, playerId);
                 jsonObject.put("goods_id", goodId);
-                if (amount != null) jsonObject.put("amount", String.valueOf(amount));
+                if (amount != null) jsonObject.put(ApiConst.AMOUNT, String.valueOf(amount));
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -83,15 +81,15 @@ public class RedeemApi extends Api {
             String uri = playbasis.getUrl() + endpoint;
 
             List<NameValuePair> params = new ArrayList<>();
-            params.add(new BasicNameValuePair("player_id", playerId));
+            params.add(new BasicNameValuePair(ApiConst.PLAYER_ID, playerId));
             params.add(new BasicNameValuePair("goods_id", goodId));
-            if (amount != null) params.add(new BasicNameValuePair("amount", String.valueOf(amount)));
+            if (amount != null) params.add(new BasicNameValuePair(ApiConst.AMOUNT, String.valueOf(amount)));
 
             JsonObjectPOST(playbasis, uri, params, new OnResult<JSONObject>() {
                 @Override
                 public void onSuccess(JSONObject result) {
                     try {
-                        List<RedeemGood> events = JsonHelper.FromJsonArray(result.getJSONArray("events"), RedeemGood.class);
+                        List<RedeemGood> events = JsonHelper.FromJsonArray(result.getJSONArray(ApiConst.EVENTS), RedeemGood.class);
                         if (listener != null) listener.onSuccess(events);
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -140,9 +138,9 @@ public class RedeemApi extends Api {
             JSONObject jsonObject = null;
             try {
                 jsonObject = JsonHelper.newJsonWithToken(playbasis.getAuthenticator());
-                jsonObject.put("player_id", playerId);
-                jsonObject.put("group", groupId);
-                if (amount != null) jsonObject.put("amount", String.valueOf(amount));
+                jsonObject.put(ApiConst.PLAYER_ID, playerId);
+                jsonObject.put(ApiConst.GROUP, groupId);
+                if (amount != null) jsonObject.put(ApiConst.AMOUNT, String.valueOf(amount));
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -164,16 +162,16 @@ public class RedeemApi extends Api {
             String uri = playbasis.getUrl() + endpoint;
 
             List<NameValuePair> params = new ArrayList<>();
-            params.add(new BasicNameValuePair("player_id", playerId));
-            params.add(new BasicNameValuePair("group", groupId));
-            if (amount != null) params.add(new BasicNameValuePair("amount", String.valueOf(amount)));
+            params.add(new BasicNameValuePair(ApiConst.PLAYER_ID, playerId));
+            params.add(new BasicNameValuePair(ApiConst.GROUP, groupId));
+            if (amount != null) params.add(new BasicNameValuePair(ApiConst.AMOUNT, String.valueOf(amount)));
 
             JsonObjectPOST(playbasis, uri, params, new OnResult<JSONObject>() {
                 @Override
                 @SuppressWarnings("unchecked")
                 public void onSuccess(JSONObject result) {
                     try {
-                        List<RedeemEvent> events = JsonHelper.FromJsonArray(result.getJSONArray("events"), RedeemEvent.class);
+                        List<RedeemEvent> events = JsonHelper.FromJsonArray(result.getJSONArray(ApiConst.EVENTS), RedeemEvent.class);
                         if (listener != null) listener.onSuccess(events);
                     } catch (JSONException e) {
                         e.printStackTrace();

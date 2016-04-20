@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.playbasis.android.playbasissdk.api.ApiConst;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -33,10 +34,10 @@ public class DailyCondition extends Condition {
     public static DailyCondition parseDailyCondition(JSONObject conditionJSON) throws JSONException {
         DailyCondition dailyCondition = new DailyCondition();
 
-        dailyCondition.setName(conditionJSON.getString("name"));
-        dailyCondition.setCategory(conditionJSON.getString("category"));
+        dailyCondition.setName(conditionJSON.getString(ApiConst.NAME));
+        dailyCondition.setCategory(conditionJSON.getString(ApiConst.CATEGORY));
         dailyCondition.setDescription(conditionJSON.getString("description"));
-        dailyCondition.setId(conditionJSON.getString("id"));
+        dailyCondition.setId(conditionJSON.getString(ApiConst.ID));
         dailyCondition.setSortOrder(conditionJSON.getInt("sort_order"));
 
         try {

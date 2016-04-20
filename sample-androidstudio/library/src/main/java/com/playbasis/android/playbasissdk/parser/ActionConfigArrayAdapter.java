@@ -3,10 +3,9 @@ package com.playbasis.android.playbasissdk.parser;
 import com.google.gson.TypeAdapter;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
+import com.playbasis.android.playbasissdk.api.ApiConst;
 import com.playbasis.android.playbasissdk.model.ActionConfig;
 import com.playbasis.android.playbasissdk.model.Config;
-import com.playbasis.android.playbasissdk.model.PbPlayerId;
-import com.playbasis.android.playbasissdk.model.Rank;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -34,7 +33,7 @@ public class ActionConfigArrayAdapter extends TypeAdapter<ActionConfig> {
             in.beginObject();
             while (in.hasNext()) {
                 switch (in.nextName()) {
-                    case "name":
+                    case ApiConst.NAME:
                         actionConfigInstance.setName(in.nextString());
                         break;
                     case "config":
@@ -45,7 +44,7 @@ public class ActionConfigArrayAdapter extends TypeAdapter<ActionConfig> {
                             Config config = new Config();
                          //   while (in.hasNext()) {
 
-                                if (in.nextName().equals("url")) {
+                                if (in.nextName().equals(ApiConst.URL)) {
                                     config.setUrl(in.nextString());
                                 }
                        //     }
