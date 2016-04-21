@@ -27,6 +27,7 @@ import com.playbasis.android.playbasissdk.model.Reward;
 import com.playbasis.android.playbasissdk.model.ReferralCode;
 import com.playbasis.android.playbasissdk.model.Role;
 import com.playbasis.android.playbasissdk.model.SaleReport;
+import com.playbasis.android.playbasissdk.model.Session;
 import com.playbasis.android.playbasissdk.widget.AbstractPlayerView;
 import com.playbasis.android.playbasissdk.widget.PlayerView;
 
@@ -47,6 +48,8 @@ import java.util.List;
 public class PlayerApi extends Api{
     public static final String TAG = "PlayerApi";
     protected static final String LIST_PLAYER_ID = "list_player_id";
+    public static final String SESSIONS = "sessions";
+    public static final String SESSION_ID = "session_id";
 
     private static void getPlayer(@NonNull Playbasis playbasis, String uri, final OnResult<Player> listener) {
         JsonObjectGET(playbasis, uri, null, new OnResult<JSONObject>() {
@@ -647,6 +650,61 @@ public class PlayerApi extends Api{
                 }
             });
         }
+
+    }
+
+    /**
+     *  List active sessions of a player in Playbasis system.
+     * @param playbasis Playbasis object.
+     * @param playerId Id of the player.
+     * @param listener Callback interface.
+     */
+    public static void listActivePlayerSessions(@NonNull Playbasis playbasis, @NonNull String playerId,
+                              final OnResult<List<Session>> listener){
+        String uri = playbasis.getUrl() + SDKUtil._PLAYER_URL + playerId +"/"+ SESSIONS;
+
+        JsonArrayGET(playbasis, uri, null, new OnResult<JSONArray>() {
+            @Override
+            public void onSuccess(JSONArray result) {
+                List<Session> sessions = JsonHelper.FromJsonArray(result, Session.class);
+                if (listener != null) listener.onSuccess(sessions);
+            }
+
+            @Override
+            public void onError(HttpError error) {
+                if (listener != null) listener.onError(error);
+            }
+        });
+
+    }
+
+    /**
+     *  Find a player given session ID.
+     * @param playbasis Playbasis object.
+     * @param playerId Id of the player.
+     * @param listener Callback interface.
+     */
+    public static void findPlayerBySession(@NonNull Playbasis playbasis, @NonNull String playerId,
+                                                final OnResult<List<Player>> listener){
+        String uri = playbasis.getUrl() + SDKUtil._PLAYER_URL + playerId +"/"+ SESSION_ID;
+
+        JsonObjectGET(playbasis, uri, null, new OnResult<JSONObject>() {
+            @Override
+            public void onSuccess(JSONObject result) {
+                try {
+                    List<Player> players = JsonHelper.FromJsonArray(result.getJSONArray(SESSION_ID), Player.class);
+                    if (listener != null) listener.onSuccess(players);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    if (listener != null) listener.onError(new HttpError(e));
+                }
+            }
+
+            @Override
+            public void onError(HttpError error) {
+                if (listener != null) listener.onError(error);
+            }
+        });
 
     }
 
