@@ -12,6 +12,7 @@ import com.playbasis.android.playbasissdk.http.HttpError;
 import com.playbasis.android.playbasissdk.http.HttpsTrustManager;
 import com.playbasis.android.playbasissdk.http.PlayBasisLog;
 import com.playbasis.android.playbasissdk.http.Request;
+import com.playbasis.android.playbasissdk.http.RequestError;
 import com.playbasis.android.playbasissdk.http.Response;
 import com.playbasis.android.playbasissdk.http.toolbox.JSONObjectRequest;
 
@@ -50,6 +51,10 @@ public class AuthApi extends Api {
     }
     
     private static void request(final Playbasis playbasis, final String uri, final OnResult<AuthToken> listener){
+        if (!playbasis.isNetworkAvailable()) {
+            if (listener != null) listener.onError(new HttpError(RequestError.NoNetwork()));
+            return;
+        }
         HttpsTrustManager.allowAllSSL();
         JSONObjectRequest jsonObjReq = new JSONObjectRequest(Request.Method.POST,
                 uri, null,
