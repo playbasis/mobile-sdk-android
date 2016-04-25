@@ -33,7 +33,18 @@ public class StoredRequest {
 
     @Expose
     private Long timestamp;
-    
+
+    @Expose
+    private String mode;
+
+    public String getMode() {
+        return mode;
+    }
+
+    public void setMode(String mode) {
+        this.mode = mode;
+    }
+
     public String getUrl() {
         return url;
     }
@@ -134,6 +145,7 @@ public class StoredRequest {
         this.keyValuesBoddy = storedRequest.keyValuesBoddy;
         this.keyValuesHeader = storedRequest.keyValuesHeader;
         this.timestamp = storedRequest.timestamp;
+        this.mode = storedRequest.mode;
         return this;
     }
 

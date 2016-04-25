@@ -52,11 +52,11 @@ public abstract class Api {
      */
     protected static void JsonObjectGET(final Playbasis playbasis, final String uri, List<NameValuePair> params,
                                         final OnResult<JSONObject> listener) {
-        resendRequests(playbasis);
+        if (!playbasis.isNetworkAvailable()) {
+            if (listener != null) listener.onError(new HttpError(RequestError.NoNetwork()));
+            return;
+        } else resendRequests(playbasis);
         HttpsTrustManager.allowAllSSL();
-        
-        
-        
 
         //Add params to the request
         if (params == null) params = new ArrayList<>();
@@ -100,16 +100,33 @@ public abstract class Api {
     protected static void JsonObjectPOST(final Playbasis playbasis, final String uri,
                                          final List<NameValuePair> httpParams,
                                          final OnResult<JSONObject> listener) {
-        JsonObjectPOST(playbasis, uri, null, httpParams, listener);
+        JsonObjectPOST(playbasis, uri, null, httpParams, false, listener);
     }
-    
-    public static void JsonObjectPOST(final Playbasis playbasis, final String uri,
+
+    protected static void JsonObjectPOST(final Playbasis playbasis, final String uri,
                                          final Long timestamp,
                                          final List<NameValuePair> httpParams,
                                          final OnResult<JSONObject> listener) {
+        JsonObjectPOST(playbasis, uri, timestamp, httpParams, false, listener);
+    }
+
+    protected static void JsonObjectPOST(final Playbasis playbasis, final String uri,
+                                         final List<NameValuePair> httpParams,
+                                         final boolean enabledOffline,
+                                         final OnResult<JSONObject> listener) {
+        JsonObjectPOST(playbasis, uri, null, httpParams, enabledOffline, listener);
+    }
+
+    public static void JsonObjectPOST(final Playbasis playbasis, final String uri,
+                                         final Long timestamp,
+                                         final List<NameValuePair> httpParams,
+                                         final boolean enabledOffline,
+                                         final OnResult<JSONObject> listener) {
         if (!playbasis.isNetworkAvailable()) {
-            RequestStorage storage = new RequestStorage(playbasis.getContext());
-            storage.save(playbasis, uri, httpParams);
+            if (enabledOffline) {
+                RequestStorage storage = new RequestStorage(playbasis.getContext());
+                storage.save(playbasis, uri, httpParams, "object");
+            }
             if (listener != null) listener.onError(new HttpError(RequestError.NoNetwork()));
             return;
         } else resendRequests(playbasis);
@@ -138,7 +155,7 @@ public abstract class Api {
                         @Override
                         public void onSuccess(AuthToken result) {
                             renewCount++;
-                            JsonObjectPOST(playbasis, uri, timestamp, httpParams, listener);
+                            JsonObjectPOST(playbasis, uri, timestamp, httpParams, enabledOffline, listener);
                         }
 
                         @Override
@@ -197,7 +214,10 @@ public abstract class Api {
     protected static void JsonArrayGET(final Playbasis playbasis, String uri, List<NameValuePair> params,
                                        final OnResult<JSONArray>
                                                listener) {
-        resendRequests(playbasis);
+        if (!playbasis.isNetworkAvailable()) {
+            if (listener != null) listener.onError(new HttpError(RequestError.NoNetwork()));
+            return;
+        } else resendRequests(playbasis);
         HttpsTrustManager.allowAllSSL();
 
         //Add params to the request
@@ -237,16 +257,20 @@ public abstract class Api {
      * @param playbasis  Playbasic objecct.
      * @param uri        URL of the request.
      * @param httpParams Params of the request.
+     * @param  enabledOffline Enable offline mode or not.
      * @param listener   JSONArray Callback listener.
      */
     protected static void JsonArrayPOST(final Playbasis playbasis, final String uri,
                                         final List<NameValuePair> httpParams,
+                                        final boolean enabledOffline,
                                         final OnResult<JSONArray>
                                                 listener) {
 
         if (!playbasis.isNetworkAvailable()) {
-            RequestStorage storage = new RequestStorage(playbasis.getContext());
-            storage.save(playbasis, uri, httpParams);
+            if (enabledOffline) {
+                RequestStorage storage = new RequestStorage(playbasis.getContext());
+                storage.save(playbasis, uri, httpParams, "array");
+            }
             if (listener != null) listener.onError(new HttpError(RequestError.NoNetwork()));
             return;
         } else resendRequests(playbasis);
@@ -272,7 +296,7 @@ public abstract class Api {
                     authAuthenticator.requestRenewAuthToken(new OnResult<AuthToken>() {
                         @Override
                         public void onSuccess(AuthToken result) {
-                            JsonArrayPOST(playbasis, uri, httpParams, listener);
+                            JsonArrayPOST(playbasis, uri, httpParams, enabledOffline, listener);
                         }
 
                         @Override
@@ -311,6 +335,12 @@ public abstract class Api {
         playbasis.getHttpManager().addToRequestQueue(jsonArrReq);
     }
 
+    protected static void JsonArrayPOST(final Playbasis playbasis, final String uri,
+                                        final List<NameValuePair> httpParams,
+                                        final OnResult<JSONArray>
+                                                listener) {
+        JsonArrayPOST(playbasis, uri, httpParams, false, listener);
+    }
 
     /**
      * String GET super method.
@@ -480,18 +510,18 @@ public abstract class Api {
 /*                        if (request != null) asyncPost(playbasis, request.getUrl(), request.getTimestamp(),
                                 request.paramsToJson(),
                                 null);*/
-                        if (request !=null) JsonObjectPOST(playbasis, playbasis.getUrl() + request.getUrl(),
-                                request.getTimestamp(),
-                                request.paramsToValuePair(), 
-                                null);
+                        if (request !=null) {
+                            if (request.getMode() != null && request.getMode()  == "array") {
+                                JsonArrayPOST(playbasis, playbasis.getUrl() + request.getUrl(), request.paramsToValuePair(), true, null);
+                            } else {
+                                //Default is Object
+                                JsonObjectPOST(playbasis, playbasis.getUrl() + request.getUrl(), request.getTimestamp(), request.paramsToValuePair(), true, null);
+                            }
+                        }
                     }
                 }
                 isResendRunning = false;
             }
         }).start();
     }
-
-
-
-
 }

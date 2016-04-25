@@ -37,7 +37,7 @@ public class RequestError {
      * @return RequestError
      */
     public static RequestError NoNetwork(){
-        return new RequestError("No network available", ERROR_CODE.DEFAULT);
+        return new RequestError("No network available", ERROR_CODE.NO_NETWORK_ERROR);
         
     }
 
@@ -201,6 +201,10 @@ public class RequestError {
          *  Question has already been completed by the player
          */
         public int QUIZ_QUESTION_ALREADY_COMPLETED = 1004;
+        /**
+         *  Question has already been completed by the player
+         */
+        public int NO_NETWORK_ERROR = 1007;
         /**
          *  Uknown
          */

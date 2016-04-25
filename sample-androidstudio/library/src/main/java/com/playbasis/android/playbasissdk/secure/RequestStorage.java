@@ -62,6 +62,26 @@ public class RequestStorage {
         return write(storedRequest);
         
     }
+
+    /**
+     * Save the sync request into the local storage.
+     * @param playbasis Playbasis object.
+     * @param url Url of the request.
+     * @param param Param of the request.
+     * @return save success.
+     */
+    public Boolean save(Playbasis playbasis, String url, List<NameValuePair> param, String mode){
+        StoredRequest storedRequest = new StoredRequest()
+                .withUrl(StringHelper.removeFirstOccurrence(playbasis.getUrl(), url))
+                .withAsync(false)
+                .withKeyValueBody(keyValueParams(playbasis, param))
+                .withTimestamp(DateHelper.currentTimetamp())
+                .withKeyValueHeader(null);
+        storedRequest.setMode(mode);
+        return write(storedRequest);
+
+    }
+
     /**
      * Save the sync request into the local storage.
      * @param playbasis Playbasis object.
