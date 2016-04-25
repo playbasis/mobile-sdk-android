@@ -53,6 +53,14 @@ public class EngineApi extends Api {
             }
         });
     }
+
+    public static void rule(@NonNull final Playbasis playbasis, final boolean isAsync,
+                            @NonNull final String action, @NonNull final String playerId, final String url, final String reward,
+                            final String quantity, final String ruleId, final String nodeId, final String sessionId, boolean enabledOffline,
+                            final List<NameValuePair> customParams,  final OnResult<Rule> listener) {
+        ruleRequest(playbasis, isAsync, action, playerId, url, NTPdate.GetLocalDate(playbasis), reward, quantity, ruleId, nodeId, sessionId, enabledOffline, customParams,
+                listener);
+    }
     /**
      *  Process an action through all the game rules defined for a client’s website.
      * @param playbasis Playbasis object.
@@ -109,7 +117,7 @@ public class EngineApi extends Api {
                         NTPdate.GetNTPDate(playbasis, new NTPdate.OnDate() {
                             @Override
                             public void onDate(Long date) {
-                                ruleRequest(playbasis, isAsync, action, playerId, url, date, reward, quantity, ruleId, nodeId, sessionId, customParams,
+                                ruleRequest(playbasis, isAsync, action, playerId, url, date, reward, quantity, ruleId, nodeId, sessionId, false, customParams,
                                         listener);
                             }
 
@@ -132,15 +140,15 @@ public class EngineApi extends Api {
                     if (listener != null) listener.onError(error);
                 }
             });
-        }else{
-            ruleRequest(playbasis, isAsync, action, playerId, url, NTPdate.GetLocalDate(playbasis), reward, quantity, ruleId, nodeId, sessionId, customParams,
+        } else {
+            ruleRequest(playbasis, isAsync, action, playerId, url, NTPdate.GetLocalDate(playbasis), reward, quantity, ruleId, nodeId, sessionId, false, customParams,
                     listener);
         }
     }
 
     private static void ruleRequest(@NonNull Playbasis playbasis, boolean isAsync,
                             @NonNull String action, @NonNull String playerId, String url, Long dateTime, String reward,
-                            String quantity, String ruleId, String nodeId, String sessionId ,List<NameValuePair> customParams, final OnResult<Rule> listener){
+                            String quantity, String ruleId, String nodeId, String sessionId , boolean enableOffline, List<NameValuePair> customParams, final OnResult<Rule> listener){
 
         String endpoint = SDKUtil._ENGINE_URL + "rule";
         if(isAsync){
@@ -177,7 +185,7 @@ public class EngineApi extends Api {
             });
 
 
-        }else {
+        } else {
 
             String uri = playbasis.getUrl() + endpoint;
 
@@ -195,7 +203,7 @@ public class EngineApi extends Api {
                 params.add(customParam);
             }
 
-            JsonObjectPOST(playbasis, uri, dateTime, params, new OnResult<JSONObject>() {
+            JsonObjectPOST(playbasis, uri, dateTime, params, enableOffline, new OnResult<JSONObject>() {
                 @Override
                 public void onSuccess(JSONObject result) {
                     try {
