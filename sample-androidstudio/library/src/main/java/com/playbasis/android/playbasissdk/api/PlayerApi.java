@@ -50,6 +50,7 @@ public class PlayerApi extends Api{
     protected static final String LIST_PLAYER_ID = "list_player_id";
     public static final String SESSIONS = "sessions";
     public static final String SESSION_ID = "session_id";
+    public static final String SETUP_PHONE = "setupPhone";
 
     private static void getPlayer(@NonNull Playbasis playbasis, String uri, final OnResult<Player> listener) {
         JsonObjectGET(playbasis, uri, null, new OnResult<JSONObject>() {
@@ -675,7 +676,6 @@ public class PlayerApi extends Api{
                 if (listener != null) listener.onError(error);
             }
         });
-
     }
 
     /**
@@ -942,8 +942,6 @@ public class PlayerApi extends Api{
      */
     public static void claimBadge(@NonNull Playbasis playbasis, boolean isAsync, @NonNull String playerId,
                                  @NonNull String badgeId, final OnResult<Boolean> listener){
-        
-
         String endpoint =  SDKUtil._PLAYER_URL + playerId +"/"+ ApiConst.BADGE +"/" + badgeId +"/"+ ApiConst.CLAIM;
         if(isAsync){
 
@@ -982,7 +980,6 @@ public class PlayerApi extends Api{
                 }
             });
         }
-
     }
 
     /**
@@ -1573,6 +1570,39 @@ public class PlayerApi extends Api{
             }
         });
     }
+
+
+    private static void requestOtpForSetupPhone(@NonNull Playbasis playbasis, boolean isAsync,@NonNull String playerId, final OnResult<String> listener) {
+
+        String endpoint =  SDKUtil._PLAYER_URL + ApiConst.AUTH+"/" + playerId +"/"+ SETUP_PHONE;
+        String uri = playbasis.getUrl() + endpoint;
+
+        JsonObjectPOST(playbasis, uri, null, new OnResult<JSONObject>() {
+            @Override
+            public void onSuccess(JSONObject result) {
+                if (listener != null) {
+                    String otp = null;
+                    try {
+                        otp = result.getString(ApiConst.CODE);
+                    } catch (JSONException ex) {
+                        ex.printStackTrace();
+                    } finally {
+                        listener.onSuccess(otp);
+                    }
+                }
+            }
+
+            @Override
+            public void onError(HttpError error) {
+                error.printStackTrace();
+                if (error.getMessage() != null) {
+                    System.out.println(error.getMessage());
+                }
+                if (listener != null) listener.onError(error);
+            }
+        });
+    }
+
 
     public static void verifyOtp(@NonNull Playbasis playbasis,@NonNull String playerId,@NonNull String code, final OnResult<Boolean> listener) {
         verifyOtp(playbasis, false, playerId, code, listener);
