@@ -34,6 +34,15 @@ import java.util.Map;
  */
 public class QuizApi extends Api {
     public static final String TAG = "QuizApi";
+    public static final String RESULT = "result";
+    public static final String LIST = "list";
+    public static final String DETAIL = "detail";
+    public static final String RANDOM = "random";
+    public static final String PENDING = "pending";
+    public static final String QUESTION = "question";
+    public static final String QUESTION_ID = "question_id";
+    public static final String ANSWER = "answer";
+    public static final String OPTION_ID = "option_id";
 
     private static void quizzes(@NonNull Playbasis playbasis, @NonNull String uri, List<NameValuePair> params,
                                 final OnResult<List<Quiz>> listener) {
@@ -42,7 +51,7 @@ public class QuizApi extends Api {
             @Override
             public void onSuccess(JSONObject result) {
                 try {
-                    List<Quiz> quizzes = JsonHelper.FromJsonArray(result.getJSONArray("result"), Quiz.class);
+                    List<Quiz> quizzes = JsonHelper.FromJsonArray(result.getJSONArray(RESULT), Quiz.class);
                     if (listener != null) listener.onSuccess(quizzes);
                 } catch (JSONException e) {
                     if (listener != null) listener.onError(new HttpError(e));
@@ -64,8 +73,8 @@ public class QuizApi extends Api {
             public void onSuccess(JSONObject result) {
                 try {
                     Quiz quiz = new Quiz();
-                    if (!result.isNull("result")) {
-                        quiz = JsonHelper.FromJsonObject(result.getJSONObject("result"), Quiz.class);
+                    if (!result.isNull(RESULT)) {
+                        quiz = JsonHelper.FromJsonObject(result.getJSONObject(RESULT), Quiz.class);
                     }
                     if (listener != null) listener.onSuccess(quiz);
                 } catch (JSONException e) {
@@ -92,10 +101,10 @@ public class QuizApi extends Api {
     public static void activeList(@NonNull Playbasis playbasis, String playerId,
                                   final OnResult<List<Quiz>> listener) {
 
-        String uri = playbasis.getUrl() + SDKUtil._QUIZ_URL + "list";
+        String uri = playbasis.getUrl() + SDKUtil._QUIZ_URL + LIST;
 
         List<NameValuePair> params = new ArrayList<>();
-        if (playerId != null) params.add(new BasicNameValuePair("player_id", playerId));
+        if (playerId != null) params.add(new BasicNameValuePair(ApiConst.PLAYER_ID, playerId));
 
         quizzes(playbasis, uri, params, listener);
     }
@@ -111,17 +120,17 @@ public class QuizApi extends Api {
     public static void detail(@NonNull Playbasis playbasis, @NonNull String quizId, String playerId,
                               final OnResult<QuizDetail> listener) {
 
-        String uri = playbasis.getUrl() + SDKUtil._QUIZ_URL + quizId + "/detail";
+        String uri = playbasis.getUrl() + SDKUtil._QUIZ_URL + quizId +"/"+ DETAIL;
 
         List<NameValuePair> params = new ArrayList<>();
-        if (playerId != null) params.add(new BasicNameValuePair("player_id", playerId));
+        if (playerId != null) params.add(new BasicNameValuePair(ApiConst.PLAYER_ID, playerId));
 
 
         JsonObjectGET(playbasis, uri, params, new OnResult<JSONObject>() {
             @Override
             public void onSuccess(JSONObject result) {
                 try {
-                    QuizDetail quiz = JsonHelper.FromJsonObject(result.getJSONObject("result"), QuizDetail.class);
+                    QuizDetail quiz = JsonHelper.FromJsonObject(result.getJSONObject(RESULT), QuizDetail.class);
                     if (listener != null) listener.onSuccess(quiz);
                 } catch (JSONException e) {
                     if (listener != null) listener.onError(new HttpError(e));
@@ -146,10 +155,10 @@ public class QuizApi extends Api {
     public static void random(@NonNull Playbasis playbasis, @NonNull String playerId,
                               final OnResult<Quiz> listener) {
 
-        String uri = playbasis.getUrl() + SDKUtil._QUIZ_URL + "random";
+        String uri = playbasis.getUrl() + SDKUtil._QUIZ_URL + RANDOM;
 
         List<NameValuePair> params = new ArrayList<>();
-        params.add(new BasicNameValuePair("player_id", playerId));
+        params.add(new BasicNameValuePair(ApiConst.PLAYER_ID, playerId));
 
         quiz(playbasis, uri, params, listener);
     }
@@ -165,7 +174,7 @@ public class QuizApi extends Api {
     public static void recentDone(@NonNull Playbasis playbasis, @NonNull String playerId, Integer limit,
                                   final OnResult<List<Quiz>> listener) {
 
-        String uri = playbasis.getUrl() + SDKUtil._QUIZ_URL + "player/" + playerId + "/" + String.valueOf
+        String uri = playbasis.getUrl() + SDKUtil._QUIZ_URL + ApiConst.PLAYER +"/" + playerId +"/" + String.valueOf
                 (limit == null ? 5 : limit);
 
 
@@ -183,14 +192,14 @@ public class QuizApi extends Api {
     public static void recentPending(@NonNull Playbasis playbasis, @NonNull String playerId, Integer limit,
                                      final OnResult<List<QuizPending>> listener) {
 
-        String uri = playbasis.getUrl() + SDKUtil._QUIZ_URL + "player/" + playerId + "/pending/" + String
+        String uri = playbasis.getUrl() + SDKUtil._QUIZ_URL + ApiConst.PLAYER +"/" + playerId +"/"+ PENDING +"/" + String
                 .valueOf(limit == null ? 5 : limit);
 
         JsonObjectGET(playbasis, uri, null, new OnResult<JSONObject>() {
             @Override
             public void onSuccess(JSONObject result) {
                 try {
-                    List<QuizPending> quizzes = JsonHelper.FromJsonArray(result.getJSONArray("result"),
+                    List<QuizPending> quizzes = JsonHelper.FromJsonArray(result.getJSONArray(RESULT),
                             QuizPending.class);
                     if (listener != null) listener.onSuccess(quizzes);
                 } catch (JSONException e) {
@@ -216,14 +225,14 @@ public class QuizApi extends Api {
     public static void rank(@NonNull Playbasis playbasis, @NonNull String quizId, Integer limit,
                             final OnResult<List<QuizRank>> listener) {
 
-        String uri = playbasis.getUrl() + SDKUtil._QUIZ_URL + quizId + "/rank/" + String.valueOf(limit == null
+        String uri = playbasis.getUrl() + SDKUtil._QUIZ_URL + quizId +"/"+ ApiConst.RANK +"/" + String.valueOf(limit == null
                 ? 5 : limit);
 
         JsonObjectGET(playbasis, uri, null, new OnResult<JSONObject>() {
             @Override
             public void onSuccess(JSONObject result) {
                 try {
-                    List<QuizRank> quizRanks = JsonHelper.FromJsonArray(result.getJSONArray("result"), QuizRank.class);
+                    List<QuizRank> quizRanks = JsonHelper.FromJsonArray(result.getJSONArray(RESULT), QuizRank.class);
                     if (listener != null) listener.onSuccess(quizRanks);
                 } catch (JSONException e) {
                     if (listener != null) listener.onError(new HttpError(e));
@@ -249,10 +258,10 @@ public class QuizApi extends Api {
     public static void questions(@NonNull Playbasis playbasis, @NonNull String quizId, @NonNull String playerId,
                                  final OnResult<QuizQuestion> listener) {
 
-        String uri = playbasis.getUrl() + SDKUtil._QUIZ_URL + quizId + "/question";
+        String uri = playbasis.getUrl() + SDKUtil._QUIZ_URL + quizId +"/"+ QUESTION;
 
         List<NameValuePair> params = new ArrayList<>();
-        params.add(new BasicNameValuePair("player_id", playerId));
+        params.add(new BasicNameValuePair(ApiConst.PLAYER_ID, playerId));
 
         JsonObjectGET(playbasis, uri, params, new OnResult<JSONObject>() {
             @Override
@@ -262,8 +271,8 @@ public class QuizApi extends Api {
                 }else{
                     try {
                         QuizQuestion quizQuestion = null;
-                        if (!result.isNull("result")) {
-                            quizQuestion = JsonHelper.FromJsonObject(result.getJSONObject("result"),
+                        if (!result.isNull(RESULT)) {
+                            quizQuestion = JsonHelper.FromJsonObject(result.getJSONObject(RESULT),
                                     QuizQuestion.class);
                         }
                         if (listener != null) listener.onSuccess(quizQuestion);
@@ -288,11 +297,11 @@ public class QuizApi extends Api {
     public static void questions(@NonNull Playbasis playbasis, @NonNull String quizId, @NonNull String playerId, 
                                  String questionId, final OnResult<QuizQuestion> listener) {
 
-        String uri = playbasis.getUrl() + SDKUtil._QUIZ_URL + quizId + "/question";
+        String uri = playbasis.getUrl() + SDKUtil._QUIZ_URL + quizId +"/"+ QUESTION;
 
         List<NameValuePair> params = new ArrayList<>();
-        params.add(new BasicNameValuePair("player_id", playerId));
-        params.add(new BasicNameValuePair("question_id", questionId));
+        params.add(new BasicNameValuePair(ApiConst.PLAYER_ID, playerId));
+        params.add(new BasicNameValuePair(QUESTION_ID, questionId));
 
         JsonObjectGET(playbasis, uri, params, new OnResult<JSONObject>() {
             @Override
@@ -302,8 +311,8 @@ public class QuizApi extends Api {
                 }else{
                     try {
                         QuizQuestion quizQuestion = null;
-                        if (!result.isNull("result")) {
-                            quizQuestion = JsonHelper.FromJsonObject(result.getJSONObject("result"),
+                        if (!result.isNull(RESULT)) {
+                            quizQuestion = JsonHelper.FromJsonObject(result.getJSONObject(RESULT),
                                     QuizQuestion.class);
                         }
                         if (listener != null) listener.onSuccess(quizQuestion);
@@ -352,15 +361,15 @@ public class QuizApi extends Api {
                                       @NonNull String quizId, @NonNull String playerId, @NonNull String questionId,
                                       @NonNull String optionId, final OnResult<QuizQuestionAnswer> listener) {
 
-        String endpoint = SDKUtil._QUIZ_URL + quizId + "/answer";
+        String endpoint = SDKUtil._QUIZ_URL + quizId +"/"+ ANSWER;
         if (isAsync) {
 
             JSONObject jsonObject = null;
             try {
                 jsonObject = JsonHelper.newJsonWithToken(playbasis.getAuthenticator());
-                jsonObject.put("player_id", playerId);
-                jsonObject.put("question_id", questionId);
-                jsonObject.put("option_id", optionId);
+                jsonObject.put(ApiConst.PLAYER_ID, playerId);
+                jsonObject.put(QUESTION_ID, questionId);
+                jsonObject.put(OPTION_ID, optionId);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -382,15 +391,15 @@ public class QuizApi extends Api {
             String uri = playbasis.getUrl() + endpoint;
 
             List<NameValuePair> params = new ArrayList<>();
-            params.add(new BasicNameValuePair("player_id", playerId));
-            params.add(new BasicNameValuePair("question_id", questionId));
-            params.add(new BasicNameValuePair("option_id", optionId));
+            params.add(new BasicNameValuePair(ApiConst.PLAYER_ID, playerId));
+            params.add(new BasicNameValuePair(QUESTION_ID, questionId));
+            params.add(new BasicNameValuePair(OPTION_ID, optionId));
 
             JsonObjectPOST(playbasis, uri, params, new OnResult<JSONObject>() {
                 @Override
                 public void onSuccess(JSONObject result) {
                     try {
-                        QuizQuestionAnswer quizQuestionAnswer = JsonHelper.FromJsonObject(result.getJSONObject("result"), QuizQuestionAnswer.class);
+                        QuizQuestionAnswer quizQuestionAnswer = JsonHelper.FromJsonObject(result.getJSONObject(RESULT), QuizQuestionAnswer.class);
                         if (listener != null) listener.onSuccess(quizQuestionAnswer);
                     } catch (JSONException e) {
                         if (listener != null) listener.onError(new HttpError(e));

@@ -2,6 +2,7 @@ package com.playbasis.android.playbasissdk.model;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.playbasis.android.playbasissdk.api.ApiConst;
 import com.playbasis.android.playbasissdk.helper.JsonHelper;
 
 import org.json.JSONException;
@@ -204,10 +205,10 @@ public class Event {
 
         if (jsonObject.has("reward_data")) {
             JSONObject data =  jsonObject.getJSONObject("reward_data");
-            if (jsonObject.getString("reward_type").equals("badge")) {
+            if (jsonObject.getString("reward_type").equals(ApiConst.BADGE)) {
                 event.setBadgeData(JsonHelper.FromJsonObject(data, BadgeData.class));
             }
-            if (jsonObject.getString("reward_type").equals("goods")) {
+            if (jsonObject.getString("reward_type").equals(ApiConst.GOODS)) {
                 event.setGood(JsonHelper.FromJsonObject(data, Goods.class));
             }
         }

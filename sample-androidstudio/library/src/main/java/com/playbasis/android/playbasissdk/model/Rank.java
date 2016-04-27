@@ -2,6 +2,7 @@ package com.playbasis.android.playbasissdk.model;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.playbasis.android.playbasissdk.api.ApiConst;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,7 +18,7 @@ public class Rank {
         @SerializedName("pb_player_id")
         @Expose
         private PbPlayerId pbPlayerId;
-        @SerializedName("player_id")
+        @SerializedName(ApiConst.PLAYER_ID)
         @Expose
         private String playerId;
         @Expose

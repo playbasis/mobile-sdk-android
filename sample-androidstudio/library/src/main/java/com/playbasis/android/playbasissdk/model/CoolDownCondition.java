@@ -2,6 +2,7 @@ package com.playbasis.android.playbasissdk.model;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.playbasis.android.playbasissdk.api.ApiConst;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -26,10 +27,10 @@ public class CoolDownCondition extends Condition {
     public static CoolDownCondition parseCoolDownCondition(JSONObject conditionJSON) throws JSONException {
         CoolDownCondition coolDownCondition = new CoolDownCondition();
 
-        coolDownCondition.setName(conditionJSON.getString("name"));
-        coolDownCondition.setCategory(conditionJSON.getString("category"));
+        coolDownCondition.setName(conditionJSON.getString(ApiConst.NAME));
+        coolDownCondition.setCategory(conditionJSON.getString(ApiConst.CATEGORY));
         coolDownCondition.setDescription(conditionJSON.getString("description"));
-        coolDownCondition.setId(conditionJSON.getString("id"));
+        coolDownCondition.setId(conditionJSON.getString(ApiConst.ID));
         coolDownCondition.setSortOrder(conditionJSON.getInt("sort_order"));
         coolDownCondition.setCoolDown(conditionJSON.getJSONObject("config").getInt("cooldown"));
 

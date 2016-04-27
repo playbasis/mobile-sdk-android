@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.playbasis.android.playbasissdk.api.ApiConst;
 import com.playbasis.android.playbasissdk.helper.JsonHelper;
 
 import org.json.JSONException;
@@ -58,10 +59,10 @@ public class WeeklyCondition extends Condition {
     public static WeeklyCondition parseWeeklyCondition(JSONObject conditionJSON) throws JSONException {
         WeeklyCondition weeklyCondition = new WeeklyCondition();
 
-        weeklyCondition.setName(conditionJSON.getString("name"));
-        weeklyCondition.setCategory(conditionJSON.getString("category"));
+        weeklyCondition.setName(conditionJSON.getString(ApiConst.NAME));
+        weeklyCondition.setCategory(conditionJSON.getString(ApiConst.CATEGORY));
         weeklyCondition.setDescription(conditionJSON.getString("description"));
-        weeklyCondition.setId(conditionJSON.getString("id"));
+        weeklyCondition.setId(conditionJSON.getString(ApiConst.ID));
         weeklyCondition.setSortOrder(conditionJSON.getInt("sort_order"));
         if (!conditionJSON.isNull("state")) {
             StateWeeklyCondition stateWeeklyCondition  = JsonHelper.FromJsonObject(conditionJSON.getJSONObject("state").getJSONObject("input"), StateWeeklyCondition.class);

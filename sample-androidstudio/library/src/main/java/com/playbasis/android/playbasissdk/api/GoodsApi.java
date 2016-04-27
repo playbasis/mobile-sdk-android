@@ -6,9 +6,7 @@ import android.support.annotation.Nullable;
 import com.playbasis.android.playbasissdk.core.Playbasis;
 import com.playbasis.android.playbasissdk.core.SDKUtil;
 import com.playbasis.android.playbasissdk.helper.JsonHelper;
-import com.playbasis.android.playbasissdk.helper.StringHelper;
 import com.playbasis.android.playbasissdk.http.HttpError;
-import com.playbasis.android.playbasissdk.model.Badge;
 import com.playbasis.android.playbasissdk.model.Goods;
 
 import org.apache.http.NameValuePair;
@@ -25,6 +23,7 @@ import java.util.List;
  */
 public class GoodsApi extends Api {
     public static final String TAG = "GoodApi";
+    public static final String GOODS_LIST = "goods_list";
 
     /**
      * Returns information about all available goods for the current site.
@@ -36,13 +35,13 @@ public class GoodsApi extends Api {
 
         List<NameValuePair> params = new ArrayList<>();
         if (playerId != null) {
-            params.add(new BasicNameValuePair("player_id", playerId));
+            params.add(new BasicNameValuePair(ApiConst.PLAYER_ID, playerId));
         }
         JsonObjectGET(playbasis, uri, params, new OnResult<JSONObject>() {
             @Override
             public void onSuccess(JSONObject result) {
                 try {
-                    List<Goods> goodses = JsonHelper.FromJsonArray(result.getJSONArray("goods_list"), Goods.class);
+                    List<Goods> goodses = JsonHelper.FromJsonArray(result.getJSONArray(GOODS_LIST), Goods.class);
                     if (listener != null) listener.onSuccess(goodses);
                 } catch (JSONException e) {
                     if (listener != null) listener.onError(new HttpError(e));
@@ -68,13 +67,13 @@ public class GoodsApi extends Api {
 
         List<NameValuePair> params = new ArrayList<>();
         if (playerId != null) {
-            params.add(new BasicNameValuePair("player_id", playerId));
+            params.add(new BasicNameValuePair(ApiConst.PLAYER_ID, playerId));
         }
         JsonObjectGET(playbasis, uri, params, new OnResult<JSONObject>() {
             @Override
             public void onSuccess(JSONObject result) {
                 try {
-                    Goods goods = JsonHelper.FromJsonObject(result.getJSONObject("goods"), Goods.class);
+                    Goods goods = JsonHelper.FromJsonObject(result.getJSONObject(ApiConst.GOODS), Goods.class);
                     if (listener != null) listener.onSuccess(goods);
                 } catch (JSONException e) {
                     if (listener != null) listener.onError(new HttpError(e));
@@ -101,9 +100,9 @@ public class GoodsApi extends Api {
         String uri = playbasis.getUrl() + SDKUtil.GOOD_GROUP_URL;
         
         List<NameValuePair> params = new ArrayList<>();
-        params.add(new BasicNameValuePair("player_id", playerId));
-        params.add(new BasicNameValuePair("group", group));
-        if(amount!=null) params.add(new BasicNameValuePair("amount", String.valueOf(amount)));
+        params.add(new BasicNameValuePair(ApiConst.PLAYER_ID, playerId));
+        params.add(new BasicNameValuePair(ApiConst.GROUP, group));
+        if(amount!=null) params.add(new BasicNameValuePair(ApiConst.AMOUNT, String.valueOf(amount)));
 
         StringGET(playbasis, uri, params, new OnResult<String>() {
             @Override

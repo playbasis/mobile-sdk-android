@@ -7,7 +7,6 @@ import com.playbasis.android.playbasissdk.core.Playbasis;
 import com.playbasis.android.playbasissdk.helper.JsonHelper;
 import com.playbasis.android.playbasissdk.http.HttpError;
 import com.playbasis.android.playbasissdk.model.Content;
-import com.playbasis.android.playbasissdk.model.Node;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
@@ -23,20 +22,24 @@ import java.util.List;
  */
 public class ContentApi extends Api {
     public static final String TAG = "ContentApi";
+    public static final String FULL_HTML = "full_html";
+    public static final String SORT = "sort";
+    public static final String TITLE = "title";
 
     public static void retrieveContent(@NonNull Playbasis playbasis, String id, String title, String category, String date_check, String sort, String order,
                                  Integer offset, Integer limit, @Nullable Boolean fullHtml,final OnResult<ArrayList<Content>> listener) {
-        String uri = playbasis.getUrl() + "/Content";
+        String uri = playbasis.getUrl() +"/"+"Content";
         List<NameValuePair> params = new ArrayList<>();
-        if (id != null) params.add(new BasicNameValuePair("id",id));
-        if (title != null) params.add(new BasicNameValuePair("title",title));
-        if (category != null) params.add(new BasicNameValuePair("category",category));
-        if (date_check != null) params.add(new BasicNameValuePair("search",date_check));
-        if (sort != null) params.add(new BasicNameValuePair("sort",sort));
-        if (order != null) params.add(new BasicNameValuePair("order",order));
-        if (offset != null) params.add(new BasicNameValuePair("offset", String.valueOf(offset)));
-        if (limit != null) params.add(new BasicNameValuePair("limit",String.valueOf(limit)));
-        if (fullHtml != null) params.add(new BasicNameValuePair("full_html",String.valueOf(fullHtml)));
+        if (id != null) params.add(new BasicNameValuePair(
+                ApiConst.ID,id));
+        if (title != null) params.add(new BasicNameValuePair(TITLE,title));
+        if (category != null) params.add(new BasicNameValuePair(ApiConst.CATEGORY,category));
+        if (date_check != null) params.add(new BasicNameValuePair(ApiConst.SEARCH,date_check));
+        if (sort != null) params.add(new BasicNameValuePair(SORT,sort));
+        if (order != null) params.add(new BasicNameValuePair(ApiConst.ORDER,order));
+        if (offset != null) params.add(new BasicNameValuePair(ApiConst.OFFSET, String.valueOf(offset)));
+        if (limit != null) params.add(new BasicNameValuePair(ApiConst.LIMIT,String.valueOf(limit)));
+        if (fullHtml != null) params.add(new BasicNameValuePair(FULL_HTML,String.valueOf(fullHtml)));
 
         JsonObjectGET(playbasis, uri, params, new OnResult<JSONObject>() {
             @Override

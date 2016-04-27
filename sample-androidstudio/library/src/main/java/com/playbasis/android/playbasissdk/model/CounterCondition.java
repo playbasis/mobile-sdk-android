@@ -1,18 +1,11 @@
 package com.playbasis.android.playbasissdk.model;
 
-import android.util.Log;
-
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.playbasis.android.playbasissdk.api.ApiConst;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
 
 /**
  * Created by TorIsHere on 10/20/2015 AD.
@@ -69,10 +62,10 @@ public class CounterCondition extends Condition {
     public static CounterCondition parseCounterCondition(JSONObject conditionJSON) throws JSONException {
         CounterCondition counterCondition = new CounterCondition();
 
-        counterCondition.setName(conditionJSON.getString("name"));
-        counterCondition.setCategory(conditionJSON.getString("category"));
+        counterCondition.setName(conditionJSON.getString(ApiConst.NAME));
+        counterCondition.setCategory(conditionJSON.getString(ApiConst.CATEGORY));
         counterCondition.setDescription(conditionJSON.getString("description"));
-        counterCondition.setId(conditionJSON.getString("id"));
+        counterCondition.setId(conditionJSON.getString(ApiConst.ID));
         counterCondition.setSortOrder(conditionJSON.getInt("sort_order"));
 
         JSONObject configJSONObject = conditionJSON.getJSONObject("config");

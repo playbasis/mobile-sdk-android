@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.playbasis.android.playbasissdk.api.ApiConst;
 import com.playbasis.android.playbasissdk.api.OnResult;
 import com.playbasis.android.playbasissdk.http.HttpError;
 import com.playbasis.android.playbasissdk.http.toolbox.NetworkImageView;
@@ -154,11 +155,11 @@ public class QuestAdapter  extends BaseAdapter {
             Mission mission = result.getMissions().get(0); // Get first mission
             for (Event event : mission.getEvents()) {
                 // set point on the rewardFragment if the reward have points
-                if (event.getRewardType().equals("point")) {
+                if (event.getRewardType().equals(ApiConst.POINT)) {
                     rewardWidget.setPoints(event.getValue());
                 }
                 // set badge on the rewardFragment if the reward have badge
-                else if (event.getRewardType().equals("badge")) {
+                else if (event.getRewardType().equals(ApiConst.BADGE)) {
                     rewardWidget.setBadge(event.getBadgeData());
                 }
             }

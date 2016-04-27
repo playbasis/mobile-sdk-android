@@ -3,9 +3,7 @@ package com.playbasis.android.playbasissdk.parser;
 import com.google.gson.TypeAdapter;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
-import com.playbasis.android.playbasissdk.model.Config;
-import com.playbasis.android.playbasissdk.model.PbPlayerId;
-import com.playbasis.android.playbasissdk.model.Rank;
+import com.playbasis.android.playbasissdk.api.ApiConst;
 import com.playbasis.android.playbasissdk.model.RedeemEvent;
 import com.playbasis.android.playbasissdk.model.TokenValue;
 
@@ -32,7 +30,7 @@ public class RendeemEventArrayAdapter extends TypeAdapter<RedeemEvent> {
         while (in.hasNext()) {
             String jsonTag = in.nextName();
             switch (jsonTag){
-                case "message":
+                case ApiConst.MESSAGE:
                     eventInstance.setMessage(in.nextString());
                     break;
                 case "event_type":

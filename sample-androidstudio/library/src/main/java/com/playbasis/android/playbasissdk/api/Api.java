@@ -37,6 +37,8 @@ import java.util.Map;
  */
 public abstract class Api {
     public static final String TAG = "Api";
+    protected static final String API_KEY = "api_key";
+    protected static final String RESPONSE_IS_NULL = "Response is null";
     private static Boolean isResendRunning = false;
     
     private static int renewCount = 0;
@@ -54,13 +56,10 @@ public abstract class Api {
                                         final OnResult<JSONObject> listener) {
         resendRequests(playbasis);
         HttpsTrustManager.allowAllSSL();
-        
-        
-        
 
         //Add params to the request
         if (params == null) params = new ArrayList<>();
-        params.add(new BasicNameValuePair("api_key", playbasis.getKeyStore().getApiKey()));
+        params.add(new BasicNameValuePair(API_KEY, playbasis.getKeyStore().getApiKey()));
 
         JSONObjectRequest jsonObjReq = new JSONObjectRequest(Request.Method.GET,
                 ParamsHelper.addParams(uri, params), null,
@@ -68,7 +67,7 @@ public abstract class Api {
 
                     @Override
                     public void onResponse(JSONObject response) {
-                        PlayBasisLog.v(TAG, response != null ? response.toString() : "Response is null");
+                        PlayBasisLog.v(TAG, response != null ? response.toString() : RESPONSE_IS_NULL);
                         if (listener != null) listener.onSuccess(response);
                     }
                 }, new Response.ErrorListener() {
@@ -122,7 +121,7 @@ public abstract class Api {
                     @Override
                     public void onResponse(JSONObject response) {
                         renewCount = 0;
-                        PlayBasisLog.v(TAG, response != null ? response.toString() : "Response is null");
+                        PlayBasisLog.v(TAG, response != null ? response.toString() : RESPONSE_IS_NULL);
                         if (listener != null) listener.onSuccess(response);
                     }
                 }, new Response.ErrorListener() {
@@ -160,7 +159,7 @@ public abstract class Api {
             protected Map<String, String> getParams() throws AuthFailureError {
 
                 Map<String, String> params = new Hashtable<>();
-                params.put("api_key", playbasis.getKeyStore().getApiKey());
+                params.put(API_KEY, playbasis.getKeyStore().getApiKey());
                 params.put("token", playbasis.getAuthenticator().getToken());
                 if (httpParams != null) {
                     for (NameValuePair pair : httpParams) {
@@ -202,7 +201,7 @@ public abstract class Api {
 
         //Add params to the request
         if (params == null) params = new ArrayList<>();
-        params.add(new BasicNameValuePair("api_key", playbasis.getKeyStore().getApiKey()));
+        params.add(new BasicNameValuePair(API_KEY, playbasis.getKeyStore().getApiKey()));
 
         final JSONArrayRequest jsonObjReq = new JSONArrayRequest(Request.Method.GET,
                 ParamsHelper.addParams(uri, params), null,
@@ -258,7 +257,7 @@ public abstract class Api {
 
                     @Override
                     public void onResponse(JSONArray response) {
-                        PlayBasisLog.v(TAG, response != null ? response.toString() : "Response is null");
+                        PlayBasisLog.v(TAG, response != null ? response.toString() : RESPONSE_IS_NULL);
                         if (listener != null) listener.onSuccess(response);
                     }
                 }, new Response.ErrorListener() {
@@ -291,7 +290,7 @@ public abstract class Api {
             protected Map<String, String> getParams() throws AuthFailureError {
 
                 Map<String, String> params = new Hashtable<>();
-                params.put("api_key", playbasis.getKeyStore().getApiKey());
+                params.put(API_KEY, playbasis.getKeyStore().getApiKey());
                 params.put("token", playbasis.getAuthenticator().getToken());
                 if (httpParams != null) {
                     for (NameValuePair pair : httpParams) {
@@ -327,14 +326,14 @@ public abstract class Api {
         HttpsTrustManager.allowAllSSL();
         //Add params to the request
         if (params == null) params = new ArrayList<>();
-        params.add(new BasicNameValuePair("api_key", playbasis.getKeyStore().getApiKey()));
+        params.add(new BasicNameValuePair(API_KEY, playbasis.getKeyStore().getApiKey()));
 
         StringRequest stringRequest = new StringRequest(Request.Method.GET,
                 ParamsHelper.addParams(uri, params), new Response.Listener<String>() {
 
             @Override
             public void onResponse(String response) {
-                PlayBasisLog.v(TAG, response != null ? response : "Response is null");
+                PlayBasisLog.v(TAG, response != null ? response : RESPONSE_IS_NULL);
                 if (listener != null) listener.onSuccess(response);
             }
         }, new Response.ErrorListener() {
@@ -416,7 +415,7 @@ public abstract class Api {
                     @Override
                     public void onResponse(String response) {
                         renewCount = 0;
-                        PlayBasisLog.v(TAG, response != null ? response : "Response is null");
+                        PlayBasisLog.v(TAG, response != null ? response : RESPONSE_IS_NULL);
                         if (listener != null) listener.onSuccess(response);
                     }
                 },

@@ -25,6 +25,9 @@ import java.util.List;
  */
 public class EngineApi extends Api {
     public static final String TAG = "EngineApi";
+    public static final String RULE = "rule";
+    public static final String RULE_ID = "rule_id";
+    public static final String ACTION_CONFIG = "actionConfig";
 
 
     /**
@@ -33,7 +36,7 @@ public class EngineApi extends Api {
      * @param listener Callback interface.
      */
     public static void actionConfig(@NonNull Playbasis playbasis, final OnResult<List<ActionConfig>> listener) {
-        String uri = playbasis.getUrl() + SDKUtil._ENGINE_URL + "actionConfig";
+        String uri = playbasis.getUrl() + SDKUtil._ENGINE_URL + ACTION_CONFIG;
 
         JsonObjectGET(playbasis, uri, null, new OnResult<JSONObject>() {
             @Override
@@ -121,7 +124,7 @@ public class EngineApi extends Api {
 
                     } else {
                         if (listener != null)
-                            listener.onError(new HttpError(new RequestError("update player fail",
+                            listener.onError(new HttpError(new RequestError(CommunicationApi.UPDATE_PLAYER_FAIL,
                                     RequestError.ERROR_CODE.DEFAULT)));
                     }
 
@@ -142,20 +145,20 @@ public class EngineApi extends Api {
                             @NonNull String action, @NonNull String playerId, String url, Long dateTime, String reward,
                             String quantity, String ruleId, String nodeId, String sessionId ,List<NameValuePair> customParams, final OnResult<Rule> listener){
 
-        String endpoint = SDKUtil._ENGINE_URL + "rule";
+        String endpoint = SDKUtil._ENGINE_URL + RULE;
         if(isAsync){
 
             JSONObject jsonObject = null;
             try {
                 jsonObject = JsonHelper.newJsonWithToken(playbasis.getAuthenticator());
-                jsonObject.put("player_id", playerId);
-                jsonObject.put("action", action);
-                if(url!=null) jsonObject.put("url", url);
-                if(reward!=null) jsonObject.put("reward", reward);
-                if(quantity!=null) jsonObject.put("quantity", quantity);
-                if(ruleId!=null) jsonObject.put("rule_id", ruleId);
-                if(nodeId!=null) jsonObject.put("node_id", nodeId);
-                if(sessionId!=null) jsonObject.put("session_id", sessionId);
+                jsonObject.put(ApiConst.PLAYER_ID, playerId);
+                jsonObject.put(ApiConst.ACTION, action);
+                if(url!=null) jsonObject.put(ApiConst.URL, url);
+                if(reward!=null) jsonObject.put(ApiConst.REWARD, reward);
+                if(quantity!=null) jsonObject.put(ApiConst.QUANTITY, quantity);
+                if(ruleId!=null) jsonObject.put(RULE_ID, ruleId);
+                if(nodeId!=null) jsonObject.put(ApiConst.NODE_ID, nodeId);
+                if(sessionId!=null) jsonObject.put(ApiConst.SESSION_ID, sessionId);
 
                 if (customParams != null) for (NameValuePair customParam : customParams ){
                     jsonObject.put(customParam.getName(), customParam.getValue());
@@ -182,14 +185,14 @@ public class EngineApi extends Api {
             String uri = playbasis.getUrl() + endpoint;
 
             List<NameValuePair> params = new ArrayList<>();
-            params.add(new BasicNameValuePair("player_id", playerId));
-            params.add(new BasicNameValuePair("action", action));
-            if (url != null) params.add(new BasicNameValuePair("url", url));
-            if (reward != null) params.add(new BasicNameValuePair("reward", reward));
-            if (quantity != null) params.add(new BasicNameValuePair("quantity", quantity));
-            if (ruleId != null) params.add(new BasicNameValuePair("rule_id", ruleId));
-            if (nodeId != null) params.add(new BasicNameValuePair("node_id", nodeId));
-            if (sessionId != null) params.add(new BasicNameValuePair("session_id", sessionId));
+            params.add(new BasicNameValuePair(ApiConst.PLAYER_ID, playerId));
+            params.add(new BasicNameValuePair(ApiConst.ACTION, action));
+            if (url != null) params.add(new BasicNameValuePair(ApiConst.URL, url));
+            if (reward != null) params.add(new BasicNameValuePair(ApiConst.REWARD, reward));
+            if (quantity != null) params.add(new BasicNameValuePair(ApiConst.QUANTITY, quantity));
+            if (ruleId != null) params.add(new BasicNameValuePair(RULE_ID, ruleId));
+            if (nodeId != null) params.add(new BasicNameValuePair(ApiConst.NODE_ID, nodeId));
+            if (sessionId != null) params.add(new BasicNameValuePair(ApiConst.SESSION_ID, sessionId));
 
             if (customParams != null) for (NameValuePair customParam : customParams ){
                 params.add(customParam);
@@ -205,7 +208,6 @@ public class EngineApi extends Api {
                         e.printStackTrace();
                         if(listener != null) listener.onError(new HttpError(e));
                     }
-
                 }
 
                 @Override
@@ -243,10 +245,10 @@ public class EngineApi extends Api {
     }
 
     private static void ruleDetailRequest(@NonNull final Playbasis playbasis,@NonNull final String ruleId, String playerId, Long dateTime, final OnResult<RuleDetail> listener) {
-        String uri = playbasis.getUrl() + SDKUtil._ENGINE_URL + "/rule/" + ruleId;
+        String uri = playbasis.getUrl() + SDKUtil._ENGINE_URL +"/"+ RULE +"/" + ruleId;
 
         List<NameValuePair> params = new ArrayList<>();
-        if (playerId != null) params.add(new BasicNameValuePair("player_id",playerId));
+        if (playerId != null) params.add(new BasicNameValuePair(ApiConst.PLAYER_ID,playerId));
 
         JsonObjectGET(playbasis, uri, params, new OnResult<JSONObject>() {
             @Override

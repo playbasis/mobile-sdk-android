@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.playbasis.android.playbasissdk.api.ApiConst;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -46,10 +47,10 @@ public class BetweenCondition extends Condition{
     public static BetweenCondition parseBetweenCondition(JSONObject conditionJSON) throws JSONException {
         BetweenCondition betweenCondition = new BetweenCondition();
 
-        betweenCondition.setName(conditionJSON.getString("name"));
-        betweenCondition.setCategory(conditionJSON.getString("category"));
+        betweenCondition.setName(conditionJSON.getString(ApiConst.NAME));
+        betweenCondition.setCategory(conditionJSON.getString(ApiConst.CATEGORY));
         betweenCondition.setDescription(conditionJSON.getString("description"));
-        betweenCondition.setId(conditionJSON.getString("id"));
+        betweenCondition.setId(conditionJSON.getString(ApiConst.ID));
         betweenCondition.setSortOrder(conditionJSON.getInt("sort_order"));
 
         try {

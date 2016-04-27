@@ -13,6 +13,7 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.playbasis.android.playbasissdk.api.ApiConst;
 import com.playbasis.android.playbasissdk.api.BadgeApi;
 import com.playbasis.android.playbasissdk.api.OnResult;
 import com.playbasis.android.playbasissdk.http.HttpError;
@@ -55,7 +56,7 @@ public class BadgeActivity extends FragmentActivity {
                         if(result.getEvents().size() > 0){
                             BadgeWidget badgeWidget = new BadgeWidget();
                             badgeWidget.setBadge(result.getEvents().get(0).getBadgeData());
-                            badgeWidget.show(getSupportFragmentManager(), "fragment_player_info");
+                            badgeWidget.show(getSupportFragmentManager(), ApiConst.FRAGMENT_PLAYER_INFO);
                         }else{
                             Toast.makeText(BadgeActivity.this, "No badge receive", Toast.LENGTH_SHORT).show();
                         }

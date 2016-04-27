@@ -1,7 +1,7 @@
 package com.playbasis.android.playbasissdk.model;
 
 import com.google.gson.annotations.Expose;
-import com.playbasis.android.playbasissdk.helper.JsonHelper;
+import com.playbasis.android.playbasissdk.api.ApiConst;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -29,10 +29,10 @@ public class RedeemCondition extends Condition {
     public static RedeemCondition parseRedeemCondition(JSONObject conditionJSON) throws JSONException {
         RedeemCondition redeemCondition = new RedeemCondition();
 
-        redeemCondition.setName(conditionJSON.getString("name"));
-        redeemCondition.setCategory(conditionJSON.getString("category"));
+        redeemCondition.setName(conditionJSON.getString(ApiConst.NAME));
+        redeemCondition.setCategory(conditionJSON.getString(ApiConst.CATEGORY));
         redeemCondition.setDescription(conditionJSON.getString("description"));
-        redeemCondition.setId(conditionJSON.getString("id"));
+        redeemCondition.setId(conditionJSON.getString(ApiConst.ID));
         redeemCondition.setSortOrder(conditionJSON.getInt("sort_order"));
 
         JSONArray rewardJSONArray = conditionJSON.getJSONObject("config").getJSONArray("group_container");
