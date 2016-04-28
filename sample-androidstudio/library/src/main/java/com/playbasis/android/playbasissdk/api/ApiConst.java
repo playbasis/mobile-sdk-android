@@ -77,6 +77,11 @@ public class ApiConst {
     public static final String QUANTITY = "quantity";
     public static final String GROUP = "group";
     public static final String EVENTS = "events";
+    public static final String DEVICE_TOKEN = "device_token";
+    public static final String DEVICE_DESCRIPTION = "device_description";
+    public static final String DEVICE_NAME = "device_name";
+    public static final String OS_TYPE = "os_type";
+    public static final String DEVICE_REGISTRATION = "deviceRegistration";
 
     class JsonObj{
 
