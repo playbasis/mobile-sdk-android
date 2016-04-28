@@ -127,7 +127,7 @@ public class PlayerApi extends Api{
             }
         });
     }
-
+    
     private static void getAction(@NonNull Playbasis playbasis, @NonNull String uri, final OnResult<Action> listener) {
         JsonObjectGET(playbasis, uri, null, new OnResult<JSONObject>() {
             @Override
