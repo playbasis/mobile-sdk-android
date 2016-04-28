@@ -72,6 +72,19 @@ public class PlayerApi extends Api{
         });
     }
 
+    /**
+     *  Verify player email that store in Playbasis system.
+     * @param playbasis Playbasis object.
+     * @param playerId Id of the player.
+     * @param listener Callback interface.
+     */
+
+    public static void verifyPlayerEmail(@NonNull Playbasis playbasis, @NonNull String playerId,
+                                                 final OnResult<Player> listener){
+        String uri = playbasis.getUrl() + SDKUtil._PLAYER_URL + playerId +"/"+"email/verify";
+        getPlayerPrivate(playbasis, uri, listener);
+    }
+
     private static void getPlayerPrivate(@NonNull Playbasis playbasis, @NonNull String uri,
                                             final OnResult<Player> listener) {
         JsonObjectPOST(playbasis, uri, null, new OnResult<JSONObject>() {
@@ -92,7 +105,7 @@ public class PlayerApi extends Api{
             }
         });
     }
-    
+
     private static void getAction(@NonNull Playbasis playbasis, @NonNull String uri, final OnResult<Action> listener) {
         JsonObjectGET(playbasis, uri, null, new OnResult<JSONObject>() {
             @Override
