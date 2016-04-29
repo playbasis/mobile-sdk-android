@@ -1,27 +1,22 @@
-package com.playbasis.android.sample;
+package com.playbasis.android.sample.activities;
 
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.playbasis.android.playbasissdk.api.BadgeApi;
 import com.playbasis.android.playbasissdk.api.GoodsApi;
 import com.playbasis.android.playbasissdk.api.OnResult;
-import com.playbasis.android.playbasissdk.api.PlayerApi;
 import com.playbasis.android.playbasissdk.api.RedeemApi;
 import com.playbasis.android.playbasissdk.http.HttpError;
-import com.playbasis.android.playbasissdk.model.Badge;
 import com.playbasis.android.playbasissdk.model.Goods;
 import com.playbasis.android.playbasissdk.model.RedeemGood;
-import com.playbasis.android.playbasissdk.model.Reward;
+import com.playbasis.android.sample.R;
+import com.playbasis.android.sample.RewardAdapter;
+import com.playbasis.android.sample.RewardWidget;
+import com.playbasis.android.sample.SampleApplication;
 
 import java.util.List;
 

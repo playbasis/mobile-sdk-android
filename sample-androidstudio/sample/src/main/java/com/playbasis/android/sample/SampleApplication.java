@@ -21,7 +21,8 @@ public class SampleApplication extends Application {
         super.onCreate();
 
         playbasis = new Playbasis.Builder(this)
-                .setBackendUrl("https://starhub-api.playbasis.com/")
+                ////https://starhub-api.playbasis.com/
+                .setBackendUrl("https://qav2api.pbapp.net/")
                 .build();
         
         playbasis.getAuthenticator().getAuthToken();

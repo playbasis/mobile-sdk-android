@@ -3,7 +3,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
 
-                tools:context="com.playbasis.android.sample.QuestActivity">
+                tools:context=".activities.QuestActivity">
     
     <LinearLayout
         android:paddingLeft="@dimen/activity_horizontal_margin"

@@ -1,14 +1,10 @@
-package com.playbasis.android.sample;
+package com.playbasis.android.sample.activities;
 
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -22,6 +18,9 @@ import com.playbasis.android.playbasissdk.model.QuizQuestion;
 import com.playbasis.android.playbasissdk.model.QuizQuestionAnswer;
 import com.playbasis.android.playbasissdk.model.QuizQuestionOption;
 import com.playbasis.android.playbasissdk.model.Reward;
+import com.playbasis.android.sample.R;
+import com.playbasis.android.sample.RewardWidget;
+import com.playbasis.android.sample.SampleApplication;
 
 import java.util.ArrayList;
 import java.util.List;

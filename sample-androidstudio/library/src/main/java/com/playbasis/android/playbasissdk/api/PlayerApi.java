@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
+import android.util.Log;
 
 import com.playbasis.android.playbasissdk.core.Playbasis;
 import com.playbasis.android.playbasissdk.core.SDKUtil;
@@ -51,6 +52,7 @@ public class PlayerApi extends Api{
     public static final String SESSIONS = "sessions";
     public static final String SESSION_ID = "session_id";
     public static final String SETUP_PHONE = "setupPhone";
+    public static final String PHONE_NUMBER = "phone_number";
 
     private static void getPlayer(@NonNull Playbasis playbasis, String uri, final OnResult<Player> listener) {
         JsonObjectGET(playbasis, uri, null, new OnResult<JSONObject>() {
@@ -1497,14 +1499,14 @@ public class PlayerApi extends Api{
      * @param playerId player id.
      * @param listener Callback interface.
      */
-    public static void setSetupPhone(@NonNull Playbasis playbasis, @NonNull String playerId, @NonNull String deviceToken,
-                                          @NonNull String deviceDescription, @NonNull String deviceName, @NonNull String osType, final OnResult<String>listener) {
+    public static void setupPhone(@NonNull Playbasis playbasis, @NonNull String playerId, @NonNull String deviceToken,
+                                  @NonNull String deviceDescription, @NonNull String deviceName, @NonNull String osType, @NonNull String phoneNumber, final OnResult<String>listener) {
 
-        setSetupPhone(playbasis, false, playerId, deviceToken, deviceDescription, deviceName, osType, listener);
+        setupPhone(playbasis, false, playerId, deviceToken, deviceDescription, deviceName, osType,phoneNumber, listener);
     }
 
-    public static void setSetupPhone(@NonNull Playbasis playbasis, boolean isAsync, @NonNull String playerId, @NonNull String deviceToken,
-                                          @NonNull String deviceDescription, @NonNull String deviceName, @NonNull String osType, final OnResult<String>listener) {
+    public static void setupPhone(@NonNull Playbasis playbasis, boolean isAsync, @NonNull String playerId, @NonNull String deviceToken,
+                                  @NonNull String deviceDescription, @NonNull String deviceName, @NonNull String osType, @NonNull String phoneNumber, final OnResult<String>listener) {
 
         String endpoint = "/Player/authen/"+playerId + "/setupPhone";
 
@@ -1514,8 +1516,7 @@ public class PlayerApi extends Api{
                 jsonObject = JsonHelper.newJsonWithToken(playbasis.getAuthenticator());
                 jsonObject.put(ApiConst.DEVICE_TOKEN, deviceToken);
                 jsonObject.put(ApiConst.PLAYER_ID, playerId);
-                //todo phone number
-                //jsonObject.put("phone_number",);
+                jsonObject.put(PHONE_NUMBER,phoneNumber);
                 jsonObject.put(ApiConst.DEVICE_DESCRIPTION, deviceDescription);
                 jsonObject.put(ApiConst.DEVICE_NAME, deviceName);
                 jsonObject.put(ApiConst.OS_TYPE, osType);
@@ -1526,6 +1527,7 @@ public class PlayerApi extends Api{
                 @Override
                 public void onSuccess(String result) {
                     if (listener != null) listener.onSuccess(null);
+                    Log.d(TAG, "setupPhone success");
                 }
 
                 @Override

@@ -1,8 +1,9 @@
-package com.playbasis.android.sample;
+package com.playbasis.android.sample.activities;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
@@ -11,19 +12,24 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
+import java.io.IOException;
 import java.util.List;
 
+import com.google.android.gms.gcm.GoogleCloudMessaging;
+import com.google.android.gms.iid.InstanceID;
+import com.playbasis.android.playbasissdk.api.CommunicationApi;
 import com.playbasis.android.playbasissdk.api.EngineApi;
 import com.playbasis.android.playbasissdk.api.FileApi;
 import com.playbasis.android.playbasissdk.api.OnResult;
+import com.playbasis.android.playbasissdk.api.PlayerApi;
 import com.playbasis.android.playbasissdk.http.HttpError;
 import com.playbasis.android.playbasissdk.model.Image;
-import com.playbasis.android.playbasissdk.model.Input;
 import com.playbasis.android.playbasissdk.model.Rule;
-import com.playbasis.android.playbasissdk.model.RuleDetail;
-import com.playbasis.android.playbasissdk.model.RuleGroup;
-import com.playbasis.android.playbasissdk.model.RuleState;
 import com.playbasis.android.playbasissdk.model.Event;
+import com.playbasis.android.sample.R;
+import com.playbasis.android.sample.SampleApplication;
+import com.playbasis.android.sample.model.SharedVariables;
+import com.playbasis.android.sample.model.User;
 
 
 public class MainActivity extends FragmentActivity {
@@ -48,6 +54,14 @@ public class MainActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //PlayerApi.setupPhone(SampleApplication.playbasis,"1",SampleApplication.);
+
+     /*   try {
+            setupPhone();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+*/
         Button playerButton = (Button) findViewById(R.id.button_player);
         playerButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -258,6 +272,31 @@ public class MainActivity extends FragmentActivity {
                 });
 */
                 //PlayerApi
+            }
+        });
+    }
+
+    private void setupPhone() throws IOException {
+        Log.d("MainActivity", " setupPhone");
+        InstanceID instanceID = InstanceID.getInstance(this);
+
+        //String deviceToken = instanceID.getToken(getString(R.string.gcm_defaultSenderId), GoogleCloudMessaging.INSTANCE_ID_SCOPE, null);
+        String deviceToken="123456789";
+        // [END get_token]
+        Log.i("setupPhone", "GCM Registration Token: " + deviceToken);
+
+        // TODO: register device deviceToken
+        User user = SharedVariables.getInstance().getUser(this);
+        PlayerApi.setupPhone(SampleApplication.playbasis, "1", deviceToken, Build.MANUFACTURER, Build.MODEL, "android","+66861234567", new OnResult<String>() {
+            @Override
+            public void onSuccess(String s) {
+                Log.d("MainActivity", "success setupPhone");
+            }
+
+            @Override
+            public void onError(HttpError httpError) {
+                Log.e("MainActivity", httpError.getMessage());
+
             }
         });
     }
