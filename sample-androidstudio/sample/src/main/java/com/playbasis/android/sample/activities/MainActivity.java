@@ -15,7 +15,6 @@ import android.widget.Button;
 import java.io.IOException;
 import java.util.List;
 
-import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.google.android.gms.iid.InstanceID;
 import com.playbasis.android.playbasissdk.api.AuthApi;
 import com.playbasis.android.playbasissdk.api.AuthToken;
@@ -29,8 +28,6 @@ import com.playbasis.android.playbasissdk.model.Rule;
 import com.playbasis.android.playbasissdk.model.Event;
 import com.playbasis.android.sample.R;
 import com.playbasis.android.sample.SampleApplication;
-import com.playbasis.android.sample.model.SharedVariables;
-import com.playbasis.android.sample.model.User;
 
 import org.json.JSONObject;
 
@@ -48,17 +45,13 @@ public class MainActivity extends FragmentActivity {
         super.onPause();
         SampleApplication.playbasis.removeActivity();
     }
-    
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //PlayerApi.setupPhone(SampleApplication.playbasis,"1",SampleApplication.);
-
-                authen();
-
-
+        auth();
 
         Button playerButton = (Button) findViewById(R.id.button_player);
         playerButton.setOnClickListener(new View.OnClickListener() {
@@ -125,7 +118,7 @@ public class MainActivity extends FragmentActivity {
 
                     @Override
                     public void onError(HttpError error) {
-                        Log.d("Engine","failed");
+                        Log.d("Engine", "failed");
                         if (error.requestError != null) {
                             Log.d("Engine", error.requestError.message);
                         } else {
@@ -176,42 +169,120 @@ public class MainActivity extends FragmentActivity {
 
                     }
                 });
-/*
-                EngineApi.ruleDetail(SampleApplication.playbasis, "5698af19472af270068b5caa", "1D", new OnResult<RuleDetail>() {
-                    @Override
-                    public void onSuccess(RuleDetail result) {
-                        System.out.println("Success");
-                        System.out.println(result.getRuleGroup());
-                        RuleGroup ruleGroup = result.getRuleGroup();
+                oldTest();
 
-                        System.out.println(ruleGroup.getCategory());
-                        System.out.println(ruleGroup.getName());
-                        RuleState ruleState = ruleGroup.getRuleState();
-                        if(ruleState != null) {
-                            System.out.println(ruleState.getInput());
-                            Input input = ruleState.getInput();
-                            System.out.println(input.getIndex());
+            }
+        });
+    }
+
+
+    private void auth() {
+        AuthApi.auth(SampleApplication.playbasis, new OnResult<AuthToken>() {
+            @Override
+            public void onSuccess(AuthToken result) {
+                Log.d("MainActivity", "auth success");
+                SampleApplication.playbasis.getAuthenticator().setAuthToken(result);
+
+                verifyPlayerEmail();
+                try {
+                    setupPhone();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            @Override
+            public void onError(HttpError error) {
+
+            }
+        });
+    }
+    private void verifyPlayerEmail() {
+        PlayerApi.verifyPlayerEmail(SampleApplication.playbasis, "1", new OnResult<JSONObject>() {
+            @Override
+            public void onSuccess(JSONObject result) {
+                Log.d("MainActivity", "verifyEmailSuccess");
+                Log.d("MainActivity", result.toString());
+            }
+
+            @Override
+            public void onError(HttpError error) {
+                Log.d("MainActivity", error.getMessage());
+
+            }
+        });
+    }
+    private void setupPhone() throws IOException {
+        Log.d("MainActivity", " setupPhone");
+        InstanceID instanceID = InstanceID.getInstance(this);
+
+        //if need real deviceToken need to get via service or not on the main thread
+        //String deviceToken = instanceID.getToken(getString(R.string.gcm_defaultSenderId), GoogleCloudMessaging.INSTANCE_ID_SCOPE, null);
+
+        //dummy deviceToken
+        String deviceToken = "123456789";
+        PlayerApi.requestOtpForSetupPhone(SampleApplication.playbasis, true, "1", deviceToken, Build.MANUFACTURER, Build.MODEL, "android", "+66861234567", new  OnResult<String>() {
+            @Override
+            public void onSuccess(String s) {
+                Log.d("success setupPhone [", s + "]");
+            }
+
+            @Override
+            public void onError(HttpError httpError) {
+                Log.e("error setup phone", httpError.getMessage());
+            }
+        });
+    }
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void oldTest() {
+    /*
+                    EngineApi.ruleDetail(SampleApplication.playbasis, "5698af19472af270068b5caa", "1D", new OnResult<RuleDetail>() {
+                        @Override
+                        public void onSuccess(RuleDetail result) {
+                            System.out.println("Success");
+                            System.out.println(result.getRuleGroup());
+                            RuleGroup ruleGroup = result.getRuleGroup();
+
+                            System.out.println(ruleGroup.getCategory());
+                            System.out.println(ruleGroup.getName());
+                            RuleState ruleState = ruleGroup.getRuleState();
+                            if(ruleState != null) {
+                                System.out.println(ruleState.getInput());
+                                Input input = ruleState.getInput();
+                                System.out.println(input.getIndex());
+                            }
                         }
-                    }
 
-                    @Override
-                    public void onError(HttpError error) {
+                        @Override
+                        public void onError(HttpError error) {
 
-                    }
+                        }
 
-                });
-                /*PlayerApi.resetPasswordByEmail(SampleApplication.playbasis, "kittikorn.a@playbasis.com", new OnResult<String>() {
-                    @Override
-                    public void onSuccess(String result) {
-                        System.out.println(result);
-                    }
+                    });
+                    /*PlayerApi.resetPasswordByEmail(SampleApplication.playbasis, "kittikorn.a@playbasis.com", new OnResult<String>() {
+                        @Override
+                        public void onSuccess(String result) {
+                            System.out.println(result);
+                        }
 
-                    @Override
-                    public void onError(HttpError error) {
-                        System.out.println("Error");
-                        System.out.println(error.requestError.message);
-                    }
-                });*/
+                        @Override
+                        public void onError(HttpError error) {
+                            System.out.println("Error");
+                            System.out.println(error.requestError.message);
+                        }
+                    });*/
 
 
                 /*
@@ -269,95 +340,6 @@ public class MainActivity extends FragmentActivity {
                     }
                 });
 */
-                //PlayerApi
-            }
-        });
-    }
-
-    private void verifyPlayerEmail() {
-        PlayerApi.verifyPlayerEmail(SampleApplication.playbasis, "1", new OnResult<JSONObject>() {
-            @Override
-            public void onSuccess(JSONObject result) {
-                Log.d("MainActivity", "verifyEmailSuccess");
-                Log.d("MainActivity", result.toString());
-            }
-
-            @Override
-            public void onError(HttpError error) {
-               Log.d("MainActivity", error.getMessage());
-
-            }
-        });
-    }
-
-    private void authen() {
-        AuthApi.auth(SampleApplication.playbasis, new OnResult<AuthToken>() {
-    @Override
-    public void onSuccess(AuthToken result) {
-        Log.d("MainActivity", "authen success");
-        SampleApplication.playbasis.getAuthenticator().setAuthToken(result);
-
-        verifyPlayerEmail();
-
-
-        try {
-            setupPhone();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-
-    }
-
-    @Override
-    public void onError(HttpError error) {
-
-    }
-});
-    }
-
-    private void setupPhone() throws IOException {
-        Log.d("MainActivity", " setupPhone");
-        InstanceID instanceID = InstanceID.getInstance(this);
-
-
-        //String deviceToken = instanceID.getToken(getString(R.string.gcm_defaultSenderId), GoogleCloudMessaging.INSTANCE_ID_SCOPE, null);
-        String deviceToken="123456789";
-        // [END get_token]
-        Log.i("setupPhone", "GCM Registration Token: " + deviceToken);
-
-
-        User user = SharedVariables.getInstance().getUser(this);
-        PlayerApi.requestOtpForSetupPhone(SampleApplication.playbasis,true, "1", deviceToken, Build.MANUFACTURER, Build.MODEL, "android","+66861234567", new OnResult<String>() {
-            @Override
-            public void onSuccess(String s) {
-                Log.d("success setupPhone [", s+"]");
-            }
-
-            @Override
-            public void onError(HttpError httpError) {
-                Log.e("MainActivity", httpError.getMessage());
-
-            }
-        });
-    }
-
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        return super.onOptionsItemSelected(item);
     }
 
 }
