@@ -1510,69 +1510,6 @@ public class PlayerApi extends Api{
         auth(playbasis, false, email, username, password, deviceId, listener);
     }
 
-    /**
-     * Request One time password for setup phone.
-     * @param playbasis Playbasis object.
-     * @param playerId player id.
-     * @param listener Callback interface.
-     */
-    public static void setupPhone(@NonNull Playbasis playbasis, @NonNull String playerId, @NonNull String deviceToken,
-                                  @NonNull String deviceDescription, @NonNull String deviceName, @NonNull String osType, @NonNull String phoneNumber, final OnResult<String>listener) {
-
-        setupPhone(playbasis, false, playerId, deviceToken, deviceDescription, deviceName, osType,phoneNumber, listener);
-    }
-
-    public static void setupPhone(@NonNull Playbasis playbasis, boolean isAsync, @NonNull String playerId, @NonNull String deviceToken,
-                                  @NonNull String deviceDescription, @NonNull String deviceName, @NonNull String osType, @NonNull String phoneNumber, final OnResult<String>listener) {
-
-        String endpoint = "/Player/authen/"+playerId + "/setupPhone";
-
-        if(isAsync){
-            JSONObject jsonObject = null;
-            try {
-                jsonObject = JsonHelper.newJsonWithToken(playbasis.getAuthenticator());
-                jsonObject.put(ApiConst.DEVICE_TOKEN, deviceToken);
-                jsonObject.put(ApiConst.PLAYER_ID, playerId);
-                jsonObject.put(PHONE_NUMBER,phoneNumber);
-                jsonObject.put(ApiConst.DEVICE_DESCRIPTION, deviceDescription);
-                jsonObject.put(ApiConst.DEVICE_NAME, deviceName);
-                jsonObject.put(ApiConst.OS_TYPE, osType);
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-            asyncPost(playbasis, endpoint, jsonObject, new OnResult<String>() {
-                @Override
-                public void onSuccess(String result) {
-                    if (listener != null) listener.onSuccess(null);
-                    Log.d(TAG, "setupPhone success");
-                }
-
-                @Override
-                public void onError(HttpError error) {
-
-                }
-            });
-        } else {
-            String uri = playbasis.getUrl() + endpoint;
-            List<NameValuePair> params = new ArrayList<>();
-            params.add(new BasicNameValuePair(ApiConst.PLAYER_ID, playerId));
-            params.add(new BasicNameValuePair(ApiConst.DEVICE_TOKEN, deviceToken));
-            params.add(new BasicNameValuePair(ApiConst.DEVICE_DESCRIPTION, deviceDescription));
-            params.add(new BasicNameValuePair(ApiConst.DEVICE_NAME, deviceName));
-            params.add(new BasicNameValuePair(ApiConst.OS_TYPE, osType));
-
-            JsonObjectPOST(playbasis, uri, params, new OnResult<JSONObject>() {
-                @Override
-                public void onSuccess(JSONObject result) {
-                    if (listener != null) listener.onSuccess("OK");
-                }
-                @Override
-                public void onError(HttpError error) {
-                    if (listener != null) listener.onError(error);
-                }
-            });
-        }
-    }
 
     /**
      *
@@ -1686,6 +1623,74 @@ public class PlayerApi extends Api{
                 if (listener != null) listener.onError(error);
             }
         });
+    }
+
+    /**
+     * Request One time password for setup phone.
+     * @param playbasis Playbasis object.
+     * @param playerId player id.
+     * @param listener Callback interface.
+     */
+    public static void requestOtpForSetupPhone(@NonNull Playbasis playbasis, @NonNull String playerId, @NonNull String deviceToken,
+                                               @NonNull String deviceDescription, @NonNull String deviceName, @NonNull String osType, @NonNull String phoneNumber, final OnResult<String>listener) {
+
+        requestOtpForSetupPhone(playbasis, false, playerId, deviceToken, deviceDescription, deviceName, osType,phoneNumber, listener);
+    }
+
+    public static void requestOtpForSetupPhone(@NonNull Playbasis playbasis, boolean isAsync, @NonNull String playerId, @NonNull String deviceToken,
+                                               @NonNull String deviceDescription, @NonNull String deviceName, @NonNull String osType, @NonNull String phoneNumber, final OnResult<String>listener) {
+
+        String endpoint = "/Player/auth/"+playerId + "/setupPhone";
+
+        if(isAsync){
+            JSONObject jsonObject = null;
+            try {
+                jsonObject = JsonHelper.newJsonWithToken(playbasis.getAuthenticator());
+                jsonObject.put(ApiConst.DEVICE_TOKEN, deviceToken);
+                jsonObject.put(ApiConst.PLAYER_ID, playerId);
+                jsonObject.put(PHONE_NUMBER,phoneNumber);
+                jsonObject.put(ApiConst.DEVICE_DESCRIPTION, deviceDescription);
+                jsonObject.put(ApiConst.DEVICE_NAME, deviceName);
+                jsonObject.put(ApiConst.OS_TYPE, osType);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            asyncPost(playbasis, endpoint, jsonObject, new OnResult<String>() {
+                @Override
+                public void onSuccess(String result) {
+                    if (listener != null) listener.onSuccess(result);
+                    Log.d(TAG, "setupPhone success");
+                }
+
+                @Override
+                public void onError(HttpError error) {
+                    if (listener != null) listener.onError(error);
+                    Log.d(TAG, "setupPhone error");
+
+                }
+            });
+        } else {
+            String uri = playbasis.getUrl() + endpoint;
+            List<NameValuePair> params = new ArrayList<>();
+            params.add(new BasicNameValuePair(ApiConst.PLAYER_ID, playerId));
+            params.add(new BasicNameValuePair(ApiConst.DEVICE_TOKEN, deviceToken));
+            params.add(new BasicNameValuePair(ApiConst.DEVICE_DESCRIPTION, deviceDescription));
+            params.add(new BasicNameValuePair(ApiConst.DEVICE_NAME, deviceName));
+            params.add(new BasicNameValuePair(ApiConst.OS_TYPE, osType));
+
+            JsonObjectPOST(playbasis, uri, params, new OnResult<JSONObject>() {
+                @Override
+                public void onSuccess(JSONObject result) {
+                    if (listener != null) listener.onSuccess(result.toString());
+                    Log.d(TAG, "setupPhone success");
+                }
+                @Override
+                public void onError(HttpError error) {
+                    if (listener != null) listener.onError(error);
+                    Log.e(TAG, "setupPhone error");
+                }
+            });
+        }
     }
 
 

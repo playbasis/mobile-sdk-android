@@ -13,18 +13,12 @@ import android.view.View;
 import android.widget.Button;
 
 import java.io.IOException;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.google.android.gms.iid.InstanceID;
 import com.playbasis.android.playbasissdk.api.AuthApi;
 import com.playbasis.android.playbasissdk.api.AuthToken;
-import com.playbasis.android.playbasissdk.api.CommunicationApi;
 import com.playbasis.android.playbasissdk.api.EngineApi;
 import com.playbasis.android.playbasissdk.api.FileApi;
 import com.playbasis.android.playbasissdk.api.OnResult;
@@ -62,36 +56,10 @@ public class MainActivity extends FragmentActivity {
 
         //PlayerApi.setupPhone(SampleApplication.playbasis,"1",SampleApplication.);
 
-                AuthApi.auth(SampleApplication.playbasis, new OnResult<AuthToken>() {
-            @Override
-            public void onSuccess(AuthToken result) {
-                Log.d("MainActivity", "authen success");
-                SampleApplication.playbasis.getAuthenticator().setAuthToken(result);
-            }
+                authen();
 
-            @Override
-            public void onError(HttpError error) {
 
-            }
-        });
-PlayerApi.verifyPlayerEmail(SampleApplication.playbasis, "1", new OnResult<JSONObject>() {
-    @Override
-    public void onSuccess(JSONObject result) {
-        Log.d("MainActivity", result.toString());
-    }
 
-    @Override
-    public void onError(HttpError error) {
-       Log.d("MainActivity", error.getMessage());
-
-    }
-});
-     /*   try {
-            setupPhone();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-*/
         Button playerButton = (Button) findViewById(R.id.button_player);
         playerButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -306,21 +274,64 @@ PlayerApi.verifyPlayerEmail(SampleApplication.playbasis, "1", new OnResult<JSONO
         });
     }
 
+    private void verifyPlayerEmail() {
+        PlayerApi.verifyPlayerEmail(SampleApplication.playbasis, "1", new OnResult<JSONObject>() {
+            @Override
+            public void onSuccess(JSONObject result) {
+                Log.d("MainActivity", "verifyEmailSuccess");
+                Log.d("MainActivity", result.toString());
+            }
+
+            @Override
+            public void onError(HttpError error) {
+               Log.d("MainActivity", error.getMessage());
+
+            }
+        });
+    }
+
+    private void authen() {
+        AuthApi.auth(SampleApplication.playbasis, new OnResult<AuthToken>() {
+    @Override
+    public void onSuccess(AuthToken result) {
+        Log.d("MainActivity", "authen success");
+        SampleApplication.playbasis.getAuthenticator().setAuthToken(result);
+
+        verifyPlayerEmail();
+
+
+        try {
+            setupPhone();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+    }
+
+    @Override
+    public void onError(HttpError error) {
+
+    }
+});
+    }
+
     private void setupPhone() throws IOException {
         Log.d("MainActivity", " setupPhone");
         InstanceID instanceID = InstanceID.getInstance(this);
+
 
         //String deviceToken = instanceID.getToken(getString(R.string.gcm_defaultSenderId), GoogleCloudMessaging.INSTANCE_ID_SCOPE, null);
         String deviceToken="123456789";
         // [END get_token]
         Log.i("setupPhone", "GCM Registration Token: " + deviceToken);
 
-        // TODO: register device deviceToken
+
         User user = SharedVariables.getInstance().getUser(this);
-        PlayerApi.setupPhone(SampleApplication.playbasis, "1", deviceToken, Build.MANUFACTURER, Build.MODEL, "android","+66861234567", new OnResult<String>() {
+        PlayerApi.requestOtpForSetupPhone(SampleApplication.playbasis,true, "1", deviceToken, Build.MANUFACTURER, Build.MODEL, "android","+66861234567", new OnResult<String>() {
             @Override
             public void onSuccess(String s) {
-                Log.d("MainActivity", "success setupPhone");
+                Log.d("success setupPhone [", s+"]");
             }
 
             @Override
