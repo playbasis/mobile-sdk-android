@@ -13,10 +13,17 @@ import android.view.View;
 import android.widget.Button;
 
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.google.android.gms.iid.InstanceID;
+import com.playbasis.android.playbasissdk.api.AuthApi;
+import com.playbasis.android.playbasissdk.api.AuthToken;
 import com.playbasis.android.playbasissdk.api.CommunicationApi;
 import com.playbasis.android.playbasissdk.api.EngineApi;
 import com.playbasis.android.playbasissdk.api.FileApi;
@@ -31,6 +38,8 @@ import com.playbasis.android.sample.SampleApplication;
 import com.playbasis.android.sample.model.SharedVariables;
 import com.playbasis.android.sample.model.User;
 
+import org.json.JSONObject;
+
 
 public class MainActivity extends FragmentActivity {
 
@@ -38,9 +47,6 @@ public class MainActivity extends FragmentActivity {
     protected void onResume() {
         super.onResume();
         SampleApplication.playbasis.setActivity(this);
-
-
-        
     }
 
     @Override
@@ -56,6 +62,30 @@ public class MainActivity extends FragmentActivity {
 
         //PlayerApi.setupPhone(SampleApplication.playbasis,"1",SampleApplication.);
 
+                AuthApi.auth(SampleApplication.playbasis, new OnResult<AuthToken>() {
+            @Override
+            public void onSuccess(AuthToken result) {
+                Log.d("MainActivity", "authen success");
+                SampleApplication.playbasis.getAuthenticator().setAuthToken(result);
+            }
+
+            @Override
+            public void onError(HttpError error) {
+
+            }
+        });
+PlayerApi.verifyPlayerEmail(SampleApplication.playbasis, "1", new OnResult<JSONObject>() {
+    @Override
+    public void onSuccess(JSONObject result) {
+        Log.d("MainActivity", result.toString());
+    }
+
+    @Override
+    public void onError(HttpError error) {
+       Log.d("MainActivity", error.getMessage());
+
+    }
+});
      /*   try {
             setupPhone();
         } catch (IOException e) {

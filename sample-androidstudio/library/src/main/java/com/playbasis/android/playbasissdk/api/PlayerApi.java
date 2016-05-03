@@ -84,7 +84,24 @@ public class PlayerApi extends Api{
     public static void verifyPlayerEmail(@NonNull Playbasis playbasis, @NonNull String playerId,
                                                  final OnResult<JSONObject> listener){
         String uri = playbasis.getUrl() + SDKUtil._PLAYER_URL + playerId +"/"+"email/verify";
-        getJsonObj(playbasis, uri, listener);
+
+        JsonObjectPOST(playbasis, uri, null, new OnResult<JSONObject>() {
+            @Override
+            public void onSuccess(JSONObject result) {
+                if (listener != null) {
+                    listener.onSuccess(result);
+                }
+            }
+
+            @Override
+            public void onError(HttpError error) {
+                error.printStackTrace();
+                if (error.getMessage() != null) {
+                    System.out.println(error.getMessage());
+                }
+                if (listener != null) listener.onError(error);
+            }
+        });
     }
 
     private static void getJsonObj(@NonNull Playbasis playbasis, @NonNull String uri,

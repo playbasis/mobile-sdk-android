@@ -11,6 +11,14 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
+
+        <meta-data
+            android:name="com.playbasis.android.playbasissdk.apikey"
+            android:value="\ abc" />
+        <meta-data
+            android:name="com.playbasis.android.playbasissdk.secret"
+            android:value="\ abcde" />
+
         <activity
             android:name=".activities.MainActivity"
             android:label="PlaybasisSample" >
@@ -28,14 +36,6 @@
             android:name=".activities.QuizActivity"
             android:label="@string/title_activity_quiz" >
         </activity>
-
-        <meta-data
-            android:name="com.playbasis.android.playbasissdk.apikey"
-            android:value="\ 1256205324" />
-        <meta-data
-            android:name="com.playbasis.android.playbasissdk.secret"
-            android:value="\ 4d4165ee50f41c7c1d7bd2afe0a2a203" />
-
 
         <activity
             android:name=".activities.BadgeActivity"
