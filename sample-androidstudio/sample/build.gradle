@@ -7,7 +7,7 @@ android {
     defaultConfig {
         applicationId 'com.playbasis.android.sample'
         minSdkVersion 15
-        targetSdkVersion 21
+        targetSdkVersion 23
         versionCode 1
         versionName "1.0"
         multiDexEnabled true
@@ -36,4 +36,12 @@ dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     // compile(name:'playbasis', ext:'aar')
     compile project(':library')
+    compile 'com.google.android.gms:play-services:8.4.0'
+    configurations {
+        all*.exclude group: 'com.android.support', module: 'support-v4'
+    }
+
 }
+//Must apply plugin below dependencies
+apply plugin: 'com.google.gms.google-services'
+

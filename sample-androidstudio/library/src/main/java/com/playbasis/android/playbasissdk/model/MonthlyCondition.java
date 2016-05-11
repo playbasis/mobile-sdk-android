@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.playbasis.android.playbasissdk.api.ApiConst;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -45,10 +46,10 @@ public class MonthlyCondition extends Condition {
     public static MonthlyCondition parseMonthlyCondition(JSONObject conditionJSON) throws JSONException {
         MonthlyCondition monthlyCondition = new MonthlyCondition();
 
-        monthlyCondition.setName(conditionJSON.getString("name"));
-        monthlyCondition.setCategory(conditionJSON.getString("category"));
+        monthlyCondition.setName(conditionJSON.getString(ApiConst.NAME));
+        monthlyCondition.setCategory(conditionJSON.getString(ApiConst.CATEGORY));
         monthlyCondition.setDescription(conditionJSON.getString("description"));
-        monthlyCondition.setId(conditionJSON.getString("id"));
+        monthlyCondition.setId(conditionJSON.getString(ApiConst.ID));
         monthlyCondition.setSortOrder(conditionJSON.getInt("sort_order"));
 
         try {

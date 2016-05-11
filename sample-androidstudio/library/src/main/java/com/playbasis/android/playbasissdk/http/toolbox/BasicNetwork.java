@@ -18,6 +18,7 @@ package com.playbasis.android.playbasissdk.http.toolbox;
 
 import android.os.SystemClock;
 
+import com.playbasis.android.playbasissdk.api.ApiConst;
 import com.playbasis.android.playbasissdk.http.AuthFailureError;
 import com.playbasis.android.playbasissdk.http.Cache;
 import com.playbasis.android.playbasissdk.http.Cache.Entry;
@@ -167,7 +168,7 @@ public class BasicNetwork implements Network {
                             responseHeaders, false, SystemClock.elapsedRealtime() - requestStart);
                     if (statusCode == HttpStatus.SC_UNAUTHORIZED ||
                             statusCode == HttpStatus.SC_FORBIDDEN) {
-                        attemptRetryOnException("auth",
+                        attemptRetryOnException(ApiConst.AUTH,
                                 request, new AuthFailureError(networkResponse));
                     } else {
                         // TODO: Only throw ServerError for 5xx status codes.

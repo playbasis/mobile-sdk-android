@@ -1,6 +1,6 @@
 package com.playbasis.android.playbasissdk.http;
 
-import com.google.gson.JsonArray;
+import com.playbasis.android.playbasissdk.api.ApiConst;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -32,9 +32,9 @@ public class PlaybasisResponse {
     public void toObject(JSONObject jsonObject) throws JSONException {
         this.success = jsonObject.getBoolean("success");
         this.errorCode = jsonObject.getInt("error_code");
-        this.message = jsonObject.getString("message");
+        this.message = jsonObject.getString(ApiConst.MESSAGE);
         this.timestamp = jsonObject.getLong("timestamp");
-        this.time = jsonObject.getString("time");
+        this.time = jsonObject.getString(ApiConst.TIME);
         this.version = jsonObject.getString("version");
         if(jsonObject.get("response") instanceof JSONObject)
             this.response = jsonObject.getJSONObject("response");

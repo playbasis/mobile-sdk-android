@@ -7,7 +7,6 @@ import com.playbasis.android.playbasissdk.core.SDKUtil;
 import com.playbasis.android.playbasissdk.helper.JsonHelper;
 import com.playbasis.android.playbasissdk.http.HttpError;
 import com.playbasis.android.playbasissdk.http.RequestError;
-import com.playbasis.android.playbasissdk.model.RedeemEvent;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
@@ -24,6 +23,11 @@ import java.util.List;
  */
 public class CommunicationApi  extends Api{
     public static final String TAG = "CommunicationApi";
+    public static final String TEMPLATE_ID = "template_id";
+    public static final String REF_ID = "ref_id";
+    public static final String UPDATE_PLAYER_FAIL = "update player fail";
+    public static final String SUBJECT = "subject";
+    public static final String SEND = "send";
 
     /**
      * Send email to a player.
@@ -60,7 +64,7 @@ public class CommunicationApi  extends Api{
                     sendEmailToPlayer(playbasis, isAsync, playerId, subject, message, templateId, listener);
                 } else {
                     if (listener != null)
-                        listener.onError(new HttpError(new RequestError("update player fail",
+                        listener.onError(new HttpError(new RequestError(UPDATE_PLAYER_FAIL,
                                 RequestError.ERROR_CODE.DEFAULT)));
                 }
 
@@ -78,17 +82,17 @@ public class CommunicationApi  extends Api{
                                  @NonNull String playerId, @NonNull String subject, String message, String templateId,
                                  final OnResult<List<String>>listener ){
 
-        String endpoint = SDKUtil._EMAIL_API + "send";
+        String endpoint = SDKUtil._EMAIL_API + SEND;
 
         if(isAsync){
 
             JSONObject jsonObject = null;
             try {
                 jsonObject = JsonHelper.newJsonWithToken(playbasis.getAuthenticator());
-                jsonObject.put("player_id", playerId);
-                jsonObject.put("subject", subject);
-                if (message != null) jsonObject.put("message", message);
-                if (templateId != null) jsonObject.put("template_id", templateId);
+                jsonObject.put(ApiConst.PLAYER_ID, playerId);
+                jsonObject.put(SUBJECT, subject);
+                if (message != null) jsonObject.put(ApiConst.MESSAGE, message);
+                if (templateId != null) jsonObject.put(TEMPLATE_ID, templateId);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -111,10 +115,10 @@ public class CommunicationApi  extends Api{
             String uri = playbasis.getUrl() + endpoint;
 
             List<NameValuePair> params = new ArrayList<>();
-            params.add(new BasicNameValuePair("player_id", playerId));
-            params.add(new BasicNameValuePair("subject", subject));
-            if (message != null) params.add(new BasicNameValuePair("message", message));
-            if (templateId != null) params.add(new BasicNameValuePair("template_id", templateId));
+            params.add(new BasicNameValuePair(ApiConst.PLAYER_ID, playerId));
+            params.add(new BasicNameValuePair(SUBJECT, subject));
+            if (message != null) params.add(new BasicNameValuePair(ApiConst.MESSAGE, message));
+            if (templateId != null) params.add(new BasicNameValuePair(TEMPLATE_ID, templateId));
 
             JsonArrayPOST(playbasis, uri, params, new OnResult<JSONArray>() {
                 @Override
@@ -173,7 +177,7 @@ public class CommunicationApi  extends Api{
                     sendEmailCouponToPlayer(playbasis, isAsync, playerId, refId, subject, message, templateId, listener);
                 } else {
                     if (listener != null)
-                        listener.onError(new HttpError(new RequestError("update player fail",
+                        listener.onError(new HttpError(new RequestError(UPDATE_PLAYER_FAIL,
                                 RequestError.ERROR_CODE.DEFAULT)));
                 }
 
@@ -193,18 +197,18 @@ public class CommunicationApi  extends Api{
                                        @NonNull String playerId, @NonNull String refId, @NonNull String subject,
                                        String message, String templateId,
                                        final OnResult<List<String>>listener ){
-        String endpoint = SDKUtil._EMAIL_API + "goods";
+        String endpoint = SDKUtil._EMAIL_API + ApiConst.GOODS;
 
         if(isAsync){
 
             JSONObject jsonObject = null;
             try {
                 jsonObject = JsonHelper.newJsonWithToken(playbasis.getAuthenticator());
-                jsonObject.put("player_id", playerId);
-                jsonObject.put("ref_id", refId);
-                jsonObject.put("subject", subject);
-                if (message != null) jsonObject.put("message", message);
-                if (templateId != null) jsonObject.put("template_id", templateId);
+                jsonObject.put(ApiConst.PLAYER_ID, playerId);
+                jsonObject.put(REF_ID, refId);
+                jsonObject.put(SUBJECT, subject);
+                if (message != null) jsonObject.put(ApiConst.MESSAGE, message);
+                if (templateId != null) jsonObject.put(TEMPLATE_ID, templateId);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -225,11 +229,11 @@ public class CommunicationApi  extends Api{
             String uri = playbasis.getUrl() + endpoint;
 
             List<NameValuePair> params = new ArrayList<>();
-            params.add(new BasicNameValuePair("player_id", playerId));
-            params.add(new BasicNameValuePair("ref_id", refId));
-            params.add(new BasicNameValuePair("subject", subject));
-            if(message!=null)params.add(new BasicNameValuePair("message", message));
-            if(templateId!=null)params.add(new BasicNameValuePair("template_id", templateId));
+            params.add(new BasicNameValuePair(ApiConst.PLAYER_ID, playerId));
+            params.add(new BasicNameValuePair(REF_ID, refId));
+            params.add(new BasicNameValuePair(SUBJECT, subject));
+            if(message!=null)params.add(new BasicNameValuePair(ApiConst.MESSAGE, message));
+            if(templateId!=null)params.add(new BasicNameValuePair(TEMPLATE_ID, templateId));
 
             JsonArrayPOST(playbasis, uri, params, new OnResult<JSONArray>() {
                 @Override
@@ -281,7 +285,7 @@ public class CommunicationApi  extends Api{
                     sendSmsToPlayer(playbasis, isAsync, playerId, message, templateId, listener);
                 } else {
                     if (listener != null)
-                        listener.onError(new HttpError(new RequestError("update player fail",
+                        listener.onError(new HttpError(new RequestError(UPDATE_PLAYER_FAIL,
                                 RequestError.ERROR_CODE.DEFAULT)));
                 }
 
@@ -298,16 +302,16 @@ public class CommunicationApi  extends Api{
     private static void sendSmsToPlayer(@NonNull Playbasis playbasis, boolean isAsync,
                                @NonNull String playerId, String message, String templateId,
                                final OnResult<List<String>>listener ){
-        String endpoint = SDKUtil._SMS_API + "send";
+        String endpoint = SDKUtil._SMS_API + SEND;
 
         if(isAsync){
 
             JSONObject jsonObject = null;
             try {
                 jsonObject = JsonHelper.newJsonWithToken(playbasis.getAuthenticator());
-                jsonObject.put("player_id", playerId);
-                if (message != null) jsonObject.put("message", message);
-                if (templateId != null) jsonObject.put("template_id", templateId);
+                jsonObject.put(ApiConst.PLAYER_ID, playerId);
+                if (message != null) jsonObject.put(ApiConst.MESSAGE, message);
+                if (templateId != null) jsonObject.put(TEMPLATE_ID, templateId);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -328,9 +332,9 @@ public class CommunicationApi  extends Api{
             String uri = playbasis.getUrl() + endpoint;
 
             List<NameValuePair> params = new ArrayList<>();
-            params.add(new BasicNameValuePair("player_id", playerId));
-            if (message != null) params.add(new BasicNameValuePair("message", message));
-            if (templateId != null) params.add(new BasicNameValuePair("template_id", templateId));
+            params.add(new BasicNameValuePair(ApiConst.PLAYER_ID, playerId));
+            if (message != null) params.add(new BasicNameValuePair(ApiConst.MESSAGE, message));
+            if (templateId != null) params.add(new BasicNameValuePair(TEMPLATE_ID, templateId));
 
             JsonArrayPOST(playbasis, uri, params, new OnResult<JSONArray>() {
                 @Override
@@ -387,7 +391,7 @@ public class CommunicationApi  extends Api{
                     sendSmsCouponToPlayer(playbasis, isAsync, playerId, refId, message, templateId, listener);
                 } else {
                     if (listener != null)
-                        listener.onError(new HttpError(new RequestError("update player fail",
+                        listener.onError(new HttpError(new RequestError(UPDATE_PLAYER_FAIL,
                                 RequestError.ERROR_CODE.DEFAULT)));
                 }
 
@@ -406,17 +410,17 @@ public class CommunicationApi  extends Api{
                                      @NonNull String playerId, @NonNull String refId,
                                      String message, String templateId,
                                      final OnResult<List<String>>listener ){
-        String endpoint = SDKUtil._SMS_API + "goods";
+        String endpoint = SDKUtil._SMS_API + ApiConst.GOODS;
 
         if(isAsync){
 
             JSONObject jsonObject = null;
             try {
                 jsonObject = JsonHelper.newJsonWithToken(playbasis.getAuthenticator());
-                jsonObject.put("player_id", playerId);
-                jsonObject.put("ref_id", refId);
-                if (message != null) jsonObject.put("message", message);
-                if (templateId != null) jsonObject.put("template_id", templateId);
+                jsonObject.put(ApiConst.PLAYER_ID, playerId);
+                jsonObject.put(REF_ID, refId);
+                if (message != null) jsonObject.put(ApiConst.MESSAGE, message);
+                if (templateId != null) jsonObject.put(TEMPLATE_ID, templateId);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -437,10 +441,10 @@ public class CommunicationApi  extends Api{
             String uri = playbasis.getUrl() + endpoint;
 
             List<NameValuePair> params = new ArrayList<>();
-            params.add(new BasicNameValuePair("player_id", playerId));
-            params.add(new BasicNameValuePair("ref_id", refId));
-            if (message != null) params.add(new BasicNameValuePair("message", message));
-            if (templateId != null) params.add(new BasicNameValuePair("template_id", templateId));
+            params.add(new BasicNameValuePair(ApiConst.PLAYER_ID, playerId));
+            params.add(new BasicNameValuePair(REF_ID, refId));
+            if (message != null) params.add(new BasicNameValuePair(ApiConst.MESSAGE, message));
+            if (templateId != null) params.add(new BasicNameValuePair(TEMPLATE_ID, templateId));
 
             JsonArrayPOST(playbasis, uri, params, new OnResult<JSONArray>() {
                 @Override
@@ -466,18 +470,18 @@ public class CommunicationApi  extends Api{
     public static void deviceRegistration(@NonNull Playbasis playbasis, boolean isAsync, @NonNull String playerId, @NonNull String deviceToken,
                                           @NonNull String deviceDescription, @NonNull String deviceName, @NonNull String osType, final OnResult<String>listener) {
 
-        String endpoint = SDKUtil._PUSH_API + "deviceRegistration/";
+        String endpoint = SDKUtil._PUSH_API + ApiConst.DEVICE_REGISTRATION +"/";
 
         if(isAsync){
 
             JSONObject jsonObject = null;
             try {
                 jsonObject = JsonHelper.newJsonWithToken(playbasis.getAuthenticator());
-                jsonObject.put("player_id", playerId);
-                jsonObject.put("device_token", deviceToken);
-                jsonObject.put("device_description", deviceDescription);
-                jsonObject.put("device_name", deviceName);
-                jsonObject.put("os_type", osType);
+                jsonObject.put(ApiConst.PLAYER_ID, playerId);
+                jsonObject.put(ApiConst.DEVICE_TOKEN, deviceToken);
+                jsonObject.put(ApiConst.DEVICE_DESCRIPTION, deviceDescription);
+                jsonObject.put(ApiConst.DEVICE_NAME, deviceName);
+                jsonObject.put(ApiConst.OS_TYPE, osType);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -492,24 +496,21 @@ public class CommunicationApi  extends Api{
 
                 }
             });
-
-
         } else {
             String uri = playbasis.getUrl() + endpoint;
 
             List<NameValuePair> params = new ArrayList<>();
-            params.add(new BasicNameValuePair("player_id", playerId));
-            params.add(new BasicNameValuePair("device_token", deviceToken));
-            params.add(new BasicNameValuePair("device_description", deviceDescription));
-            params.add(new BasicNameValuePair("device_name", deviceName));
-            params.add(new BasicNameValuePair("os_type", osType));
+            params.add(new BasicNameValuePair(ApiConst.PLAYER_ID, playerId));
+            params.add(new BasicNameValuePair(ApiConst.DEVICE_TOKEN, deviceToken));
+            params.add(new BasicNameValuePair(ApiConst.DEVICE_DESCRIPTION, deviceDescription));
+            params.add(new BasicNameValuePair(ApiConst.DEVICE_NAME, deviceName));
+            params.add(new BasicNameValuePair(ApiConst.OS_TYPE, osType));
 
             JsonObjectPOST(playbasis, uri, params, new OnResult<JSONObject>() {
                 @Override
                 public void onSuccess(JSONObject result) {
                     if (listener != null) listener.onSuccess("OK");
                 }
-
                 @Override
                 public void onError(HttpError error) {
                     if (listener != null) listener.onError(error);
@@ -544,16 +545,16 @@ public class CommunicationApi  extends Api{
                                  @NonNull String playerId, String message, String templateId,
                                  final OnResult<List<String>>listener ){
         
-        String endpoint = SDKUtil._PUSH_API + "send";
+        String endpoint = SDKUtil._PUSH_API + SEND;
 
         if(isAsync){
 
             JSONObject jsonObject = null;
             try {
                 jsonObject = JsonHelper.newJsonWithToken(playbasis.getAuthenticator());
-                jsonObject.put("player_id", playerId);
-                if (message != null) jsonObject.put("message", message);
-                if (templateId != null) jsonObject.put("template_id", templateId);
+                jsonObject.put(ApiConst.PLAYER_ID, playerId);
+                if (message != null) jsonObject.put(ApiConst.MESSAGE, message);
+                if (templateId != null) jsonObject.put(TEMPLATE_ID, templateId);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -574,9 +575,9 @@ public class CommunicationApi  extends Api{
             String uri = playbasis.getUrl() + endpoint;
 
             List<NameValuePair> params = new ArrayList<>();
-            params.add(new BasicNameValuePair("player_id", playerId));
-            if (message != null) params.add(new BasicNameValuePair("message", message));
-            if (templateId != null) params.add(new BasicNameValuePair("template_id", templateId));
+            params.add(new BasicNameValuePair(ApiConst.PLAYER_ID, playerId));
+            if (message != null) params.add(new BasicNameValuePair(ApiConst.MESSAGE, message));
+            if (templateId != null) params.add(new BasicNameValuePair(TEMPLATE_ID, templateId));
 
             JsonArrayPOST(playbasis, uri, params, new OnResult<JSONArray>() {
                 @Override
@@ -624,17 +625,17 @@ public class CommunicationApi  extends Api{
                                        String message, String templateId,
                                        final OnResult<List<String>>listener ){
 
-        String endpoint = SDKUtil._PUSH_API + "goods";
+        String endpoint = SDKUtil._PUSH_API + ApiConst.GOODS;
 
         if(isAsync){
 
             JSONObject jsonObject = null;
             try {
                 jsonObject = JsonHelper.newJsonWithToken(playbasis.getAuthenticator());
-                jsonObject.put("player_id", playerId);
-                jsonObject.put("ref_id", refId);
-                if (message != null) jsonObject.put("message", message);
-                if (templateId != null) jsonObject.put("template_id", templateId);
+                jsonObject.put(ApiConst.PLAYER_ID, playerId);
+                jsonObject.put(REF_ID, refId);
+                if (message != null) jsonObject.put(ApiConst.MESSAGE, message);
+                if (templateId != null) jsonObject.put(TEMPLATE_ID, templateId);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -656,10 +657,10 @@ public class CommunicationApi  extends Api{
             String uri = playbasis.getUrl() + endpoint;
 
             List<NameValuePair> params = new ArrayList<>();
-            params.add(new BasicNameValuePair("player_id", playerId));
-            params.add(new BasicNameValuePair("ref_id", refId));
-            if (message != null) params.add(new BasicNameValuePair("message", message));
-            if (templateId != null) params.add(new BasicNameValuePair("template_id", templateId));
+            params.add(new BasicNameValuePair(ApiConst.PLAYER_ID, playerId));
+            params.add(new BasicNameValuePair(REF_ID, refId));
+            if (message != null) params.add(new BasicNameValuePair(ApiConst.MESSAGE, message));
+            if (templateId != null) params.add(new BasicNameValuePair(TEMPLATE_ID, templateId));
 
             JsonArrayPOST(playbasis, uri, params, new OnResult<JSONArray>() {
                 @Override

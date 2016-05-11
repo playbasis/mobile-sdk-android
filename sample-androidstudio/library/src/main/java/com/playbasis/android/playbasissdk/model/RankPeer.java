@@ -2,6 +2,7 @@ package com.playbasis.android.playbasissdk.model;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.playbasis.android.playbasissdk.api.ApiConst;
 
 import java.util.ArrayList;
 
@@ -12,7 +13,7 @@ public class RankPeer {
 
     ArrayList<Leaderboard> leaderboards;
 
-    @SerializedName("player_id")
+    @SerializedName(ApiConst.PLAYER_ID)
     @Expose
     String myRankPlayerId;
 

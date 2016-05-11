@@ -1,4 +1,4 @@
-package com.playbasis.android.sample;
+package com.playbasis.android.sample.activities;
 
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -10,6 +10,8 @@ import com.playbasis.android.playbasissdk.api.PlayerApi;
 import com.playbasis.android.playbasissdk.http.HttpError;
 import com.playbasis.android.playbasissdk.http.toolbox.NetworkImageView;
 import com.playbasis.android.playbasissdk.model.Player;
+import com.playbasis.android.sample.R;
+import com.playbasis.android.sample.SampleApplication;
 
 
 public class PlayerActivity extends FragmentActivity {

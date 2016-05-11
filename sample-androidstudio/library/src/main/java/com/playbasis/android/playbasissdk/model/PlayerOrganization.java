@@ -2,6 +2,7 @@ package com.playbasis.android.playbasissdk.model;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.playbasis.android.playbasissdk.api.ApiConst;
 
 import java.util.List;
 
@@ -9,7 +10,7 @@ import java.util.List;
  * Created by TorIsHere on 2/19/2016 AD.
  */
 public class PlayerOrganization {
-    @SerializedName("node_id")
+    @SerializedName(ApiConst.NODE_ID)
     @Expose
     String id;
 

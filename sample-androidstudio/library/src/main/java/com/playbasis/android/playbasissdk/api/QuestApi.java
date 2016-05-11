@@ -2,7 +2,6 @@ package com.playbasis.android.playbasissdk.api;
 
 import android.support.annotation.NonNull;
 
-import com.google.gson.JsonArray;
 import com.playbasis.android.playbasissdk.core.Playbasis;
 import com.playbasis.android.playbasissdk.core.SDKUtil;
 import com.playbasis.android.playbasissdk.helper.JsonHelper;
@@ -19,7 +18,6 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -29,6 +27,12 @@ import java.util.Map;
  */
 public class QuestApi extends Api {
     public static final String TAG = "QuestApi";
+    public static final String CANCEL = "cancel";
+    public static final String JOIN_ALL = "joinAll";
+    public static final String JOIN = "join";
+    public static final String AVAILABLE = "available";
+    public static final String MISSION = "mission";
+    public static final String CONDITIONS = "conditions";
 
     private static void quests(@NonNull Playbasis playbasis, @NonNull String uri, List<NameValuePair> params,  
                                final OnResult<List<Quest>>listener){
@@ -38,20 +42,20 @@ public class QuestApi extends Api {
                 try {
                     //List<Quest> quests = JsonHelper.FromJsonArray(result.getJSONArray("quests"), Quest.class);
                     List<Quest> quests = new ArrayList<Quest>();
-                    JSONArray questsJSON = result.getJSONArray("quests");
+                    JSONArray questsJSON = result.getJSONArray(ApiConst.QUESTS);
                     for (int i = 0; i < questsJSON.length(); i++) {
                         JSONObject questJSON = questsJSON.getJSONObject(i);
                         Quest quest = JsonHelper.FromJsonObject(questJSON, Quest.class);
 
-                        JSONArray conditions = questJSON.getJSONArray("conditions");
+                        JSONArray conditions = questJSON.getJSONArray(CONDITIONS);
                         for(int j = 0; j < conditions.length(); j++) {
                             JSONObject condition = conditions.getJSONObject(j);
-                            if (condition.getString("condition_type").equals("DATETIME_START")) {
-                                quest.setDateStart(condition.getString("condition_value"));
+                            if (condition.getString(ApiConst.CONDITION_TYPE).equals(ApiConst.DATETIME_START)) {
+                                quest.setDateStart(condition.getString(ApiConst.CONDITION_VALUE));
                             }
 
-                            if (condition.getString("condition_type").equals("DATETIME_END")) {
-                                quest.setDateEnd(condition.getString("condition_value"));
+                            if (condition.getString(ApiConst.CONDITION_TYPE).equals(ApiConst.DATETIME_END)) {
+                                quest.setDateEnd(condition.getString(ApiConst.CONDITION_VALUE));
 
                             }
                         }
@@ -78,16 +82,16 @@ public class QuestApi extends Api {
             @Override
             public void onSuccess(JSONObject result) {
                 try {
-                    Quest quest = JsonHelper.FromJsonObject(result.getJSONObject("quest"), Quest.class);
-                    JSONArray conditions = result.getJSONObject("quest").getJSONArray("conditions");
+                    Quest quest = JsonHelper.FromJsonObject(result.getJSONObject(ApiConst.QUEST), Quest.class);
+                    JSONArray conditions = result.getJSONObject(ApiConst.QUEST).getJSONArray(CONDITIONS);
                     for(int j = 0; j < conditions.length(); j++) {
                         JSONObject condition = conditions.getJSONObject(j);
-                        if (condition.getString("condition_type").equals("DATETIME_START")) {
-                            quest.setDateStart(condition.getString("condition_value"));
+                        if (condition.getString(ApiConst.CONDITION_TYPE).equals(ApiConst.DATETIME_START)) {
+                            quest.setDateStart(condition.getString(ApiConst.CONDITION_VALUE));
                         }
 
-                        if (condition.getString("condition_type").equals("DATETIME_END")) {
-                            quest.setDateEnd(condition.getString("condition_value"));
+                        if (condition.getString(ApiConst.CONDITION_TYPE).equals(ApiConst.DATETIME_END)) {
+                            quest.setDateEnd(condition.getString(ApiConst.CONDITION_VALUE));
 
                         }
                     }
@@ -109,14 +113,14 @@ public class QuestApi extends Api {
                               @NonNull String playerId, final OnResult<Event>listener ){
 
         List<NameValuePair> params = new ArrayList<>();
-        params.add(new BasicNameValuePair("player_id", playerId));
+        params.add(new BasicNameValuePair(ApiConst.PLAYER_ID, playerId));
 
         JsonObjectPOST(playbasis, uri, params, new OnResult<JSONObject>() {
             @Override
             @SuppressWarnings("unchecked")
             public void onSuccess(JSONObject result) {
                 try {
-                    Event events = JsonHelper.FromJsonObject(result.getJSONObject("events"), Event.class);
+                    Event events = JsonHelper.FromJsonObject(result.getJSONObject(ApiConst.EVENTS), Event.class);
                     if (listener != null) listener.onSuccess(events);
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -163,7 +167,7 @@ public class QuestApi extends Api {
      */
     public static void missionInfo(@NonNull Playbasis playbasis, @NonNull String questId, @NonNull String missionId,
                                    final OnResult<Mission>listener){
-        String uri = playbasis.getUrl() + SDKUtil._QUEST_URL + questId + "/mission/" + missionId;
+        String uri = playbasis.getUrl() + SDKUtil._QUEST_URL + questId +"/"+ MISSION +"/" + missionId;
 
         JsonObjectGET(playbasis, uri, null, new OnResult<JSONObject>() {
             @Override
@@ -187,9 +191,9 @@ public class QuestApi extends Api {
      */
     public static void questsAvailable(@NonNull Playbasis playbasis, @NonNull String playerId,
                                   final OnResult<List<Quest>>listener){
-        String uri = playbasis.getUrl() + SDKUtil._QUEST_URL + "available";
+        String uri = playbasis.getUrl() + SDKUtil._QUEST_URL + AVAILABLE;
         List<NameValuePair> params = new ArrayList<>();
-        params.add(new BasicNameValuePair("player_id", playerId));
+        params.add(new BasicNameValuePair(ApiConst.PLAYER_ID, playerId));
         quests(playbasis, uri, params,listener);
     }
 
@@ -202,9 +206,9 @@ public class QuestApi extends Api {
      */
     public static void questAvailable(@NonNull Playbasis playbasis, @NonNull String playerId, 
                                       @NonNull String questId, final OnResult<Event> listener) {
-        String uri = playbasis.getUrl() + SDKUtil._QUEST_URL + questId + "/available";
+        String uri = playbasis.getUrl() + SDKUtil._QUEST_URL + questId +"/"+ AVAILABLE;
         List<NameValuePair> params = new ArrayList<>();
-        params.add(new BasicNameValuePair("player_id", playerId));
+        params.add(new BasicNameValuePair(ApiConst.PLAYER_ID, playerId));
         JsonObjectGET(playbasis, uri, params, new OnResult<JSONObject>() {
             @Override
             public void onSuccess(JSONObject result) {
@@ -243,7 +247,7 @@ public class QuestApi extends Api {
     public static void join(@NonNull Playbasis playbasis, boolean isAsync, @NonNull String questId,
                             @NonNull String playerId, final OnResult<Event>listener ){
 
-        String endpoint = SDKUtil._QUEST_URL + questId + "/join";
+        String endpoint = SDKUtil._QUEST_URL + questId +"/"+ JOIN;
         if(isAsync){
 
             JSONObject jsonObject = null;
@@ -292,14 +296,14 @@ public class QuestApi extends Api {
     public static void joinAll(@NonNull Playbasis playbasis, boolean isAsync,
                             @NonNull String playerId, final OnResult<Map<String, Object>>listener ){
 
-        String endpoint = SDKUtil._QUEST_URL + "joinAll";
+        String endpoint = SDKUtil._QUEST_URL + JOIN_ALL;
         
         if(isAsync){
 
             JSONObject jsonObject = null;
             try {
                  jsonObject = JsonHelper.newJsonWithToken(playbasis.getAuthenticator());
-                jsonObject.put("player_id", playerId);
+                jsonObject.put(ApiConst.PLAYER_ID, playerId);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -322,7 +326,7 @@ public class QuestApi extends Api {
             String uri = playbasis.getUrl() + endpoint;
 
             List<NameValuePair> params = new ArrayList<>();
-            params.add(new BasicNameValuePair("player_id", playerId));
+            params.add(new BasicNameValuePair(ApiConst.PLAYER_ID, playerId));
 
             JsonObjectPOST(playbasis, uri, params, new OnResult<JSONObject>() {
                 @Override
@@ -354,7 +358,7 @@ public class QuestApi extends Api {
     public static void cancel(@NonNull Playbasis playbasis, boolean isAsync, @NonNull String questId,
                             @NonNull String playerId, final OnResult<Event>listener ){
 
-        String endpoint = SDKUtil._QUEST_URL + questId + "/cancel";
+        String endpoint = SDKUtil._QUEST_URL + questId +"/"+ CANCEL;
         if(isAsync){
 
             JSONObject jsonObject = null;

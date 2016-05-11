@@ -1,6 +1,7 @@
 package com.playbasis.android.playbasissdk.model;
 
 import com.google.gson.annotations.Expose;
+import com.playbasis.android.playbasissdk.api.ApiConst;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -88,12 +89,12 @@ public class ActionConfig {
             JSONObject jsonActionConfig = json.getJSONObject(jsonKey);
             JSONArray jsonConfig = jsonActionConfig.getJSONArray("config");
             actionConfig.setKey(jsonKey);
-            actionConfig.setName(jsonActionConfig.getString("name"));
+            actionConfig.setName(jsonActionConfig.getString(ApiConst.NAME));
             
             List<Config> configs = new ArrayList<>();
             for (int i = 0; i < jsonConfig.length(); i++) {
                 Config config = new Config();
-                config.setUrl(jsonConfig.getJSONObject(i).getString("url"));
+                config.setUrl(jsonConfig.getJSONObject(i).getString(ApiConst.URL));
                 configs.add(config);
             }
             actionConfig.setConfig(configs);

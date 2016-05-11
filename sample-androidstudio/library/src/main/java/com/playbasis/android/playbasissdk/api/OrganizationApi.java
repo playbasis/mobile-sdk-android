@@ -32,32 +32,54 @@ import java.util.List;
 public class OrganizationApi extends Api {
 
     public static final String TAG = "OrganizationApi";
+    public static final String ORGANIZE_ID = "organize_id";
+    public static final String PARENT_ID = "parent_id";
+    public static final String RESULTS1 = "results";
+    public static final String RESULTS = RESULTS1;
+    public static final String PARENT = "parent";
+    public static final String ORGANIZE = "organize";
+    public static final String SALE_BOARD = "saleBoard";
+    public static final String PAGE = "page";
+    public static final String PREVIOUS = "previous_";
+    public static final String LEADERBOARD = "leaderboard";
+    public static final String MY_RANK = "my_rank";
+    public static final String PLAYERS = "players";
+    public static final String RANKED_VALUE = "ranked_value";
+    public static final String GET_CHILD_NODE = "getChildNode";
+    public static final String ADD_PLAYER = "addPlayer";
+    public static final String REMOVE_PLAYER = "removePlayer";
+    public static final String SET_PLAYER_ROLE = "setPlayerRole";
+    public static final String UNSET_PLAYER_ROLE = "unsetPlayerRole";
+    public static final String SALE_HISTORY = "saleHistory";
+    public static final String ROLE = "role";
+    public static final String UNDER_ORG = "under_org";
+    public static final String NODES_INFO = "nodes_info";
 
     private static void getOrganizations(@NonNull Playbasis playbasis, String organizeId, String searchName, String sort, String order,
                                          Integer offset, Integer limit, final OnResult<ArrayList<Organization>> listener) {
-        String uri = playbasis.getUrl() + "/StoreOrg/organizes";
+        String uri = playbasis.getUrl() +"/"+"StoreOrg/organizes";
         List<NameValuePair> params = new ArrayList<>();
-        if (organizeId != null) params.add(new BasicNameValuePair("id",organizeId));
-        if (searchName != null) params.add(new BasicNameValuePair("search",searchName));
-        if (sort != null) params.add(new BasicNameValuePair("sort",sort));
-        if (order != null) params.add(new BasicNameValuePair("order",order));
-        if (offset != null) params.add(new BasicNameValuePair("offset", String.valueOf(offset)));
-        if (limit != null) params.add(new BasicNameValuePair("limit",String.valueOf(limit)));
+        if (organizeId != null) params.add(new BasicNameValuePair(ApiConst.ID,organizeId));
+        if (searchName != null) params.add(new BasicNameValuePair(ApiConst.SEARCH,searchName));
+        if (sort != null) params.add(new BasicNameValuePair(ContentApi.SORT,sort));
+        if (order != null) params.add(new BasicNameValuePair(ApiConst.ORDER,order));
+        if (offset != null) params.add(new BasicNameValuePair(ApiConst.OFFSET, String.valueOf(offset)));
+        if (limit != null) params.add(new BasicNameValuePair(ApiConst.LIMIT,String.valueOf(limit)));
 
         JsonObjectGET(playbasis, uri, params, new OnResult<JSONObject>() {
             @Override
             public void onSuccess(JSONObject result) {
                 ArrayList<Organization> organizations = new ArrayList<Organization>();
                 try {
-                    JSONArray jsonArray = result.getJSONArray("results");
+                    JSONArray jsonArray = result.getJSONArray(RESULTS1);
                     for(int i=0;i < jsonArray.length();i++){
                         JSONObject jsonObject = jsonArray.getJSONObject(i);
                         Organization organization = JsonHelper.FromJsonObject(jsonObject, Organization.class);
 
-                        if(jsonObject.has("parent")) {
-                            JSONObject parentObject = jsonObject.getJSONObject("parent");
-                            organization.setParentId(parentObject.getString("id"));
-                            organization.setParentName(parentObject.getString("name"));
+                        if(jsonObject.has(PARENT)) {
+                            JSONObject parentObject = jsonObject.getJSONObject(PARENT);
+                            organization.setParentId(parentObject.getString(ApiConst.ID));
+                            organization.setParentName(parentObject.getString(ApiConst.NAME));
                         }
 
                         organizations.add(organization);
@@ -88,34 +110,34 @@ public class OrganizationApi extends Api {
 
     private static void getNodes(@NonNull Playbasis playbasis, String nodeId, String organizeId, String parentId, String searchName, String sort, String order,
                                  Integer offset, Integer limit, final OnResult<ArrayList<Node>> listener) {
-        String uri = playbasis.getUrl() + "/StoreOrg/nodes";
+        String uri = playbasis.getUrl() +"/"+"StoreOrg/nodes";
         List<NameValuePair> params = new ArrayList<>();
-        if (nodeId != null) params.add(new BasicNameValuePair("id",nodeId));
-        if (organizeId != null) params.add(new BasicNameValuePair("organize_id",organizeId));
-        if (parentId != null) params.add(new BasicNameValuePair("parent_id",parentId));
-        if (searchName != null) params.add(new BasicNameValuePair("search",searchName));
-        if (sort != null) params.add(new BasicNameValuePair("sort",sort));
-        if (order != null) params.add(new BasicNameValuePair("order",order));
-        if (offset != null) params.add(new BasicNameValuePair("offset", String.valueOf(offset)));
-        if (limit != null) params.add(new BasicNameValuePair("limit",String.valueOf(limit)));
+        if (nodeId != null) params.add(new BasicNameValuePair(ApiConst.ID,nodeId));
+        if (organizeId != null) params.add(new BasicNameValuePair(ORGANIZE_ID,organizeId));
+        if (parentId != null) params.add(new BasicNameValuePair(PARENT_ID,parentId));
+        if (searchName != null) params.add(new BasicNameValuePair(ApiConst.SEARCH,searchName));
+        if (sort != null) params.add(new BasicNameValuePair(ContentApi.SORT,sort));
+        if (order != null) params.add(new BasicNameValuePair(ApiConst.ORDER,order));
+        if (offset != null) params.add(new BasicNameValuePair(ApiConst.OFFSET, String.valueOf(offset)));
+        if (limit != null) params.add(new BasicNameValuePair(ApiConst.LIMIT,String.valueOf(limit)));
 
         JsonObjectGET(playbasis, uri, params, new OnResult<JSONObject>() {
             @Override
             public void onSuccess(JSONObject result) {
                 ArrayList<Node> nodes = new ArrayList<Node>();
                 try {
-                    JSONArray jsonArray = result.getJSONArray("results");
+                    JSONArray jsonArray = result.getJSONArray(RESULTS);
                     for (int i = 0; i < jsonArray.length(); i++) {
                         JSONObject jsonObject = jsonArray.getJSONObject(i);
                         Node node = JsonHelper.FromJsonObject(jsonObject, Node.class);
 
-                        JSONObject parentObject = jsonObject.getJSONObject("parent");
-                        node.setParentId(parentObject.getString("id"));
-                        node.setParentName(parentObject.getString("name"));
+                        JSONObject parentObject = jsonObject.getJSONObject(PARENT);
+                        node.setParentId(parentObject.getString(ApiConst.ID));
+                        node.setParentName(parentObject.getString(ApiConst.NAME));
 
-                        JSONObject organizeObject = jsonObject.getJSONObject("organize");
-                        node.setOrganizeId(organizeObject.getString("id"));
-                        node.setOrganizeName(organizeObject.getString("name"));
+                        JSONObject organizeObject = jsonObject.getJSONObject(ORGANIZE);
+                        node.setOrganizeId(organizeObject.getString(ApiConst.ID));
+                        node.setOrganizeName(organizeObject.getString(ApiConst.NAME));
 
                         nodes.add(node);
                     }
@@ -180,9 +202,9 @@ public class OrganizationApi extends Api {
      * @param listener Callback interface.
      */
     public static void getPlayersByNodeId(@NonNull Playbasis playbasis, String nodeId, String role, final OnResult<ArrayList<String>> listener) {
-        String uri = playbasis.getUrl() + "/StoreOrg/players/" + nodeId + "/";
+        String uri = playbasis.getUrl() +"/"+"StoreOrg/players"+"/" + nodeId +"/";
         List<NameValuePair> params = new ArrayList<>();
-        if (role != null) params.add(new BasicNameValuePair("role",role));
+        if (role != null) params.add(new BasicNameValuePair(ROLE,role));
 
         JsonArrayGET(playbasis, uri, params, new OnResult<JSONArray>() {
             @Override
@@ -191,7 +213,7 @@ public class OrganizationApi extends Api {
                 try {
                     for (int i = 0; i < result.length(); i++) {
                         JSONObject jsonObject = result.getJSONObject(i);
-                        String playerId = jsonObject.getString("player_id");
+                        String playerId = jsonObject.getString(ApiConst.PLAYER_ID);
 
                         System.out.println("Player ID : " + playerId);
                         playerIds.add(playerId);
@@ -225,23 +247,23 @@ public class OrganizationApi extends Api {
      */
     public static void getSaleBoardByNodeId(@NonNull Playbasis playbasis, String nodeId, int layer, String month, String year, String action, String parameter,
                                             final Integer page, final Integer limit, final OnResult<ArrayList<Sale>> listener) {
-        String uri = playbasis.getUrl() + "/StoreOrg/nodes/" + nodeId + "/saleBoard/" + layer + "/";
+        String uri = playbasis.getUrl() +"/"+"StoreOrg/nodes"+"/" + nodeId +"/"+ SALE_BOARD +"/" + layer +"/";
 
         List<NameValuePair> params = new ArrayList<>();
-        if(month!=null)params.add(new BasicNameValuePair("month", String.valueOf(month)));
-        if(year!=null)params.add(new BasicNameValuePair("year", String.valueOf(year)));
-        if(page!=null)params.add(new BasicNameValuePair("page", String.valueOf(page)));
-        if(limit!=null)params.add(new BasicNameValuePair("limit", String.valueOf(limit)));
+        if(month!=null)params.add(new BasicNameValuePair(ApiConst.MONTH, String.valueOf(month)));
+        if(year!=null)params.add(new BasicNameValuePair(ApiConst.YEAR, String.valueOf(year)));
+        if(page!=null)params.add(new BasicNameValuePair(PAGE, String.valueOf(page)));
+        if(limit!=null)params.add(new BasicNameValuePair(ApiConst.LIMIT, String.valueOf(limit)));
         if(action!=null){
-            params.add(new BasicNameValuePair("action", String.valueOf(action)));
+            params.add(new BasicNameValuePair(ApiConst.ACTION, String.valueOf(action)));
         }
         else{
             action = "sell";
         }
         if(parameter!=null){
-            params.add(new BasicNameValuePair("parameter", String.valueOf(parameter)));
+            params.add(new BasicNameValuePair(ApiConst.PARAMETER, String.valueOf(parameter)));
         }else{
-            parameter = "amount";
+            parameter = ApiConst.AMOUNT;
         }
 
         final String finalParameter = parameter;
@@ -255,8 +277,8 @@ public class OrganizationApi extends Api {
                         Sale sale = JsonHelper.FromJsonObject(jsonObject, Sale.class);
 
                         int currentValue = jsonObject.getInt(finalParameter);
-                        int previousValue = jsonObject.getInt("previous_" + finalParameter);
-                        double percentChanged = jsonObject.getDouble("percent_changed");
+                        int previousValue = jsonObject.getInt(PREVIOUS + finalParameter);
+                        double percentChanged = jsonObject.getDouble(ApiConst.PERCENT_CHANGED);
 
                         sale.setParameterName(finalParameter);
                         sale.setCurrentValue(currentValue);
@@ -294,15 +316,15 @@ public class OrganizationApi extends Api {
      */
     public static void getRankPeerActionByNodeId(@NonNull Playbasis playbasis, String nodeId,String action, final String parameter, final Integer page,
                                                  Integer limit,final String role,String playerId, String month, String year,  final OnResult<CustomRankPeer> listener) {
-        String uri = playbasis.getUrl() + "/StoreOrg/rankPeerByAccAction/" + nodeId + "/" + action + "/" + parameter + "/";
+        String uri = playbasis.getUrl() +"/"+"StoreOrg/rankPeerByAccAction"+"/" + nodeId +"/" + action +"/" + parameter +"/";
 
         List<NameValuePair> params = new ArrayList<>();
-        if(role!=null)params.add(new BasicNameValuePair("role", String.valueOf(role)));
-        if(month!=null)params.add(new BasicNameValuePair("month", String.valueOf(month)));
-        if(year!=null)params.add(new BasicNameValuePair("year", String.valueOf(year)));
-        if(page!=null)params.add(new BasicNameValuePair("page", String.valueOf(page)));
-        if(limit!=null)params.add(new BasicNameValuePair("limit", String.valueOf(limit)));
-        if(playerId!=null)params.add(new BasicNameValuePair("player_id", String.valueOf(playerId)));
+        if(role!=null)params.add(new BasicNameValuePair(ROLE, String.valueOf(role)));
+        if(month!=null)params.add(new BasicNameValuePair(ApiConst.MONTH, String.valueOf(month)));
+        if(year!=null)params.add(new BasicNameValuePair(ApiConst.YEAR, String.valueOf(year)));
+        if(page!=null)params.add(new BasicNameValuePair(PAGE, String.valueOf(page)));
+        if(limit!=null)params.add(new BasicNameValuePair(ApiConst.LIMIT, String.valueOf(limit)));
+        if(playerId!=null)params.add(new BasicNameValuePair(ApiConst.PLAYER_ID, String.valueOf(playerId)));
 
         JsonObjectGET(playbasis, uri, params, new OnResult<JSONObject>() {
             @Override
@@ -311,22 +333,22 @@ public class OrganizationApi extends Api {
                 ArrayList<CustomLeaderboard> leaderboards = new ArrayList<CustomLeaderboard>();
                 try {
 
-                    JSONArray leaderboardObj = result.getJSONArray("leaderboard");
-                    JSONObject myrank = result.getJSONObject("my_rank");
+                    JSONArray leaderboardObj = result.getJSONArray(LEADERBOARD);
+                    JSONObject myrank = result.getJSONObject(MY_RANK);
 
                     for (int i = 0; i < leaderboardObj.length(); i++) {
                         JSONObject jsonObject = leaderboardObj.getJSONObject(i);
                         CustomLeaderboard leaderboard = JsonHelper.FromJsonObject(jsonObject, CustomLeaderboard.class);
 
                         int value = jsonObject.getInt(parameter);
-                        int prev_value = jsonObject.getInt("previous_" + parameter);
-                        double percentChanged = jsonObject.getDouble("percent_changed");
+                        int prev_value = jsonObject.getInt(PREVIOUS + parameter);
+                        double percentChanged = jsonObject.getDouble(ApiConst.PERCENT_CHANGED);
 
                         leaderboard.setPreviousValue(prev_value);
                         leaderboard.setRankedName(parameter);
                         leaderboard.setRankedValue(value);
                         leaderboard.setPercentChange(percentChanged);
-                        JSONArray playerObj = jsonObject.getJSONArray("players");
+                        JSONArray playerObj = jsonObject.getJSONArray(PLAYERS);
 
                         List<PlayerLeaderboard> players = JsonHelper.FromJsonArray(playerObj, PlayerLeaderboard.class);
                         leaderboard.setPlayers(players);
@@ -335,8 +357,8 @@ public class OrganizationApi extends Api {
 
                     }
 
-                    int rank = myrank.getInt("rank");
-                    int rankedValue = myrank.getInt("ranked_value");
+                    int rank = myrank.getInt(ApiConst.RANK);
+                    int rankedValue = myrank.getInt(RANKED_VALUE);
 
                     rankPeer = JsonHelper.FromJsonObject(myrank, CustomRankPeer.class);
                     rankPeer.setLeaderboards(leaderboards);
@@ -367,9 +389,9 @@ public class OrganizationApi extends Api {
      * @param listener Callback interface.
      */
     public static void getChildNodes(@NonNull Playbasis playbasis,@NonNull String nodeId, Integer layer, final OnResult<ArrayList<Node>> listener) {
-        String uri = playbasis.getUrl() + "/StoreOrg/nodes/"+nodeId+"/getChildNode/"+layer+"/";
+        String uri = playbasis.getUrl() +"/"+"StoreOrg/nodes"+"/"+nodeId+"/"+ GET_CHILD_NODE +"/"+layer+"/";
         List<NameValuePair> params = new ArrayList<>();
-        if (nodeId != null) params.add(new BasicNameValuePair("node_id",nodeId));
+        if (nodeId != null) params.add(new BasicNameValuePair(ApiConst.NODE_ID,nodeId));
         if (layer != null) params.add(new BasicNameValuePair("layer",String.valueOf(layer)));
 
 
@@ -378,18 +400,18 @@ public class OrganizationApi extends Api {
             public void onSuccess(JSONObject result) {
                 ArrayList<Node> nodes = new ArrayList<Node>();
                 try {
-                    JSONArray jsonArray = result.getJSONArray("results");
+                    JSONArray jsonArray = result.getJSONArray(RESULTS1);
                     for (int i = 0; i < jsonArray.length(); i++) {
                         JSONObject jsonObject = jsonArray.getJSONObject(i);
                         Node node = JsonHelper.FromJsonObject(jsonObject, Node.class);
 
-                        JSONObject parentObject = jsonObject.getJSONObject("parent");
-                        node.setParentId(parentObject.getString("id"));
-                        node.setParentName(parentObject.getString("name"));
+                        JSONObject parentObject = jsonObject.getJSONObject(PARENT);
+                        node.setParentId(parentObject.getString(ApiConst.ID));
+                        node.setParentName(parentObject.getString(ApiConst.NAME));
 
-                        JSONObject organizeObject = jsonObject.getJSONObject("organize");
-                        node.setOrganizeId(organizeObject.getString("id"));
-                        node.setOrganizeName(organizeObject.getString("name"));
+                        JSONObject organizeObject = jsonObject.getJSONObject(ORGANIZE);
+                        node.setOrganizeId(organizeObject.getString(ApiConst.ID));
+                        node.setOrganizeName(organizeObject.getString(ApiConst.NAME));
 
                         nodes.add(node);
                     }
@@ -418,13 +440,13 @@ public class OrganizationApi extends Api {
      * @param listener Callback interface.
      */
     public static void saleReport(@NonNull Playbasis playbasis,@NonNull String nodeId, String month, String year, String action, String parameter, final OnResult<SaleReport> listener) {
-        String uri = playbasis.getUrl() + "/StoreOrg/nodes/"+nodeId+"/saleReport/";
+        String uri = playbasis.getUrl() +"/"+"StoreOrg/nodes"+"/"+nodeId+"/"+ ApiConst.SALE_REPORT +"/";
         List<NameValuePair> params = new ArrayList<>();
-        if (nodeId != null) params.add(new BasicNameValuePair("node_id",nodeId));
-        if (month != null) params.add(new BasicNameValuePair("month",month));
-        if (year != null) params.add(new BasicNameValuePair("year",year));
-        if (action != null) params.add(new BasicNameValuePair("action",action));
-        if (parameter != null) params.add(new BasicNameValuePair("parameter",parameter));
+        if (nodeId != null) params.add(new BasicNameValuePair(ApiConst.NODE_ID,nodeId));
+        if (month != null) params.add(new BasicNameValuePair(ApiConst.MONTH,month));
+        if (year != null) params.add(new BasicNameValuePair(ApiConst.YEAR,year));
+        if (action != null) params.add(new BasicNameValuePair(ApiConst.ACTION,action));
+        if (parameter != null) params.add(new BasicNameValuePair(ApiConst.PARAMETER,parameter));
 
         JsonObjectGET(playbasis, uri, params, new OnResult<JSONObject>() {
             @Override
@@ -432,9 +454,9 @@ public class OrganizationApi extends Api {
                 SaleReport report = new SaleReport();
                 try {
 
-                    report.setAmount(result.getInt("amount"));
-                    report.setPreviousAmount(result.getInt("previous_amount"));
-                    report.setPercentChanged(result.getDouble("percent_changed"));
+                    report.setAmount(result.getInt(ApiConst.AMOUNT));
+                    report.setPreviousAmount(result.getInt(ApiConst.PREVIOUS_AMOUNT));
+                    report.setPercentChanged(result.getDouble(ApiConst.PERCENT_CHANGED));
 
                     listener.onSuccess(report);
                 } catch (JSONException e) {
@@ -459,7 +481,7 @@ public class OrganizationApi extends Api {
      */
     public static void addPlayerToNode(@NonNull Playbasis playbasis, @NonNull String nodeId, @NonNull String playerId,
                                        final OnResult<Boolean> listener){
-        String uri = playbasis.getUrl() + "/StoreOrg/nodes/"+nodeId+"/addPlayer/"+playerId+"/";
+        String uri = playbasis.getUrl() +"/"+"StoreOrg/nodes"+"/"+nodeId+"/"+ ADD_PLAYER +"/"+playerId+"/";
         JsonObjectPOST(playbasis, uri, null, new OnResult<JSONObject>() {
             @Override
             public void onSuccess(JSONObject result) {
@@ -482,7 +504,7 @@ public class OrganizationApi extends Api {
      */
     public static void removePlayerFromNode(@NonNull Playbasis playbasis, @NonNull String nodeId, @NonNull String playerId,
                                             final OnResult<Boolean> listener){
-        String uri = playbasis.getUrl() + "/StoreOrg/nodes/"+nodeId+"/removePlayer/"+playerId+"/";
+        String uri = playbasis.getUrl() +"/"+"StoreOrg/nodes"+"/"+nodeId+"/"+ REMOVE_PLAYER +"/"+playerId+"/";
         JsonObjectPOST(playbasis, uri, null, new OnResult<JSONObject>() {
             @Override
             public void onSuccess(JSONObject result) {
@@ -506,9 +528,9 @@ public class OrganizationApi extends Api {
      */
     public static void setPlayerRole(@NonNull Playbasis playbasis, @NonNull String nodeId, @NonNull String playerId, @NonNull String role,
                                      final OnResult<Boolean> listener){
-        String uri = playbasis.getUrl() + "/StoreOrg/nodes/"+nodeId+"/setPlayerRole/"+playerId+"/";
+        String uri = playbasis.getUrl() +"/"+"StoreOrg/nodes"+"/"+nodeId+"/"+ SET_PLAYER_ROLE +"/"+playerId+"/";
         List<NameValuePair> params = new ArrayList<>();
-        params.add(new BasicNameValuePair("role",role));
+        params.add(new BasicNameValuePair(ROLE,role));
         JsonObjectPOST(playbasis, uri, params, new OnResult<JSONObject>() {
             @Override
             public void onSuccess(JSONObject result) {
@@ -532,9 +554,9 @@ public class OrganizationApi extends Api {
      */
     public static void unsetPlayerRole(@NonNull Playbasis playbasis, @NonNull String nodeId, @NonNull String playerId, @NonNull String role,
                                        final OnResult<Boolean> listener){
-        String uri = playbasis.getUrl() + "/StoreOrg/nodes/"+nodeId+"/unsetPlayerRole/"+playerId+"/";
+        String uri = playbasis.getUrl() +"/"+"StoreOrg/nodes"+"/"+nodeId+"/"+ UNSET_PLAYER_ROLE +"/"+playerId+"/";
         List<NameValuePair> params = new ArrayList<>();
-        params.add(new BasicNameValuePair("role",role));
+        params.add(new BasicNameValuePair(ROLE,role));
         JsonObjectPOST(playbasis, uri, params, new OnResult<JSONObject>() {
             @Override
             public void onSuccess(JSONObject result) {
@@ -551,15 +573,15 @@ public class OrganizationApi extends Api {
     public static void getSalesHistory(@NonNull Playbasis playbasis, @NonNull String nodeId, @NonNull final Integer count,
                                        Integer month, Integer year, String action, String parameter, final OnResult<ArrayList<SaleReport>> listener) {
 
-        String uri = playbasis.getUrl() + "/StoreOrg/nodes/" + nodeId + "/saleHistory/" + count;
+        String uri = playbasis.getUrl() +"/"+"StoreOrg/nodes"+"/" + nodeId +"/"+ SALE_HISTORY +"/" + count;
         final List<NameValuePair> params = new ArrayList<>();
-        if (month != null) params.add(new BasicNameValuePair("month", String.valueOf(month)));
-        if (year != null) params.add(new BasicNameValuePair("year",String.valueOf(year)));
-        if (action != null) params.add(new BasicNameValuePair("action",action));
-        if (parameter != null) params.add(new BasicNameValuePair("parameter",parameter));
+        if (month != null) params.add(new BasicNameValuePair(ApiConst.MONTH, String.valueOf(month)));
+        if (year != null) params.add(new BasicNameValuePair(ApiConst.YEAR,String.valueOf(year)));
+        if (action != null) params.add(new BasicNameValuePair(ApiConst.ACTION,action));
+        if (parameter != null) params.add(new BasicNameValuePair(ApiConst.PARAMETER,parameter));
 
         // We add count param in params in order to deal with return JSON
-        params.add(new BasicNameValuePair("count", String.valueOf(count)));
+        params.add(new BasicNameValuePair(ApiConst.COUNT, String.valueOf(count)));
 
         JsonObjectGET(playbasis, uri, params, new OnResult<JSONObject>() {
             @Override
@@ -570,14 +592,14 @@ public class OrganizationApi extends Api {
                 Integer year = null;
                 Integer count = null;
                 for (NameValuePair param : params) {
-                    if (param.getName() == "count") {
+                    if (param.getName() == ApiConst.COUNT) {
                         count = Integer.parseInt(param.getValue());
                     }
-                    if (param.getName() == "month") {
+                    if (param.getName() == ApiConst.MONTH) {
                         month = Integer.parseInt(param.getValue());
 
                     }
-                    if (param.getName() == "year") {
+                    if (param.getName() == ApiConst.YEAR) {
                         year = Integer.parseInt(param.getValue());
                     }
                 }
@@ -639,15 +661,15 @@ public class OrganizationApi extends Api {
     public static void getRankPeer(@NonNull Playbasis playbasis, @NonNull String nodeId, @NonNull final String rankBy, final Integer page,
                                        final Integer limit, final Boolean underOrg, String role, String playerId, final Integer month,  final Integer year, final OnResult<RankPeer> listener) {
 
-        String uri = playbasis.getUrl() + "/StoreOrg/rankPeer/" + nodeId + "/" + rankBy;
+        String uri = playbasis.getUrl() +"/"+"StoreOrg/rankPeer"+"/" + nodeId +"/" + rankBy;
         final List<NameValuePair> params = new ArrayList<>();
-        if (month != null) params.add(new BasicNameValuePair("month", String.valueOf(month)));
-        if (year != null) params.add(new BasicNameValuePair("year",String.valueOf(year)));
-        if (page != null) params.add(new BasicNameValuePair("page",String.valueOf(page)));
-        if (limit != null) params.add(new BasicNameValuePair("limit",String.valueOf(limit)));
-        if (role != null) params.add(new BasicNameValuePair("role",role));
-        if (playerId != null) params.add(new BasicNameValuePair("player_id",playerId));
-        if (underOrg != null)params.add(new BasicNameValuePair("under_org", String.valueOf(underOrg)));
+        if (month != null) params.add(new BasicNameValuePair(ApiConst.MONTH, String.valueOf(month)));
+        if (year != null) params.add(new BasicNameValuePair(ApiConst.YEAR,String.valueOf(year)));
+        if (page != null) params.add(new BasicNameValuePair(PAGE,String.valueOf(page)));
+        if (limit != null) params.add(new BasicNameValuePair(ApiConst.LIMIT,String.valueOf(limit)));
+        if (role != null) params.add(new BasicNameValuePair(ROLE,role));
+        if (playerId != null) params.add(new BasicNameValuePair(ApiConst.PLAYER_ID,playerId));
+        if (underOrg != null)params.add(new BasicNameValuePair(UNDER_ORG, String.valueOf(underOrg)));
 
         JsonObjectGET(playbasis, uri, params, new OnResult<JSONObject>() {
             @Override
@@ -656,23 +678,23 @@ public class OrganizationApi extends Api {
                 ArrayList<Leaderboard> leaderboards = new ArrayList<Leaderboard>();
                 try {
 
-                    JSONArray leaderboardObj = result.getJSONArray("leaderboard");
-                    JSONObject myrank = result.getJSONObject("my_rank");
+                    JSONArray leaderboardObj = result.getJSONArray(LEADERBOARD);
+                    JSONObject myrank = result.getJSONObject(MY_RANK);
 
                     for (int i = 0 ; i < leaderboardObj.length(); i++){
                         JSONObject jsonObject = leaderboardObj.getJSONObject(i);
                         Leaderboard leaderboard = JsonHelper.FromJsonObject(jsonObject, Leaderboard.class);
 
                         int value = jsonObject.getInt(rankBy);
-                        int prev_value = jsonObject.getInt("previous_"+rankBy);
-                        double percentChanged = jsonObject.getDouble("percent_changed");
+                        int prev_value = jsonObject.getInt(PREVIOUS +rankBy);
+                        double percentChanged = jsonObject.getDouble(ApiConst.PERCENT_CHANGED);
 
                         leaderboard.setPreviousValue(prev_value);
                         leaderboard.setRankedName(rankBy);
                         leaderboard.setRankedValue(value);
                         leaderboard.setPercentChange(percentChanged);
 
-                        JSONArray nodesArray = jsonObject.getJSONArray("nodes_info");
+                        JSONArray nodesArray = jsonObject.getJSONArray(NODES_INFO);
 
                         List<NodeLeaderboard> nodes = JsonHelper.FromJsonArray(nodesArray, NodeLeaderboard.class);
                         leaderboard.setNodes(nodes);
@@ -681,9 +703,8 @@ public class OrganizationApi extends Api {
 
                     }
 
-                    int rank = myrank.getInt("rank");
-                    int rankedValue = myrank.getInt("ranked_value");
-
+                    int rank = myrank.getInt(ApiConst.RANK);
+                    int rankedValue = myrank.getInt(RANKED_VALUE);
                     rankPeer  = JsonHelper.FromJsonObject(myrank, RankPeer.class);
                     rankPeer.setLeaderboards(leaderboards);
                     rankPeer.setRank(rank);

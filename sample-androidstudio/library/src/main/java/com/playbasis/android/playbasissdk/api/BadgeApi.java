@@ -20,6 +20,7 @@ import java.util.List;
  */
 public class BadgeApi extends Api {
     public static final String TAG = "BadgeApi";
+    public static final String BADGES = "badges";
 
     /**
      * Returns information about all available badges for the current site.
@@ -33,7 +34,7 @@ public class BadgeApi extends Api {
             @Override
             public void onSuccess(JSONObject result) {
                 try {
-                    List<Badge> badges = JsonHelper.FromJsonArray(result.getJSONArray("badges"), Badge.class);
+                    List<Badge> badges = JsonHelper.FromJsonArray(result.getJSONArray(BADGES), Badge.class);
                     if (listener != null) listener.onSuccess(badges);
                 } catch (JSONException e) {
                     if (listener != null) listener.onError(new HttpError(e));
@@ -61,7 +62,7 @@ public class BadgeApi extends Api {
             @Override
             public void onSuccess(JSONObject result) {
                 try {
-                    Badge badge = JsonHelper.FromJsonObject(result.getJSONObject("badge"), Badge.class);
+                    Badge badge = JsonHelper.FromJsonObject(result.getJSONObject(ApiConst.BADGE), Badge.class);
                     if (listener != null) listener.onSuccess(badge);
                 } catch (JSONException e) {
                     if (listener != null) listener.onError(new HttpError(e));

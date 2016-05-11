@@ -1,28 +1,21 @@
-package com.playbasis.android.sample;
+package com.playbasis.android.sample.activities;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
-import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.playbasis.android.playbasissdk.api.BadgeApi;
+import com.playbasis.android.playbasissdk.api.ApiConst;
 import com.playbasis.android.playbasissdk.api.OnResult;
 import com.playbasis.android.playbasissdk.http.HttpError;
-import com.playbasis.android.playbasissdk.model.Badge;
 import com.playbasis.android.playbasissdk.model.Rule;
-import com.playbasis.android.playbasissdk.model.RuleAction;
 import com.playbasis.android.playbasissdk.model.UIEvent;
-import com.playbasis.android.playbasissdk.widget.PlayerView;
-
-import java.util.List;
+import com.playbasis.android.sample.BadgeWidget;
+import com.playbasis.android.sample.R;
+import com.playbasis.android.sample.SampleApplication;
 
 
 public class BadgeActivity extends FragmentActivity {
@@ -55,7 +48,7 @@ public class BadgeActivity extends FragmentActivity {
                         if(result.getEvents().size() > 0){
                             BadgeWidget badgeWidget = new BadgeWidget();
                             badgeWidget.setBadge(result.getEvents().get(0).getBadgeData());
-                            badgeWidget.show(getSupportFragmentManager(), "fragment_player_info");
+                            badgeWidget.show(getSupportFragmentManager(), ApiConst.FRAGMENT_PLAYER_INFO);
                         }else{
                             Toast.makeText(BadgeActivity.this, "No badge receive", Toast.LENGTH_SHORT).show();
                         }

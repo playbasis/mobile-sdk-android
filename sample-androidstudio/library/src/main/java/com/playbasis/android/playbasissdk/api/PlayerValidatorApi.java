@@ -64,7 +64,7 @@ public class PlayerValidatorApi extends PlayerApi {
         AbstractPlayerView playerView = playbasis.getPlayerView() == null ?
                 new PlayerView() : playbasis.getPlayerView();
         playerView.setPlayer(player);
-        playerView.show(fm, "fragment_player_info");
+        playerView.show(fm, ApiConst.FRAGMENT_PLAYER_INFO);
         playerView.setPlayerListener(new PlayerView.OnPlayer() {
             @Override
             public void onPlayer(Player player) {
@@ -133,7 +133,7 @@ public class PlayerValidatorApi extends PlayerApi {
                     AbstractPlayerView playerView = playbasis.getPlayerEmailView() == null ?
                             new PlayerEmailView() : playbasis.getPlayerEmailView();
                     playerView.setPlayer(player);
-                    playerView.show(fm, "fragment_player_info");
+                    playerView.show(fm, ApiConst.FRAGMENT_PLAYER_INFO);
                     playerView.setPlayerListener(new PlayerView.OnPlayer() {
                         @Override
                         public void onPlayer(Player player) {
@@ -189,7 +189,7 @@ public class PlayerValidatorApi extends PlayerApi {
                     AbstractPlayerView playerView = playbasis.getPlayerSmsView() == null ?
                             new PlayerSmsView() : playbasis.getPlayerSmsView();
                     playerView.setPlayer(player);
-                    playerView.show(fm, "fragment_player_info");
+                    playerView.show(fm, ApiConst.FRAGMENT_PLAYER_INFO);
                     playerView.setPlayerListener(new PlayerView.OnPlayer() {
                         @Override
                         public void onPlayer(Player player) {

@@ -2,6 +2,7 @@ package com.playbasis.android.playbasissdk.model;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.playbasis.android.playbasissdk.api.ApiConst;
 
 /**
  * Created by Nick-Playbasis on 1/8/2016.
@@ -9,11 +10,11 @@ import com.google.gson.annotations.SerializedName;
 public class Sale {
 
 
-    @SerializedName("node_id")
+    @SerializedName(ApiConst.NODE_ID)
     @Expose
     String nodeId;
 
-    @SerializedName("name")
+    @SerializedName(ApiConst.NAME)
     @Expose
     String nodeName;
 

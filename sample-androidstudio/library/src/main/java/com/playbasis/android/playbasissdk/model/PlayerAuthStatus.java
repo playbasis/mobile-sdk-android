@@ -2,6 +2,7 @@ package com.playbasis.android.playbasissdk.model;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.playbasis.android.playbasissdk.api.ApiConst;
 
 /**
  * Created by TorIsHere on 1/5/2016 AD.
@@ -12,7 +13,7 @@ public class PlayerAuthStatus {
     @Expose
     private String playerId;
 
-    @SerializedName("session_id")
+    @SerializedName(ApiConst.SESSION_ID)
     @Expose
     private String sessionId;
 

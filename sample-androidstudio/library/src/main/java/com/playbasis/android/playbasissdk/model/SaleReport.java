@@ -1,6 +1,7 @@
 package com.playbasis.android.playbasissdk.model;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.playbasis.android.playbasissdk.api.ApiConst;
 
 /**
  * Created by Pongsakorn on 1/8/2016.
@@ -15,11 +16,11 @@ public class SaleReport {
     @Expose
     Integer amount;
 
-    @SerializedName("previous_amount")
+    @SerializedName(ApiConst.PREVIOUS_AMOUNT)
     @Expose
     Integer previousAmount;
 
-    @SerializedName("percent_changed")
+    @SerializedName(ApiConst.PERCENT_CHANGED)
     @Expose
     double percentChanged;
 

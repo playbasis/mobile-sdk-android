@@ -2,6 +2,7 @@ package com.playbasis.android.playbasissdk.model;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.playbasis.android.playbasissdk.api.ApiConst;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,7 +11,7 @@ import java.util.List;
  * Created by Nick-Playbasis on 1/12/2016.
  */
 public class CustomLeaderboard {
-    @SerializedName("name")
+    @SerializedName(ApiConst.NAME)
     @Expose
     String nodeName;
 

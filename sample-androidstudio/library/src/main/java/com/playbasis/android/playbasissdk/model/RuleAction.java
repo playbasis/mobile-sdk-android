@@ -1,5 +1,7 @@
 package com.playbasis.android.playbasissdk.model;
 
+import com.playbasis.android.playbasissdk.api.ApiConst;
+
 /**
  * Created by gregoire barret on 2/24/15.
  * For PlayBasisSdk project.
@@ -48,11 +50,11 @@ public enum RuleAction {
     /**
      * Login action.
      */
-    LOGIN("login"),
+    LOGIN(ApiConst.LOGIN),
     /**
      * Logout action.
      */
-    LOGOUT("logout"),
+    LOGOUT(ApiConst.LOGOUT),
     /**
      * Love action.
      */
@@ -60,7 +62,7 @@ public enum RuleAction {
     /**
      * Order action.
      */
-    ORDER("order"),
+    ORDER(ApiConst.ORDER),
     /**
      * Payment action.
      */
@@ -72,11 +74,11 @@ public enum RuleAction {
     /**
      * Redeem action.
      */
-    REDEEM("redeem"),
+    REDEEM(ApiConst.REDEEM),
     /**
      * Register action.
      */
-    REGISTER("register"),
+    REGISTER(ApiConst.REGISTER),
     /**
      * Review action.
      */
