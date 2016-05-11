@@ -52,6 +52,7 @@ public class ApiConst {
     public static final String EMAIL = "email";
     public static final String USERNAME = "username";
     public static final String DEVICE_ID = "device_id";
+    public static final String DEVICE_TOKEN = "device_token";
     public static final String PASSWORD = "password";
     public static final String REQUEST_OTPCODE = "requestOTPCode";
     public static final String VERIFY_OTPCODE = "verifyOTPCode";
