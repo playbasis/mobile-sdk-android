@@ -83,7 +83,4 @@ public class ApiConst {
     public static final String OS_TYPE = "os_type";
     public static final String DEVICE_REGISTRATION = "deviceRegistration";
 
-    class JsonObj{
-
-    }
 }
