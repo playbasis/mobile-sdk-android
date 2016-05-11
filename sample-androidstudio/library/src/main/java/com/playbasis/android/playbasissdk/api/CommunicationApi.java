@@ -24,15 +24,10 @@ import java.util.List;
 public class CommunicationApi  extends Api{
     public static final String TAG = "CommunicationApi";
     public static final String TEMPLATE_ID = "template_id";
-    public static final String DEVICE_TOKEN = "device_token";
-    public static final String DEVICE_DESCRIPTION = "device_description";
-    public static final String DEVICE_NAME = "device_name";
-    public static final String OS_TYPE = "os_type";
     public static final String REF_ID = "ref_id";
     public static final String UPDATE_PLAYER_FAIL = "update player fail";
     public static final String SUBJECT = "subject";
     public static final String SEND = "send";
-    public static final String DEVICE_REGISTRATION = "deviceRegistration";
 
     /**
      * Send email to a player.
@@ -475,7 +470,7 @@ public class CommunicationApi  extends Api{
     public static void deviceRegistration(@NonNull Playbasis playbasis, boolean isAsync, @NonNull String playerId, @NonNull String deviceToken,
                                           @NonNull String deviceDescription, @NonNull String deviceName, @NonNull String osType, final OnResult<String>listener) {
 
-        String endpoint = SDKUtil._PUSH_API + DEVICE_REGISTRATION +"/";
+        String endpoint = SDKUtil._PUSH_API + ApiConst.DEVICE_REGISTRATION +"/";
 
         if(isAsync){
 
@@ -483,10 +478,10 @@ public class CommunicationApi  extends Api{
             try {
                 jsonObject = JsonHelper.newJsonWithToken(playbasis.getAuthenticator());
                 jsonObject.put(ApiConst.PLAYER_ID, playerId);
-                jsonObject.put(DEVICE_TOKEN, deviceToken);
-                jsonObject.put(DEVICE_DESCRIPTION, deviceDescription);
-                jsonObject.put(DEVICE_NAME, deviceName);
-                jsonObject.put(OS_TYPE, osType);
+                jsonObject.put(ApiConst.DEVICE_TOKEN, deviceToken);
+                jsonObject.put(ApiConst.DEVICE_DESCRIPTION, deviceDescription);
+                jsonObject.put(ApiConst.DEVICE_NAME, deviceName);
+                jsonObject.put(ApiConst.OS_TYPE, osType);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -501,24 +496,21 @@ public class CommunicationApi  extends Api{
 
                 }
             });
-
-
         } else {
             String uri = playbasis.getUrl() + endpoint;
 
             List<NameValuePair> params = new ArrayList<>();
             params.add(new BasicNameValuePair(ApiConst.PLAYER_ID, playerId));
-            params.add(new BasicNameValuePair(DEVICE_TOKEN, deviceToken));
-            params.add(new BasicNameValuePair(DEVICE_DESCRIPTION, deviceDescription));
-            params.add(new BasicNameValuePair(DEVICE_NAME, deviceName));
-            params.add(new BasicNameValuePair(OS_TYPE, osType));
+            params.add(new BasicNameValuePair(ApiConst.DEVICE_TOKEN, deviceToken));
+            params.add(new BasicNameValuePair(ApiConst.DEVICE_DESCRIPTION, deviceDescription));
+            params.add(new BasicNameValuePair(ApiConst.DEVICE_NAME, deviceName));
+            params.add(new BasicNameValuePair(ApiConst.OS_TYPE, osType));
 
             JsonObjectPOST(playbasis, uri, params, new OnResult<JSONObject>() {
                 @Override
                 public void onSuccess(JSONObject result) {
                     if (listener != null) listener.onSuccess("OK");
                 }
-
                 @Override
                 public void onError(HttpError error) {
                     if (listener != null) listener.onError(error);

@@ -1,12 +1,7 @@
-package com.playbasis.android.sample;
+package com.playbasis.android.sample.activities;
 
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -14,17 +9,14 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.playbasis.android.playbasissdk.api.GoodsApi;
 import com.playbasis.android.playbasissdk.api.OnResult;
 import com.playbasis.android.playbasissdk.api.QuestApi;
-import com.playbasis.android.playbasissdk.api.RedeemApi;
 import com.playbasis.android.playbasissdk.http.HttpError;
 import com.playbasis.android.playbasissdk.http.toolbox.NetworkImageView;
-import com.playbasis.android.playbasissdk.model.Goods;
 import com.playbasis.android.playbasissdk.model.Quest;
-import com.playbasis.android.playbasissdk.model.RedeemGood;
-
-import java.util.List;
+import com.playbasis.android.sample.QuestAdapter;
+import com.playbasis.android.sample.R;
+import com.playbasis.android.sample.SampleApplication;
 
 
 public class QuestActivity extends FragmentActivity {
