@@ -595,29 +595,36 @@ public class PlayerApi extends Api{
      *  Tell Playbasis system that a player has logged out.
      * @param playbasis Playbasis object.
      * @param playerId Id of the player.
+     * @param sessionId session ID
      * @param listener Callback interface.
      */
-    public static void logout(@NonNull Playbasis playbasis, @NonNull String playerId,
+    public static void logout(@NonNull Playbasis playbasis, @NonNull String playerId, @Nullable String sessionId,
                               final OnResult<Boolean> listener){
-        logout(playbasis, false, playerId, listener);
+        logout(playbasis, false, playerId, sessionId,listener);
     }
 
     /**
-     * {@link #logout(com.playbasis.android.playbasissdk.core.Playbasis, String, OnResult)}
+     * {@link logout(com.playbasis.android.playbasissdk.core.Playbasis, String, OnResult)}
      * @param playbasis Playbasis object.
      * @param isAsync Make the request async.
      * @param playerId Id of the player.
+     * @param sessionId session ID
      * @param listener Callback interface.
      */
     public static void logout(@NonNull Playbasis playbasis, boolean isAsync, @NonNull String playerId,
-                              final OnResult<Boolean> listener){
+                              @Nullable String sessionId ,final OnResult<Boolean> listener){
 
         String endpoint =  SDKUtil._PLAYER_URL + playerId +"/"+ ApiConst.LOGOUT;
+
+        List<NameValuePair> params = new ArrayList<>();
+        if(sessionId != null) params.add(new BasicNameValuePair("session_id", sessionId));
+
         if(isAsync){
 
             JSONObject jsonObject = null;
             try {
                 jsonObject = JsonHelper.newJsonWithToken(playbasis.getAuthenticator());
+                if(sessionId != null)  jsonObject.put("session_id", sessionId);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -635,11 +642,11 @@ public class PlayerApi extends Api{
             });
 
 
-        }else {
+        } else {
 
             String uri = playbasis.getUrl() + endpoint;
 
-            JsonObjectPOST(playbasis, uri, null, new OnResult<JSONObject>() {
+            JsonObjectPOST(playbasis, uri, params, new OnResult<JSONObject>() {
                 @Override
                 public void onSuccess(JSONObject result) {
                     if (listener != null) listener.onSuccess(true);
