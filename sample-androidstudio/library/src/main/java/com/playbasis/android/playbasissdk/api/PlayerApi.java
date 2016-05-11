@@ -1513,8 +1513,8 @@ public class PlayerApi extends Api{
     }
 
     public static void auth(@NonNull Playbasis playbasis, String email, String username,
-                            @NonNull String password, String deviceId, final OnResult<String> listener) {
-        auth(playbasis, false, email, username, password, deviceId, listener);
+                            @NonNull String password, String deviceToken, final OnResult<String> listener) {
+        auth(playbasis, false, email, username, password, deviceToken, listener);
     }
 
 
@@ -1525,11 +1525,11 @@ public class PlayerApi extends Api{
      * @param email User's email.
      * @param username User's username.
      * @param password User's password.
-     * @param deviceId User's deviceId
+     * @param deviceToken User's deviceToken
      * @param listener Callback Interface
      */
     private static void auth(@NonNull Playbasis playbasis, boolean isAsync, String email, String username,
-                            @NonNull String password, String deviceId, final OnResult<String> listener) {
+                            @NonNull String password, String deviceToken, final OnResult<String> listener) {
 
         String endpoint =  SDKUtil._PLAYER_URL + ApiConst.AUTH;
         String uri = playbasis.getUrl() + endpoint;
@@ -1541,8 +1541,8 @@ public class PlayerApi extends Api{
         if (username != null) {
             params.add(new BasicNameValuePair(ApiConst.USERNAME, username));
         }
-        if (deviceId != null) {
-            params.add(new BasicNameValuePair(ApiConst.DEVICE_ID, deviceId));
+        if (deviceToken != null) {
+            params.add(new BasicNameValuePair(ApiConst.DEVICE_TOKEN, deviceToken));
         }
         params.add(new BasicNameValuePair(ApiConst.PASSWORD, password));
 
