@@ -1604,16 +1604,21 @@ public class PlayerApi extends Api{
         requestOtp(playbasis,isAsync, playerId,null,null,null,null, listener);
     }
 
-    private static void requestOtp(@NonNull Playbasis playbasis, boolean isAsync, String playerId, String deviceToken, String deviceDescription, String deviceName, String osType, final OnResult<String> listener) {
+    private static void requestOtp(@NonNull Playbasis playbasis, boolean isAsync,@NonNull String playerId, String deviceToken, String deviceDescription, String deviceName, String osType, final OnResult<String> listener) {
 
         String endpoint =  SDKUtil._PLAYER_URL + ApiConst.AUTH+"/" + playerId +"/"+ ApiConst.REQUEST_OTPCODE;
         String uri = playbasis.getUrl() + endpoint;
 
         List<NameValuePair> httpParams = new ArrayList<>();
         httpParams.add(new BasicNameValuePair(ApiConst.PLAYER_ID, playerId));
+
+        if(deviceToken!=null)
         httpParams.add(new BasicNameValuePair(ApiConst.DEVICE_TOKEN, deviceToken));
+        if(deviceDescription!=null)
         httpParams.add(new BasicNameValuePair(ApiConst.DEVICE_DESCRIPTION, deviceDescription));
+        if(deviceName!=null)
         httpParams.add(new BasicNameValuePair(ApiConst.DEVICE_NAME, deviceName));
+        if(osType!=null)
         httpParams.add(new BasicNameValuePair(ApiConst.OS_TYPE, osType));
 
         JsonObjectPOST(playbasis, uri, httpParams, new OnResult<JSONObject>() {
