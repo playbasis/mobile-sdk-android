@@ -1695,6 +1695,7 @@ public class PlayerApi extends Api{
             String uri = playbasis.getUrl() + endpoint;
             List<NameValuePair> params = new ArrayList<>();
             params.add(new BasicNameValuePair(ApiConst.PLAYER_ID, playerId));
+            params.add(new BasicNameValuePair(PHONE_NUMBER,phoneNumber));
             params.add(new BasicNameValuePair(ApiConst.DEVICE_TOKEN, deviceToken));
             params.add(new BasicNameValuePair(ApiConst.DEVICE_DESCRIPTION, deviceDescription));
             params.add(new BasicNameValuePair(ApiConst.DEVICE_NAME, deviceName));

@@ -70,7 +70,7 @@ public class ApiConst {
     public static final String SESSION = "session";
     public static final String MESSAGE = "message";
     public static final String ID = "id";
-    public static final String CATEGORY = "Content/category";//https://playbasis.atlassian.net/browse/DKP-405
+    public static final String CATEGORY = "category";
     public static final String SEARCH = "search";
     public static final String ORDER = "order";
     public static final String URL = "url";
@@ -83,4 +83,7 @@ public class ApiConst {
     public static final String OS_TYPE = "os_type";
     public static final String DEVICE_REGISTRATION = "deviceRegistration";
 
+    class JsonObj{
+
+    }
 }
