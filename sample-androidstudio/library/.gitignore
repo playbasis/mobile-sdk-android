@@ -1,1 +1,12 @@
 /build
+
+# for local ant build
+AndroidManifest.xml
+ant.properties
+build.xml
+proguard-project.txt
+project.properties
+res/
+MANIFEST.MF
+Makefile
+libtest/
