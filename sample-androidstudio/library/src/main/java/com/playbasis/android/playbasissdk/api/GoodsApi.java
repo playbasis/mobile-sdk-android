@@ -59,6 +59,7 @@ public class GoodsApi extends Api {
      * Returns information about the goods with the specified id.
      * @param playbasis Playbasis object.
      * @param goodsId Goods id.
+     * @param playerId Player id.
      * @param listener Callback interface.
      */
     public static void info(@NonNull Playbasis playbasis, @NonNull String goodsId,@Nullable String playerId,

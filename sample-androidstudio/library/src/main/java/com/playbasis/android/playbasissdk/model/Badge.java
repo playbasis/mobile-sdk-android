@@ -18,6 +18,10 @@ public class Badge extends BadgeData {
     @Expose
     @SerializedName("sort_order")
     private Integer shortOrder;
+
+    @Expose
+    @SerializedName("badge_value")
+    private Integer value;
     
 
     /**
@@ -89,6 +93,18 @@ public class Badge extends BadgeData {
      */
     public void setShortOrder(Integer shortOrder) {
         this.shortOrder = shortOrder;
+    }
+
+    /**
+     * 
+     * @return value
+     */
+    public Integer getValue() {
+        return value;
+    }
+
+    public void setValue(Integer value) {
+        this.value = value;
     }
 
 
