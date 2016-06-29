@@ -1,10 +1,12 @@
 
 package com.playbasis.android.playbasissdk.model;
 
+import java.util.Date;
 import java.util.ArrayList;
 import java.util.List;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.playbasis.android.playbasissdk.helper.DateHelper;
 
 public class Quest {
 
@@ -78,12 +80,20 @@ public class Quest {
         return dateStart;
     }
 
+    public Date getDateDateStart() {
+        return DateHelper.stringToDate(dateStart);
+    }
+
     public void setDateStart(String dateStart) {
         this.dateStart = dateStart;
     }
 
     public String getDateEnd() {
         return dateEnd;
+    }
+
+    public Date getDateDateEnd() {
+        return DateHelper.stringToDate(dateEnd);
     }
 
     public void setDateEnd(String dateEnd) {
@@ -283,6 +293,10 @@ public class Quest {
         return dateAdded;
     }
 
+    public Date getDateDateAdded() {
+        return DateHelper.stringToDate(dateAdded);
+    }
+
     /**
      * 
      * @param dateAdded
@@ -373,6 +387,10 @@ public class Quest {
      */
     public String getDateModified() {
         return dateModified;
+    }
+
+    public Date getDateDateModified() {
+        return DateHelper.stringToDate(dateModified);
     }
 
     /**
