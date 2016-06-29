@@ -8,6 +8,7 @@ import com.playbasis.android.playbasissdk.helper.JsonHelper;
 import com.playbasis.android.playbasissdk.http.HttpError;
 import com.playbasis.android.playbasissdk.model.Event;
 import com.playbasis.android.playbasissdk.model.Mission;
+import com.playbasis.android.playbasissdk.model.MissionInfo;
 import com.playbasis.android.playbasissdk.model.Quest;
 
 import org.apache.http.NameValuePair;
@@ -166,13 +167,13 @@ public class QuestApi extends Api {
      * @param listener Callback interface.
      */
     public static void missionInfo(@NonNull Playbasis playbasis, @NonNull String questId, @NonNull String missionId,
-                                   final OnResult<Mission>listener){
+                                   final OnResult<MissionInfo>listener){
         String uri = playbasis.getUrl() + SDKUtil._QUEST_URL + questId +"/"+ MISSION +"/" + missionId;
 
         JsonObjectGET(playbasis, uri, null, new OnResult<JSONObject>() {
             @Override
             public void onSuccess(JSONObject result) {
-                Mission mission = JsonHelper.FromJsonObject(result, Mission.class);
+                MissionInfo mission = JsonHelper.FromJsonObject(result, MissionInfo.class);
                     if (listener != null) listener.onSuccess(mission);
             }
 
