@@ -10,17 +10,23 @@ import java.util.List;
  */
 public class Condition {
 
+    @SerializedName("condition_id")
     @Expose
     private String id;
     @Expose
     private String name;
     @Expose
     private String description;
+    @SerializedName("condition_type")
     @Expose
     private String category;
     @SerializedName("sort_order")
     @Expose
     private int sortOrder;
+
+    @SerializedName("condition_value")
+    @Expose
+    private String value;
 
     /**
      *
@@ -100,5 +106,33 @@ public class Condition {
      */
     public void setSortOrder(int sortOrder) {
         this.sortOrder = sortOrder;
+    }
+
+    /**
+     * [getValue description]
+     * @return value
+     */
+    public String getValue() {
+        return this.value;
+    }
+
+    /**
+     * [setValue description]
+     * @param value value
+     */
+    public void setValue(String value) {
+        this.value = value;
+    }
+
+    @Override
+    public String toString() {
+        return "Condition{" +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", category='" + category + '\'' +
+                ", sortOrder='" + sortOrder + '\'' +
+                ", value='" + value + '\'' +
+                "}";
     }
 }

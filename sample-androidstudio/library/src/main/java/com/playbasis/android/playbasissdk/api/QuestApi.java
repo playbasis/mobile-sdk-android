@@ -32,7 +32,7 @@ public class QuestApi extends Api {
     public static final String JOIN = "join";
     public static final String AVAILABLE = "available";
     public static final String MISSION = "mission";
-    public static final String CONDITIONS = "conditions";
+    public static final String CONDITIONS = "condition";
 
     private static void quests(@NonNull Playbasis playbasis, @NonNull String uri, List<NameValuePair> params,  
                                final OnResult<List<Quest>>listener){
@@ -345,6 +345,18 @@ public class QuestApi extends Api {
         }
         
 
+    }
+
+    /**
+     * 
+     * @param playbasis Playbasis object
+     * @param questId   Quest id as player need to join
+     * @param playerId  Player id as used in client's website
+     * @param listener  Callback interface
+     */
+    public static void cancel(@NonNull Playbasis playbasis, @NonNull String questId, @NonNull String playerId, final OnResult<Event> listener)
+    {
+        cancel(playbasis, false, questId, playerId, listener);
     }
 
     /**

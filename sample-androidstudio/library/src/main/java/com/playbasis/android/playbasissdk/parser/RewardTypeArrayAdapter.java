@@ -72,7 +72,9 @@ public class RewardTypeArrayAdapter extends TypeAdapter<Reward> {
                             case ApiConst.REDEEM:
                                 rewardData.setRedeem(in.nextBoolean());
                                 break;
-                            
+                            default:
+                                in.skipValue();
+                                break;
                         }
                     }
                     rewardInstance.setRewardData(rewardData);

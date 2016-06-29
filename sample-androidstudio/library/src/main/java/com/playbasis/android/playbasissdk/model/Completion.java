@@ -27,6 +27,9 @@ public class Completion {
     @SerializedName("completion_data")
     @Expose
     private CompletionData completionData;
+    @SerializedName("filtered_param")
+    @Expose
+    private FilteredParam filteredParam;
 
     /**
      * 
@@ -176,6 +179,22 @@ public class Completion {
     }
 
     /**
+     * Get filtered param.
+     * @return Filtered param
+     */
+    public FilteredParam getFilteredParam() {
+        return filteredParam;
+    }
+
+    /**
+     * Set filtered param
+     * @param filteredParam Filtered param
+     */
+    public void setFilteredParam(FilteredParam filteredParam) {
+        this.filteredParam = filteredParam;
+    }
+
+    /**
      * 
      * @param completionData
      *     The completion_data
@@ -198,7 +217,8 @@ public class Completion {
                 ", completionElementId='" + completionElementId + '\'' +
                 ", completionType='" + completionType + '\'' +
                 ", completionTitle='" + completionTitle + '\'' +
-                ", completionData=" + completionData +
+                ", completionData=" + completionData + 
+                ", filteredParam=" + filteredParam +
                 '}';
     }
 }

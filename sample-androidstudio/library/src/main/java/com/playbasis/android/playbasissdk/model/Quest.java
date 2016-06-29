@@ -54,6 +54,10 @@ public class Quest {
     @SerializedName("num_missions")
     private NumMissions numMissions;
 
+    @SerializedName("condition")
+    @Expose
+    private List<Condition> conditions = new ArrayList<Condition>();
+
     public NumMissions getNumMissions() {
         return numMissions;
     }
@@ -408,6 +412,22 @@ public class Quest {
         return this;
     }
 
+    /**
+     * Get conditions
+     * @return conditions
+     */
+    public List<Condition> getConditions() {
+        return conditions;
+    }
+
+    /**
+     * Set condition
+     * @param conditions Conditions
+     */
+    public void setConditions(List<Condition> conditions) {
+        this.conditions = conditions;
+    }
+
     @Override
     public String toString() {
         return "Quest{" +
@@ -427,6 +447,7 @@ public class Quest {
                 ", questId='" + questId + '\'' +
                 ", dateStart='" + dateStart + '\'' +
                 ", dateEnd='" + dateEnd + '\'' +
+                ", conditions=" + conditions + 
                 '}';
     }
 }

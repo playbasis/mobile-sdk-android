@@ -208,4 +208,11 @@ public class BadgeData {
         return this;
     }
 
+    // [SharedModel] indicates that this model class structure is shared among multiple of model structures
+    @Override
+    public String toString() {
+        return "BadgeData[SharedModel]{" +
+                "name='" + name + '\'' +
+                "}";
+    }
 }
